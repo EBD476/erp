@@ -37,4 +37,5 @@ div.dataTables_wrapper div.dataTables_filter{float: left}
 .white-content .table>tbody>tr>td{text-align: right;font-family: 'IRANSans',sans-serif}
 .white-content .card:not(.card-white) .card-header .card-title,
 .white-content .table>thead>tr>th{font-family: 'IRANSans',sans-serif}
+.card-title{display: flex;}
 

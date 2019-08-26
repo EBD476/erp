@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class DataUser extends Model
 {
-   protected $table='hnt_products';
+    protected $table='users';
 }
