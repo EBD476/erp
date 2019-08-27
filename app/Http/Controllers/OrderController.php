@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\address;
 use App\Order;
 use App\Product;
@@ -21,8 +22,8 @@ class OrderController extends Controller
         $project_type = Project_Type::all();
         $address = address::all();
         $state = State::all();
-        $product=Product::all();
-        return view('order.create', compact('address', 'state', 'project_type','product'));
+        $product = Product::all();
+        return view('order.create', compact('address', 'state', 'project_type', 'product'));
     }
 
     public function store(Request $request)
@@ -45,22 +46,22 @@ class OrderController extends Controller
             'hp_product_selection' => 'required',
         ]);
         $order = new Order();
-        $order->hp_project_name = $request->hp_project_name
-            ->hp_employer_name = $request->hp_employer_name
-            ->hp_phone_number = $request->hp_phone_number
-            ->hp_connector = $request->hp_connector
-            ->hp_type_project = $request->hp_type_project
-            ->hp_owner_user = $request->hp_owner_user
-            ->hp_project_area = $request->hp_project_area
-            ->hp_number_of_units = $request->hp_number_of_units
-            ->hp_address_state_id = $request->hp_address_state_id
-            ->hp_address_city_id = $request->hp_address_city_id
-            ->hp_address = $request->hp_address
-            ->hp_project_location = $request->hp_project_location
-            ->hp_contract_type = $request->hp_contract_type
-            ->hp_registrant = $request->hp_registrant
-            ->hp_product_selection = $request->hp_product_selection
-            ->save();
+        $order->hp_project_name = $request->hp_project_name;
+        $order->hp_employer_name = $request->hp_employer_name;
+        $order->hp_phone_number = $request->hp_phone_number;
+        $order->hp_connector = $request->hp_connector;
+        $order->hp_type_project = $request->hp_type_project;
+        $order->hp_owner_user = $request->hp_owner_user;
+        $order->hp_project_area = $request->hp_project_area;
+        $order->hp_number_of_units = $request->hp_number_of_units;
+        $order->hp_address_state_id = $request->hp_address_state_id;
+        $order->hp_address_city_id = $request->hp_address_city_id;
+        $order->hp_address = $request->hp_address;
+        $order->hp_project_location = $request->hp_project_location;
+        $order->hp_contract_type = $request->hp_contract_type;
+        $order->hp_registrant = $request->hp_registrant;
+        $order->hp_product_selection = $request->hp_product_selection;
+        $order->save();
         return view('order.index');
 
     }

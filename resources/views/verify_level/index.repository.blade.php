@@ -25,26 +25,34 @@
                                         {{__('ID')}}
                                     </th>
                                     <th>
-                                        {{__('Project Name')}}
+                                        {{__('Product Name')}}
                                     </th>
+                                    <th>
+                                        {{__('Count')}}
+                                    </th>
+
                                     <th>
                                         {{__('Create At')}}
                                     </th>
+
                                     <th>
                                         {{__('Accept State')}}
                                     </th>
                                     </thead>
                                     <tbody>
-                                    @foreach($order as $key => $order)
+                                    @foreach($product as $key => $product)
                                         <tr>
                                             <td>
                                                 {{$key + 1}}
                                             </td>
                                             <td>
-                                                {{$order->hp_project_name}}
+                                                {{$product->hp_product_name}}
                                             </td>
                                             <td>
-                                                {{$order->created_at}}
+                                                {{$product->hp_product_name}}
+                                            </td>
+                                            <td>
+                                                {{$product->created_at}}
                                             </td>
                                             <td>
 {{--                                                @can('browse-btn-user')--}}

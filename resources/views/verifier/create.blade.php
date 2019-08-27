@@ -26,7 +26,11 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="bmd-label-floating">{{__('Process Id')}}</label>
-                                            <input type="text" class="form-control" name="process_id">
+                                            <select class="form-control" name="process_id">
+                                                @foreach($process as $processes)
+                                                    <option value={{$processes->hp_process_id}}>{{$processes->hp_process_name}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
 
                                     </div>

@@ -62,7 +62,7 @@
                                     <div class="col-7">
                                         <div class="numbers">
                                             <p class="card-category">{{__('Total Orders')}}</p>
-                                            <h3 class="card-title">0</h3>
+                                            <h3 class="card-title">{{$order_req}}</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -373,7 +373,7 @@
                     <div class="col-lg-12 col-md-12">
                         <div class="card ">
                             <div class="card-header text-right">
-                                <h3 class="card-title"> {{__('Order List')}}</h3>
+                                <h3 class="card-title"> {{__('Order Verify List')}}</h3>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -381,34 +381,34 @@
                                         <thead class=" text-primary">
                                         <tr>
                                             <th>
-                                                Name
+                                               {{__('ID')}}
                                             </th>
                                             <th>
-                                                Country
+                                               {{__('Name')}}
                                             </th>
+
                                             <th>
-                                                City
-                                            </th>
-                                            <th class="text-center">
-                                                Salary
+                                                {{__('Created at')}}
                                             </th>
                                         </tr>
                                         </thead>
                                         <tbody>
+                                        @foreach($order as $order)
                                         <tr>
+
                                             <td>
-                                                Dakota Rice
+                                                {{$order->id }}
+                                            </td>
+                                                <td>
+                                                {{$order->hp_project_name }}
                                             </td>
                                             <td>
-                                                Niger
-                                            </td>
-                                            <td>
-                                                Oud-Turnhout
-                                            </td>
-                                            <td class="text-center">
-                                                $36,738
+                                                {{$order->created_at}}
                                             </td>
                                         </tr>
+                                        @endforeach
+                                        <a href="{{route('verify_pre.index',$order->id)}}" class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
+                                            <i class="tim-icons icon-pencil"></i></a>
                                         </tbody>
                                     </table>
                                 </div>

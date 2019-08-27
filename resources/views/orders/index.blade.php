@@ -59,7 +59,7 @@
                                     </thead>
                                     <tbody>
 
-                                    @foreach($orders as $key => $order)
+                                    @foreach($order as $key => $order)
                                         <tr>
                                             <td>
                                                 {{$key + 1}}

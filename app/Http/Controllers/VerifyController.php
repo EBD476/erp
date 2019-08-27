@@ -19,7 +19,7 @@ class VerifyController extends Controller
     public function index()
     {
         $order = Order::select('id', 'hp_project_name', 'created_at')
-            ->where('hp_Invoice_number', 0)->get();
+            ->where('hp_Invoice_number',Null)->get();
 //        dd($order);
         return view('verify_level.index', compact('order'));
     }
@@ -65,6 +65,7 @@ class VerifyController extends Controller
      */
     public function edit($id)
     {
+//        $order_id=Order::SELECT('id')->where('hp_Invoice_number',null);
         $userID = auth()->user()->id;
         $current_verified_order = VerifyID::where('verify_id', $userID)->first();
         $current_verifier = VerifyID::select('verify_id')->where('verify_id', $userID)->first();

@@ -158,5 +158,12 @@
   "Add New Verifier":"اضافه کردن تایید کننده جدید",
   "Preview Factor":"نمایش پیش فاکتور",
   "Help Desk":"گزارش خرابی",
-  "Add New Help Desk":"گزارش خرابی جدید"
+  "Add New Help Desk":"گزارش خرابی جدید",
+  "Order Verify List":"لیست سفارشات در انتظار تایید",
+  "Created at":"ایجاد شده در",
+  "Unit Cost":"بهای واحد",
+  "":"",
+  "Discount":"تخفیف",
+  "Line Total":"مجموع",
+  "Total Orders":"در انتظار تولید"
 }

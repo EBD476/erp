@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\DataUser;
+use App\Process;
+use App\ProcessLevel;
 use App\Verifier;
 use Illuminate\Http\Request;
 
@@ -26,8 +28,9 @@ class VerifierController extends Controller
      */
     public function create()
     {
+        $process=ProcessLevel::all();
         $verifier_id=DataUser::all();
-        return view('verifier.create',compact('verifier_id'));
+        return view('verifier.create',compact('verifier_id','process'));
     }
 
     /**

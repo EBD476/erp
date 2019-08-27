@@ -196,6 +196,15 @@
                                         </div>
                                     </div>
                                 </div>
+                                <a href="{{route('order.index')}}"
+                                   class="btn badge-danger">{{__('Back')}}</a>
+
+                                <button type="submit" class="btn badge-primary"
+                                >{{__('Send')}}</button>
+                                <button type="submit" class="btn btn-primary"
+                                        id="preview">{{__('Preview Factor')}}</button>
+
+
                                 {{--<div class="row">--}}
                                     {{--<div class="col-md-12">--}}
                                         {{--<div class="form-group">--}}
@@ -205,16 +214,7 @@
                                         {{--</div>--}}
                                     {{--</div>--}}
                                 {{--</div>--}}
-                                <a href="{{route('order.index')}}"
-                                   class="btn badge-danger">{{__('Back')}}</a>
-
-                                <button type="submit" class="btn badge-primary"
-                                >{{__('Send')}}</button>
-                                <button type="submit" class="btn btn-primary"
-                                        id="preview">{{__('Preview Factor')}}</button>
-                                <input type="hidden" name="hp_product_selection" id="hp_product_selection">
                             </div>
-
                             <div role="tabpanel" class="tab-pane" id="tab2">
 
 
@@ -222,15 +222,15 @@
                                     <thead>
                                     <tr>
                                         <th style="min-width:32px;" class="hide-border"></th>
-                                        <th style="min-width:120px;width:25%">Item</th>
-                                        <th style="width:100%">Description</th>
-                                        <th style="min-width:120px">Unit Cost</th>
-                                        <th style="min-width:120px;display:table-cell">Quantity</th>
-                                        <th style="min-width:120px;display:none">Discount</th>
+                                        <th style="min-width:120px;width:25%">{{__('Item')}}</th>
+                                        <th style="width:100%">{{__('Description')}}</th>
+                                        <th style="min-width:120px">{{__('Unit Cost')}}</th>
+                                        <th style="min-width:120px;display:table-cell">{{__('Quantity')}}</th>
+                                        <th style="min-width:120px;display:none">{{__('Discount')}}</th>
                                         <th style="min-width:120px;display:none;"
                                             data-bind="visible: $root.invoice_item_taxes.show">Tax
                                         </th>
-                                        <th style="min-width:120px;">Line Total</th>
+                                        <th style="min-width:120px;">{{__('Line Total')}}</th>
                                         <th style="min-width:32px;" class="hide-border"></th>
                                     </tr>
                                     </thead>
@@ -313,8 +313,11 @@
                                     </tr>
                                     </tbody>
                                 </table>
-
+                                <button type="submit" class="btn badge-primary" id="send"
+                                >{{__('Send')}}</button>
+                                <input type="hidden" name="hp_product_selection" id="hp_product_selection">
                             </div>
+
                         </form>
                     </div>
 
@@ -355,7 +358,7 @@
 
         $('#send').on('click', function (event) {
             event.preventDefault();
-            jsondata = JSON.stringify($('#modal_form').serializeArray());
+            jsondata = JSON.stringify($('#tab2').serializeArray());
             $('#hp_product_selection').val(jsondata);
         });
 
@@ -451,6 +454,7 @@
                    unit_qty = $(this).parent().parent().find("input[name='invoice_items_qty[]']").val();
                   $(this).parent().parent().find("div[name='total[]']").text( unit_count * unit_qty);
                      append_item();
+
               });
         }
     </script>
