@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    @can('browse-menu-user')
+    {{--@can('browse-menu-user')--}}
     <div class="content">
         <div class="container-fluid">
             <div class="row">
@@ -157,14 +157,7 @@
             </div>
         </div>
     </div>
-    </div>
-    </div>
-    </div>
-    </div>
-
-    </div>
-    </div>
-    @endcan
+    {{--@endcan--}}
 @endsection
 
 @push('scripts')

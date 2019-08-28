@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
 {
-    protected $table='hnt_client';
+    protected $table='hnt_clients';
 }

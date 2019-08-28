@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\address;
+use App\Client;
 use App\Order;
 use App\Product;
 use App\Project_Type;
@@ -13,17 +14,18 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $order = Order::All();
+        $order = Order::select('hc_name');
         return view('order.index', compact('order'));
     }
 
     public function create()
     {
+        $client = Client::all();
         $project_type = Project_Type::all();
         $address = address::all();
         $state = State::all();
         $product = Product::all();
-        return view('order.create', compact('address', 'state', 'project_type', 'product'));
+        return view('order.create', compact('address', 'state', 'project_type', 'product','client'));
     }
 
     public function store(Request $request)
@@ -60,6 +62,9 @@ class OrderController extends Controller
         $order->hp_project_location = $request->hp_project_location;
         $order->hp_contract_type = $request->hp_contract_type;
         $order->hp_registrant = $request->hp_registrant;
+        $order->ho_client = $request->ho_client;
+        $order->ho_due_date = $request->ho_due_date;
+        $order->ho_discount = $request->ho_discount;
         $order->hp_product_selection = $request->hp_product_selection;
         $order->save();
         return view('order.index');

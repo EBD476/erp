@@ -7,14 +7,14 @@
 @endpush
 
 @section('content')
-    @can('browse-menu-user')
+{{--    @can('browse-menu-user')--}}
     <div class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    @can('browse-btn-user')
-                    <a href="{{route('product.create')}}" class="btn btn-primary">{{__('Add New Client')}}</a>
-                    @endcan
+{{--                    @can('browse-btn-user')--}}
+                    <a href="{{route('product.create')}}" class="btn btn-primary">{{__('Create new client')}}</a>
+                    {{--@endcan--}}
                     <div class="card">
                         <div class="card-header card-header-primary">
                             <h4 class="card-title ">{{__('Client')}}</h4>
@@ -28,7 +28,7 @@
                                         {{__('ID')}}
                                     </th>
                                     <th>
-                                        {{__('User Id')}}
+                                        {{__('User ID')}}
                                     </th>
                                     <th>
                                         {{__('Create At')}}
@@ -83,7 +83,7 @@
             </div>
         </div>
     </div>
-        @endcan
+        {{--@endcan--}}
         @endsection
 
         @push('scripts')

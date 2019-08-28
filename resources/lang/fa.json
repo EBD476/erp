@@ -162,8 +162,10 @@
   "Order Verify List":"لیست سفارشات در انتظار تایید",
   "Created at":"ایجاد شده در",
   "Unit Cost":"بهای واحد",
-  "":"",
+  "Client":"مشتری",
   "Discount":"تخفیف",
   "Line Total":"مجموع",
-  "Total Orders":"در انتظار تولید"
+  "Total Orders":"در انتظار تولید",
+  "Due Date":"تاریخ تحویل",
+  "Create new client":"اضافه کردن مشتری جدید"
 }
