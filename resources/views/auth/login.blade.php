@@ -39,6 +39,7 @@
                             <input id="password"  type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{__('Password')}}" name="password"  required autofocus>
                             @if ($errors->has('password'))
                                 <span class="invalid-feedback" role="alert">
+                                    //خطای پسورد رو نشون میدهد//
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
                             @endif

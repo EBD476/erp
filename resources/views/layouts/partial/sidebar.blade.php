@@ -18,15 +18,15 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('projects.index') }}">
-                    <i class="tim-icons icon-atom"></i>
-                    <p>{{__('Manage Projects')}}</p>
-                </a>
-            </li>
-            <li>
                 <a href="{{ route('order.index') }}">
                     <i class="tim-icons icon-app"></i>
                     <p>{{__('Orders')}}</p>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('projects.index') }}">
+                    <i class="tim-icons icon-atom"></i>
+                    <p>{{__('Manage Projects')}}</p>
                 </a>
             </li>
             <li>

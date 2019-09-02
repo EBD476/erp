@@ -26,12 +26,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('projects', 'ProjectController');
     Route::resource('order', 'OrderController');
     Route::resource('products', 'ProductController');
-    Route::get('dashboard', 'dashboardcontroller@index')->name('admin.dashboard');
     route::resource('product', 'ProductController');
-    route::resource('project', 'Project_StateController');
+    route::resource('order_product','OrderProductController');
     route::resource('repository', 'RepositoryController');
     route::resource('repository_requirement', 'Repository_RequirementController');
-    route::resource('production', 'ProductionController');
     route::resource('request', 'RequestController');
     route::post('preview','OrderController@preview')->name('order.preview');
     route::resource('verifier', 'VerifierController');

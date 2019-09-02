@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-md-12">
 {{--                    @can('browse-btn-user')--}}
-                    <a href="{{route('product.create')}}" class="btn btn-primary">{{__('Create new client')}}</a>
+                    <a href="{{route('client.create')}}" class="btn btn-primary">{{__('Create new client')}}</a>
                     {{--@endcan--}}
                     <div class="card">
                         <div class="card-header card-header-primary">
@@ -57,7 +57,7 @@
                                                 {{$client -> updated_at}}
                                             </td>
                                             <td>
-                                                @can('browse-btn-user')
+{{--                                                @can('browse-btn-user')--}}
                                                <a href="{{route('client.edit',$client->id)}}" class="btn btn-info btn-sm"><i class="material-icons">mode_edit</i></a>
                                                 <form id ="-form-delete{{$client->id}}" style="display: none;" method="POST" action="{{route('client.destroy',$client->id)}}">
                                                     @csrf
@@ -69,7 +69,7 @@
                                                 }else {
                                                     event.preventDefault();
                                                         }"><i class="material-icons">delete</i></button>
-                                                 @endcan
+                                                 {{--@endcan--}}
                                             </td>
                                         </tr>
                                     @endforeach

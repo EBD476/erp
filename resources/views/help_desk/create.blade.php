@@ -16,7 +16,7 @@
                     </div>
                     <div class="card">
                         <div class="card-header card-header-primary">
-                            <h4 class="card-title ">{{__('Add New Help Desk')}}</h4>
+                            <h4 class="card-title ">{{__('Help Desk')}}</h4>
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">

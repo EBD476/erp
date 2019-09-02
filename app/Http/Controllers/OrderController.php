@@ -8,13 +8,14 @@ use App\Order;
 use App\Product;
 use App\Project_Type;
 use App\State;
+use http\Env\Response;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
     public function index()
     {
-        $order = Order::select('hc_name');
+        $order = Order::ALL();
         return view('order.index', compact('order'));
     }
 
@@ -30,23 +31,24 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'hp_project_name' => 'required',
-            'hp_employer_name' => 'required',
-            'hp_phone_number' => 'required',
-            'hp_connector' => 'required',
-            'hp_type_project' => 'required',
-            'hp_owner_user' => 'required',
-            'hp_project_area' => 'required',
-            'hp_number_of_units' => 'required',
-            'hp_address_state_id' => 'required',
-            'hp_address_city_id' => 'required',
-            'hp_address' => 'required',
-            'hp_project_location' => 'required',
-            'hp_contract_type' => 'required',
-            'hp_registrant' => 'required',
-            'hp_product_selection' => 'required',
-        ]);
+
+//        dd($request);
+//        $this->validate($request, [
+//            'hp_project_name' => 'required',
+//            'hp_employer_name' => 'required',
+//            'hp_phone_number' => 'required',
+//            'hp_connector' => 'required',
+//            'hp_type_project' => 'required',
+//            'hp_owner_user' => 'required',
+//            'hp_project_area' => 'required',
+//            'hp_number_of_units' => 'required',
+//            'hp_address_state_id' => 'required',
+//            'hp_address_city_id' => 'required',
+//            'hp_address' => 'required',
+//            'hp_project_location' => 'required',
+//            'hp_contract_type' => 'required',
+//        ]);
+        $current_user= auth()->user()->username;
         $order = new Order();
         $order->hp_project_name = $request->hp_project_name;
         $order->hp_employer_name = $request->hp_employer_name;
@@ -61,13 +63,11 @@ class OrderController extends Controller
         $order->hp_address = $request->hp_address;
         $order->hp_project_location = $request->hp_project_location;
         $order->hp_contract_type = $request->hp_contract_type;
-        $order->hp_registrant = $request->hp_registrant;
+        $order->hp_registrant =$current_user;
         $order->ho_client = $request->ho_client;
         $order->ho_due_date = $request->ho_due_date;
-        $order->ho_discount = $request->ho_discount;
-        $order->hp_product_selection = $request->hp_product_selection;
         $order->save();
-        return view('order.index');
+        return json_encode(["response"=>"OK"]);
 
     }
 
@@ -96,7 +96,6 @@ class OrderController extends Controller
             'hp_project_location' => 'required',
             'hp_contract_type' => 'required',
             'hp_registrant' => 'required',
-            'hp_product_selection' => 'required',
         ]);
         $order = Order::find($id);
         $order->hp_project_name = $request->hp_project_name;
@@ -114,7 +113,6 @@ class OrderController extends Controller
         $order->hp_project_location = $request->hp_project_location;
         $order->hp_contract_type = $request->hp_contract_type;
         $order->hp_registrant = $request->hp_registrant;
-        $order->hp_product_selection = $request->hp_product_selection;
         $order->save();
         return view('order.index');
 
@@ -133,24 +131,4 @@ class OrderController extends Controller
         $data = $request;
         return view('order.preview', compact('data'));
     }
-
-//    public function verify()
-//    {
-//        $order = Order::select('hp_project_name', 'created_at')
-//            ->where('hp_Invoice_number', 0)->get();
-//        return view('admin.verify_level.index', compact('order'));
-//    }
-
-//    public function verify_pre($id)
-//    {
-////        dd('df');
-//        $order = Order::find($id);
-//        return view('admin.verify_level.preview', compact('order'));
-//    }
-//
-//    public function store_verify()
-//    {
-////        $state=NEW StateLevel();
-////        $state->
-//    }
 }

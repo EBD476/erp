@@ -46,7 +46,7 @@ class RepositoryController extends Controller
         $Repositories->Product_Stock= $request->Product_Stock;
         $Repositories->Comment= $request->Comment;
         $Repositories->save();
-        return redirect()->route('repository.index');
+        return json_encode(["response"=>"OK"]);
 
     }
 

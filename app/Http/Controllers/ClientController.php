@@ -33,28 +33,28 @@ class ClientController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request)
+    public function store(Request $request)
     {
         $this->validate($request,[
-            'hc_user_id' => 'required' ,
-            'hc_account_id' => 'required' ,
-            'hc_currency_id' => 'required' ,
-            'hc_name' => 'required' ,
-            'hc_address' => 'required' ,
-            'hc_city' => 'required' ,
-            'hc_state' => 'required' ,
-            'hc_postal_code' => 'required' ,
-            'hc_country_id' => 'required' ,
-            'hc_private_notes' => 'required' ,
-            'hc_balance' => 'required' ,
-            'hc_paid_to_date' => 'required' ,
-            'hc_last_login' => 'required' ,
-            'hc_website' => 'required' ,
+//            'hc_user_id' => 'required' ,
+//            'hc_account_id' => 'required' ,
+//            'hc_currency_id' => 'required' ,
+//            'hc_name' => 'required' ,
+//            'hc_address' => 'required' ,
+//            'hc_city' => 'required' ,
+//            'hc_state' => 'required' ,
+//            'hc_postal_code' => 'required' ,
+//            'hc_country_id' => 'required' ,
+//            'hc_private_notes' => 'required' ,
+//            'hc_balance' => 'required' ,
+//            'hc_paid_to_date' => 'required' ,
+//            'hc_last_login' => 'required' ,
+//            'hc_website' => 'required' ,
         ]);
-
+dd('test');
         $client = new Client();
         $client->hc_user_id= $request->hc_user_id;
-        $client->hc_currency_id= $request->hc_currency_id;
+        $client->vat_number= $request->vat_number;
         $client->hc_name= $request->hc_name;
         $client->hc_address= $request->hc_address;
         $client->hc_city= $request->hc_city;
@@ -64,8 +64,33 @@ class ClientController extends Controller
         $client->hc_private_notes= $request->hc_private_notes;
         $client->hc_balance= $request->hc_balance;
         $client->hc_paid_to_date= $request->hc_paid_to_date;
-        $client->hc_last_login= $request->hc_last_login;
+//        $client->hc_last_login= $request->hc_last_login;
+//        $client->hc_website= $request->first_name;
+//        $client->hc_website= $request->last_name;
+        $client->send_reminders= $request->email;
         $client->hc_website= $request->hc_website;
+        $client->hc_work_phone= $request->phone;
+        $client->shipping_city= $request->shipping_city;
+        $client->shipping_state= $request->shipping_state;
+        $client->shipping_postal_code= $request->shipping_postal_code;
+        $client->shipping_country_id= $request->shipping_country_id;
+        $client->shipping_address1= $request->shipping_address1;
+        $client->shipping_address2= $request->shipping_address2;
+        $client->hc_currency_id= $request->hc_currency_id;
+        $client->language_id= $request->language_id;
+        $client->payment_terms= $request->payment_terms;
+        $client->task_rate= $request->task_rate;
+        $client->show_tasks_in_portal= $request->show_tasks_in_portal;
+        $client->public_notes= $request->public_notes;
+        $client->invoice_number_counter= $request->invoice_number_counter;
+        $client->size_id= $request->size_id;
+        $client->hc_account_id= $request->hc_account_id;
+        $client->custom_value1= $request->custom_value1;
+        $client->custom_messages= $request->custom_messages;
+        $client->quote_number_counter= $request->quote_number_counter;
+        $client->credit_number_counter= $request->credit_number_counter;
+        $client->industry_id= $request->industry_id;
+
         $client->save();
         return redirect()->route('client.index');
 
@@ -123,7 +148,7 @@ class ClientController extends Controller
         ]);
         $client=Client::find($id);
         $client->hc_user_id= $request->hc_user_id;
-        $client->hc_currency_id= $request->hc_currency_id;
+        $client->vat_number= $request->vat_number;
         $client->hc_name= $request->hc_name;
         $client->hc_address= $request->hc_address;
         $client->hc_city= $request->hc_city;
@@ -133,8 +158,32 @@ class ClientController extends Controller
         $client->hc_private_notes= $request->hc_private_notes;
         $client->hc_balance= $request->hc_balance;
         $client->hc_paid_to_date= $request->hc_paid_to_date;
-        $client->hc_last_login= $request->hc_last_login;
+//        $client->hc_last_login= $request->hc_last_login;
+//        $client->hc_website= $request->first_name;
+//        $client->hc_website= $request->last_name;
+        $client->send_reminders= $request->email;
         $client->hc_website= $request->hc_website;
+        $client->hc_work_phone= $request->phone;
+        $client->shipping_city= $request->shipping_city;
+        $client->shipping_state= $request->shipping_state;
+        $client->shipping_postal_code= $request->shipping_postal_code;
+        $client->shipping_country_id= $request->shipping_country_id;
+        $client->shipping_address1= $request->shipping_address1;
+        $client->shipping_address2= $request->shipping_address2;
+        $client->hc_currency_id= $request->hc_currency_id;
+        $client->language_id= $request->language_id;
+        $client->payment_terms= $request->payment_terms;
+        $client->task_rate= $request->task_rate;
+        $client->show_tasks_in_portal= $request->show_tasks_in_portal;
+        $client->public_notes= $request->public_notes;
+        $client->invoice_number_counter= $request->invoice_number_counter;
+        $client->size_id= $request->size_id;
+        $client->hc_account_id= $request->hc_account_id;
+        $client->custom_value1= $request->custom_value1;
+        $client->custom_messages= $request->custom_messages;
+        $client->quote_number_counter= $request->quote_number_counter;
+        $client->credit_number_counter= $request->credit_number_counter;
+        $client->industry_id= $request->industry_id;
         $client->save();
         return redirect()->route('client.index')->with('successMSG','عملیات ویرایش اطلاعات با موفقیت انجام شد.');
 

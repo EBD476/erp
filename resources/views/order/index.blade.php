@@ -53,39 +53,39 @@
                                     </th>
                                     </thead>
                                     <tbody>
-                                    @foreach($order as $key => $order)
+                                    @foreach($order as $key => $orders)
                                         <tr>
                                             <td>
                                                 {{$key + 1}}
                                             </td>
                                             <td>
-                                                {{$order->hp_project_name}}
+                                                {{$orders->hp_project_name}}
                                             </td>
                                             <td>
-                                                {{$order->hp_employer_name}}
+                                                {{$orders->hp_employer_name}}
                                             </td>
                                             <td>
-                                                {{$order->hp_connector}}
+                                                {{$orders->hp_connector}}
                                             </td>
                                             <td>
-                                                {{$order->hp_type_project}}
+                                                {{$orders->hp_type_project}}
                                             </td>
                                             <td>
-                                                {{$order->hp_owner_user}}
+                                                {{$orders->hp_owner_user}}
                                             </td>
                                             <td>
-                                                {{$order->created_at}}
+                                                {{$orders->created_at}}
                                             </td>
                                             <td>
                                                 {{--@can('browse-btn-user')--}}
-                                               <a href="{{route('order.edit',$order->id)}}" ><i class="tim-icons icon-pencil"></i></a>
-                                                <form id ="-form-delete{{$order->id}}" style="display: none;" method="POST" action="{{route('order.destroy',$order->id)}}">
+                                               <a href="{{route('order.edit',$orders->id)}}" ><i class="tim-icons icon-pencil"></i></a>
+                                                <form id ="-form-delete{{$orders->id}}" style="display: none;" method="POST" action="{{route('order.destroy',$orders->id)}}">
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>
                                                 <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove" onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
                                                     event.preventDefault();
-                                                    document.getElementById('-form-delete{{$order->id}}').submit();
+                                                    document.getElementById('-form-delete{{$orders->id}}').submit();
                                                 }else {
                                                     event.preventDefault();}"><i class="tim-icons icon-simple-remove"></i></a>
                                                  {{--@endcan--}}

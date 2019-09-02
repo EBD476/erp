@@ -69,7 +69,7 @@
                                                 {{$help_desk -> updated_at}}
                                             </td>
                                             <td>
-                                                @can('browse-btn-user')
+{{--                                                @can('browse-btn-user')--}}
                                                <a href="{{route('help_desk.edit',$help_desk->id)}}" class="btn btn-info btn-sm"><i class="material-icons">mode_edit</i></a>
                                                 <form id ="-form-delete{{$help_desk->id}}" style="display: none;" method="POST" action="{{route('help_desk.destroy',$help_desk->id)}}">
                                                     @csrf
@@ -81,7 +81,7 @@
                                                 }else {
                                                     event.preventDefault();
                                                         }"><i class="material-icons">delete</i></button>
-                                                 @endcan
+                                                 {{--@endcan--}}
                                             </td>
                                         </tr>
                                     @endforeach
