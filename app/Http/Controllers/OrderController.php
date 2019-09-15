@@ -33,21 +33,21 @@ class OrderController extends Controller
     {
 
 //        dd($request);
-//        $this->validate($request, [
-//            'hp_project_name' => 'required',
-//            'hp_employer_name' => 'required',
-//            'hp_phone_number' => 'required',
-//            'hp_connector' => 'required',
-//            'hp_type_project' => 'required',
-//            'hp_owner_user' => 'required',
-//            'hp_project_area' => 'required',
-//            'hp_number_of_units' => 'required',
-//            'hp_address_state_id' => 'required',
-//            'hp_address_city_id' => 'required',
-//            'hp_address' => 'required',
-//            'hp_project_location' => 'required',
-//            'hp_contract_type' => 'required',
-//        ]);
+        $this->validate($request, [
+            'hp_project_name' => 'required',
+            'hp_employer_name' => 'required',
+            'hp_phone_number' => 'required',
+            'hp_connector' => 'required',
+            'hp_type_project' => 'required',
+            'hp_owner_user' => 'required',
+            'hp_project_area' => 'required',
+            'hp_number_of_units' => 'required',
+            'hp_address_state_id' => 'required',
+            'hp_address_city_id' => 'required',
+            'hp_address' => 'required',
+            'hp_project_location' => 'required',
+            'hp_contract_type' => 'required',
+        ]);
         $current_user= auth()->user()->username;
         $order = new Order();
         $order->hp_project_name = $request->hp_project_name;
@@ -65,9 +65,8 @@ class OrderController extends Controller
         $order->hp_contract_type = $request->hp_contract_type;
         $order->hp_registrant =$current_user;
         $order->ho_client = $request->ho_client;
-        $order->ho_due_date = $request->ho_due_date;
         $order->save();
-        return json_encode(["response"=>"OK"]);
+        return json_encode(["response"=>"OK" ,"client_id"=>$order->ho_client,"order_id"=>$order->id]);
 
     }
 

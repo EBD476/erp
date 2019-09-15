@@ -15,18 +15,19 @@
                     <div class="col-md-8">
                         <div class="card">
                             <div class="card-header card-header-primary">
-                                <h4 class="card-title ">{{__('New Product')}}</h4>
+                                <h4 class="card-title ">{{__('Edit Product')}}</h4>
                                 <p class="card-category"></p>
                             </div>
                             <div class="card-body">
-                                <form method="post" action="{{route('products.store')}}" >
+                                <form method="post" action="{{route('products.update',$product->id)}}" >
                                     @csrf
+                                    @method('PUT')
                                     <div class="row">
                                         <div class="col-md-6 pr-md-1">
                                             <div class="form-group">
                                                 <label>{{__('Product Name')}}</label>
                                                 <input name="product_name" type="text" class="form-control" required=""
-                                                       aria-invalid="false"   >
+                                                       aria-invalid="false" value="{{$product->hp_product_name}}"  >
                                             </div>
                                         </div>
                                     </div>
@@ -36,7 +37,7 @@
                                             <div class="form-group">
                                                 <label>{{__('Product Model')}}</label>
                                                 <input name="product_model" type="text" class="form-control" required=""
-                                                       aria-invalid="false"  >
+                                                       aria-invalid="false" value="{{$product->hp_product_model}}" >
                                             </div>
                                         </div>
                                     </div>
@@ -45,7 +46,7 @@
                                             <div class="form-group">
                                                 <label>{{__('Product Price')}}</label>
                                                 <input name="product_price" type="text" class="form-control"  required=""
-                                                       aria-invalid="false">
+                                                       aria-invalid="false" value="{{$product->hp_product_price}}">
                                             </div>
                                         </div>
                                     </div>

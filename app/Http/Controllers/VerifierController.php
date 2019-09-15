@@ -53,7 +53,8 @@ class VerifierController extends Controller
         $verifier->hp_priority = $request->hp_priority;
         $verifier->hp_verifier_id = $request->hp_verifier_id;
         $verifier->save();
-        return view('verifier.index');
+        $verifier = Verifier::ALL();
+        return view('verifier.index',compact('verifier'));
     }
 
     /**
@@ -89,7 +90,7 @@ class VerifierController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'process_id	' => 'required',
+            'process_id' => 'required',
             'hp_priority' => 'required',
             'hp_verifier_id' => 'required',
 

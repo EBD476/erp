@@ -13,8 +13,10 @@
             <div class="row">
                 <div class="col-md-12">
 {{--                    @can('browse-btn-user')--}}
-                    <a href="{{route('help_desk.create')}}" class="btn btn-primary">{{__('Add New Help Desk')}}</a>
+                    <a href="{{route('help_desk.create')}}" class="btn btn-primary float-left mb-lg-2"><i class="tim-icons icon-simple-add"></i>{{__('Add New Help Desk')}}</a>
+                </div>
                     {{--@endcan--}}
+                <div class="col-md-9">
                     <div class="card">
                         <div class="card-header card-header-primary">
                             <h4 class="card-title ">{{__('Help Desk')}}</h4>
@@ -40,9 +42,6 @@
                                         {{__('Create At')}}
                                     </th>
                                     <th>
-                                        {{__('Update At')}}
-                                    </th>
-                                    <th>
                                         {{__('action')}}
                                     </th>
                                     </thead>
@@ -66,21 +65,17 @@
                                                 {{$help_desk -> created_at}}
                                             </td>
                                             <td>
-                                                {{$help_desk -> updated_at}}
-                                            </td>
-                                            <td>
 {{--                                                @can('browse-btn-user')--}}
-                                               <a href="{{route('help_desk.edit',$help_desk->id)}}" class="btn btn-info btn-sm"><i class="material-icons">mode_edit</i></a>
+                                               <a href="{{route('help_desk.edit',$help_desk->id)}}" class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit"><i class="tim-icons icon-pencil"></i></a>
                                                 <form id ="-form-delete{{$help_desk->id}}" style="display: none;" method="POST" action="{{route('help_desk.destroy',$help_desk->id)}}">
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>
-                                                <button type="button" class="btn btn-danger btn-sm"  onclick="if(confirm('آیا از حذف این محصول اطمینان دارید؟')){
-                                                    event.preventDefault();
-                                                    document.getElementById('-form-delete{{$help_desk->id}}').submit();
-                                                }else {
-                                                    event.preventDefault();
-                                                        }"><i class="material-icons">delete</i></button>
+                                                <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove"  onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
+                                                        event.preventDefault();
+                                                        document.getElementById('-form-delete{{$help_desk->id}}').submit();
+                                                        }else {
+                                                        event.preventDefault();}"><i class="tim-icons icon-simple-remove"></i></a>
                                                  {{--@endcan--}}
                                             </td>
                                         </tr>
@@ -91,7 +86,18 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="col-md-3">
+                    <br><br>
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title text-right">{{__('Projects Locations')}}</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+                            <div id="map" style="width: 100%; height: 400px;direction: ltr"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

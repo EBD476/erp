@@ -11,7 +11,9 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <a href="{{route('request.create')}}" class="btn btn-primary">{{__('Add New Request')}}</a>
+                    <a href="{{route('request.create')}}" class="btn btn-primary float-left mb-lg-2"><i class="tim-icons icon-simple-add"></i>{{__('Add New Request')}}</a>
+                </div>
+                <div class="col-md-9">
                     <div class="card">
                         <div class="card-header card-header-primary">
                             <h4 class="card-title ">{{__('Request')}}</h4>
@@ -31,9 +33,6 @@
                                         {{__('Product Count')}}
                                     </th>
                                     <th>
-                                        {{__('Description')}}
-                                    </th>
-                                    <th>
                                         {{__('User ID')}}
                                     </th>
                                     <th>
@@ -41,12 +40,6 @@
                                     </th>
                                     <th>
                                         {{__('Accept Level')}}
-                                    </th>
-                                    <th>
-                                        {{__('Create At')}}
-                                    </th>
-                                    <th>
-                                        {{__('Update At')}}
                                     </th>
                                     <th>
                                         {{__('action')}}
@@ -66,9 +59,6 @@
                                                 {{$Request -> goods_count}}
                                             </td>
                                             <td>
-                                                {{$Request -> description}}
-                                            </td>
-                                            <td>
                                                 {{$Request->user_id}}
                                             </td>
                                             <td>
@@ -78,29 +68,35 @@
                                                 {{$Request -> accept_level}}
                                             </td>
                                             <td>
-                                                {{$Request -> created_at}}
-                                            </td>
-                                            <td>
-                                                {{$Request -> updated_at}}
-                                            </td>
-                                            <td>
-                                               <a href="{{route('request.edit',$Request->id)}}" class="btn btn-info btn-sm"><i class="material-icons">mode_edit</i></a>
+                                               <a href="{{route('request.edit',$Request->id)}}" class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
+                                                   <i class="tim-icons icon-pencil"></i></a>
                                                 <form id ="-form-delete{{$Request->id}}" style="display: none;" method="POST" action="{{route('request.destroy',$Request->id)}}">
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>
-                                                <button type="button" class="btn btn-danger btn-sm"  onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
-                                                    event.preventDefault();
-                                                    document.getElementById('-form-delete{{$Request->id}}').submit();
-                                                }else {
-                                                    event.preventDefault();
-                                                        }"><i class="material-icons">delete</i></button>
+                                                <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove"  onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
+                                                        event.preventDefault();
+                                                        document.getElementById('-form-delete{{$Request->id}}').submit();
+                                                        }else {
+                                                        event.preventDefault();}"><i class="tim-icons icon-simple-remove"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <br><br>
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title text-right">{{__('Projects Locations')}}</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+                            <div  id="map" style="width: 100%; height: 400px;direction: ltr"></div>
                         </div>
                     </div>
                 </div>

@@ -76,7 +76,7 @@ class HelpDeskController extends Controller
             $id = 1;
         }
         $sub_total = "TK_" . sprintf("%04d",$id) . "_" . $current_date . "_" . $request->hhd_priority;
-        dd($sub_total);
+//        dd($sub_total);
         $help_desk->hhd_ticket_id = $sub_total;
         $help_desk->hhd_type = $request->hhd_type;
         $help_desk->hhd_problem = $request->hhd_problem;
@@ -110,7 +110,7 @@ class HelpDeskController extends Controller
     public function edit($id)
     {
         $help_desk = HelpDesk::find($id);
-        return view('admin.help_desk.edit', compact('help_desk'));
+        return view('help_desk.edit', compact('help_desk'));
     }
 
     /**

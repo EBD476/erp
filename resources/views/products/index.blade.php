@@ -17,13 +17,14 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-
-                <div class="col-md-9">
-                    <a href="{{route('products.create')}}" class="btn btn-primary float-right mb-lg-2">
+                <div class="col-md-12">
+                    <a href="{{route('products.create')}}" class="btn btn-primary float-left mb-lg-2">
                         <i class="tim-icons icon-simple-add"></i> &nbsp;
                         {{__('New Product')}}
                     </a>
-                    <div class="card">
+                </div>
+                <div class="col-md-9">
+                <div class="card">
                         <div class="card-header card-header-primary">
                             <h4 class="card-title text-right font-weight-400">{{__('Products List')}}</h4>
                             <p class="card-category"></p>
@@ -53,7 +54,7 @@
                                                 {{--{{$key + 1}}--}}
                                             {{--</td>--}}
                                             <td>
-                                                {{$product ->hp_id}}
+                                                {{$product ->id}}
                                             </td>
                                             <td>
                                                 {{$product ->hp_product_name}}
@@ -65,16 +66,16 @@
                                                 {{$product -> hp_product_price}}
                                             </td>
                                             <td>
-                                               <a href="{{route('projects.edit',$product->hp_id)}}" class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
+                                               <a href="{{route('products.edit',$product->id)}}" class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
                                                    <i class="tim-icons icon-pencil"></i></a>
 
-                                                <form id ="-form-delete{{$product->hp_id}}" style="display: none;" method="POST" action="{{route('projects.destroy',$product->hp_id)}}">
+                                                <form id ="-form-delete{{$product->id}}" style="display: none;" method="POST" action="{{route('products.destroy',$product->id)}}">
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>
                                                 <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove"  onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
                                                     event.preventDefault();
-                                                    document.getElementById('-form-delete{{$product->hp_id}}').submit();
+                                                    document.getElementById('-form-delete{{$product->id}}').submit();
                                                 }else {
                                                     event.preventDefault();}"><i class="tim-icons icon-simple-remove"></i></a>
                                             </td>
@@ -86,7 +87,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-md-3">
                     <br><br>
                     <div class="card card-user">

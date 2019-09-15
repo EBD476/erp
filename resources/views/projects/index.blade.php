@@ -18,12 +18,13 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-
-                <div class="col-md-9">
-                    <a href="{{route('projects.create')}}" class="btn btn-primary float-right mb-lg-2">
+                <div class="col-md-12">
+                    <a href="{{route('projects.create')}}" class="btn btn-primary float-left mb-lg-2">
                         <i class="tim-icons icon-simple-add"></i>
                         {{__('New Project')}}
                     </a>
+                </div>
+                <div class="col-md-9">
                     <div class="card">
                         <div class="card-header card-header-primary">
                             <h4 class="card-title text-right font-weight-400">{{__('Projects List')}}</h4>
@@ -40,7 +41,7 @@
                                         {{__('Name')}}
                                     </th>
                                     {{--<th>--}}
-                                        {{--{{__('Address')}}--}}
+                                    {{--{{__('Address')}}--}}
                                     {{--</th>--}}
                                     <th>
                                         {{__('Type')}}
@@ -49,7 +50,7 @@
                                         {{__('Units')}}
                                     </th>
                                     {{--<th>--}}
-                                        {{--{{__('Complete Date')}}--}}
+                                    {{--{{__('Complete Date')}}--}}
                                     {{--</th>--}}
                                     <th>
                                         {{__('Completed')}}
@@ -69,7 +70,7 @@
                                                 {{$project ->hp_project_name}}
                                             </td>
                                             {{--<td>--}}
-                                                {{--{{$project ->hp_project_address}}--}}
+                                            {{--{{$project ->hp_project_address}}--}}
                                             {{--</td>--}}
                                             <td>
                                                 {{$project -> hp_project_type}}
@@ -78,24 +79,28 @@
                                                 {{$project -> hp_project_units}}
                                             </td>
                                             {{--<td>--}}
-                                                {{--{{$project -> hp_project_complete_date}}--}}
+                                            {{--{{$project -> hp_project_complete_date}}--}}
                                             {{--</td>--}}
                                             <td>
                                                 {{$project -> hp_project_completed}}
                                             </td>
                                             <td>
-                                               <a href="{{route('projects.edit',$project->hp_id)}}" class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
-                                                   <i class="tim-icons icon-pencil"></i></a>
+                                                <a href="{{route('projects.edit',$project->id)}}"
+                                                   class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
+                                                    <i class="tim-icons icon-pencil"></i></a>
 
-                                                <form id ="-form-delete{{$project->hp_id}}" style="display: none;" method="POST" action="{{route('projects.destroy',$project->hp_id)}}">
+                                                <form id="-form-delete{{$project->id}}" style="display: none;"
+                                                      method="POST" action="{{route('projects.destroy',$project->id)}}">
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>
-                                                <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove"  onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
-                                                    event.preventDefault();
-                                                    document.getElementById('-form-delete{{$project->hp_id}}').submit();
-                                                }else {
-                                                    event.preventDefault();}"><i class="tim-icons icon-simple-remove"></i></a>
+                                                <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove"
+                                                   onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
+                                                           event.preventDefault();
+                                                           document.getElementById('-form-delete{{$project->id}}').submit();
+                                                           }else {
+                                                           event.preventDefault();}"><i
+                                                            class="tim-icons icon-simple-remove"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -105,7 +110,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-md-3">
                     <br><br>
                     <div class="card">
@@ -114,7 +118,7 @@
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
-                            <div  id="map" style="width: 100%; height: 400px;direction: ltr"></div>
+                            <div id="map" style="width: 100%; height: 400px;direction: ltr"></div>
                         </div>
                     </div>
                 </div>
@@ -129,7 +133,7 @@
             {{--<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>--}}
             <script src="{{asset('assets/js/plugins/datatables.min.js')}}"></script>
             <script>
-                $(document).ready(function() {
+                $(document).ready(function () {
 
                     // $('#table').DataTable({
                     //     "language": {
@@ -152,16 +156,16 @@
 
                     });
 
-                    var loc ;
+                    var loc;
                     var greenIcon = L.icon({
                         iconUrl: '../../assets/images/marker-icon.png',
                         shadowUrl: 'leaf-shadow.png',
 
-                        iconSize:     [24, 24], // size of the icon
-                        shadowSize:   [50, 64], // size of the shadow
-                        iconAnchor:   [25, 44], // point of the icon which will correspond to marker's location
+                        iconSize: [24, 24], // size of the icon
+                        shadowSize: [50, 64], // size of the shadow
+                        iconAnchor: [25, 44], // point of the icon which will correspond to marker's location
                         shadowAnchor: [4, 62],  // the same for the shadow
-                        popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+                        popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
                     });
 
                     // var baseMaps = {
@@ -183,19 +187,19 @@
                     var cities = L.layerGroup();
 
                     @foreach($projects as $key => $project)
-                         L.marker([{{$project->hp_project_location}}], {icon: greenIcon}).bindPopup('This is Littleton, CO.').addTo(cities);
-                    @endforeach
+                    L.marker([{{$project->hp_project_location}}], {icon: greenIcon}).bindPopup('This is Littleton, CO.').addTo(cities);
+                            @endforeach
 
                     var mbAttr = '',
                         mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
 
-                    var grayscale   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
-                        streets  = L.tileLayer(mbUrl, {id: 'mapbox.streets',   attribution: mbAttr});
+                    var grayscale = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
+                        streets = L.tileLayer(mbUrl, {id: 'mapbox.streets', attribution: mbAttr});
 
                     var map = L.map('map', {
                         center: [35.7126, 51.4167],
                         zoom: 10,
-                        layers: [cities,grayscale]
+                        layers: [cities, grayscale]
                     });
 
                     var baseLayers = {
@@ -212,8 +216,7 @@
 
                     map.on('click', onMapClick);
 
-                } );
-
+                });
 
 
             </script>

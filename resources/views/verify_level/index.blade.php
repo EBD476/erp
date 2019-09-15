@@ -11,7 +11,7 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-9">
                     <div class="card">
                         <div class="card-header card-header-primary">
                             <h4 class="card-title ">{{__('Verify Order')}}</h4>
@@ -64,7 +64,18 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="col-md-3">
+                    <br><br>
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title text-right">{{__('Projects Locations')}}</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+                            <div  id="map" style="width: 100%; height: 400px;direction: ltr"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\Types\Compound;
 
 class ProductController extends Controller
 {
@@ -15,7 +16,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view('products.index',['products'=>$products]);
+        return view('products.index',compact('products'));
     }
 
     /**
@@ -28,14 +29,13 @@ class ProductController extends Controller
         return view('products.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'product_name' => 'required',
+            'product_model' => 'required',
+            'product_price' => 'required',
+        ]);
         $product = new Product();
         $product->hp_product_name = $request->product_name;
         $product->hp_product_model = $request->product_model;
@@ -62,9 +62,12 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
-        //
+        $product=Product::find($id);
+        return view('products.edit',compact('product'));
+
+
     }
 
     /**
@@ -74,9 +77,22 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request,$id)
     {
-        //
+        $products=Product::ALL();
+        $this->validate($request, [
+            'product_name' => 'required',
+            'product_model' => 'required',
+            'product_price' => 'required',
+        ]);
+        $product =Product::find($id);
+        $product->hp_product_name = $request->product_name;
+        $product->hp_product_model = $request->product_model;
+        $product->hp_product_price = $request->product_price;
+        $product->save();
+        return view('products.index',compact('products'));
+
+
     }
 
     /**
@@ -85,8 +101,10 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        $product->delete();
+        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
     }
 }

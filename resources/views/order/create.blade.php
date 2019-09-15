@@ -6,6 +6,7 @@
     <link href="{{asset('assets/css/select2.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('assets/css/select2-bootstrap4.min.css')}}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/leaflet.css') }}" rel="stylesheet">
+    <link href="{{asset('assets/css/kamadatepicker.min.css')}}" rel="stylesheet"/>
 @endpush
 
 @section('content')
@@ -31,355 +32,393 @@
                             </li>
                             <li class="nav-item" style="width: 33.3333%;">
                                 <a class="nav-link" href="#tab2" data-toggle="tab" role="tab">
-                                    {{__('Product')}}
+                                    {{__('List of Material')}}
                                 </a>
                             </li>
                         </ul>
                         <br>
-                        <form id="form1"
-                              class="tab-content setting-tab" enctype="multipart/form-data">
-                            <div role="tabpanel" class="tab-pane active" id="tab1">                                @csrf
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Project Name')}}</label>
-                                            <input type="text" class="form-control"
-                                                   name="hp_project_name">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Employer Name')}}</label>
-                                            <input type="text" class="form-control"
-                                                   name="hp_employer_name">
-                                        </div>
 
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <div class="text-center">
-                                                <button  class="btn-outline-light" data-toggle="modal" data-target="#modalRegisterForm">
-                                                    {{__('Add New Client')}}</button>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="tab1">
+                                <form id="form1"
+                                      class="tab-content setting-tab" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Project Name')}}</label>
+                                                <input type="text" class="form-control" required=""
+                                                       aria-invalid="false" name="hp_project_name">
                                             </div>
-                                            <label class="bmd-label-floating">{{__('Client Name')}}</label>
-                                            <select name="ho_client" class="form-control">
-                                                @foreach($client as $clients)
-                                                    <option>{{$clients->hc_name}}</option>
-                                                @endforeach
-                                            </select>
                                         </div>
-                                    </div>
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Connector')}}</label>
-                                            <input type="text" class="form-control"
-                                                   name="hp_connector">
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Owner User')}}</label>
-                                            <select type="text" class="form-control" name="hp_owner_user">
-                                                <option>{{__('Residential')}}</option>
-                                                <option>{{__('Commercial')}}</option>
-                                                <option>{{__('edari')}}</option>
-                                            </select>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Employer Name')}}</label>
+                                                <input type="text" class="form-control" required="" aria-invalid="false"
+                                                       name="hp_employer_name">
+                                            </div>
 
                                         </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Phone Number')}}</label>
-                                            <input type="text" class="form-control"
-                                                   name="hp_phone_number">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Client Name')}}</label>
+                                                <select id="client_name" name="ho_client" class="form-control">
+                                                    @foreach($client as $clients)
+                                                        <option>{{$clients->hc_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="text-light">
+                                                    <a class="pointer" href="#" data-toggle="modal"
+                                                       data-target="#modalRegisterForm">
+                                                        {{__('Add New Client')}}</a>
+                                                </div>
+                                            </div>
                                         </div>
 
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Project Area')}}</label>
-                                            <input type="text" class="form-control"
-                                                   name="hp_project_area">
-                                        </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Connector')}}</label>
+                                                <input type="text" class="form-control" required=""
+                                                       aria-invalid="false"
+                                                       name="hp_connector">
+                                            </div>
 
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Number Of Units')}}</label>
-                                            <input type="text" class="form-control"
-                                                   name="hp_number_of_units">
                                         </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Owner User')}}</label>
+                                                <select type="text" class="form-control" name="hp_owner_user">
+                                                    <option>{{__('Residential')}}</option>
+                                                    <option>{{__('Commercial')}}</option>
+                                                    <option>{{__('edari')}}</option>
+                                                </select>
 
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Type Project')}}</label>
-                                            <select class="form-control" name="hp_type_project">
-                                                @foreach($project_type as $type)
-                                                    <option>{{$type->hp_name}}</option>
-                                                @endforeach
-                                            </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Phone Number')}}</label>
+                                                <input type="number" class="form-control" required=""
+                                                       aria-invalid="false"
+                                                       name="hp_phone_number">
+                                            </div>
+
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Contract Type')}}</label>
-                                            <select class="form-control" type="text"
-                                                    name="hp_contract_type">
-                                                <option>
-                                                    {{__('Delivery')}}
-                                                </option>
-                                                <option>
-                                                    {{__('Install In Place')}}
-                                                </option>
-                                            </select>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Project Area')}}</label>
+                                                <input type="number" class="form-control" required=""
+                                                       aria-invalid="false"
+                                                       name="hp_project_area">
+                                            </div>
+
                                         </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('State')}}</label>
-                                            <select class="form-control" type="text"
-                                                    name="hp_address_state_id">
-                                                @foreach($state as $code)
-                                                    <option value="{{$code->id}}">
-                                                        {{$code->hp_project_state}}
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Number Of Units')}}</label>
+                                                <input type="number" class="form-control" required=""
+                                                       aria-invalid="false"
+                                                       name="hp_number_of_units">
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Type Project')}}</label>
+                                                <select class="form-control" name="hp_type_project">
+                                                    @foreach($project_type as $type)
+                                                        <option>{{$type->hp_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Contract Type')}}</label>
+                                                <select class="form-control" type="text"
+                                                        name="hp_contract_type">
+                                                    <option>
+                                                        {{__('Delivery')}}
                                                     </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('City')}}</label>
-                                            <select class="form-control" type="text"
-                                                    name="hp_address_city_id">
-                                                @foreach($address as $city)
-                                                    <option value="{{$city->id}}">
-                                                        {{$city->hp_city}}
+                                                    <option>
+                                                        {{__('Install In Place')}}
                                                     </option>
-                                                @endforeach
-                                            </select>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('State')}}</label>
+                                                <select class="form-control" type="text"
+                                                        name="hp_address_state_id">
+                                                    @foreach($state as $code)
+                                                        <option value="{{$code->id}}">
+                                                            {{$code->hp_project_state}}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('City')}}</label>
+                                                <select class="form-control" type="text"
+                                                        name="hp_address_city_id">
+                                                    @foreach($address as $city)
+                                                        <option value="{{$city->id}}">
+                                                            {{$city->hp_city}}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Project Location')}}</label>
-                                            <div id="map"
-                                                 style="width: 100%; height: 300px;direction: ltr;z-index:0"></div>
-                                            <input name="hp_project_location" type="hidden"
-                                                   id="location" class="form-control">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Project Location')}}</label>
+                                                <div id="map"
+                                                     style="width: 100%; height: 300px;direction: ltr;z-index:0"></div>
+                                                <input name="hp_project_location" type="hidden"
+                                                       id="location" class="form-control">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Address')}}</label>
-                                            <textarea type="text" class="form-control" name="hp_address"
-                                            ></textarea>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Address')}}</label>
+                                                <textarea type="text" class="form-control" name="hp_address" required=""
+                                                          aria-invalid="false"
+                                                ></textarea>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
+                                    <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
+                                </form>
                             </div>
-                        </form>
-                        <form id="form2"
-                              class="tab-content setting-tab" enctype="multipart/form-data">
-                            @csrf
-                            <div role="tabpanel" class="tab-pane" id="tab2">
-                            {{--/ contenttable  --}}
-                                <table class="table invoice-table product-table" style="direction: ltr">
-                                    <thead>
-                                    <tr>
-                                        <th style="min-width:32px;" class="hide-border"></th>
-                                        <th style="min-width:120px;width:25%">{{__('Item')}}</th>
-                                        <th style="width:100%">{{__('Description')}}</th>
-                                        <th style="min-width:120px">{{__('Unit Cost')}}</th>
-                                        <th style="min-width:120px;display:table-cell">{{__('Quantity')}}</th>
-                                        <th style="min-width:120px;display:none">{{__('Discount')}}</th>
-                                        <th style="min-width:120px;display:none;"
-                                            data-bind="visible: $root.invoice_item_taxes.show">Tax
-                                        </th>
-                                        <th style="min-width:120px;">{{__('Line Total')}}</th>
-                                        <th style="min-width:32px;" class="hide-border"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody data-bind="sortable: { data: invoice_items_without_tasks, allowDrop: false, afterMove: onDragged} "
-                                           class="ui-sortable">
-                                    <tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"
-                                        class="sortable-row ui-sortable-handle" style="">
-                                        <td class="hide-border td-icon">
-                                            <i style="display:none" data-bind="visible: actionsVisible() &amp;&amp;
-                $parent.invoice_items_without_tasks().length > 1" class="fa fa-sort"></i>
-                                        </td>
-                                        <td>
-                                            <select name="name" class="select-item form-control">
-                                                @foreach($product as $product_item)
-                                                    <option value="{{$product_item->id}}"
-                                                            data-price="{{$product_item->hp_product_price}}">
-                                                        {{$product_item->hp_product_name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
 
-                                        </td>
-                                        <td>
+                            <div role="tabpanel" class="tab-pane" id="tab2">
+                                <form id="form2"
+                                      class="tab-content setting-tab" enctype="multipart/form-data">
+                                    <table class="table invoice-table product-table" style="direction: ltr">
+                                        <thead>
+                                        <tr>
+                                            <th style="min-width:32px;" class="hide-border"></th>
+                                            <th style="min-width:120px;width:25%">{{__('Item')}}</th>
+                                            <th style="width:100%">{{__('Description')}}</th>
+                                            <th style="min-width:120px">{{__('Unit Cost')}}</th>
+                                            <th style="min-width:120px;display:table-cell">{{__('Quantity')}}</th>
+                                            <th style="min-width:120px;display:none">{{__('Discount')}}</th>
+                                            <th style="min-width:120px;display:none;"
+                                                data-bind="visible: $root.invoice_item_taxes.show">Tax
+                                            </th>
+                                            <th style="min-width:120px;">{{__('Line Total')}}</th>
+                                            <th style="min-width:32px;" class="hide-border"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody data-bind="sortable: { data: invoice_items_without_tasks, allowDrop: false, afterMove: onDragged} "
+                                               class="ui-sortable">
+                                        <tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"
+                                            class="sortable-row ui-sortable-handle" style="">
+                                            <td class="hide-border td-icon">
+                                                <i style="display:none" data-bind="visible: actionsVisible() &amp;&amp;
+                $parent.invoice_items_without_tasks().length > 1" class="fa fa-sort"></i>
+                                            </td>
+                                            <td>
+                                                <select name="name[]" class="select-item combobox-container">
+                                                    <option value=""></option>
+                                                    @foreach($product as $product_item)
+                                                        <option value="{{$product_item->id}}"
+                                                                data-price="{{$product_item->hp_product_price}}">
+                                                            {{$product_item->hp_product_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+
+                                            </td>
+                                            <td>
                                                 <textarea
                                                         data-bind="value: notes, valueUpdate: 'afterkeydown', attr: {name: 'invoice_items[' + $index() + '][notes]'}"
                                                         rows="1" cols="60" style="resize: vertical; height: 42px;"
                                                         class="form-control word-wrap"
                                                         name="invoice_items[0][notes]"></textarea>
 
-                                        </td>
-                                        <td>
-                                            <input type="text" id="unit" class="form-control"
-                                                   name="hp_product_price[]">
-                                        </td>
-                                        <td style="display:table-cell">
-                                            <input id="qty"
-                                                   style="text-align: right" class="form-control invoice-item"
-                                                   name="invoice_items_qty[]">
-                                        </td>
-                                        <td style="display:none">
-                                            <input data-bind="value: discount, valueUpdate: 'afterkeydown', attr: {name: 'invoice_items[' + $index() + '][discount]'}"
-                                                   style="text-align: right" class="form-control invoice-item"
-                                                   name="invoice_items[0][discount]">
-                                        </td>
-                                        <td style="display:none;"
-                                            data-bind="visible: $root.invoice_item_taxes.show">
-                                            <select class="form-control"
-                                                    data-bind="value: tax1, event:{change:onTax1Change}" id=""
-                                                    name="">
-                                                <option value=""></option>
-                                            </select>
-                                            <input type="text"
-                                                   data-bind="value: tax_name1, attr: {name: 'invoice_items[' + $index() + '][tax_name1]'}"
-                                                   style="display:none" name="invoice_items[0][tax_name1]">
-                                            <input type="text"
-                                                   data-bind="value: tax_rate1, attr: {name: 'invoice_items[' + $index() + '][tax_rate1]'}"
-                                                   style="display:none" name="invoice_items[0][tax_rate1]">
-                                            <div data-bind="visible: $root.invoice().account.enable_second_tax_rate == '1'"
-                                                 style="display: none;">
-                                                <select class="form-control tax-select"
-                                                        data-bind="value: tax2, event:{change:onTax2Change}" id="-2"
+                                            </td>
+                                            <td>
+                                                <input type="text" id="unit" class="form-control"
+                                                       name="hp_product_price[]">
+                                            </td>
+                                            <td style="display:table-cell">
+                                                <input
+                                                        style="text-align: right" class="form-control invoice-item qty"
+                                                        name="invoice_items_qty[]">
+                                            </td>
+                                            <td style="display:none">
+                                                <input data-bind="value: discount, valueUpdate: 'afterkeydown', attr: {name: 'invoice_items[' + $index() + '][discount]'}"
+                                                       style="text-align: right" class="form-control invoice-item"
+                                                       name="invoice_items[0][discount]">
+                                            </td>
+                                            <td style="display:none;"
+                                                data-bind="visible: $root.invoice_item_taxes.show">
+                                                <select class="form-control"
+                                                        data-bind="value: tax1, event:{change:onTax1Change}" id=""
                                                         name="">
                                                     <option value=""></option>
                                                 </select>
+                                                <input type="text"
+                                                       data-bind="value: tax_name1, attr: {name: 'invoice_items[' + $index() + '][tax_name1]'}"
+                                                       style="display:none" name="invoice_items[0][tax_name1]">
+                                                <input type="text"
+                                                       data-bind="value: tax_rate1, attr: {name: 'invoice_items[' + $index() + '][tax_rate1]'}"
+                                                       style="display:none" name="invoice_items[0][tax_rate1]">
+                                                <div data-bind="visible: $root.invoice().account.enable_second_tax_rate == '1'"
+                                                     style="display: none;">
+                                                    <select class="form-control tax-select"
+                                                            data-bind="value: tax2, event:{change:onTax2Change}" id="-2"
+                                                            name="">
+                                                        <option value=""></option>
+                                                    </select>
+                                                </div>
+                                                <input type="text"
+                                                       data-bind="value: tax_name2, attr: {name: 'invoice_items[' + $index() + '][tax_name2]'}"
+                                                       style="display:none" name="invoice_items[0][tax_name2]">
+                                                <input type="text"
+                                                       data-bind="value: tax_rate2, attr: {name: 'invoice_items[' + $index() + '][tax_rate2]'}"
+                                                       style="display:none" name="invoice_items[0][tax_rate2]">
+                                            </td>
+                                            <td style="text-align:right;padding-top:9px !important" nowrap="">
+                                                <div id="total" class="line-total" name="total[]"></div>
+                                            </td>
+                                            <td style="cursor:pointer" class="hide-border td-icon">
+                                                <i class="tim-icons icon-simple-remove remove" title="Remove item"/>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="col-md-6">
+                                        @include('layouts.partial.Msg')
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="bmd-label-floating">{{__('Order ID')}}</label>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="bmd-label-floating">{{__('Sub Total')}}</label>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="bmd-label-floating">{{__('Discount')}}</label>
+                                                            <div class="col-lg-8 col-sm-8">
+                                                                <div class="input-group"><input class="form-control"
+                                                                                                data-bind="value: discount, valueUpdate: 'afterkeydown'"
+                                                                                                min="0" step="any"
+                                                                                                id="discount"
+                                                                                                type="number"
+                                                                                                name="discount"><span
+                                                                            class="input-group-addon"><select
+                                                                                class="form-control"
+                                                                                data-bind="value: is_amount_discount, event:{ change: isAmountDiscountChanged}"
+                                                                                id="is_amount_discount"
+                                                                                name="hpo_discount"><option
+                                                                                    value="0">Percent</option><option
+                                                                                    value="1">Amount</option></select></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="bmd-label-floating">{{__('Paid to Date')}}</label>
+                                                            <div class="col-lg-8 col-sm-8">
+                                                            <div class="input-group">
+                                                                <span
+                                                                        class="tim-icons icon-calendar-60"
+                                                                        style="direction: rtl"></span>
+                                                                <input class="form-control"
+                                                                                            id="test-date-id"
+                                                                                            type="text"
+                                                                                            name="hop_due_date"><span
+                                                                        class="input-group-addon">
+
+                                                                </span>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" id="client_id" name="hpo_client_id">
+                                                <input type="hidden" id="order_id" name="hpo_order_id">
                                             </div>
-                                            <input type="text"
-                                                   data-bind="value: tax_name2, attr: {name: 'invoice_items[' + $index() + '][tax_name2]'}"
-                                                   style="display:none" name="invoice_items[0][tax_name2]">
-                                            <input type="text"
-                                                   data-bind="value: tax_rate2, attr: {name: 'invoice_items[' + $index() + '][tax_rate2]'}"
-                                                   style="display:none" name="invoice_items[0][tax_rate2]">
-                                        </td>
-                                        <td style="text-align:right;padding-top:9px !important" nowrap="">
-                                            <div id="total" class="line-total" name="total[]"></div>
-                                        </td>
-                                        <td style="cursor:pointer" class="hide-border td-icon">
-                                            <i style="padding-left:2px;display:none;"
-                                               data-bind="click: $parent.removeItem, visible: actionsVisible() &amp;&amp; !isEmpty()"
-                                               class="fa fa-minus-circle redlink" title="Remove item">
-                                            </i></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <div class="col-md-6">
-                                    @include('layouts.partial.Msg')
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="bmd-label-floating">{{__('Order ID')}}</label>
-                                                    </div>
-
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="bmd-label-floating">{{__('Sub Total')}}</label>
-                                                    </div>
-
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="bmd-label-floating">{{__('Discount')}}</label>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="bmd-label-floating">{{__('Paid to Date')}}</label>
-                                                    </div>
-
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="bmd-label-floating">{{__('Balance Due')}}</label>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
-                                </div>
 
-                                <a href="{{route('order.index')}}"
-                                   class="btn badge-danger">{{__('Back')}}</a>
-                                <button type="submit" class="btn btn-primary" id="btn-submit2">{{__('Send')}}</button>
-                                <button type="submit" class="btn btn-primary"
-                                        id="preview">{{__('Preview Factor')}}</button>
+                                    <a href="{{route('order.index')}}"
+                                       class="btn badge-danger">{{__('Back')}}</a>
+                                    <button type="submit" class="btn btn-primary"
+                                            id="btn-submit2">{{__('Send')}}</button>
+                                    <button type="submit" class="btn btn-primary"
+                                            id="preview">{{__('Preview Factor')}}</button>
+                                </form>
                             </div>
-                        </form>
+                        </div>
                         {{--//client modal//--}}
 
-                            <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header text-center">
-                                            <h4 class="modal-title w-100 font-weight-bold">{{__('Add New Client')}}</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <form method="post" id="modalRegisterForm">
+                        <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header text-center">
+                                        <h4 class="modal-title w-100 font-weight-bold">{{__('Add New Client')}}</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="post" id="modal_form" enctype="multipart/form-data">
                                         <div class="modal-body mx-3">
                                             <div class="md-form mb-5">
                                                 {{--<i class="fas fa-user prefix grey-text"></i>--}}
-                                                <input type="text" id="orangeForm-name" class="form-control validate">
-                                                <label data-error="wrong" data-success="right" for="orangeForm-name">{{__('Name')}}</label>
+                                                <label data-error="wrong" data-success="right"
+                                                       for="orangeForm-name">{{__('Name')}}</label>
+                                                <input type="text" id="orangeForm-name" class="form-control validate"
+                                                       name="hc_name">
                                             </div>
                                             <div class="md-form mb-5">
                                                 {{--<i class="fas fa-envelope prefix grey-text"></i>--}}
-                                                <input  class="form-control validate">
-                                                <label data-error="wrong" data-success="right" for="orangeForm-email">{{__('Address')}}</label>
+                                                <label data-error="wrong"
+                                                       data-success="right">{{__('ID Number')}}</label>
+                                                <input class="form-control validate" name="hc_user_id">
                                             </div>
 
                                             <div class="md-form mb-4">
                                                 {{--<i class="fas fa-lock prefix grey-text"></i>--}}
-                                                <input   class="form-control validate">
-                                                <label data-error="wrong" data-success="right" for="orangeForm-pass">{{__('City')}}</label>
+                                                <label data-error="wrong" data-success="right">{{__('Address')}}</label>
+                                                <input class="form-control validate" name="hc_address">
                                             </div>
 
                                         </div>
-                                        </form>
                                         <div class="modal-footer d-flex justify-content-center">
                                             <button type="submit" class="btn btn-deep-orange">{{__('Send')}}</button>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
+                        </div>
                     </div>
 
                 </div>
@@ -396,12 +435,17 @@
     <script src="{{asset('assets/js/leaflet.js')}}"></script>
     <script>
         $(document).ready(function () {
-            $("#modalRegisterForm").submit(function (event) {
-                var data = $("#modalRegisterForm").serialize();
+
+            var client_id;
+            var order_id;
+
+            $("#modal_form").submit(function (event) {
+                var data = $("#modal_form").serialize();
                 event.preventDefault();
+                $.blockUI();
                 $.ajaxSetup({
                     headers: {
-                        // 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
 
@@ -412,6 +456,10 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
+                        setTimeout($.unblockUI);
+                        $("#modalRegisterForm").find("input").val("");
+                        $("#modalRegisterForm").modal('hide');
+                        $("#client_name").append('<option selected>' + data.client_name + '</option>');
                     },
                     cache: false,
                 });
@@ -420,7 +468,6 @@
                 var data = $("#form1").serialize();
                 event.preventDefault();
                 $.blockUI();
-
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -434,17 +481,20 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        // alert(data.response);
                         setTimeout($.unblockUI, 2000);
+                        client_id = data.client_id;
+                        order_id = data.order_id;
+                        $("#order_id").val(order_id);
+                        $("#client_id").val(client_id);
                     },
                     cache: false,
                 });
             });
             $("#form2").submit(function (event) {
+                // product_select=$(".select-item").empty();
                 var data = $("#form2").serialize();
                 event.preventDefault();
-                // $.blockUI();
-
+                $.blockUI();
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -458,37 +508,42 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        // alert(data.response);
-                        // setTimeout($.unblockUI, 2000);
+                        setTimeout($.unblockUI, 2000);
                     },
                     cache: false,
                 });
             });
+
+            $(".select-item").select2({
+                theme: "bootstrap",
+                placeholder: '{{__('Select Product')}}',
+                // allowClear: true
+
+            });
+            // $(".select-item").select2({
+
+            // });
         });
 
-
-        $(".select-item").select2({
-            theme: "bootstrap"
-        });
 
         $(".select-item").on('change', function (event) {
-
             // event.preventDefault();
             $("#unit").val($(this).find("option[value='" + $(this).val() + "']").data('price'));
-            $('#qty').val('1');
+            $('.qty').val('1');
 
             unit_count = $("#unit").val();
-            unit_qty = $("#qty").val();
+            unit_qty = $(".qty").val();
+            // discount=$(".discount").val();
             $('#total').text(unit_count * unit_qty);
+            // $('#discount').text(discount*0.01);
             append_item();
-
         });
 
-        $("#qty").on('change', function (event) {
-            unit_count = $("#unit").val();
-            unit_qty = $("#qty").val();
-            $('#total').text(unit_count * unit_qty);
-        })
+        $(".qty").on('change', function (event) {
+            // unit_count = $("#unit").val();
+            unit_qty = $(this).val();
+            $('#total').text(1000 * unit_qty);
+        });
 
         // $('#send').on('click', function (event) {
         //     event.preventDefault();
@@ -505,7 +560,8 @@
                 '                $parent.invoice_items_without_tasks().length > 1" class="fa fa-sort"></i>\n' +
                 '                                        </td>\n' +
                 '                                        <td>\n' +
-                '                                                        <select name="name" class="select-item form-control">\n' +
+                '                                                        <select name="name[]" class="select-item combobox-container">\n' +
+                '                                                            <option value=""></option>' +
                 '                                                            @foreach($product as $product_item)\n' +
                 '                                                                <option value="{{$product_item->id}}" data-price="{{$product_item->hp_product_price}}">\n' +
                 '                                                                    {{$product_item->hp_product_name }}\n' +
@@ -527,8 +583,8 @@
                 '                                                   name="hp_product_price[]">\n' +
                 '                                        </td>\n' +
                 '                                        <td style="display:table-cell">\n' +
-                '                                            <input id="qty"\n' +
-                '                                                   style="text-align: right" class="form-control invoice-item"\n' +
+                '                                            <input \n' +
+                '                                                   style="text-align: right" class="form-control invoice-item qty"\n' +
                 '                                                   name="invoice_items_qty[]">\n' +
                 '                                        </td>\n' +
                 '                                        <td style="display:none">\n' +
@@ -568,16 +624,26 @@
                 '                                            <div name="total[]" class="line-total"></div>\n' +
                 '                                        </td>\n' +
                 '                                        <td style="cursor:pointer" class="hide-border td-icon">\n' +
-                '                                            <i style="padding-left:2px;display:none;"\n' +
-                '                                               data-bind="click: $parent.removeItem, visible: actionsVisible() &amp;&amp; !isEmpty()"\n' +
-                '                                               class="fa fa-minus-circle redlink" title="Remove item">\n' +
+                '                                            <i \n' +
+                '                                               \n' +
+                '                                               class="tim-icons icon-simple-remove remove"  title="Remove item">\n' +
                 '                                            </i></td>\n' +
                 '                                    </tr>');
+
 
             $(".select-item").select2({
                 theme: "bootstrap"
             });
 
+            $(".select-item").select2({
+                placeholder: '{{__('select product')}}',
+                allowClear: true
+            });
+
+            $(".remove").click(function () {
+
+                $(this).parent().parent().remove();
+            });
             $(".select-item").on('change', function (event) {
 
                 $(this).parent().parent().find("input[name='hp_product_price[]']").val($(this).find("option[value='" + $(this).val() + "']").data('price'));
@@ -588,8 +654,18 @@
                 unit_qty = $(this).parent().parent().find("input[name='invoice_items_qty[]']").val();
                 $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
                 append_item();
-
             });
+
+            $(".qty").on('change', function (event) {
+
+                unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
+                unit_qty = $(this).val();
+                $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
+
+
+                // $('#total-all').text(1000 * unit_qty);
+            });
+
         }
     </script>
     <script>
@@ -625,10 +701,21 @@
             loc = L.marker([jsonLoc.lat, jsonLoc.lng], {icon: greenIcon}).addTo(map);
         }
 
-        $("#remove").click(function () {
-            loc.remove();
+        $(".remove").click(function () {
+
+            $(this).parent().parent().remove();
         });
 
         map.on('click', onMapClick);
+    </script>
+    {{--datapicker--}}
+    <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
+    <script>
+        kamaDatepicker('test-date-id', {
+            buttonsColor: "blue",
+            forceFarsiDigits: true,
+            nextButtonIcon: "fa fa-arrow-circle-right",
+            previousButtonIcon: "fa fa-arrow-circle-left"
+        });
     </script>
 @endpush

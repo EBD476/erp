@@ -22,7 +22,7 @@
                         <form id="form1" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Product Id')}}</label>
                                         <input type="text" class="form-control" name="Product_Id">
@@ -31,18 +31,20 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Product Stock')}}</label>
-                                        <input type="text" class="form-control" name="Product_Stock">
+                                        <input type="text" class="form-control" required=""
+                                               aria-invalid="false" name="Product_Stock">
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Comment')}}</label>
-                                        <textarea class="form-control" name="Comment"></textarea>
+                                        <textarea class="form-control" required=""
+                                                  aria-invalid="false" name="Comment"></textarea>
                                     </div>
                                 </div>
                             </div>

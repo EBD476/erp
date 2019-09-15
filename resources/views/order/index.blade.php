@@ -13,9 +13,11 @@
             <div class="row">
                 <div class="col-md-12">
                     {{--@can('browse-btn-user')--}}
-                    <a href="{{route('order.create')}}" class="btn btn-primary">{{__('Add New Order')}}</a>
+                    <a href="{{route('order.create')}}" class="btn btn-primary float-left mb-lg-2"><i class="tim-icons icon-simple-add"></i>{{__('Add New Order')}}</a>
                     {{--@endcan--}}
-                    <div class="card">
+                </div>
+                <div class="col-md-9">
+                <div class="card">
                         <div class="card-header card-header-primary">
                             <h4 class="card-title ">{{__('Order')}}</h4>
                             <p class="card-category"></p>
@@ -46,7 +48,7 @@
                                         {{__('Create At')}}
                                     </th>
                                     <th>
-                                        {{__('Action')}}
+                                        {{__('action')}}
                                     </th>
                                     <th>
                                         {{__('Accept State')}}
@@ -101,7 +103,29 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="col-md-3">
+                    <br><br>
+                    <div class="card card-user">
+                        <div class="card-body">
+                            <p class="card-text">
+                                <div class="author">
+                                    <div class="block block-one"></div>
+                                    <div class="block block-two"></div>
+                                    <div class="block block-three"></div>
+                                    <div class="block block-four"></div>
+                                    <a href="javascript:void(0)">
+                                        {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
+                                        <h5 class="title">Hanta IBMS</h5>
+                                    </a>
+                            <p class="description">
+                                Available Products
+                            </p>
+                        </div>
+                        </p>
+                        <div class="card-description">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
