@@ -22,6 +22,14 @@
                     <div class="card-header card-header-primary">
                         <h4 class="card-title ">{{__('Add New Order')}}</h4>
                         <p class="card-category"></p>
+                        <div class="row pull-left">
+                            <div class="col-md-12 pull-left">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">{{__('Order ID:')}}</label>
+                                    <label class="bmd-label-floating">{{__('Order ID')}}</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <ul class="nav nav-pills" style="float: none">
@@ -37,7 +45,6 @@
                             </li>
                         </ul>
                         <br>
-
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="tab1">
                                 <form id="form1"
@@ -301,72 +308,69 @@
                                         </tbody>
                                     </table>
                                     <div class="col-md-6">
-                                        @include('layouts.partial.Msg')
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="row">
+                                                    <label class="bmd-label-floating">{{__('Discount')}}
+                                                        :</label>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="bmd-label-floating">{{__('Order ID')}}</label>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="bmd-label-floating">{{__('Sub Total')}}</label>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label class="bmd-label-floating">{{__('Discount')}}</label>
-                                                            <div class="col-lg-8 col-sm-8">
+                                                            <div class="col-lg-6 col-sm-6">
                                                                 <div class="input-group"><input class="form-control"
                                                                                                 data-bind="value: discount, valueUpdate: 'afterkeydown'"
                                                                                                 min="0" step="any"
                                                                                                 id="discount"
                                                                                                 type="number"
-                                                                                                name="discount"><span
-                                                                            class="input-group-addon"><select
-                                                                                class="form-control"
-                                                                                data-bind="value: is_amount_discount, event:{ change: isAmountDiscountChanged}"
-                                                                                id="is_amount_discount"
-                                                                                name="hpo_discount"><option
-                                                                                    value="0">Percent</option><option
-                                                                                    value="1">Amount</option></select></span>
+                                                                                                name="hpo_discount"><select
+                                                                            class="form-control"
+                                                                            data-bind="value: is_amount_discount, event:{ change: isAmountDiscountChanged}"
+                                                                            id="is_amount_discount"
+                                                                            name="hpo_discount">
+                                                                        <option
+                                                                                id="0" value="0">Percent
+                                                                        </option>
+                                                                        <option
+                                                                                id="1" value="1">Amount
+                                                                        </option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                                 <div class="row">
+                                                    <label class="bmd-label-floating">{{__('Paid to Date:')}}</label>
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="bmd-label-floating">{{__('Paid to Date')}}</label>
-                                                            <div class="col-lg-8 col-sm-8">
-                                                            <div class="input-group">
-                                                                <span
-                                                                        class="tim-icons icon-calendar-60"
-                                                                        style="direction: rtl"></span>
+                                                            <div class="col-lg-6 col-sm-6">
                                                                 <input class="form-control"
-                                                                                            id="test-date-id"
-                                                                                            type="text"
-                                                                                            name="hop_due_date"><span
-                                                                        class="input-group-addon">
-
-                                                                </span>
+                                                                       id="test-date-id"
+                                                                       type="text"
+                                                                       name="hop_due_date">
                                                             </div>
-                                                            </div>
-                                                        </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <input type="hidden" id="client_id" name="hpo_client_id">
-                                                <input type="hidden" id="order_id" name="hpo_order_id">
+                                                <div class="row">
+                                                    <label class="bmd-label-floating">{{__('Sub Total:')}}</label>
+                                                    <div class="col-md-12 ">
+                                                        <div class="form-group">
+                                                            <div class="form-group">
+                                                                <div class="col-lg-6 col-sm-6">
+                                                                    <input class="form-control"
+                                                                           type="text"
+                                                                           name="sub_total"
+                                                                           id="sub_total">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
+                                        </div>
+                                        <input type="hidden" id="client_id" name="hpo_client_id">
+                                        <input type="hidden" id="order_id" name="hpo_order_id">
                                     </div>
-
                                     <a href="{{route('order.index')}}"
                                        class="btn badge-danger">{{__('Back')}}</a>
                                     <button type="submit" class="btn btn-primary"
@@ -533,9 +537,7 @@
 
             unit_count = $("#unit").val();
             unit_qty = $(".qty").val();
-            // discount=$(".discount").val();
             $('#total').text(unit_count * unit_qty);
-            // $('#discount').text(discount*0.01);
             append_item();
         });
 
@@ -544,6 +546,17 @@
             unit_qty = $(this).val();
             $('#total').text(1000 * unit_qty);
         });
+
+        $("#hpo_discount").on('change',function (event) {
+            discount = $("#hpo_discount").val();
+            if ($('#0').val() == 0) {
+                $('#sub_total').text(discount * 1);
+            }
+            else {
+                $('#sub_total').text(discount * 2);
+            }
+        })
+
 
         // $('#send').on('click', function (event) {
         //     event.preventDefault();
@@ -665,6 +678,16 @@
 
                 // $('#total-all').text(1000 * unit_qty);
             });
+            $("#hpo_discount").on('change',function (event) {
+                discount = $("#hpo_discount").val();
+                if ($('#0').val() == 0) {
+                    $('#sub_total').text(discount * 1);
+                }
+                else {
+                    $('#sub_total').text(discount * 2);
+                }
+            })
+
 
         }
     </script>

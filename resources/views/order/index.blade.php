@@ -16,116 +16,121 @@
                     <a href="{{route('order.create')}}" class="btn btn-primary float-left mb-lg-2"><i class="tim-icons icon-simple-add"></i>{{__('Add New Order')}}</a>
                     {{--@endcan--}}
                 </div>
-                <div class="col-md-9">
                 <div class="card">
-                        <div class="card-header card-header-primary">
-                            <h4 class="card-title ">{{__('Order')}}</h4>
-                            <p class="card-category"></p>
+                    <div class="card-body">
+                        <div class="col-md-9">
+                            <div class="card">
+                                <div class="card-header card-header-primary">
+                                    <h4 class="card-title ">{{__('Order')}}</h4>
+                                    <p class="card-category"></p>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="table" class="table" cellspacing="0" width="100%">
+                                            <thead class=" text-primary">
+                                            <th>
+                                                {{__('ID')}}
+                                            </th>
+                                            <th>
+                                                {{__('Project Name')}}
+                                            </th>
+                                            <th>
+                                                {{__('Employer Name')}}
+                                            </th>
+                                            <th>
+                                                {{__('Connector')}}
+                                            </th>
+                                            <th>
+                                                {{__('Type Project')}}
+                                            </th>
+                                            <th>
+                                                {{__('Owner User')}}
+                                            </th>
+                                            <th>
+                                                {{__('Create At')}}
+                                            </th>
+                                            <th>
+                                                {{__('action')}}
+                                            </th>
+                                            <th>
+                                                {{__('Accept State')}}
+                                            </th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($order as $key => $orders)
+                                                <tr>
+                                                    <td>
+                                                        {{$key + 1}}
+                                                    </td>
+                                                    <td>
+                                                        {{$orders->hp_project_name}}
+                                                    </td>
+                                                    <td>
+                                                        {{$orders->hp_employer_name}}
+                                                    </td>
+                                                    <td>
+                                                        {{$orders->hp_connector}}
+                                                    </td>
+                                                    <td>
+                                                        {{$orders->hp_type_project}}
+                                                    </td>
+                                                    <td>
+                                                        {{$orders->hp_owner_user}}
+                                                    </td>
+                                                    <td>
+                                                        {{$orders->created_at}}
+                                                    </td>
+                                                    <td>
+                                                        {{--@can('browse-btn-user')--}}
+                                                        <a href="{{route('order.edit',$orders->id)}}" ><i class="tim-icons icon-pencil"></i></a>
+                                                        <form id ="-form-delete{{$orders->id}}" style="display: none;" method="POST" action="{{route('order.destroy',$orders->id)}}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                        </form>
+                                                        <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove" onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
+                                                                event.preventDefault();
+                                                                document.getElementById('-form-delete{{$orders->id}}').submit();
+                                                                }else {
+                                                                event.preventDefault();}"><i class="tim-icons icon-simple-remove"></i></a>
+                                                        {{--@endcan--}}
+                                                    </td>
+                                                    <td>
+                                                        <input type="checkbox"><input type="checkbox">
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table id="table" class="table" cellspacing="0" width="100%">
-                                    <thead class=" text-primary">
-                                    <th>
-                                        {{__('ID')}}
-                                    </th>
-                                    <th>
-                                        {{__('Project Name')}}
-                                    </th>
-                                    <th>
-                                        {{__('Employer Name')}}
-                                    </th>
-                                    <th>
-                                        {{__('Connector')}}
-                                    </th>
-                                    <th>
-                                        {{__('Type Project')}}
-                                    </th>
-                                    <th>
-                                        {{__('Owner User')}}
-                                    </th>
-                                    <th>
-                                        {{__('Create At')}}
-                                    </th>
-                                    <th>
-                                        {{__('action')}}
-                                    </th>
-                                    <th>
-                                        {{__('Accept State')}}
-                                    </th>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($order as $key => $orders)
-                                        <tr>
-                                            <td>
-                                                {{$key + 1}}
-                                            </td>
-                                            <td>
-                                                {{$orders->hp_project_name}}
-                                            </td>
-                                            <td>
-                                                {{$orders->hp_employer_name}}
-                                            </td>
-                                            <td>
-                                                {{$orders->hp_connector}}
-                                            </td>
-                                            <td>
-                                                {{$orders->hp_type_project}}
-                                            </td>
-                                            <td>
-                                                {{$orders->hp_owner_user}}
-                                            </td>
-                                            <td>
-                                                {{$orders->created_at}}
-                                            </td>
-                                            <td>
-                                                {{--@can('browse-btn-user')--}}
-                                               <a href="{{route('order.edit',$orders->id)}}" ><i class="tim-icons icon-pencil"></i></a>
-                                                <form id ="-form-delete{{$orders->id}}" style="display: none;" method="POST" action="{{route('order.destroy',$orders->id)}}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-                                                <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove" onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
-                                                    event.preventDefault();
-                                                    document.getElementById('-form-delete{{$orders->id}}').submit();
-                                                }else {
-                                                    event.preventDefault();}"><i class="tim-icons icon-simple-remove"></i></a>
-                                                 {{--@endcan--}}
-                                            </td>
-                                            <td>
-                                                <input type="checkbox"><input type="checkbox">
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
+                        <div class="col-md-3">
+                            <br><br>
+                            <div class="card card-user">
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        <div class="author">
+                                            <div class="block block-one"></div>
+                                            <div class="block block-two"></div>
+                                            <div class="block block-three"></div>
+                                            <div class="block block-four"></div>
+                                            <a href="javascript:void(0)">
+                                                {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
+                                                <h5 class="title">Hanta IBMS</h5>
+                                            </a>
+                                    <p class="description">
+{{--                                       {{__('Available Orders')}}--}}
+                                    </p>
+                                </div>
+                                </p>
+                                <div class="card-description">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <br><br>
-                    <div class="card card-user">
-                        <div class="card-body">
-                            <p class="card-text">
-                                <div class="author">
-                                    <div class="block block-one"></div>
-                                    <div class="block block-two"></div>
-                                    <div class="block block-three"></div>
-                                    <div class="block block-four"></div>
-                                    <a href="javascript:void(0)">
-                                        {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
-                                        <h5 class="title">Hanta IBMS</h5>
-                                    </a>
-                            <p class="description">
-                                Available Products
-                            </p>
-                        </div>
-                        </p>
-                        <div class="card-description">
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>

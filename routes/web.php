@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth']], function() {
     route::resource('verify_pre','VerifyController');
     route::resource('help_desk','HelpDeskController');
     route::resource('client','ClientController');
+    route::get('locale/{lan}', 'LanguageController@locale');
     Route::get('map', function (){
         $projects = \App\Project::all();
         return view('maps.fullscreenmap',['projects' => $projects]);

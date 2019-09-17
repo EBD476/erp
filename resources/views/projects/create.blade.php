@@ -2,13 +2,9 @@
 
 @section('title',__('Project'))
 
-
-@push('script')
-    <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
-@endpush
-
 @push('css')
     <link href="{{ asset('assets/css/leaflet.css') }}" rel="stylesheet">
+    <link href="{{asset('assets/css/kamadatepicker.min.css')}}" rel="stylesheet"/>
 @endpush
 
 
@@ -48,7 +44,7 @@
                                     <div class="col-md-4 pl-md-1">
                                         <div class="form-group">
                                             <label>{{__('Owner Phone')}}</label>
-                                            <input name="owner_phone" type="text" class="form-control" required=""
+                                            <input name="owner_phone" type="number" class="form-control" required=""
                                                    aria-invalid="false">
                                         </div>
                                     </div>
@@ -95,7 +91,7 @@
                                         <div class="form-group">
                                             <label>{{__('State')}}</label>
                                             <select name="project_state" class="form-control">
-                                                <option value="استان">استان</option>
+                                                <option value="استان">{{__('State')}}</option>
                                                 @foreach($projects as $project)
                                                     <option value="{{$project->id}}">
                                                         {{$project->hp_project_state}}
@@ -150,9 +146,9 @@
                                     <div class="col-md-4 pl-md-1">
                                         <div class="form-group">
                                             <label>{{__('Project Final Date')}}</label>
-                                            <input name="project_complete_date" type="date" class="form-control"
+                                            <input name="project_complete_date" type="text" class="form-control"
                                                    required=""
-                                                   aria-invalid="false">
+                                                   aria-invalid="false" id="test-date-id">
                                         </div>
                                     </div>
                                 </div>
@@ -243,6 +239,16 @@
 @endsection
 
 @push('scripts')
+    <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
+    <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
+    <script>
+            kamaDatepicker('test-date-id', {
+            buttonsColor: "blue",
+            forceFarsiDigits: true,
+            nextButtonIcon: "fa fa-arrow-circle-right",
+            previousButtonIcon: "fa fa-arrow-circle-left"
+        });
+    </script>
     <script type="text/javascript">
 
         var loc;

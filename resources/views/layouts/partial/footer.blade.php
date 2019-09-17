@@ -1,20 +1,24 @@
 <footer class="footer">
     <div class="container-fluid">
-        <nav class="float-left">
-            <ul>
-                <li>
-                    <a href="https://www.creative-tim.com">
-                        {{__('Creative Tim')}}
-                    </a>
-                </li>
-                <li>
-                    <a href="https://creative-tim.com/presentation">
-                       {{__('About Us')}}
-                    </a>
-                </li>
-
-            </ul>
-        </nav>
+        <ul class="nav">
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link">
+                    Creative Tim
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link">
+                    About Us
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link">
+                    Blog
+                </a>
+            </li>
+        </ul>
+        <div class="copyright fc-ltr">
+            <a href=http://hantaibms.com>Hantaibms</a> Co. by EBD ©2018
         </div>
     </div>
 </footer>

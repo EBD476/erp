@@ -24,6 +24,8 @@
                         {{__('New Project')}}
                     </a>
                 </div>
+                <div class="card">
+                    <div class="card-body">
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header card-header-primary">
@@ -122,7 +124,8 @@
                         </div>
                     </div>
                 </div>
-
+                    </div>
+                </div>
             </div>
         </div>
         {{--@endcan--}}

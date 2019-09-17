@@ -16,88 +16,104 @@
                     <a href="{{route('help_desk.create')}}" class="btn btn-primary float-left mb-lg-2"><i class="tim-icons icon-simple-add"></i>{{__('Add New Help Desk')}}</a>
                 </div>
                     {{--@endcan--}}
-                <div class="col-md-9">
-                    <div class="card">
-                        <div class="card-header card-header-primary">
-                            <h4 class="card-title ">{{__('Help Desk')}}</h4>
-                            <p class="card-category"></p>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table id="table" class="table" cellspacing="0" width="100%">
-                                    <thead class=" text-primary">
-                                    <th>
-                                        {{__('ID')}}
-                                    </th>
-                                    <th>
-                                        {{__('Ticket Id')}}
-                                    </th>
-                                    <th>
-                                        {{__('Problem')}}
-                                    </th>
-                                    <th>
-                                        {{__('Priority')}}
-                                    </th>
-                                    <th>
-                                        {{__('Create At')}}
-                                    </th>
-                                    <th>
-                                        {{__('action')}}
-                                    </th>
-                                    </thead>
-                                    <tbody>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="col-md-9">
+                            <div class="card">
+                                <div class="card-header card-header-primary">
+                                    <h4 class="card-title ">{{__('Help Desk')}}</h4>
+                                    <p class="card-category"></p>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="table" class="table" cellspacing="0" width="100%">
+                                            <thead class=" text-primary">
+                                            <th>
+                                                {{__('ID')}}
+                                            </th>
+                                            <th>
+                                                {{__('Ticket Id')}}
+                                            </th>
+                                            <th>
+                                                {{__('Problem')}}
+                                            </th>
+                                            <th>
+                                                {{__('Priority')}}
+                                            </th>
+                                            <th>
+                                                {{__('Create At')}}
+                                            </th>
+                                            <th>
+                                                {{__('action')}}
+                                            </th>
+                                            </thead>
+                                            <tbody>
 
-                                    @foreach($help_desk as $key => $help_desk)
-                                        <tr>
-                                            <td>
-                                                {{$key + 1}}
-                                            </td>
-                                            <td>
-                                                {{$help_desk -> hhd_ticket_id}}
-                                            </td>
-                                            <td>
-                                                {{$help_desk -> hhd_problem}}
-                                            </td>
-                                            <td>
-                                                {{$help_desk -> hhd_periority}}
-                                            </td>
-                                            <td>
-                                                {{$help_desk -> created_at}}
-                                            </td>
-                                            <td>
-{{--                                                @can('browse-btn-user')--}}
-                                               <a href="{{route('help_desk.edit',$help_desk->id)}}" class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit"><i class="tim-icons icon-pencil"></i></a>
-                                                <form id ="-form-delete{{$help_desk->id}}" style="display: none;" method="POST" action="{{route('help_desk.destroy',$help_desk->id)}}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-                                                <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove"  onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
-                                                        event.preventDefault();
-                                                        document.getElementById('-form-delete{{$help_desk->id}}').submit();
-                                                        }else {
-                                                        event.preventDefault();}"><i class="tim-icons icon-simple-remove"></i></a>
-                                                 {{--@endcan--}}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
+                                            @foreach($help_desk as $key => $help_desk)
+                                                <tr>
+                                                    <td>
+                                                        {{$key + 1}}
+                                                    </td>
+                                                    <td>
+                                                        {{$help_desk -> hhd_ticket_id}}
+                                                    </td>
+                                                    <td>
+                                                        {{$help_desk -> hhd_problem}}
+                                                    </td>
+                                                    <td>
+                                                        {{$help_desk -> hhd_periority}}
+                                                    </td>
+                                                    <td>
+                                                        {{$help_desk -> created_at}}
+                                                    </td>
+                                                    <td>
+                                                        {{--                                                @can('browse-btn-user')--}}
+                                                        <a href="{{route('help_desk.edit',$help_desk->id)}}" class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit"><i class="tim-icons icon-pencil"></i></a>
+                                                        <form id ="-form-delete{{$help_desk->id}}" style="display: none;" method="POST" action="{{route('help_desk.destroy',$help_desk->id)}}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                        </form>
+                                                        <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove"  onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
+                                                                event.preventDefault();
+                                                                document.getElementById('-form-delete{{$help_desk->id}}').submit();
+                                                                }else {
+                                                                event.preventDefault();}"><i class="tim-icons icon-simple-remove"></i></a>
+                                                        {{--@endcan--}}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <br><br>
+                            <div class="card card-user">
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        <div class="author">
+                                            <div class="block block-one"></div>
+                                            <div class="block block-two"></div>
+                                            <div class="block block-three"></div>
+                                            <div class="block block-four"></div>
+                                            <a href="javascript:void(0)">
+                                                {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
+                                                <h5 class="title">Hanta IBMS</h5>
+                                            </a>
+                                    <p class="description">
+                                        {{__('Available Help Desk')}}
+                                    </p>
+                                </div>
+                                </p>
+                                <div class="card-description">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <br><br>
-                    <div class="card">
-                        <div class="card-header card-header-primary">
-                            <h4 class="card-title text-right">{{__('Projects Locations')}}</h4>
-                            <p class="card-category"></p>
-                        </div>
-                        <div class="card-body">
-                            <div id="map" style="width: 100%; height: 400px;direction: ltr"></div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
