@@ -14,6 +14,8 @@ return [
     */
 
     'default' => env('DB_CONNECTION', 'mysql'),
+    $users = DB::connection('foo')->select(...),
+//    $pdo = DB::connection()->getPdo(),
 
     /*
     |--------------------------------------------------------------------------
@@ -41,6 +43,21 @@ return [
         ],
 
         'mysql' => [
+            //برای Eloquent
+            'read' => [
+                'host' => [
+                    '192.168.1.1',
+                    '196.168.1.2',
+                ],
+            ],
+            'write' => [
+                'host' => [
+                    '196.168.1.3',
+                ],
+            ],
+            'sticky'    => true,
+            //..
+
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),

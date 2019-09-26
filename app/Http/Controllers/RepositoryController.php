@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\OrderProduct;
-use App\Product;
 use App\Repository;
-use App\LOM;
 use Illuminate\Http\Request;
-
+//use Illuminate\Support\Facades\DB;
 
 class RepositoryController extends Controller
 {
@@ -15,22 +13,26 @@ class RepositoryController extends Controller
     {
 //        IF($this->authorize('view',Repository::class))
 //        {
-        $product_id = Product::select('id')->get();
-        $orders = OrderProduct::all();
-        $order_count = OrderProduct::ALL()->count();
         $Repositories = Repository:: all();
-        $count = 0;
-        dd(Product::find(1));
-        return view('Repository.index', compact('Repositories', 'product_id', 'orders', 'count','order_count'));
-//        }
-    }
+        $orders = OrderProduct::all();
 
+        //نمایش میزان نیازمندی محصول
+        $count = User::where('votes', '>', 100)->count();
+
+        return view('Repository.index', compact('Repositories','orders','order_count','products_count', 'order_count'));
+
+    }
+//$order_count = OrderProduct::select('hpo_product_id','SUM(hpo_count) as total_product')
+//            ->where('hpo_product_id','1')
+//            ->get();
+//        $products_count =$order_count->total_product;
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public
+    function create()
     {
 //        if ($this->authorize('create',Repository::class)) {
         return view('Repository.create');
@@ -43,7 +45,8 @@ class RepositoryController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public
+    function store(Request $request)
     {
         $this->validate($request, [
             'Product_Id' => 'required',
@@ -66,7 +69,8 @@ class RepositoryController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public
+    function show($id)
     {
         /**
          *
@@ -79,7 +83,8 @@ class RepositoryController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public
+    function edit($id)
     {
         $Repositories = Repository::find($id);
         return view('Repository.edit', compact('Repositories'));
@@ -92,7 +97,8 @@ class RepositoryController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public
+    function update(Request $request, $id)
     {
 //        if($this->authorize('update',Repository::class))
 //        {
@@ -116,7 +122,8 @@ class RepositoryController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public
+    function destroy($id)
     {
 //        IF($this->authorize('delete',Repository::class))
 //        {

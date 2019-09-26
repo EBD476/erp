@@ -250,6 +250,10 @@
   "Available Help Desk":"میز خدمت قابل دسترسی است",
   "Available Orders":"اطلاعات سفارش های در دسترس",
   "language":"زبان:",
-  "Order ID:":"شناسه محصول :"
+  "Order ID:":"شناسه محصول :",
+  "Statuses:":"وضعیت:",
+  "Client ID":"شناسه مشتری",
+  "Product ID":"شناسه محصول",
+  "Count":"تعداد"
 
 }

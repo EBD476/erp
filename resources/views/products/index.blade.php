@@ -86,6 +86,11 @@
                                                                    event.preventDefault();}"><i
                                                                     class="tim-icons icon-simple-remove"></i></a>
                                                     </td>
+                                                    <form id="form1" enctype="multipart/form-data">
+                                                    <td>
+                                                        <input class="checkbox" type="checkbox" value="0" id="checkbox">
+                                                    </td>
+                                                    </form>
                                                 </tr>
                                             @endforeach
                                             </tbody>
@@ -130,8 +135,6 @@
             <script src="{{asset('assets/js/plugins/datatables.min.js')}}"></script>
             <script>
                 $(document).ready(function () {
-
-
                     $('#table').DataTable({
                         "pagingType": "full_numbers",
                         "lengthMenu": [
@@ -147,6 +150,15 @@
 
                     });
 
+                });
+
+                $("#checkbox").on('change', function (event) {
+                   if($("#checkbox").val() == 1){
+
+                   }
+                   else{
+                       $("#checkbox").val() == 1
+                   }
                 });
 
 

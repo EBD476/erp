@@ -26,7 +26,7 @@
                             <div class="col-md-12 pull-left">
                                 <div class="form-group">
                                     <label class="bmd-label-floating">{{__('Order ID:')}}</label>
-                                    <label class="bmd-label-floating">{{__('Order ID')}}</label>
+                                    <label class="bmd-label-floating" id="order_id_show"></label>
                                 </div>
                             </div>
                         </div>
@@ -307,6 +307,8 @@
                                         </tr>
                                         </tbody>
                                     </table>
+
+
                                     <div class="col-md-6">
                                         <div class="card">
                                             <div class="card-body">
@@ -317,13 +319,13 @@
                                                         <div class="form-group">
                                                             <div class="col-lg-6 col-sm-6">
                                                                 <div class="input-group"><input class="form-control"
-                                                                                                data-bind="value: discount, valueUpdate: 'afterkeydown'"
-                                                                                                min="0" step="any"
+                                                                                                {{--data-bind="value: discount, valueUpdate: 'afterkeydown'"--}}
+                                                                                                {{--min="0" step="any"--}}
                                                                                                 id="discount"
                                                                                                 type="number"
                                                                                                 name="hpo_discount"><select
                                                                             class="form-control"
-                                                                            data-bind="value: is_amount_discount, event:{ change: isAmountDiscountChanged}"
+                                                                            {{--data-bind="value: is_amount_discount, event:{ change: isAmountDiscountChanged}"--}}
                                                                             id="is_amount_discount"
                                                                             name="hpo_discount">
                                                                         <option
@@ -366,69 +368,91 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="row">
+                                                    <label class="bmd-label-floating">{{__('Statuses:')}}</label>
+                                                    <div class="col-md-12 ">
+                                                        <div class="col-lg-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <select name="hpo_status" class="form-control">
+                                                                    @foreach($invoice_statuses as $invoice_status)
+                                                                        <option>
+                                                                            {{$invoice_status->name}}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <input type="hidden" id="client_id" name="hpo_client_id">
-                                        <input type="hidden" id="order_id" name="hpo_order_id">
                                     </div>
-                                    <a href="{{route('order.index')}}"
-                                       class="btn badge-danger">{{__('Back')}}</a>
-                                    <button type="submit" class="btn btn-primary"
-                                            id="btn-submit2">{{__('Send')}}</button>
-                                    <button type="submit" class="btn btn-primary"
-                                            id="preview">{{__('Preview Factor')}}</button>
+
+
+                                    <input type="hidden" id="client_id" name="hpo_client_id">
+                                    <input type="hidden" id="order_id" name="hpo_order_id">
+                                    <input type="hidden" id="all_total" name="hpo_total" value="1000">
+                            </div>
+
+
+                            <a href="{{route('order.index')}}"
+                               class="btn badge-danger">{{__('Back')}}</a>
+                            <button type="submit" class="btn btn-primary"
+                                    id="btn-submit2">{{__('Send')}}</button>
+                            <button type="submit" class="btn btn-primary"
+                                    id="preview">{{__('Preview Factor')}}</button>
+                            </form>
+                        </div>
+                    </div>
+                    {{--//client modal//--}}
+
+                    <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"
+                         aria-labelledby="myModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header text-center">
+                                    <h4 class="modal-title w-100 font-weight-bold">{{__('Add New Client')}}</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form method="post" id="modal_form" enctype="multipart/form-data">
+                                    <div class="modal-body mx-3">
+                                        <div class="md-form mb-5">
+                                            {{--<i class="fas fa-user prefix grey-text"></i>--}}
+                                            <label data-error="wrong" data-success="right"
+                                                   for="orangeForm-name">{{__('Name')}}</label>
+                                            <input type="text" id="orangeForm-name" class="form-control validate"
+                                                   name="hc_name">
+                                        </div>
+                                        <div class="md-form mb-5">
+                                            {{--<i class="fas fa-envelope prefix grey-text"></i>--}}
+                                            <label data-error="wrong"
+                                                   data-success="right">{{__('ID Number')}}</label>
+                                            <input class="form-control validate" name="hc_user_id">
+                                        </div>
+
+                                        <div class="md-form mb-4">
+                                            {{--<i class="fas fa-lock prefix grey-text"></i>--}}
+                                            <label data-error="wrong" data-success="right">{{__('Address')}}</label>
+                                            <input class="form-control validate" name="hc_address">
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-deep-orange">{{__('Send')}}</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
-                        {{--//client modal//--}}
-
-                        <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"
-                             aria-labelledby="myModalLabel"
-                             aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header text-center">
-                                        <h4 class="modal-title w-100 font-weight-bold">{{__('Add New Client')}}</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <form method="post" id="modal_form" enctype="multipart/form-data">
-                                        <div class="modal-body mx-3">
-                                            <div class="md-form mb-5">
-                                                {{--<i class="fas fa-user prefix grey-text"></i>--}}
-                                                <label data-error="wrong" data-success="right"
-                                                       for="orangeForm-name">{{__('Name')}}</label>
-                                                <input type="text" id="orangeForm-name" class="form-control validate"
-                                                       name="hc_name">
-                                            </div>
-                                            <div class="md-form mb-5">
-                                                {{--<i class="fas fa-envelope prefix grey-text"></i>--}}
-                                                <label data-error="wrong"
-                                                       data-success="right">{{__('ID Number')}}</label>
-                                                <input class="form-control validate" name="hc_user_id">
-                                            </div>
-
-                                            <div class="md-form mb-4">
-                                                {{--<i class="fas fa-lock prefix grey-text"></i>--}}
-                                                <label data-error="wrong" data-success="right">{{__('Address')}}</label>
-                                                <input class="form-control validate" name="hc_address">
-                                            </div>
-
-                                        </div>
-                                        <div class="modal-footer d-flex justify-content-center">
-                                            <button type="submit" class="btn btn-deep-orange">{{__('Send')}}</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-
                 </div>
 
             </div>
+
         </div>
+    </div>
     </div>
     {{--@endcan--}}
 @endsection
@@ -439,10 +463,8 @@
     <script src="{{asset('assets/js/leaflet.js')}}"></script>
     <script>
         $(document).ready(function () {
-
             var client_id;
             var order_id;
-
             $("#modal_form").submit(function (event) {
                 var data = $("#modal_form").serialize();
                 event.preventDefault();
@@ -490,6 +512,7 @@
                         order_id = data.order_id;
                         $("#order_id").val(order_id);
                         $("#client_id").val(client_id);
+                        $("#order_id_show").text(order_id);
                     },
                     cache: false,
                 });
@@ -524,9 +547,6 @@
                 // allowClear: true
 
             });
-            // $(".select-item").select2({
-
-            // });
         });
 
 
@@ -538,6 +558,7 @@
             unit_count = $("#unit").val();
             unit_qty = $(".qty").val();
             $('#total').text(unit_count * unit_qty);
+
             append_item();
         });
 
@@ -547,22 +568,18 @@
             $('#total').text(1000 * unit_qty);
         });
 
-        $("#hpo_discount").on('change',function (event) {
-            discount = $("#hpo_discount").val();
-            if ($('#0').val() == 0) {
-                $('#sub_total').text(discount * 1);
-            }
-            else {
-                $('#sub_total').text(discount * 2);
-            }
+        $("#discount").on('change', function (event) {
+            discount = $("#discount").val();
+            all_total = $("#hpo_total").val();
+            // if ($('#0').val() == 0) {
+            $("#sub_total").text(discount * all_total / 100);
+            // }
+            // else {
+            //     $('#sub_total').text(all_total - discount);
+            // }
         })
 
 
-        // $('#send').on('click', function (event) {
-        //     event.preventDefault();
-        //     jsondata = JSON.stringify($('#tab2').serializeArray());
-        //     $('#hp_product_selection').val(jsondata);
-        // });
 
         function append_item() {
 
@@ -678,7 +695,7 @@
 
                 // $('#total-all').text(1000 * unit_qty);
             });
-            $("#hpo_discount").on('change',function (event) {
+            $("#hpo_discount").on('change', function (event) {
                 discount = $("#hpo_discount").val();
                 if ($('#0').val() == 0) {
                     $('#sub_total').text(discount * 1);

@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth']], function() {
     route::resource('repository_requirement', 'Repository_RequirementController');
     route::resource('request', 'RequestController');
     route::post('preview','OrderController@preview')->name('order.preview');
+    route::post('checkbox','ProductController@checkbox')->name('product.checkbox');
     route::resource('verifier', 'VerifierController');
     route::resource('permission', 'PermissionController');
     route::resource('verify_pre','VerifyController');

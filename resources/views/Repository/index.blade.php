@@ -81,7 +81,7 @@
                                             {{__('Client ID')}}
                                         </th>
                                         <th>
-                                            {{__('Product ID ')}}
+                                            {{__('Product ID')}}
                                         </th>
                                         <th>
                                             {{__('Count')}}
@@ -113,9 +113,16 @@
                             </div>
                         </div>
                     </div>
-                        {{--@foreach($count as $counts)--}}
-                            {{--<label class="form-control">{{__('Sub Total')}}{{$order->hop_product_id}}:{{$counts}}</label>--}}
-                        {{--@endforeach--}}
+                    <div class="row">333
+                        <div class="card-body">
+                            @foreach( $products_count as $products_count )
+                                <label>{{$products_count}}</label>
+                            @endforeach
+                        </div>
+                    </div>
+                    {{--@foreach($count as $counts)--}}
+                    {{--<label class="form-control">{{__('Sub Total')}}{{$order->hop_product_id}}:{{$counts}}</label>--}}
+                    {{--@endforeach--}}
                 </div>
             </div>
         </div>

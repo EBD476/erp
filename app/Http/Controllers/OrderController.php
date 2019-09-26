@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\address;
 use App\Client;
+use App\InvoiceStatuses;
 use App\Order;
 use App\Product;
 use App\Project_Type;
@@ -21,12 +22,13 @@ class OrderController extends Controller
 
     public function create()
     {
+        $invoice_statuses=InvoiceStatuses::ALL();
         $client = Client::all();
         $project_type = Project_Type::all();
         $address = address::all();
         $state = State::all();
         $product = Product::all();
-        return view('order.create', compact('address', 'state', 'project_type', 'product','client'));
+        return view('order.create', compact('address', 'state', 'project_type', 'product','client','invoice_statuses'));
     }
 
     public function store(Request $request)

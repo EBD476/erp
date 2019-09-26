@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\OrderProduct;
 use App\OrderState;
 use App\Process;
+use App\Verifier;
 use App\VerifyID;
 use Illuminate\Http\Request;
+use carbon\carbon;
+
 
 
 class VerifyController extends Controller
@@ -67,7 +71,7 @@ class VerifyController extends Controller
     {
 //        $order_id=Order::SELECT('id')->where('hp_Invoice_number',null);
         $userID = auth()->user()->id;
-        $current_verified_order = VerifyID::where('verify_id', $userID)->first();
+        $current_verified_order = Verifier::where('hp_verifier_id', $userID and 'process_id','1')->first();
         $current_verifier = VerifyID::select('verify_id')->where('verify_id', $userID)->first();
         if ($current_verifier != null) {
             $first_verifier = Process::where('hp_verifier_id', $userID)
@@ -171,9 +175,15 @@ class VerifyController extends Controller
 
 
                 // register invoice
-                $order->hp_Invoice_number = 'HNT_980406_001';
+                // register approve
+                $current_date = Carbon::now();
+                $current_date = $current_date->year . $current_date->month . $current_date->day;
+                $order->hp_Invoice_number ="HNT_" . sprintf("%04d",$id) . "_" . $current_date . "_" . $order->id;;
                 $order->save();
 
+                $approved=OrderProduct::find($order);
+                $approved->hpo_status="Approved";
+                $approved->save();
             }
 
         }

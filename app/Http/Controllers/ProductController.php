@@ -19,6 +19,15 @@ class ProductController extends Controller
         return view('products.index',compact('products'));
     }
 
+
+
+    public function checkbox(Request $request , $id)
+    {
+        $checkbox=Product::find($id);
+        $checkbox->hp_statuse=$request->checkbox;
+        $checkbox->save();
+    }
+
     /**
      * Show the form for creating a new resource.
      *

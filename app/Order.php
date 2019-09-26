@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
 //  use SoftDeletes;
-  protected $table='hnt_orders';
+  protected $table='hnt_invoices';
 }
