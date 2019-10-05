@@ -257,7 +257,7 @@
 
                                             </td>
                                             <td>
-                                                <input type="text" id="unit" class="form-control"
+                                                <input disabled type="text" id="unit" class="form-control"
                                                        name="hp_product_price[]">
                                             </td>
                                             <td style="display:table-cell">
@@ -299,7 +299,7 @@
                                                        style="display:none" name="invoice_items[0][tax_rate2]">
                                             </td>
                                             <td style="text-align:right;padding-top:9px !important" nowrap="">
-                                                <div id="total" class="line-total" name="total[]"></div>
+                                                <div class="line-total sub-total" name="total[]"></div>
                                             </td>
                                             <td style="cursor:pointer" class="hide-border td-icon">
                                                 <i class="tim-icons icon-simple-remove remove" title="Remove item"/>
@@ -308,7 +308,7 @@
                                         </tbody>
                                     </table>
 
-
+                                    {{--Box2--}}
                                     <div class="col-md-6">
                                         <div class="card">
                                             <div class="card-body">
@@ -323,18 +323,18 @@
                                                                                                 {{--min="0" step="any"--}}
                                                                                                 id="discount"
                                                                                                 type="number"
-                                                                                                name="hpo_discount"><select
-                                                                            class="form-control"
+                                                                                                name="hpo_discount">
+                                                                    {{--<select--}}
+                                                                            {{--class="form-control"--}}
                                                                             {{--data-bind="value: is_amount_discount, event:{ change: isAmountDiscountChanged}"--}}
-                                                                            id="is_amount_discount"
-                                                                            name="hpo_discount">
-                                                                        <option
-                                                                                id="0" value="0">Percent
-                                                                        </option>
-                                                                        <option
-                                                                                id="1" value="1">Amount
-                                                                        </option>
-                                                                    </select>
+                                                                            {{--id="is_amount_discount">--}}
+                                                                        {{--<option--}}
+                                                                                {{--id="0" value="0">Percent--}}
+                                                                        {{--</option>--}}
+                                                                        {{--<option--}}
+                                                                                {{--id="1" value="1">Amount--}}
+                                                                        {{--</option>--}}
+                                                                    {{--</select>--}}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -354,15 +354,30 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <label class="bmd-label-floating">{{__('Sub Total:')}}</label>
+                                                    <label class="bmd-label-floating">{{__('Total:')}}</label>
                                                     <div class="col-md-12 ">
                                                         <div class="form-group">
                                                             <div class="form-group">
                                                                 <div class="col-lg-6 col-sm-6">
                                                                     <input class="form-control"
                                                                            type="text"
-                                                                           name="sub_total"
-                                                                           id="sub_total">
+                                                                           name="total"
+                                                                           id="total">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="bmd-label-floating">{{__('Total including discount:')}}</label>
+                                                    <div class="col-md-12 ">
+                                                        <div class="form-group">
+                                                            <div class="form-group">
+                                                                <div class="col-lg-6 col-sm-6">
+                                                                    <input class="form-control"
+                                                                           type="text"
+                                                                           name="total_discount"
+                                                                           id="total_discount">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -387,72 +402,71 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {{--End Box2--}}
 
-
+                                    {{--Hidden Object--}}
                                     <input type="hidden" id="client_id" name="hpo_client_id">
                                     <input type="hidden" id="order_id" name="hpo_order_id">
-                                    <input type="hidden" id="all_total" name="hpo_total" value="1000">
-                            </div>
+                                    {{--End Hidden Object--}}
 
-
-                            <a href="{{route('order.index')}}"
-                               class="btn badge-danger">{{__('Back')}}</a>
-                            <button type="submit" class="btn btn-primary"
-                                    id="btn-submit2">{{__('Send')}}</button>
-                            <button type="submit" class="btn btn-primary"
-                                    id="preview">{{__('Preview Factor')}}</button>
-                            </form>
-                        </div>
-                    </div>
-                    {{--//client modal//--}}
-
-                    <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"
-                         aria-labelledby="myModalLabel"
-                         aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header text-center">
-                                    <h4 class="modal-title w-100 font-weight-bold">{{__('Add New Client')}}</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <form method="post" id="modal_form" enctype="multipart/form-data">
-                                    <div class="modal-body mx-3">
-                                        <div class="md-form mb-5">
-                                            {{--<i class="fas fa-user prefix grey-text"></i>--}}
-                                            <label data-error="wrong" data-success="right"
-                                                   for="orangeForm-name">{{__('Name')}}</label>
-                                            <input type="text" id="orangeForm-name" class="form-control validate"
-                                                   name="hc_name">
-                                        </div>
-                                        <div class="md-form mb-5">
-                                            {{--<i class="fas fa-envelope prefix grey-text"></i>--}}
-                                            <label data-error="wrong"
-                                                   data-success="right">{{__('ID Number')}}</label>
-                                            <input class="form-control validate" name="hc_user_id">
-                                        </div>
-
-                                        <div class="md-form mb-4">
-                                            {{--<i class="fas fa-lock prefix grey-text"></i>--}}
-                                            <label data-error="wrong" data-success="right">{{__('Address')}}</label>
-                                            <input class="form-control validate" name="hc_address">
-                                        </div>
-
-                                    </div>
-                                    <div class="modal-footer d-flex justify-content-center">
-                                        <button type="submit" class="btn btn-deep-orange">{{__('Send')}}</button>
-                                    </div>
+                                    <a href="{{route('order.index')}}"
+                                       class="btn badge-danger">{{__('Back')}}</a>
+                                    <button type="submit" class="btn btn-primary"
+                                            id="btn-submit2">{{__('Send')}}</button>
+                                    <button type="submit" class="btn btn-primary"
+                                            id="preview">{{__('Preview Factor')}}</button>
                                 </form>
                             </div>
                         </div>
+                        {{--//client modal//--}}
+                        <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header text-center">
+                                        <h4 class="modal-title w-100 font-weight-bold">{{__('Add New Client')}}</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="post" id="modal_form" enctype="multipart/form-data">
+                                        <div class="modal-body mx-3">
+                                            <div class="md-form mb-5">
+                                                {{--<i class="fas fa-user prefix grey-text"></i>--}}
+                                                <label data-error="wrong" data-success="right"
+                                                       for="orangeForm-name">{{__('Name')}}</label>
+                                                <input type="text" id="orangeForm-name" class="form-control validate"
+                                                       name="hc_name">
+                                            </div>
+                                            <div class="md-form mb-5">
+                                                {{--<i class="fas fa-envelope prefix grey-text"></i>--}}
+                                                <label data-error="wrong"
+                                                       data-success="right">{{__('ID Number')}}</label>
+                                                <input class="form-control validate" name="hc_user_id">
+                                            </div>
+
+                                            <div class="md-form mb-4">
+                                                {{--<i class="fas fa-lock prefix grey-text"></i>--}}
+                                                <label data-error="wrong" data-success="right">{{__('Address')}}</label>
+                                                <input class="form-control validate" name="hc_address">
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-center">
+                                            <button type="submit" class="btn btn-deep-orange">{{__('Send')}}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {{--//End client modal//--}}
                     </div>
+
                 </div>
 
             </div>
-
         </div>
-    </div>
     </div>
     {{--@endcan--}}
 @endsection
@@ -462,9 +476,13 @@
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/leaflet.js')}}"></script>
     <script>
+        var total;
+        var discount;
+        var total_discount;
         $(document).ready(function () {
             var client_id;
             var order_id;
+
             $("#modal_form").submit(function (event) {
                 var data = $("#modal_form").serialize();
                 event.preventDefault();
@@ -518,7 +536,6 @@
                 });
             });
             $("#form2").submit(function (event) {
-                // product_select=$(".select-item").empty();
                 var data = $("#form2").serialize();
                 event.preventDefault();
                 $.blockUI();
@@ -557,156 +574,159 @@
 
             unit_count = $("#unit").val();
             unit_qty = $(".qty").val();
-            $('#total').text(unit_count * unit_qty);
+            $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
 
+            // $('#total').text(unit_count * unit_qty);
+
+
+            $('.sub-total').each(function () {
+
+                total = $(this).text();
+                $("#total").val(total);
+
+            });
             append_item();
-        });
-
-        $(".qty").on('change', function (event) {
-            // unit_count = $("#unit").val();
-            unit_qty = $(this).val();
-            $('#total').text(1000 * unit_qty);
-        });
-
-        $("#discount").on('change', function (event) {
-            discount = $("#discount").val();
-            all_total = $("#hpo_total").val();
-            // if ($('#0').val() == 0) {
-            $("#sub_total").text(discount * all_total / 100);
-            // }
-            // else {
-            //     $('#sub_total').text(all_total - discount);
-            // }
-        })
-
-
-
-        function append_item() {
-
-            $('.table').append('<tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"\n' +
-                '                                        class="sortable-row ui-sortable-handle" style="">\n' +
-                '                                        <td class="hide-border td-icon">\n' +
-                '                                            <i style="display:none" data-bind="visible: actionsVisible() &amp;&amp;\n' +
-                '                $parent.invoice_items_without_tasks().length > 1" class="fa fa-sort"></i>\n' +
-                '                                        </td>\n' +
-                '                                        <td>\n' +
-                '                                                        <select name="name[]" class="select-item combobox-container">\n' +
-                '                                                            <option value=""></option>' +
-                '                                                            @foreach($product as $product_item)\n' +
-                '                                                                <option value="{{$product_item->id}}" data-price="{{$product_item->hp_product_price}}">\n' +
-                '                                                                    {{$product_item->hp_product_name }}\n' +
-                '                                                                </option>\n' +
-                '                                                            @endforeach\n' +
-                '                                                        </select>\n' +
-                '\n' +
-                '                                        </td>\n' +
-                '                                        <td>\n' +
-                '                                                <textarea\n' +
-                '                                                        data-bind="value: notes, valueUpdate: \'afterkeydown\', attr: {name: \'invoice_items[\' + $index() + \'][notes]\'}"\n' +
-                '                                                        rows="1" cols="60" style="resize: vertical; height: 42px;"\n' +
-                '                                                        class="form-control word-wrap"\n' +
-                '                                                        name="invoice_items[0][notes]"></textarea>\n' +
-                '\n' +
-                '                                        </td>\n' +
-                '                                        <td>\n' +
-                '                                            <input type="text" id="unit" class="form-control"\n' +
-                '                                                   name="hp_product_price[]">\n' +
-                '                                        </td>\n' +
-                '                                        <td style="display:table-cell">\n' +
-                '                                            <input \n' +
-                '                                                   style="text-align: right" class="form-control invoice-item qty"\n' +
-                '                                                   name="invoice_items_qty[]">\n' +
-                '                                        </td>\n' +
-                '                                        <td style="display:none">\n' +
-                '                                            <input data-bind="value: discount, valueUpdate: \'afterkeydown\', attr: {name: \'invoice_items[\' + $index() + \'][discount]\'}"\n' +
-                '                                                   style="text-align: right" class="form-control invoice-item"\n' +
-                '                                                   name="invoice_items[0][discount]">\n' +
-                '                                        </td>\n' +
-                '                                        <td style="display:none;"\n' +
-                '                                            data-bind="visible: $root.invoice_item_taxes.show">\n' +
-                '                                            <select class="form-control"\n' +
-                '                                                    data-bind="value: tax1, event:{change:onTax1Change}" id=""\n' +
-                '                                                    name="">\n' +
-                '                                                <option value=""></option>\n' +
-                '                                            </select>\n' +
-                '                                            <input type="text"\n' +
-                '                                                   data-bind="value: tax_name1, attr: {name: \'invoice_items[\' + $index() + \'][tax_name1]\'}"\n' +
-                '                                                   style="display:none" name="invoice_items[0][tax_name1]">\n' +
-                '                                            <input type="text"\n' +
-                '                                                   data-bind="value: tax_rate1, attr: {name: \'invoice_items[\' + $index() + \'][tax_rate1]\'}"\n' +
-                '                                                   style="display:none" name="invoice_items[0][tax_rate1]">\n' +
-                '                                            <div data-bind="visible: $root.invoice().account.enable_second_tax_rate == \'1\'"\n' +
-                '                                                 style="display: none;">\n' +
-                '                                                <select class="form-control tax-select"\n' +
-                '                                                        data-bind="value: tax2, event:{change:onTax2Change}" id="-2"\n' +
-                '                                                        name="">\n' +
-                '                                                    <option value=""></option>\n' +
-                '                                                </select>\n' +
-                '                                            </div>\n' +
-                '                                            <input type="text"\n' +
-                '                                                   data-bind="value: tax_name2, attr: {name: \'invoice_items[\' + $index() + \'][tax_name2]\'}"\n' +
-                '                                                   style="display:none" name="invoice_items[0][tax_name2]">\n' +
-                '                                            <input type="text"\n' +
-                '                                                   data-bind="value: tax_rate2, attr: {name: \'invoice_items[\' + $index() + \'][tax_rate2]\'}"\n' +
-                '                                                   style="display:none" name="invoice_items[0][tax_rate2]">\n' +
-                '                                        </td>\n' +
-                '                                        <td style="text-align:right;padding-top:9px !important" nowrap="">\n' +
-                '                                            <div name="total[]" class="line-total"></div>\n' +
-                '                                        </td>\n' +
-                '                                        <td style="cursor:pointer" class="hide-border td-icon">\n' +
-                '                                            <i \n' +
-                '                                               \n' +
-                '                                               class="tim-icons icon-simple-remove remove"  title="Remove item">\n' +
-                '                                            </i></td>\n' +
-                '                                    </tr>');
-
-
-            $(".select-item").select2({
-                theme: "bootstrap"
-            });
-
-            $(".select-item").select2({
-                placeholder: '{{__('select product')}}',
-                allowClear: true
-            });
-
-            $(".remove").click(function () {
-
-                $(this).parent().parent().remove();
-            });
-            $(".select-item").on('change', function (event) {
-
-                $(this).parent().parent().find("input[name='hp_product_price[]']").val($(this).find("option[value='" + $(this).val() + "']").data('price'));
-                $(this).parent().parent().find("input[name='invoice_items_qty[]']").val('1');
-                // event.preventDefault();
-
-                unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
-                unit_qty = $(this).parent().parent().find("input[name='invoice_items_qty[]']").val();
-                $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
-                append_item();
-            });
 
             $(".qty").on('change', function (event) {
-
-                unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
                 unit_qty = $(this).val();
-                $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
-
-
-                // $('#total-all').text(1000 * unit_qty);
+                $('#total').text(1000 * unit_qty);
             });
-            $("#hpo_discount").on('change', function (event) {
-                discount = $("#hpo_discount").val();
-                if ($('#0').val() == 0) {
-                    $('#sub_total').text(discount * 1);
-                }
-                else {
-                    $('#sub_total').text(discount * 2);
-                }
+
+            $("#discount").on('change', function (event) {
+                discount = $(this).val();
+                total_discount=parseInt(discount) * parseInt(total) /100;
+                $('#total_discount').val( parseInt(total) - parseInt( total_discount) );
             })
 
 
-        }
+            function append_item() {
+
+                $('.table').append('<tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"\n' +
+                    '                                        class="sortable-row ui-sortable-handle" style="">\n' +
+                    '                                        <td class="hide-border td-icon">\n' +
+                    '                                            <i style="display:none" data-bind="visible: actionsVisible() &amp;&amp;\n' +
+                    '                $parent.invoice_items_without_tasks().length > 1" class="fa fa-sort"></i>\n' +
+                    '                                        </td>\n' +
+                    '                                        <td>\n' +
+                    '                                                        <select name="name[]" class="select-item combobox-container">\n' +
+                    '                                                            <option value=""></option>' +
+                    '                                                            @foreach($product as $product_item)\n' +
+                    '                                                                <option value="{{$product_item->id}}" data-price="{{$product_item->hp_product_price}}">\n' +
+                    '                                                                    {{$product_item->hp_product_name }}\n' +
+                    '                                                                </option>\n' +
+                    '                                                            @endforeach\n' +
+                    '                                                        </select>\n' +
+                    '\n' +
+                    '                                        </td>\n' +
+                    '                                        <td>\n' +
+                    '                                                <textarea\n' +
+                    '                                                        data-bind="value: notes, valueUpdate: \'afterkeydown\', attr: {name: \'invoice_items[\' + $index() + \'][notes]\'}"\n' +
+                    '                                                        rows="1" cols="60" style="resize: vertical; height: 42px;"\n' +
+                    '                                                        class="form-control word-wrap"\n' +
+                    '                                                        name="invoice_items[0][notes]"></textarea>\n' +
+                    '\n' +
+                    '                                        </td>\n' +
+                    '                                        <td>\n' +
+                    '                                            <input type="text" id="unit" class="form-control"\n' +
+                    '                                                   name="hp_product_price[]">\n' +
+                    '                                        </td>\n' +
+                    '                                        <td style="display:table-cell">\n' +
+                    '                                            <input \n' +
+                    '                                                   style="text-align: right" class="form-control invoice-item qty"\n' +
+                    '                                                   name="invoice_items_qty[]">\n' +
+                    '                                        </td>\n' +
+                    '                                        <td style="display:none">\n' +
+                    '                                            <input data-bind="value: discount, valueUpdate: \'afterkeydown\', attr: {name: \'invoice_items[\' + $index() + \'][discount]\'}"\n' +
+                    '                                                   style="text-align: right" class="form-control invoice-item"\n' +
+                    '                                                   name="invoice_items[0][discount]">\n' +
+                    '                                        </td>\n' +
+                    '                                        <td style="display:none;"\n' +
+                    '                                            data-bind="visible: $root.invoice_item_taxes.show">\n' +
+                    '                                            <select class="form-control"\n' +
+                    '                                                    data-bind="value: tax1, event:{change:onTax1Change}" id=""\n' +
+                    '                                                    name="">\n' +
+                    '                                                <option value=""></option>\n' +
+                    '                                            </select>\n' +
+                    '                                            <input type="text"\n' +
+                    '                                                   data-bind="value: tax_name1, attr: {name: \'invoice_items[\' + $index() + \'][tax_name1]\'}"\n' +
+                    '                                                   style="display:none" name="invoice_items[0][tax_name1]">\n' +
+                    '                                            <input type="text"\n' +
+                    '                                                   data-bind="value: tax_rate1, attr: {name: \'invoice_items[\' + $index() + \'][tax_rate1]\'}"\n' +
+                    '                                                   style="display:none" name="invoice_items[0][tax_rate1]">\n' +
+                    '                                            <div data-bind="visible: $root.invoice().account.enable_second_tax_rate == \'1\'"\n' +
+                    '                                                 style="display: none;">\n' +
+                    '                                                <select class="form-control tax-select"\n' +
+                    '                                                        data-bind="value: tax2, event:{change:onTax2Change}" id="-2"\n' +
+                    '                                                        name="">\n' +
+                    '                                                    <option value=""></option>\n' +
+                    '                                                </select>\n' +
+                    '                                            </div>\n' +
+                    '                                            <input type="text"\n' +
+                    '                                                   data-bind="value: tax_name2, attr: {name: \'invoice_items[\' + $index() + \'][tax_name2]\'}"\n' +
+                    '                                                   style="display:none" name="invoice_items[0][tax_name2]">\n' +
+                    '                                            <input type="text"\n' +
+                    '                                                   data-bind="value: tax_rate2, attr: {name: \'invoice_items[\' + $index() + \'][tax_rate2]\'}"\n' +
+                    '                                                   style="display:none" name="invoice_items[0][tax_rate2]">\n' +
+                    '                                        </td>\n' +
+                    '                                        <td style="text-align:right;padding-top:9px !important" nowrap="">\n' +
+                    '                                            <div name="total[]" class="line-total sub-total"></div>\n' +
+                    '                                        </td>\n' +
+                    '                                        <td style="cursor:pointer" class="hide-border td-icon">\n' +
+                    '                                            <i \n' +
+                    '                                               \n' +
+                    '                                               class="tim-icons icon-simple-remove remove"  title="Remove item">\n' +
+                    '                                            </i></td>\n' +
+                    '                                    </tr>');
+
+
+                $(".select-item").select2({
+                    theme: "bootstrap"
+                });
+
+                $(".select-item").select2({
+                    placeholder: '{{__('select product')}}',
+                    allowClear: true
+                });
+
+                $(".remove").click(function () {
+
+                    $(this).parent().parent().remove();
+                });
+                $(".select-item").on('change', function (event) {
+
+                    $(this).parent().parent().find("input[name='hp_product_price[]']").val($(this).find("option[value='" + $(this).val() + "']").data('price'));
+                    $(this).parent().parent().find("input[name='invoice_items_qty[]']").val('1');
+                    // event.preventDefault();
+
+                    unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
+                    unit_qty = $(this).parent().parent().find("input[name='invoice_items_qty[]']").val();
+                    $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
+
+                    total = 0;
+                    $('.sub-total').each(function () {
+
+                        current = $(this).text();
+                        total = total + parseInt(current);
+                        $("#total").val(total);
+
+                    });
+
+                    append_item();
+                });
+
+                $(".qty").on('change', function (event) {
+
+                    unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
+                    unit_qty = $(this).val();
+                    $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
+
+
+                });
+
+            }
+        });
+
+
     </script>
     <script>
         $('#preview').on('click', function () {

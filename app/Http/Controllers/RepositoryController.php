@@ -17,7 +17,7 @@ class RepositoryController extends Controller
         $orders = OrderProduct::all();
 
         //نمایش میزان نیازمندی محصول
-        $count = User::where('votes', '>', 100)->count();
+//        $count = User::where('votes', '>', 100)->count();
 
         return view('Repository.index', compact('Repositories','orders','order_count','products_count', 'order_count'));
 

@@ -115,9 +115,9 @@
                     </div>
                     <div class="row">333
                         <div class="card-body">
-                            @foreach( $products_count as $products_count )
-                                <label>{{$products_count}}</label>
-                            @endforeach
+                            {{--@foreach( $products_count as $products_count )--}}
+                                {{--<label>{{$products_count}}</label>--}}
+                            {{--@endforeach--}}
                         </div>
                     </div>
                     {{--@foreach($count as $counts)--}}

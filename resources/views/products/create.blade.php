@@ -19,7 +19,7 @@
                                 <p class="card-category"></p>
                             </div>
                             <div class="card-body">
-                                <form method="post" action="{{route('products.store')}}" >
+                                <form id="form1" >
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-6 pr-md-1">
@@ -100,5 +100,32 @@
 @endsection
 
 @push('scripts')
+    <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            $("#form1").submit(function (event) {
+                var data = $("#form1").serialize();
+                event.preventDefault();
+                $.blockUI();
 
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url: '/product',
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        setTimeout($.unblockUI, 2000);
+                    },
+                    cache: false,
+                });
+            });
+        });
+    </script>
 @endpush

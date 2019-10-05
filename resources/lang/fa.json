@@ -162,6 +162,7 @@
   "Client":"مشتری",
   "Discount":"تخفیف",
   "Line Total":"مجموع",
+  "Total:":"مجموع:",
   "Total Orders":"در انتظار تولید",
   "Due Date":"تاریخ تحویل",
   "Create new client":"مشتری جدید",
@@ -199,7 +200,7 @@
   "First Name":"نام",
   "Contacts":"مخاطب",
   "Sub Total:":"مجموع:",
-  "Paid to Date:":"پرداخت شده به تاریخ:",
+  "Paid to Date:":"تاریخ انقضا:",
   "Balance Due":"",
   "Unapproved Quote":"",
   "Company Size":"گستره شرکت",
@@ -254,6 +255,10 @@
   "Statuses:":"وضعیت:",
   "Client ID":"شناسه مشتری",
   "Product ID":"شناسه محصول",
-  "Count":"تعداد"
+  "Count":"تعداد",
+  "Forgot Your Password?":"رمز عبور خود را فراموش کرده اید؟",
+  "Statuses":"وضعیت",
+  "Total including discount:":"مجموع با احتساب تخفیف :"
+
 
 }

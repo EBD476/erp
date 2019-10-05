@@ -14,7 +14,7 @@ return [
     */
 
     'default' => env('DB_CONNECTION', 'mysql'),
-    $users = DB::connection('foo')->select(...),
+//    $users = DB::connection('foo')->select(...),
 //    $pdo = DB::connection()->getPdo(),
 
     /*
@@ -43,20 +43,20 @@ return [
         ],
 
         'mysql' => [
-            //برای Eloquent
-            'read' => [
-                'host' => [
-                    '192.168.1.1',
-                    '196.168.1.2',
-                ],
-            ],
-            'write' => [
-                'host' => [
-                    '196.168.1.3',
-                ],
-            ],
-            'sticky'    => true,
-            //..
+//            //برای Eloquent
+//            'read' => [
+//                'host' => [
+//                    '192.168.1.1',
+//                    '196.168.1.2',
+//                ],
+//            ],
+//            'write' => [
+//                'host' => [
+//                    '196.168.1.3',
+//                ],
+//            ],
+//            'sticky'    => true,
+//            //..
 
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -128,7 +128,6 @@ return [
     'redis' => [
 
         'client' => 'predis',
-
         'default' => [
             'host' => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD', null),

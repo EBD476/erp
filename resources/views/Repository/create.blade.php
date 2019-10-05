@@ -62,12 +62,13 @@
 @endsection
 
 @push('scripts')
+    <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script>
         $(document).ready(function () {
             $("#form1").submit(function (event) {
                 var data = $("#form1").serialize();
                 event.preventDefault();
-                // $.blockUI();
+                $.blockUI();
 
                 $.ajaxSetup({
                     headers: {
@@ -82,14 +83,11 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        // alert(data.response);
-                        // setTimeout($.unblockUI, 2000);
+                        setTimeout($.unblockUI, 2000);
                     },
                     cache: false,
                 });
             });
         });
     </script>
-
-
 @endpush

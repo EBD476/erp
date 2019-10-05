@@ -36,6 +36,9 @@
                                         <table id="table" class="table" cellspacing="0" width="100%">
                                             <thead class=" text-primary">
                                             <th>
+                                                {{__('Statuses')}}
+                                            </th>
+                                            <th>
                                                 {{__('ID')}}
                                             </th>
                                             <th>
@@ -52,9 +55,19 @@
 
                                             @foreach($products as $key => $product)
                                                 <tr>
-                                                    {{--<td>--}}
-                                                    {{--{{$key + 1}}--}}
-                                                    {{--</td>--}}
+                                                    <form id="form1" enctype="multipart/form-data">
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <label class="form-check-label">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                           value="0" id="checkbox">
+                                                                    <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                                </span>
+                                                                </label>
+                                                            </div>
+                                                        </td>
+                                                    </form>
                                                     <td>
                                                         {{$product ->id}}
                                                     </td>
@@ -86,11 +99,6 @@
                                                                    event.preventDefault();}"><i
                                                                     class="tim-icons icon-simple-remove"></i></a>
                                                     </td>
-                                                    <form id="form1" enctype="multipart/form-data">
-                                                    <td>
-                                                        <input class="checkbox" type="checkbox" value="0" id="checkbox">
-                                                    </td>
-                                                    </form>
                                                 </tr>
                                             @endforeach
                                             </tbody>
@@ -114,7 +122,7 @@
                                                 <h5 class="title">Hanta IBMS</h5>
                                             </a>
                                     <p class="description">
-                                       {{__('Available Products')}}
+                                        {{__('Available Products')}}
                                     </p>
                                 </div>
                                 </p>
@@ -153,12 +161,12 @@
                 });
 
                 $("#checkbox").on('change', function (event) {
-                   if($("#checkbox").val() == 1){
+                    if ($("#checkbox").val() == 1) {
 
-                   }
-                   else{
-                       $("#checkbox").val() == 1
-                   }
+                    }
+                    else {
+                        $("#checkbox").val() == 1
+                    }
                 });
 
 
