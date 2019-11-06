@@ -2,21 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
+use App\RepositoryCreate;
 use Illuminate\Http\Request;
-use phpDocumentor\Reflection\Types\Compound;
 
-class ProductController extends Controller
+class RepositoryCreateController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $products = Product::all();
-        return view('products.index',compact('products'));
+        $repository =RepositoryCreate::all();
+        return view('repository_create.index',compact('repository'));
     }
 
 
@@ -35,25 +29,21 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        return view('repository_create.create');
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
-            'product_name' => 'required',
-            'product_model' => 'required',
-            'product_price' => 'required',
-            'hp_description' => 'required',
+            'hr_name' => 'required',
+            'hr_description' => 'required',
         ]);
-        $product = new Product();
-        $product->hp_product_name = $request->product_name;
-        $product->hp_product_model = $request->product_model;
-        $product->hp_product_price = $request->product_price;
-        $product->hp_description = $request->hp_description;
-        $product->save();
+        $repository = new RepositoryCreate();
+        $repository->hr_name = $request->hr_name;
+        $repository->hr_description = $request->hr_description;
+        $repository->save();
 
-        return json_encode(["response"=>"OK"]);
+        return redirect()->route('repositorycreate.index');
     }
 
     /**
@@ -75,8 +65,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product=Product::find($id);
-        return view('products.edit',compact('product'));
+        $repository=RepositoryCreate::find($id);
+        return view('repository_create.edit',compact('repository'));
 
 
     }
@@ -90,20 +80,15 @@ class ProductController extends Controller
      */
     public function update(Request $request,$id)
     {
-        $products=Product::ALL();
         $this->validate($request, [
-            'product_name' => 'required',
-            'product_model' => 'required',
-            'product_price' => 'required',
-            'hp_description' => 'required',
+            'hr_name' => 'required',
+            'hr_description' => 'required',
         ]);
-        $product =Product::find($id);
-        $product->hp_product_name = $request->product_name;
-        $product->hp_product_model = $request->product_model;
-        $product->hp_product_price = $request->product_price;
-        $product->hp_description = $request->hp_description;
-        $product->save();
-        return view('products.index',compact('products'));
+        $repository =RepositoryCreate::find($id);
+        $repository->hr_name = $request->hr_name;
+        $repository->hr_description = $request->hr_description;
+        $repository->save();
+        return view('repository_create.index',compact('repository'));
 
 
     }
@@ -116,8 +101,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::find($id);
-        $product->delete();
+        $repository = RepositoryCreate::find($id);
+        $repository->delete();
         return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
     }
 }

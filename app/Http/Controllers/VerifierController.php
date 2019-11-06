@@ -54,7 +54,7 @@ class VerifierController extends Controller
         $verifier->hp_verifier_id = $request->hp_verifier_id;
         $verifier->save();
         $verifier = Verifier::ALL();
-        return view('verifier.index',compact('verifier'));
+        return json_encode(["response"=>"OK"]);
     }
 
     /**

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Products'))
+@section('title',__('Parts'))
 
 
 @section('content')
@@ -15,7 +15,7 @@
                     <div class="col-md-8">
                         <div class="card">
                             <div class="card-header card-header-primary">
-                                <h4 class="card-title ">{{__('New Product')}}</h4>
+                                <h4 class="card-title ">{{__('New Part')}}</h4>
                                 <p class="card-category"></p>
                             </div>
                             <div class="card-body">
@@ -24,18 +24,17 @@
                                     <div class="row">
                                         <div class="col-md-6 pr-md-1">
                                             <div class="form-group">
-                                                <label>{{__('Product Name')}}</label>
-                                                <input name="product_name" type="text" class="form-control" required=""
+                                                <label>{{__('Part Name')}}</label>
+                                                <input name="hp_name" type="text" class="form-control" required=""
                                                        aria-invalid="false"   >
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-
                                         <div class="col-md-6 pr-md-1">
                                             <div class="form-group">
-                                                <label>{{__('Product Model')}}</label>
-                                                <input name="product_model" type="text" class="form-control" required=""
+                                                <label>{{__('Code')}}</label>
+                                                <input name="hp_code" type="text" class="form-control" required=""
                                                        aria-invalid="false"  >
                                             </div>
                                         </div>
@@ -43,8 +42,17 @@
                                     <div class="row">
                                         <div class="col-md-6 pr-md-1">
                                             <div class="form-group">
-                                                <label>{{__('Product Price')}}</label>
-                                                <input name="product_price" type="text" class="form-control"  required=""
+                                                <label>{{__('Part Model')}}</label>
+                                                <input name="hp_part_model" type="text" class="form-control" required=""
+                                                       aria-invalid="false"  >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 pr-md-1">
+                                            <div class="form-group">
+                                                <label>{{__('Provider')}}</label>
+                                                <input name="hp_provider" type="text" class="form-control"  required=""
                                                        aria-invalid="false">
                                             </div>
                                         </div>
@@ -52,17 +60,27 @@
                                     <div class="row">
                                         <div class="col-md-6 pr-md-1">
                                             <div class="form-group">
-                                                <label>{{__('Description')}}</label>
-                                                <input name="hp_description" type="text" class="form-control"  required=""
+                                                <label>{{__('Category Id')}}</label>
+                                                <input name="hp_category_id" type="text" class="form-control"  required=""
                                                        aria-invalid="false">
                                             </div>
                                         </div>
                                     </div>
-                            <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-md-6 pr-md-1">
+                                            <div class="form-group">
+                                                <label>{{__('Produce Date')}}</label>
+                                                <input name="hp_produce_date" type="text" class="form-control"  required=""
+                                                       aria-invalid="false">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
                                 <button type="submit" class="btn btn-fill btn-primary">{{__('Save')}}</button>
                             </div>
                             </form>
                         </div>
+                    </div>
                     </div>
                     <div class="col-md-4">
                         <div class="card card-user">
@@ -82,25 +100,8 @@
                                 </p>
                             </div>
                             </p>
-                            <div class="card-description">
-
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            {{--<div class="button-container">--}}
-                                {{--<button href="javascript:void(0)" class="btn btn-icon btn-round btn-facebook">--}}
-                                    {{--<i class="fab fa-facebook"></i>--}}
-                                {{--</button>--}}
-                                {{--<button href="javascript:void(0)" class="btn btn-icon btn-round btn-twitter">--}}
-                                    {{--<i class="fab fa-twitter"></i>--}}
-                                {{--</button>--}}
-                                {{--<button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">--}}
-                                    {{--<i class="fab fa-google-plus"></i>--}}
-                                {{--</button>--}}
-                            {{--</div>--}}
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>
@@ -123,13 +124,14 @@
                 });
 
                 $.ajax({
-                    url: '/product',
+                    url: '/part',
                     type: 'POST',
                     data: data,
                     dataType: 'json',
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
+                        location.reload();
                     },
                     cache: false,
                 });

@@ -5,6 +5,17 @@
             {{--<a href="javascript:void(0)" class="simple-text logo-mini">--}}
 
             {{--</a>--}}
+
+
+            <li><a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
+                            class="mdi mdi-gauge"></i><span
+                            class="hide-menu">{{__('Dashboard')}} </span></a>
+                <ul aria-expanded="false" class="collapse">
+                    <li><a href="{{route('home')}}">{{__('Dashboard')}}</a></li>
+                </ul>
+            </li>
+
+
             <a href="javascript:void(0)" class="simple-text logo-normal">
                 {{--H&nbsp;&nbsp;A&nbsp;&nbsp;N&nbsp;&nbsp;T&nbsp;&nbsp;A--}}
                 <small>Hanta Smart Home</small>
@@ -69,6 +80,24 @@
                 <a class="nav-link" href="{{Route('product.index')}}">
                     <i class="tim-icons icon-coins"></i>
                     <p>{{__('Product')}}</p>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="{{Route('part.index')}}">
+                    <i class="tim-icons icon-coins"></i>
+                    <p>{{__('Parts')}}</p>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="{{Route('product_part.index')}}">
+                    <i class="tim-icons icon-coins"></i>
+                    <p>{{__('Product Parts')}}</p>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="{{Route('repository_create.index')}}">
+                    <i class="tim-icons icon-coins"></i>
+                    <p>{{__('Repository Management')}}</p>
                 </a>
             </li>
             <li>

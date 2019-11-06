@@ -38,6 +38,12 @@ Route::group(['middleware' => ['auth']], function() {
     route::resource('verify_pre','VerifyController');
     route::resource('help_desk','HelpDeskController');
     route::resource('client','ClientController');
+    route::resource('part','PartController');
+    route::resource('product_part','ProductPartController');
+    route::resource('repository_create','RepositoryCreateController');
+    route::resource('provider','ProviderController');
+    route::resource('repository-part','RepositoryPartController');
+    Route::post('order-state/{id}','RepositoryController@order_state')->name('repository.order_state');
     route::get('locale/{lan}', 'LanguageController@locale');
     Route::get('map', function (){
         $projects = \App\Project::all();

@@ -97,12 +97,14 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+
         $user = User::findOrFail($id); //Get role specified by id
 
         //Validate name, email and password fields
         $this->validate($request, [
-            'name'=>'required|max:120',
-            'password'=>'required|min:6|confirmed'
+//            'name'=>'required|max:120',
+//            'password'=>'required|min:6|confirmed'
         ]);
         $input = $request->only(['name', 'password','username','device_id']); //Retreive the name, email and password fields
         $roles = $request['roles']; //Retreive all roles

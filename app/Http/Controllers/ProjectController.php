@@ -53,7 +53,7 @@ class ProjectController extends Controller
         $Project->hp_project_description = $request->project_description;
         $Project->save();
 
-        return redirect()->route('projects.index');
+        return json_encode(["response"=>"OK"]);
 
     }
 

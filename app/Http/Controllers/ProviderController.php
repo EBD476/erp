@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
+use App\Provider;
 use Illuminate\Http\Request;
-use phpDocumentor\Reflection\Types\Compound;
 
-class ProductController extends Controller
+class ProviderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,15 +14,15 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
-        return view('products.index',compact('products'));
+        $provider = Provider::all();
+        return view('provider.index',compact('provider'));
     }
 
 
 
     public function checkbox(Request $request , $id)
     {
-        $checkbox=Product::find($id);
+        $checkbox=Provider::find($id);
         $checkbox->hp_statuse=$request->checkbox;
         $checkbox->save();
     }
@@ -35,23 +34,23 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        return view('provider.create');
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
-            'product_name' => 'required',
-            'product_model' => 'required',
-            'product_price' => 'required',
-            'hp_description' => 'required',
+            'hp_name' => 'required',
+            'hp_phone' => 'required',
+            'hp_address' => 'required',
+//            'hp_account_number' => 'required',
         ]);
-        $product = new Product();
-        $product->hp_product_name = $request->product_name;
-        $product->hp_product_model = $request->product_model;
-        $product->hp_product_price = $request->product_price;
-        $product->hp_description = $request->hp_description;
-        $product->save();
+        $provider = new Provider();
+        $provider->hp_name = $request->hp_name;
+        $provider->hp_phone = $request->hp_phone;
+        $provider->hp_address = $request->hp_address;
+        $provider->hp_account_number = $request->hp_account_number;
+        $provider->save();
 
         return json_encode(["response"=>"OK"]);
     }
@@ -62,10 +61,6 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -75,9 +70,14 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product=Product::find($id);
-        return view('products.edit',compact('product'));
+        $provider=Provider::find($id);
+        return view('provider.edit',compact('provider'));
 
+
+    }
+
+
+    public function show(){
 
     }
 
@@ -90,20 +90,19 @@ class ProductController extends Controller
      */
     public function update(Request $request,$id)
     {
-        $products=Product::ALL();
         $this->validate($request, [
-            'product_name' => 'required',
-            'product_model' => 'required',
-            'product_price' => 'required',
-            'hp_description' => 'required',
+            'hp_name' => 'required',
+            'hp_phone' => 'required',
+            'hp_address' => 'required',
+//            'hp_account_number' => 'required',
         ]);
-        $product =Product::find($id);
-        $product->hp_product_name = $request->product_name;
-        $product->hp_product_model = $request->product_model;
-        $product->hp_product_price = $request->product_price;
-        $product->hp_description = $request->hp_description;
-        $product->save();
-        return view('products.index',compact('products'));
+        $provider =Provider::find($id);
+        $provider->hp_name = $request->hp_name;
+        $provider->hp_phone = $request->hp_phone;
+        $provider->hp_address = $request->hp_address;
+        $provider->hp_account_number = $request->hp_account_number;
+        $provider->save();
+        return view('part.index',compact('provider'));
 
 
     }
@@ -116,8 +115,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::find($id);
-        $product->delete();
+        $provider = Provider::find($id);
+        $provider->delete();
         return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
     }
 }
