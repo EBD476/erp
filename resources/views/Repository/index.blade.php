@@ -149,6 +149,7 @@
                             </div>
                             <div class="card-body ">
                                 <div class="table-full-width table-responsive ps ps--active-y">
+<<<<<<< HEAD
                                     <table class="table">
                                         <tbody>
 
@@ -294,6 +295,157 @@
                             </div>
                         </div>
                     </div>
+=======
+                                    <form id="form1" enctype="multipart/form-data">
+                                        <table class="table">
+                                            <tbody>
+                                            @foreach($orders as $item)
+                                                @foreach($product as $goods)
+                                                    @foreach($Repositories as $repository_selected)
+                                                        <tr>
+                                                            @if($repository_selected->hr_product_id == $goods->id)
+                                                                @if($item->hpo_product_id == $repository_selected->hr_product_id)
+                                                                    @foreach($product as $p)
+                                                                        @if($p->id == $repository_selected->hr_product_id )
+
+                                                                            <th><p class="title">{{__('Order ID')}}:</p>
+                                                                            </th>
+                                                                            <td>
+                                                                                <p class="text-muted">{{$item->hpo_order_id}}</p>
+                                                                            </td>
+
+                                                                            <th><p class="title">{{__('Product Name')}}
+                                                                                    :</p>
+                                                                            </th>
+                                                                            <td>
+                                                                                <p class="text-muted">{{$p->hp_product_name}}</p>
+                                                                            </td>
+
+                                                                            <th>
+                                                                                <p class="title">{{__('Inventory Deficit After Computing Repository')}}
+                                                                                    :</p>
+                                                                            </th>
+
+
+                                                                            <td>
+                                                                                <p class="text-muted">{{$repository_selected ->hr_product_stock - $item->hpo_count}}</p>
+                                                                                <input hidden
+                                                                                       value="{{$repository_selected ->hr_product_stock - $item->hpo_count}}"
+                                                                                       class="computing_repository"
+                                                                                       data.computing="{{$repository_selected ->hr_product_stock - $item->hpo_count}}">
+
+                                                                            </td>
+                                                                            {{--<td class="td-actions text-right">--}}
+                                                                            {{--<button type="button" rel="tooltip" title=""--}}
+                                                                            {{--class="btn btn-link"--}}
+                                                                            {{--data-original-title="Edit Task">--}}
+                                                                            {{--<i class="tim-icons icon-pencil"></i>--}}
+                                                                            {{--</button>--}}
+                                                                            {{--</td>--}}
+
+                                                                            <td>
+                                                                                <div class="form-check ">
+                                                                                    <label class="form-check-label">
+                                                                                        <input class="form-check-input checkbox"
+                                                                                               type="checkbox"
+                                                                                               data-id="{{$item->hpo_order_id}}">
+                                                                                        <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                                </span>
+                                                                                    </label>
+                                                                                </div>
+                                                                                <input hidden class="checkbox-input">
+                                                                            </td>
+                                                                        @endif
+                                                                    @endforeach
+                                                                @endif
+                                                        </tr>
+                                                        @endif
+                                                    @endforeach
+                                                @endforeach
+                                            @endforeach
+
+                                            </tbody>
+
+                                        </table>
+                                        <div class="col-md-12">
+                                            <div class="modal-footer d-flex left">
+                                                <input type="submit"
+                                                        class="btn btn-deep-orange" value="{{__('Verify')}}">
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {{--//Product Details Modal//--}}
+                    <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"
+                         aria-labelledby="myModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header text-center">
+                                    <h4 class="modal-title w-100 font-weight-bold">{{__('View Details Data')}}</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form method="post" id="modal_form" enctype="multipart/form-data">
+                                    <div class="modal-body mx-3">
+                                        <div class="md-form mb-5">
+                                            {{--<i class="fas fa-user prefix grey-text"></i>--}}
+                                            <table class="table" cellspacing="0" width="100%">
+                                                <tbody>
+                                                <thead class=" text-primary">
+                                                <th>
+                                                    {{__('Product Name')}}
+                                                </th>
+                                                <th>
+                                                    {{__('Count')}}
+                                                </th>
+                                                <th>
+                                                    {{__('Inventory Deficit')}}
+                                                </th>
+                                                </thead>
+                                                @foreach($query as $item)
+                                                    @foreach($product as $products)
+                                                        @if($item->hpo_product_id == $products->id)
+                                                            <tr>
+                                                                <td>
+                                                                    {{$products->hp_product_name}}
+                                                                </td>
+                                                                <td>
+                                                                    {{$item->sum_hpo}}
+                                                                </td>
+                                                                @foreach($Repositories as $repository_stock)
+                                                                    <td>
+                                                                        {{$item->sum_hpo - $repository_stock->hr_product_stock}}
+                                                                    </td>
+                                                                @endforeach
+                                                                @endif
+                                                                @endforeach
+                                                                @endforeach
+
+                                                            </tr>
+                                                            </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="modal-footer d-flex justify-content-center">
+                                            <button type="submit"
+                                                    class="btn btn-deep-orange">{{__('Request Send')}}</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+>>>>>>> 6da1309d62f45fdd1a204ba670d7797be9c74d50
                     {{--//End Product Details modal//--}}
 
 
@@ -307,6 +459,7 @@
             <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
             <script>
                 $(document).ready(function () {
+<<<<<<< HEAD
 
                     // pass checkbox data
                     $('.checkbox').on('change',function (event) {
@@ -393,34 +546,134 @@
                                 "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
                                 "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
                             },
+=======
+>>>>>>> 6da1309d62f45fdd1a204ba670d7797be9c74d50
 
+                    var dataArray = new Array();
+                    // pass checkbox data
+                    $('.checkbox').on('change', function (event) {
+                        if (event.target.checked) {
+                            dataArray.add($(this).data('id'));
                         }
+                        // alert($('.checkbox-input').text == true ? 3 : 2);
                     });
-                    $('#table1').DataTable({
-                        "language": {
-                            "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
-                            "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
-                            "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
-                            "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
-                            "sInfoPostFix": "",
-                            "sInfoThousands": ",",
-                            "sLengthMenu": "نمایش _MENU_ رکورد",
-                            "sLoadingRecords": "در حال بارگزاری...",
-                            "sProcessing": "در حال پردازش...",
-                            "sSearch": "جستجو:",
-                            "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
-                            "oPaginate": {
-                                "sFirst": "ابتدا",
-                                "sLast": "انتها",
-                                "sNext": "بعدی",
-                                "sPrevious": "قبلی"
-                            },
-                            "oAria": {
-                                "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
-                                "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
-                            },
 
-                        }
+                    // End data pass
+
+
+                    // Pass Data to Controller
+                    $("#form1").submit(function (event) {
+
+                        alert(dataArray);
+
+                        $('.checkbox').each(function () {
+                            var data = {
+                                id: $()
+                            };
+
+
+                            //  $("#form1").serialize();
+                            event.preventDefault();
+                            // $.blockUI();
+
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+
+                            $.ajax({
+                                url: '/repository',
+                                type: 'POST',
+                                data: data,
+                                dataType: 'json',
+                                async: false,
+                                success: function (data) {
+                                    setTimeout($.unblockUI, 2000);
+                                },
+                                cache: false,
+                            });
+                        });
+                        // End Pass
+
+                        $("#modal_form").submit(function (event) {
+                            var data = $("#modal_form").serialize();
+                            event.preventDefault();
+                            $.blockUI();
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+
+                            $.ajax({
+                                url: '/repository_requirement',
+                                type: 'POST',
+                                data: data,
+                                dataType: 'json',
+                                async: false,
+                                success: function (data) {
+                                    setTimeout($.unblockUI);
+                                    $("#modalRegisterForm").find("input").val("");
+                                    $("#modalRegisterForm").modal('hide');
+                                },
+                                cache: false,
+                            });
+                        });
+
+
+                        $('#table').DataTable({
+                            "language": {
+                                "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
+                                "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                                "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
+                                "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
+                                "sInfoPostFix": "",
+                                "sInfoThousands": ",",
+                                "sLengthMenu": "نمایش _MENU_ رکورد",
+                                "sLoadingRecords": "در حال بارگزاری...",
+                                "sProcessing": "در حال پردازش...",
+                                "sSearch": "جستجو:",
+                                "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
+                                "oPaginate": {
+                                    "sFirst": "ابتدا",
+                                    "sLast": "انتها",
+                                    "sNext": "بعدی",
+                                    "sPrevious": "قبلی"
+                                },
+                                "oAria": {
+                                    "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
+                                    "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
+                                },
+
+                            }
+                        });
+                        $('#table1').DataTable({
+                            "language": {
+                                "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
+                                "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                                "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
+                                "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
+                                "sInfoPostFix": "",
+                                "sInfoThousands": ",",
+                                "sLengthMenu": "نمایش _MENU_ رکورد",
+                                "sLoadingRecords": "در حال بارگزاری...",
+                                "sProcessing": "در حال پردازش...",
+                                "sSearch": "جستجو:",
+                                "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
+                                "oPaginate": {
+                                    "sFirst": "ابتدا",
+                                    "sLast": "انتها",
+                                    "sNext": "بعدی",
+                                    "sPrevious": "قبلی"
+                                },
+                                "oAria": {
+                                    "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
+                                    "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
+                                },
+
+                            }
+                        });
                     });
                 });
             </script>

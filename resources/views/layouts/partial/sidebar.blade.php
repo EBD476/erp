@@ -5,6 +5,17 @@
             {{--<a href="javascript:void(0)" class="simple-text logo-mini">--}}
 
             {{--</a>--}}
+
+
+            <li><a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
+                            class="mdi mdi-gauge"></i><span
+                            class="hide-menu">{{__('Dashboard')}} </span></a>
+                <ul aria-expanded="false" class="collapse">
+                    <li><a href="{{route('home')}}">{{__('Dashboard')}}</a></li>
+                </ul>
+            </li>
+
+
             <a href="javascript:void(0)" class="simple-text logo-normal">
                 {{--H&nbsp;&nbsp;A&nbsp;&nbsp;N&nbsp;&nbsp;T&nbsp;&nbsp;A--}}
                 <small>Hanta Smart Home</small>
@@ -119,6 +130,7 @@
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
                         style="padding-right: 10px;padding-left: 160px">
                     <i class="tim-icons icon-settings"></i>
+<<<<<<< HEAD
                     {{__('Request')}}
                 </button>
                 <div class="dropdown-menu">
@@ -167,5 +179,102 @@
         </div>
 
 
+=======
+                    <p>{{__('Settings')}}</p>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="{{Route('product.index')}}">
+                    <i class="tim-icons icon-coins"></i>
+                    <p>{{__('Product')}}</p>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="{{Route('part.index')}}">
+                    <i class="tim-icons icon-coins"></i>
+                    <p>{{__('Parts')}}</p>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="{{Route('product_part.index')}}">
+                    <i class="tim-icons icon-coins"></i>
+                    <p>{{__('Product Parts')}}</p>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="{{Route('repository_create.index')}}">
+                    <i class="tim-icons icon-coins"></i>
+                    <p>{{__('Repository Management')}}</p>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="{{Route('repository.index')}}">
+                    <i class="tim-icons icon-coins"></i>
+                    <p>{{__('Repository')}}</p>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="{{Route('repository_requirement.index')}}">
+                    <i class="tim-icons icon-coins"></i>
+                    <p>{{__('Product Requirement')}}</p>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="{{Route('request.index')}}">
+                    <i class="tim-icons icon-coins"></i>
+                    <p>{{__('Request')}}</p>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="{{Route('client.index')}}">
+                    <i class="tim-icons icon-coins"></i>
+                    <p>{{__('Client')}}</p>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="{{Route('verifier.index')}}">
+                    <!-- For IE9 or below. -->
+                    <i class="tim-icons icon-coins"></i>
+                    <p>{{__('Verifier')}}</p>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="{{Route('help_desk.index')}}">
+                    <i class="tim-icons icon-coins"></i>
+                    <p>{{__('Help Desk')}}</p>
+                </a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="./map.html">
+                    <i><img src="https://img.icons8.com/dotty/30/000000/marker.png"></i>
+                    <p>{{__('Map')}}</p>
+                </a>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="./notifications.html">
+                    <i><img src="https://img.icons8.com/dotty/30/000000/push-notifications.png"></i>
+                    <p>{{__('Notifications')}}</p>
+                </a>
+            </li>
+            {{--<li>--}}
+            {{--<a href="./typography.html">--}}
+            {{--<i class="tim-icons icon-align-center"></i>--}}
+            {{--<p>Typography</p>--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--<li>--}}
+            {{--<a href="./rtl.html">--}}
+            {{--<i class="tim-icons icon-world"></i>--}}
+            {{--<p>RTL Support</p>--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--<li class="active-pro">--}}
+            {{--<a href="./upgrade.html">--}}
+            {{--<i class="tim-icons icon-spaceship"></i>--}}
+            {{--<p>Upgrade to PRO</p>--}}
+            {{--</a>--}}
+            {{--</li>--}}
+        </ul>
+>>>>>>> 6da1309d62f45fdd1a204ba670d7797be9c74d50
     </div>
 </div>
