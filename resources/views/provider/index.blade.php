@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Products'))
+@section('title',__('Provider'))
 
 @push('script')
     <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
@@ -18,9 +18,9 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <a href="{{route('products.create')}}" class="btn btn-primary float-left mb-lg-2">
+                    <a href="{{route('provider.create')}}" class="btn btn-primary float-left mb-lg-2">
                         <i class="tim-icons icon-simple-add"></i> &nbsp;
-                        {{__('New Product')}}
+                        {{__('New Provider')}}
                     </a>
                 </div>
                 <div class="card">
@@ -28,13 +28,16 @@
                         <div class="col-md-9">
                             <div class="card">
                                 <div class="card-header card-header-primary">
-                                    <h4 class="card-title text-right font-weight-400">{{__('Products List')}}</h4>
+                                    <h4 class="card-title text-right font-weight-400">{{__('Provider List')}}</h4>
                                     <p class="card-category"></p>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive table-hover">
                                         <table id="table" class="table" cellspacing="0" width="100%">
                                             <thead class=" text-primary">
+                                            {{--<th>--}}
+                                                {{--{{__('Statuses')}}--}}
+                                            {{--</th>--}}
                                             <th>
                                                 {{__('ID')}}
                                             </th>
@@ -42,66 +45,57 @@
                                                 {{__('Name')}}
                                             </th>
                                             <th>
-                                                {{__('Model')}}
-                                            </th>
-                                            <th>
-                                                {{__('Price')}}
+                                                {{__('Account Number')}}
                                             </th>
                                             <th>
                                                 {{__('Action')}}
                                             </th>
-                                            <th>
-                                                {{__('Status')}}
-                                            </th>
                                             </thead>
                                             <tbody>
 
-                                            @foreach($products as $key => $product)
+                                            @foreach($provider as $key => $providers)
                                                 <tr>
+                                                    {{--<form id="form1" enctype="multipart/form-data">--}}
+                                                        {{--<td>--}}
+                                                            {{--<div class="form-check">--}}
+                                                                {{--<label class="form-check-label">--}}
+                                                                    {{--<input class="form-check-input" type="checkbox"--}}
+                                                                           {{--value="0" id="checkbox">--}}
+                                                                    {{--<span class="form-check-sign">--}}
+                                                                {{--<span class="check"></span>--}}
+                                                                {{--</span>--}}
+                                                                {{--</label>--}}
+                                                            {{--</div>--}}
+                                                        {{--</td>--}}
+                                                    {{--</form>--}}
                                                     <td>
-                                                        {{$product ->id}}
-                                                    </td>
-                                                    <td>
-                                                        {{$product ->hp_product_name}}
+                                                        {{$key + 1}}
                                                     </td>
                                                     <td class="text-left">
-                                                        {{$product -> hp_product_model}}
+                                                        {{$providers -> hp_name}}
                                                     </td>
                                                     <td class="text-left">
-                                                        {{$product -> hp_product_price}}
+                                                        {{$providers -> hp_account_number}}
                                                     </td>
                                                     <td>
-                                                        <a href="{{route('products.edit',$product->id)}}"
+                                                        <a href="{{route('provider.edit',$providers->id)}}"
                                                            class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
                                                             <i class="tim-icons icon-pencil"></i></a>
 
-                                                        <form id="-form-delete{{$product->id}}" style="display: none;"
+                                                        <form id="-form-delete{{$providers->id}}" style="display: none;"
                                                               method="POST"
-                                                              action="{{route('products.destroy',$product->id)}}">
+                                                              action="{{route('provider.destroy',$providers->id)}}">
                                                             @csrf
                                                             @method('DELETE')
                                                         </form>
                                                         <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove"
                                                            onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
                                                                    event.preventDefault();
-                                                                   document.getElementById('-form-delete{{$product->id}}').submit();
+                                                                   document.getElementById('-form-delete{{$providers->id}}').submit();
                                                                    }else {
                                                                    event.preventDefault();}"><i
                                                                     class="tim-icons icon-simple-remove"></i></a>
                                                     </td>
-                                                    <form id="form1" enctype="multipart/form-data">
-                                                        <td>
-                                                            <div class="form-check">
-                                                                <label class="form-check-label">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                           value="0" id="checkbox">
-                                                                    <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                                </span>
-                                                                </label>
-                                                            </div>
-                                                        </td>
-                                                    </form>
                                                 </tr>
                                             @endforeach
                                             </tbody>

@@ -84,7 +84,7 @@ class HelpDeskController extends Controller
         $help_desk->hhd_verify = $request->hhd_verify;
         $help_desk->hhd_file_atach = $request->hhd_file_atach;
         $help_desk->save();
-        return redirect()->route('help_desk.index');
+        return json_encode(["response"=>"OK"]);
 
     }
 

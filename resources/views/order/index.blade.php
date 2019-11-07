@@ -95,7 +95,11 @@
                                                         {{--@endcan--}}
                                                     </td>
                                                     <td>
-                                                        <input type="checkbox"><input type="checkbox">
+                                                        <div class="progress">
+                                                            {{--<span class="progress-value">25%</span>--}}
+                                                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"></div>
+                                                        </div>
+                                                        {{--<input type="checkbox"><input type="checkbox">--}}
                                                     </td>
                                                 </tr>
                                             @endforeach

@@ -2,41 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\OrderProduct;
+use App\OrderState;
+use App\Product;
 use App\Repository;
 use Illuminate\Http\Request;
-//use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB;
 
 class RepositoryController extends Controller
 {
     public function index()
     {
-//        IF($this->authorize('view',Repository::class))
-//        {
         $Repositories = Repository:: all();
+        $repository_product_count = Repository:: all()->count();
         $orders = OrderProduct::all();
+        $product = Product::ALL();
+        $client = Client::all();
 
-        //نمایش میزان نیازمندی محصول
-//        $count = User::where('votes', '>', 100)->count();
+        $query_order_product = DB::select("SELECT sum(hpo_count) as sum_hpo , hpo_product_id FROM hnt_products,hnt_invoice_items WHERE hnt_products.id =hnt_invoice_items.hpo_product_id group by hnt_invoice_items.hpo_product_id");
+        $query_order_product_all = DB::select("SELECT sum(hpo_count) as sum_hpo FROM hnt_invoice_items");
 
-        return view('Repository.index', compact('Repositories','orders','order_count','products_count', 'order_count'));
+        return view('Repository.index', ['query' => $query_order_product, 'client' => $client, 'order_all' => $query_order_product_all], compact('Repositories', 'product', 'orders','repository_product_count'));
 
     }
-//$order_count = OrderProduct::select('hpo_product_id','SUM(hpo_count) as total_product')
-//            ->where('hpo_product_id','1')
-//            ->get();
-//        $products_count =$order_count->total_product;
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public
-    function create()
+    public function create()
     {
-//        if ($this->authorize('create',Repository::class)) {
         return view('Repository.create');
-//        }
+    }
+
+
+    public function order_state(Request $request, $id)
+    {
+        $checkbox = OrderState::where ('order_id',$id)->first();
+        $checkbox->ho_process_id = $request->state;
+        $checkbox->save();
+
+//        $computing = Repository::find($id);
+//        $computing->hr_product_stock = $request->computing_repository_requirement;
+//        $computing->save();
     }
 
     /**
@@ -49,15 +59,21 @@ class RepositoryController extends Controller
     function store(Request $request)
     {
         $this->validate($request, [
-            'Product_Id' => 'required',
-            'Product_Stock' => 'required',
-            'Comment' => 'required',
+            'hr_product_id' => 'required',
+            'hr_product_stock' => 'required',
+            'hr_comment' => 'required',
         ]);
 
         $Repositories = new Repository();
-        $Repositories->Product_Id = $request->Product_Id;
-        $Repositories->Product_Stock = $request->Product_Stock;
-        $Repositories->Comment = $request->Comment;
+        $Repositories->hr_product_id = $request->hr_product_id;
+        $Repositories->hr_product_stock = $request->hr_product_stock;
+        $Repositories->hr_comment = $request->hr_comment;
+        $Repositories->hr_entry_date = $request->hr_entry_date;
+        $Repositories->hr_exit = $request->hr_exit;
+        $Repositories->hr_contradiction = $request->hr_contradiction;
+        $Repositories->hr_provider_code = $request->hr_provider_code;
+        $Repositories->hr_return_value = $request->hr_return_value;
+        $Repositories->hr_status_return_part = $request->hr_status_return_part;
         $Repositories->save();
         return json_encode(["response" => "OK"]);
 
@@ -103,14 +119,20 @@ class RepositoryController extends Controller
 //        if($this->authorize('update',Repository::class))
 //        {
         $this->validate($request, [
-            'Product_Id' => 'required',
-            'Product_Stock' => 'required',
-            'Comment' => 'required',
+            'hr_product_id' => 'required',
+            'hr_product_stock' => 'required',
+            'hr_comment' => 'required',
         ]);
         $Repositories = Repository::find($id);
-        $Repositories->Product_Id = $request->Product_Id;
-        $Repositories->Product_Stock = $request->Product_Stock;
-        $Repositories->Comment = $request->Comment;
+        $Repositories->hr_product_id = $request->hr_product_id;
+        $Repositories->hr_product_stock = $request->hr_product_stock;
+        $Repositories->hr_comment = $request->hr_comment;
+        $Repositories->hr_entry_date = $request->hr_entry_date;
+        $Repositories->hr_exit = $request->hr_exit;
+        $Repositories->hr_contradiction = $request->hr_contradiction;
+        $Repositories->hr_provider_code = $request->hr_provider_code;
+        $Repositories->hr_return_value = $request->hr_return_value;
+        $Repositories->hr_status_return_part = $request->hr_status_return_part;
         $Repositories->save();
         return redirect()->route('repository.index')->with('successMSG', 'عملیات ویرایش اطلاعات با موفقیت انجام شد.');
 //        }

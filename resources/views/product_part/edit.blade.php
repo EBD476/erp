@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Products'))
+@section('title',__('Products Parts'))
 
 
 @section('content')
@@ -15,47 +15,61 @@
                     <div class="col-md-8">
                         <div class="card">
                             <div class="card-header card-header-primary">
-                                <h4 class="card-title ">{{__('Edit Product')}}</h4>
+                                <h4 class="card-title ">{{__('Edit Product Parts')}}</h4>
                                 <p class="card-category"></p>
                             </div>
                             <div class="card-body">
-                                <form method="post" action="{{route('products.update',$product->id)}}" >
+                                <form method="post" action="{{route('product_part.update',$product_part->id)}}" >
                                     @csrf
                                     @method('PUT')
                                     <div class="row">
                                         <div class="col-md-6 pr-md-1">
                                             <div class="form-group">
+                                                <label>{{__('Product Part Name')}}</label>
+                                                <select class="form-control" name="hpp_part_id">
+                                                    @foreach($part_id as $parts_id)
+                                                        <option value={{$parts_id->id}}>
+                                                            {{$parts_id->hp_name}}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 pr-md-1">
+                                            <div class="form-group">
+                                                <label>{{__('Part Model')}}</label>
+                                                <select class="form-control" name="hp_part_model">
+                                                @foreach($part_id as $parts_id)
+                                                    <option>
+                                                        {{$parts_id->hp_part_model}}
+                                                    </option>
+                                                @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 pr-md-1">
+                                            <div class="form-group">
                                                 <label>{{__('Product Name')}}</label>
-                                                <input name="product_name" type="text" class="form-control" required=""
-                                                       aria-invalid="false" value="{{$product->hp_product_name}}"  >
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-
-                                        <div class="col-md-6 pr-md-1">
-                                            <div class="form-group">
-                                                <label>{{__('Product Model')}}</label>
-                                                <input name="product_model" type="text" class="form-control" required=""
-                                                       aria-invalid="false" value="{{$product->hp_product_model}}" >
+                                                <select class="form-control" name="hpp_product_id">
+                                                    @foreach($product_id as $products_id)
+                                                        <option value={{$products_id->id}}>
+                                                            {{$products_id->hp_product_name}}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 pr-md-1">
                                             <div class="form-group">
-                                                <label>{{__('Product Price')}}</label>
-                                                <input name="product_price" type="text" class="form-control"  required=""
-                                                       aria-invalid="false" value="{{$product->hp_product_price}}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6 pr-md-1">
-                                            <div class="form-group">
-                                                <label>{{__('Description')}}</label>
-                                                <input name="hp_description" type="text" class="form-control"  required=""
-                                                       aria-invalid="false" value="{{$product->hp_description}}">
+                                                <label>{{__('Part Count')}}</label>
+                                                <input name="hpp_part_count" type="text" class="form-control"  required=""
+                                                       aria-invalid="false" value="{{$product_part->hpp_part_count}}">
                                             </div>
                                         </div>
                                     </div>
@@ -65,7 +79,9 @@
                             </form>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    </div>
+
+            <div class="col-md-4">
                         <div class="card card-user">
                             <div class="card-body">
                                 <p class="card-text">

@@ -42,7 +42,7 @@ class Repository_RequirementController extends Controller
         $Repositories_Requirement->Product_Count= $request->Product_Count;
         $Repositories_Requirement->Comment= $request->Comment;
         $Repositories_Requirement->save();
-        return redirect()->route('repository_requirement.index');
+        return json_encode(["response"=>"OK"]);
 
     }
 
