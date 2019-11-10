@@ -286,8 +286,10 @@
   "Inventory Deficit":"کسری موجودی",
   "Request Send":"ارسال درخواست",
   "View Details Data":"فرم نمایش کامل جزئیات",
-  "Inventory Deficit After Computing Repository":"وضعیت موجودی انبار پس از کسر نیازمندی سفارش",
-  "Verify":"تایید"
+  "Inventory":"موجودی",
+  "Verify":"تایید",
+  "Status Verify":"وضعیت تایید",
+  "please wait...":"لطفا منتظر بمانید ..."
 
 
 

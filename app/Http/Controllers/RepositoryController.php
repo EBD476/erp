@@ -40,9 +40,22 @@ class RepositoryController extends Controller
 
     public function order_state(Request $request, $id)
     {
-        $checkbox = OrderState::where ('order_id',$id)->first();
-        $checkbox->ho_process_id = $request->state;
-        $checkbox->save();
+        $product=$request->product;
+        $status_state = OrderProduct::where('hpo_order_id', $id and 'hpo_product_id',$product)->first();  dd($status_state);
+        $status_state->hpo_status = 'Approved';
+        $status_state->save();
+        dd('ok');
+
+        foreach ($status_state = OrderProduct::where('hpo_order_id', $id)->get()->last()->hpo_status as $check) {
+            if ($check == 'Approved') {
+                $checkbox = OrderState::where('order_id', $id)->first();
+                $checkbox->ho_process_id = $request->state;
+                $checkbox->save();
+            }
+        }
+        return json_encode(["response" => "عملیات با موفقیت ثبت شد"]);
+
+
 
 //        $computing = Repository::find($id);
 //        $computing->hr_product_stock = $request->computing_repository_requirement;

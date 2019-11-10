@@ -130,7 +130,6 @@
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
                         style="padding-right: 10px;padding-left: 160px">
                     <i class="tim-icons icon-settings"></i>
-<<<<<<< HEAD
                     {{__('Request')}}
                 </button>
                 <div class="dropdown-menu">
@@ -174,8 +173,6 @@
                     </a>
                 </div>
             </div>
-
-
         </div>
 
     </div>
