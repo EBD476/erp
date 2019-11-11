@@ -15,15 +15,16 @@ class RepositoryController extends Controller
     public function index()
     {
         $Repositories = Repository:: all();
-        $repository_product_count = Repository:: all()->count();
+        $repository_product_count = DB::select("SELECT sum(hr_product_stock) as sum_hpo FROM hnt_repositories");
         $orders = OrderProduct::all();
         $product = Product::ALL();
         $client = Client::all();
 
-        $query_order_product = DB::select("SELECT sum(hpo_count) as sum_hpo , hpo_product_id FROM hnt_products,hnt_invoice_items WHERE hnt_products.id =hnt_invoice_items.hpo_product_id group by hnt_invoice_items.hpo_product_id");
-        $query_order_product_all = DB::select("SELECT sum(hpo_count) as sum_hpo FROM hnt_invoice_items");
+        $query_order_product = DB::select("SELECT sum(hpo_count) as sum_hpo , hpo_status , hpo_product_id FROM hnt_products,hnt_invoice_items WHERE hnt_products.id =hnt_invoice_items.hpo_product_id group by hnt_invoice_items.hpo_product_id , hpo_status ");
+        $query_order_product_all = DB::select("SELECT sum(hpo_count) as sum_hpo FROM hnt_invoice_items where hpo_status != 'Approved'");
 
-        return view('Repository.index', ['query' => $query_order_product, 'client' => $client, 'order_all' => $query_order_product_all], compact('Repositories', 'product', 'orders','repository_product_count'));
+
+        return view('Repository.index',['repository_product_count'=>$repository_product_count,'query' => $query_order_product, 'client' => $client, 'order_all' => $query_order_product_all], compact('Repositories', 'product', 'orders'));
 
     }
 
@@ -40,26 +41,27 @@ class RepositoryController extends Controller
 
     public function order_state(Request $request, $id)
     {
-        $product=$request->product;
-        $status_state = OrderProduct::where('hpo_order_id', $id and 'hpo_product_id',$product)->first();  dd($status_state);
-        $status_state->hpo_status = 'Approved';
-        $status_state->save();
-        dd('ok');
-
-        foreach ($status_state = OrderProduct::where('hpo_order_id', $id)->get()->last()->hpo_status as $check) {
-            if ($check == 'Approved') {
-                $checkbox = OrderState::where('order_id', $id)->first();
-                $checkbox->ho_process_id = $request->state;
-                $checkbox->save();
+        $product = $request->product;
+        OrderProduct::where('hpo_order_id', $id)
+            ->where('hpo_product_id', $product)
+            ->update(['hpo_status' => 'Approved']);
+        $count = OrderProduct::where('hpo_order_id', $id)->get();
+        $number = 0;
+        foreach ($count as $count) {
+            if ($count->hpo_status == 'Approved') {
+                $number++;
+            }
+            if (OrderProduct::where('hpo_order_id', $id)->count() == $number) {
+                OrderState::where('order_id', $id)
+                    ->update(['ho_process_id' => $request->state]);
             }
         }
+        Repository::where('hr_product_id', $product)
+            ->update(['hr_product_stock' => $request->computing_repository_requirement]);
+
         return json_encode(["response" => "عملیات با موفقیت ثبت شد"]);
 
 
-
-//        $computing = Repository::find($id);
-//        $computing->hr_product_stock = $request->computing_repository_requirement;
-//        $computing->save();
     }
 
     /**
@@ -116,7 +118,7 @@ class RepositoryController extends Controller
     function edit($id)
     {
         $Repositories = Repository::find($id);
-        return view('Repository.edit', compact('Repositories'));
+        return view('Repository . edit', compact('Repositories'));
     }
 
     /**
@@ -147,7 +149,7 @@ class RepositoryController extends Controller
         $Repositories->hr_return_value = $request->hr_return_value;
         $Repositories->hr_status_return_part = $request->hr_status_return_part;
         $Repositories->save();
-        return redirect()->route('repository.index')->with('successMSG', 'عملیات ویرایش اطلاعات با موفقیت انجام شد.');
+        return redirect()->route('repository . index')->with('successMSG', 'عملیات ویرایش اطلاعات با موفقیت انجام شد . ');
 //        }
     }
 
@@ -164,7 +166,7 @@ class RepositoryController extends Controller
 //        {
         $Repositories = Repository::find($id);
         $Repositories->delete();
-        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
+        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد . ');
 //        }
     }
 }
