@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Agreement;
 use App\Client;
+use App\Order;
 use App\OrderProduct;
 use App\OrderState;
 use App\Product;
 use App\Repository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use carbon\carbon;
 class RepositoryController extends Controller
 {
     public function index()
@@ -44,16 +46,24 @@ class RepositoryController extends Controller
         $product = $request->product;
         OrderProduct::where('hpo_order_id', $id)
             ->where('hpo_product_id', $product)
-            ->update(['hpo_status' => 'Approved']);
+            ->update(['hpo_status' => '4']);
         $count = OrderProduct::where('hpo_order_id', $id)->get();
         $number = 0;
-        foreach ($count as $count) {
-            if ($count->hpo_status == 'Approved') {
+        foreach ($count as $counts) {
+            if ($counts->hpo_status == '4') {
                 $number++;
             }
             if (OrderProduct::where('hpo_order_id', $id)->count() == $number) {
                 OrderState::where('order_id', $id)
                     ->update(['ho_process_id' => $request->state]);
+                $order=Order::find($id);
+                $current_date = Carbon::now();
+                $agreement_number = $current_date->year . $current_date->month . $current_date->day;
+                $agrement=new Agreement();
+                $agrement->hg_agreement_number=$agreement_number;
+                $agrement->hg_invoice=$order->hp_Invoice_number;
+                $agrement->hg_client=$order->ho_client;
+                $agrement->save();
             }
         }
         Repository::where('hr_product_id', $product)

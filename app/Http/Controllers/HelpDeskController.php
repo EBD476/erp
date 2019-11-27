@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\HDpriority;
+use App\HDtype;
 use App\HelpDesk;
+use App\TicketStatus;
 use Illuminate\Http\Request;
 use carbon\carbon;
 
@@ -25,8 +28,10 @@ class HelpDeskController extends Controller
      */
     public function create()
     {
-        return view('help_desk.create');
-
+        $priority=HDpriority::ALL();
+        $type=HDtype::All();
+        $ticket=TicketStatus::ALL();
+        return view('help_desk.create',compact('priority','type','ticket'));
     }
 
 
@@ -55,6 +60,8 @@ class HelpDeskController extends Controller
             'hhd_type' => 'required',
             'hhd_problem' => 'required',
             'hhd_priority' => 'required',
+            'hhd_ticket_status' => 'required',
+            'hhd_title' => 'required',
 //            'hhd_verify' => 'required' ,
 //            'hhd_file_atach' => 'required' ,
         ]);
@@ -78,9 +85,11 @@ class HelpDeskController extends Controller
         $sub_total = "TK_" . sprintf("%04d",$id) . "_" . $current_date . "_" . $request->hhd_priority;
 //        dd($sub_total);
         $help_desk->hhd_ticket_id = $sub_total;
+        $help_desk->hhd_title = $request->hhd_title;
         $help_desk->hhd_type = $request->hhd_type;
         $help_desk->hhd_problem = $request->hhd_problem;
         $help_desk->hhd_priority = $request->hhd_priority;
+        $help_desk->hhd_ticket_status = $request->hhd_ticket_status;
         $help_desk->hhd_verify = $request->hhd_verify;
         $help_desk->hhd_file_atach = $request->hhd_file_atach;
         $help_desk->save();
@@ -128,13 +137,16 @@ class HelpDeskController extends Controller
             'hhd_problem' => 'required',
             'hhd_priority' => 'required',
             'hhd_verify' => 'required',
-            'hhd_file_atach' => 'required',
+//            'hhd_file_atach' => 'required',
+            'hhd_title' => 'required',
         ]);
         $help_desk = HelpDesk::find($id);
         $help_desk->hhd_ticket_id = $request->hhd_ticket_id;
+        $help_desk->hhd_title = $request->hhd_title;
         $help_desk->hhd_type = $request->hhd_type;
         $help_desk->hhd_problem = $request->hhd_problem;
         $help_desk->hhd_priority = $request->hhd_priority;
+        $help_desk->hhd_ticket_status = $request->hhd_ticket_status;
         $help_desk->hhd_verify = $request->hhd_verify;
         $help_desk->hhd_file_atach = $request->hhd_file_atach;
         $help_desk->save();

@@ -32,10 +32,10 @@
                                                 {{__('ID')}}
                                             </th>
                                             <th>
-                                                {{__('Ticket Id')}}
+                                                {{__('Title')}}
                                             </th>
                                             <th>
-                                                {{__('Problem')}}
+                                                {{__('Ticket Id')}}
                                             </th>
                                             <th>
                                                 {{__('Priority')}}
@@ -55,10 +55,10 @@
                                                         {{$key + 1}}
                                                     </td>
                                                     <td>
-                                                        {{$help_desk -> hhd_ticket_id}}
+                                                        {{$help_desk -> hhd_title}}
                                                     </td>
                                                     <td>
-                                                        {{$help_desk -> hhd_problem}}
+                                                        {{$help_desk -> hhd_ticket_id}}
                                                     </td>
                                                     <td>
                                                         {{$help_desk -> hhd_periority}}
@@ -67,18 +67,34 @@
                                                         {{$help_desk -> created_at}}
                                                     </td>
                                                     <td>
-                                                        {{--                                                @can('browse-btn-user')--}}
-                                                        <a href="{{route('help_desk.edit',$help_desk->id)}}" class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit"><i class="tim-icons icon-pencil"></i></a>
-                                                        <form id ="-form-delete{{$help_desk->id}}" style="display: none;" method="POST" action="{{route('help_desk.destroy',$help_desk->id)}}">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                        </form>
-                                                        <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove"  onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
-                                                                event.preventDefault();
-                                                                document.getElementById('-form-delete{{$help_desk->id}}').submit();
-                                                                }else {
-                                                                event.preventDefault();}"><i class="tim-icons icon-simple-remove"></i></a>
-                                                        {{--@endcan--}}
+                                                        {{$help_desk ->hhd_ticket_status}}
+                                                    </td>
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <button type="button"
+                                                                    class="btn btn-link dropdown-toggle btn-icon"
+                                                                    data-toggle="dropdown">
+                                                                <i class="tim-icons icon-settings-gear-63"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-right"
+                                                                 aria-labelledby="dropdownMenuLink">
+                                                                <a class="dropdown-item"
+                                                                   href="{{route('help_desk.edit',$help_desk->id)}}"
+                                                                >{{__('Edit')}}</a>
+                                                                <form id="-form-delete{{$help_desk->id}}"
+                                                                      style="display: none;" method="POST"
+                                                                      action="{{route('help_desk.destroy',$help_desk->id)}}">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                </form>
+                                                                <a class="dropdown-item"
+                                                                   onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
+                                                                           event.preventDefault();
+                                                                           document.getElementById('-form-delete{{$help_desk->id}}').submit();
+                                                                           }else {
+                                                                           event.preventDefault();}">{{__('Delete')}}</a>
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -102,9 +118,6 @@
                                                 {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
                                                 <h5 class="title">Hanta IBMS</h5>
                                             </a>
-                                    <p class="description">
-                                        {{__('Available Help Desk')}}
-                                    </p>
                                 </div>
                                 </p>
                                 <div class="card-description">

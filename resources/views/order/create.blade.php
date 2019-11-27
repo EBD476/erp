@@ -300,6 +300,7 @@
                                             </td>
                                             <td style="text-align:right;padding-top:9px !important" nowrap="">
                                                 <div class="line-total sub-total" name="total[]"></div>
+                                                <input name="price" id="price" type="hidden">
                                             </td>
                                             <td style="cursor:pointer" class="hide-border td-icon">
                                                 <i class="tim-icons icon-simple-remove remove" title="Remove item"/>
@@ -325,15 +326,15 @@
                                                                                                 type="number"
                                                                                                 name="hpo_discount">
                                                                     {{--<select--}}
-                                                                            {{--class="form-control"--}}
-                                                                            {{--data-bind="value: is_amount_discount, event:{ change: isAmountDiscountChanged}"--}}
-                                                                            {{--id="is_amount_discount">--}}
-                                                                        {{--<option--}}
-                                                                                {{--id="0" value="0">Percent--}}
-                                                                        {{--</option>--}}
-                                                                        {{--<option--}}
-                                                                                {{--id="1" value="1">Amount--}}
-                                                                        {{--</option>--}}
+                                                                    {{--class="form-control"--}}
+                                                                    {{--data-bind="value: is_amount_discount, event:{ change: isAmountDiscountChanged}"--}}
+                                                                    {{--id="is_amount_discount">--}}
+                                                                    {{--<option--}}
+                                                                    {{--id="0" value="0">Percent--}}
+                                                                    {{--</option>--}}
+                                                                    {{--<option--}}
+                                                                    {{--id="1" value="1">Amount--}}
+                                                                    {{--</option>--}}
                                                                     {{--</select>--}}
                                                                 </div>
                                                             </div>
@@ -383,11 +384,13 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                @role('admin')
                                                 <div class="row">
                                                     <label class="bmd-label-floating">{{__('Statuses:')}}</label>
                                                     <div class="col-md-12 ">
                                                         <div class="col-lg-6 col-sm-6">
                                                             <div class="form-group">
+
                                                                 <select name="hpo_status" class="form-control">
                                                                     @foreach($invoice_statuses as $invoice_status)
                                                                         <option>
@@ -399,6 +402,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                @endrole
                                             </div>
                                         </div>
                                     </div>
@@ -434,22 +438,25 @@
                                         <div class="modal-body mx-3">
                                             <div class="md-form mb-5">
                                                 {{--<i class="fas fa-user prefix grey-text"></i>--}}
-                                                <label data-error="wrong" data-success="right"
+                                                <label class="bmd-label-floating" data-error="wrong"
+                                                       data-success="right"
                                                        for="orangeForm-name">{{__('Name')}}</label>
                                                 <input type="text" id="orangeForm-name" class="form-control validate"
                                                        name="hc_name">
                                             </div>
                                             <div class="md-form mb-5">
                                                 {{--<i class="fas fa-envelope prefix grey-text"></i>--}}
-                                                <label data-error="wrong"
-                                                       data-success="right">{{__('ID Number')}}</label>
-                                                <input class="form-control validate" name="hc_user_id">
+                                                <label class="bmd-label-floating" data-error="wrong"
+                                                       data-success="right">{{__('Phone')}}</label>
+                                                <input type="number" required class="form-control validate"
+                                                       name="hc_phone">
                                             </div>
 
                                             <div class="md-form mb-4">
                                                 {{--<i class="fas fa-lock prefix grey-text"></i>--}}
-                                                <label data-error="wrong" data-success="right">{{__('Address')}}</label>
-                                                <input class="form-control validate" name="hc_address">
+                                                <label class="bmd-label-floating" data-error="wrong"
+                                                       data-success="right">{{__('Address')}}</label>
+                                                <input type="text" class="form-control validate" name="hc_address">
                                             </div>
 
                                         </div>
@@ -492,7 +499,17 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
-
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
                 $.ajax({
                     url: '/client',
                     type: 'POST',
@@ -512,7 +529,17 @@
                 var data = $("#form1").serialize();
                 event.preventDefault();
                 $.blockUI();
-
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -526,6 +553,7 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
+                        alert(data.response);
                         setTimeout($.unblockUI, 2000);
                         client_id = data.client_id;
                         order_id = data.order_id;
@@ -540,6 +568,17 @@
                 var data = $("#form2").serialize();
                 event.preventDefault();
                 $.blockUI();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -553,6 +592,7 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
+                        alert(data.response);
                         setTimeout($.unblockUI, 2000);
                     },
                     cache: false,
@@ -579,11 +619,11 @@
 
             // $('#total').text(unit_count * unit_qty);
 
-
             $('.sub-total').each(function () {
 
                 total = $(this).text();
                 $("#total").val(total);
+                $("#price").val(total);
 
             });
             append_item();
@@ -595,8 +635,8 @@
 
             $("#discount").on('change', function (event) {
                 discount = $(this).val();
-                total_discount=parseInt(discount) * parseInt(total) /100;
-                $('#total_discount').val( parseInt(total) - parseInt( total_discount) );
+                total_discount = parseInt(discount) * parseInt(total) / 100;
+                $('#total_discount').val(parseInt(total) - parseInt(total_discount));
             })
 
 

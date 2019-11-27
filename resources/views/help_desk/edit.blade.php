@@ -27,6 +27,15 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label class="bmd-label-floating">{{__('Title')}}</label>
+                                        <input required="" type="text" name="hhd_title" class="form-control" value="{{$help_desk->hhd_title}}">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Type')}}</label>
                                         <input type="text" class="form-control" name="hhd_type" value="{{$help_desk->hhd_type}}">
                                     </div>
@@ -36,8 +45,8 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="bmd-label-floating">{{__('Problem')}}</label>
-                                        <input type="text" class="form-control" name="hhd_problem" value="{{$help_desk->hhd_problem}}">
+                                        <label class="bmd-label-floating">{{__('Priority')}}</label>
+                                        <input type="text" class="form-control" name="hhd_priority" id="1" value="{{$help_desk->hhd_priority}}">
                                     </div>
 
                                 </div>
@@ -45,8 +54,9 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="bmd-label-floating">{{__('Priority')}}</label>
-                                        <input type="text" class="form-control" name="hhd_priority" id="1" value="{{$help_desk->hhd_priority}}">
+                                        <label class="bmd-label-floating">{{__('Description')}}</label>
+                                        <textarea type="text" required=""
+                                                  aria-invalid="false" class="form-control" name="hhd_problem">{{$help_desk->hhd_problem}}</textarea>
                                     </div>
 
                                 </div>
@@ -90,7 +100,7 @@
                                         <h5 class="title">Hanta IBMS</h5>
                                     </a>
                             <p class="description">
-                                Project Implementors
+                                Help Desk
                             </p>
                         </div>
                         </p>

@@ -78,23 +78,31 @@
                                                         {{$providers -> hp_account_number}}
                                                     </td>
                                                     <td>
-                                                        <a href="{{route('provider.edit',$providers->id)}}"
-                                                           class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
-                                                            <i class="tim-icons icon-pencil"></i></a>
-
-                                                        <form id="-form-delete{{$providers->id}}" style="display: none;"
-                                                              method="POST"
-                                                              action="{{route('provider.destroy',$providers->id)}}">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                        </form>
-                                                        <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove"
-                                                           onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
-                                                                   event.preventDefault();
-                                                                   document.getElementById('-form-delete{{$providers->id}}').submit();
-                                                                   }else {
-                                                                   event.preventDefault();}"><i
-                                                                    class="tim-icons icon-simple-remove"></i></a>
+                                                        <div class="dropdown">
+                                                            <button type="button"
+                                                                    class="btn btn-link dropdown-toggle btn-icon"
+                                                                    data-toggle="dropdown">
+                                                                <i class="tim-icons icon-settings-gear-63"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-right"
+                                                                 aria-labelledby="dropdownMenuLink">
+                                                                <a class="dropdown-item"
+                                                                   href="{{route('provider.edit',$providers->id)}}"
+                                                                >{{__('Edit')}}</a>
+                                                                <form id="-form-delete{{$providers->id}}"
+                                                                      style="display: none;" method="POST"
+                                                                      action="{{route('provider.destroy',$providers->id)}}">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                </form>
+                                                                <a class="dropdown-item"
+                                                                   onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
+                                                                           event.preventDefault();
+                                                                           document.getElementById('-form-delete{{$providers->id}}').submit();
+                                                                           }else {
+                                                                           event.preventDefault();}">{{__('Delete')}}</a>
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach

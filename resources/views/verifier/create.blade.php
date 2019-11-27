@@ -49,7 +49,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Verify ID')}}</label>
+                                            <label class="bmd-label-floating">{{__('Verify Name')}}</label>
                                             <select class="form-control" name="hp_verifier_id">
                                                 @foreach($verifier_id as $verify)
                                                     <option value={{$verify->id}}>{{$verify->name}}</option>
@@ -118,7 +118,17 @@
                 var data = $("#form1").serialize();
                 event.preventDefault();
                 $.blockUI();
-
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -133,6 +143,7 @@
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
+                        location.reload();
                     },
                     cache: false,
                 });

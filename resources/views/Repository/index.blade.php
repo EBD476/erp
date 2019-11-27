@@ -177,10 +177,10 @@
                                         <table class="table">
                                             <tbody>
                                             <thead>
-                                            <th><p class="title">{{__('Order ID')}}:</p></th>
-                                            <th><p class="title">{{__('Product Name')}}:</p></th>
-                                            <th><p class="title">{{__('Inventory')}}:</p></th>
-                                            <th><p class="title">{{__('Status Verify')}}:</p></th>
+                                            <th><p class="title">{{__('Order ID')}}</p></th>
+                                            <th><p class="title">{{__('Product Name')}}</p></th>
+                                            <th><p class="title">{{__('Inventory')}}</p></th>
+                                            <th><p class="title">{{__('Status Verify')}}</p></th>
                                             </thead>
                                             @foreach($orders as $item)
                                                 @if($item->hpo_status != "Approved")
@@ -219,20 +219,17 @@
                                                                                 {{--</td>--}}
                                                                                 @if($repository_selected ->hr_product_stock - $item->hpo_count >= 0 )
                                                                                     <td>
-
                                                                                         <div class="form-check ">
                                                                                             <label class="form-check-label">
                                                                                                 <input class="form-check-input checkbox"
                                                                                                        type="checkbox"
-                                                                                                       data-id="{{$item->hpo_order_id}}">
+                                                                                                       data-id="{{$item->hpo_order_id}}"
+                                                                                                        data-pid="{{$item->hpo_product_id}}">
                                                                                                 <span class="form-check-sign">
                                                                 <span class="check"></span>
                                                                 </span>
                                                                                             </label>
                                                                                         </div>
-                                                                                        <input id="product"
-                                                                                               type="hidden"
-                                                                                               value="{{$item->hpo_product_id}}">
                                                                                     </td>
                                                                                 @else()
                                                                                     <td>
@@ -261,12 +258,12 @@
 
                                                             </tbody>
                                         </table>
-                                        <div class="col-md-12">
-                                            <div class="modal-footer d-flex left">
-                                                <input id="button" type="submit"
-                                                       class="btn btn-deep-orange" value="{{__('Verify')}}">
-                                            </div>
-                                        </div>
+                                        {{--<div class="col-md-12">--}}
+                                            {{--<div class="modal-footer d-flex left">--}}
+                                                {{--<input id="button" type="submit"--}}
+                                                       {{--class="btn btn-deep-orange" value="{{__('Verify')}}">--}}
+                                            {{--</div>--}}
+                                        {{--</div>--}}
                                     </form>
                                 </div>
                             </div>
@@ -350,39 +347,39 @@
     <script src="{{asset('assets/js/plugins/datatables.min.js')}}"></script>
     <script>
         $(document).ready(function () {
-            $("#button").prop('disabled', true);
+
+            // $("#button").prop('disabled', true);
 
             // Data Table
 
 
-            $('.table1').DataTable({
-                "language": {
-                    "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
-                    "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
-                    "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
-                    "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
-                    "sInfoPostFix": "",
-                    "sInfoThousands": ",",
-                    "sLengthMenu": "نمایش _MENU_ رکورد",
-                    "sLoadingRecords": "در حال بارگزاری...",
-                    "sProcessing": "در حال پردازش...",
-                    "sSearch": "جستجو:",
-                    "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
-                    "oPaginate": {
-                        "sFirst": "ابتدا",
-                        "sLast": "انتها",
-                        "sNext": "بعدی",
-                        "sPrevious": "قبلی"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
-                        "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
-                    },
-
-                }
-            });
+            // $('.table1').DataTable({
+            //     "language": {
+            //         "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
+            //         "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+            //         "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
+            //         "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
+            //         "sInfoPostFix": "",
+            //         "sInfoThousands": ",",
+            //         "sLengthMenu": "نمایش _MENU_ رکورد",
+            //         "sLoadingRecords": "در حال بارگزاری...",
+            //         "sProcessing": "در حال پردازش...",
+            //         "sSearch": "جستجو:",
+            //         "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
+            //         "oPaginate": {
+            //             "sFirst": "ابتدا",
+            //             "sLast": "انتها",
+            //             "sNext": "بعدی",
+            //             "sPrevious": "قبلی"
+            //         },
+            //         "oAria": {
+            //             "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
+            //             "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
+            //         },
+            //
+            //     }
+            // });
             // End Data Table
-
             // Modal Form
             $("#modal_form").submit(function (event) {
                 var data = $("#modal_form").serialize();
@@ -410,17 +407,15 @@
             });
             // End Modal Form
 
-            // var dataArray = new Array();
             // pass checkbox data
             $('.checkbox').on('change', function (event) {
-                $("#button").prop('disabled', false);
+
+                // $("#button").prop('disabled', false);
                 if (event.target.checked) {
-                    var product = $('#product').val();
-                    var computing_repository_requirement = $('#computing_repository_requirement').val();
                     var data = {
                         id: $(this).data('id'),
                         state: $(this)[0].checked == true ? 3 : 2,
-                        product: product,
+                        product: $(this).data('pid'),
                         computing_repository_requirement: computing_repository_requirement,
 
                     };
@@ -459,43 +454,6 @@
 
             });
             // End data pass
-
-
-            // Pass Data to Controller
-            $("#form1").submit(function (event) {
-                // $('.checkbox').each(function () {
-                //     document.getElementById().innerHTML = id[0];
-                // }
-
-                event.preventDefault();
-                {{--$.blockUI({ message:'{{__('please wait...')}}', css: {--}}
-                {{--border: 'none',--}}
-                {{--padding: '15px',--}}
-                {{--backgroundColor: '#000',--}}
-                {{--'-webkit-border-radius': '10px',--}}
-                {{--'-moz-border-radius': '10px',--}}
-                {{--opacity: .5,--}}
-                {{--color: '#fff'}--}}
-                {{--});--}}
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                $.ajax({
-                    url: '/order-state/' + data.id,
-                    type: 'POST',
-                    data: data,
-                    dataType: 'json',
-                    async: false,
-                    success: function (data) {
-                        // setTimeout($.unblockUI, 2000);
-                    },
-                    cache: false,
-                });
-            });
-            // End Pass
         });
 
     </script>

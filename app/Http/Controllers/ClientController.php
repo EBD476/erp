@@ -37,43 +37,44 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'hc_user_id' => 'required' ,
-            'hc_account_id' => 'required' ,
-            'hc_currency_id' => 'required' ,
-            'hc_name' => 'required' ,
-            'hc_address' => 'required' ,
-            'hc_city' => 'required' ,
-            'hc_state' => 'required' ,
-            'hc_postal_code' => 'required' ,
-            'hc_country_id' => 'required' ,
-            'hc_private_notes' => 'required' ,
-            'hc_balance' => 'required' ,
-            'hc_paid_to_date' => 'required' ,
-            'hc_last_login' => 'required' ,
-            'hc_website' => 'required' ,
-            'shipping_city' => 'required' ,
-            'hc_work_phone' => 'required' ,
-            'shipping_state' => 'required' ,
-            'shipping_postal_code' => 'required' ,
-            'shipping_country_id' => 'required' ,
-            'shipping_address1' => 'required' ,
-            'shipping_address2' => 'required' ,
-            'language_id' => 'required' ,
-            'payment_terms' => 'required' ,
-            'task_rate' => 'required' ,
-            'show_tasks_in_portal' => 'required' ,
-            'public_notes' => 'required' ,
-            'invoice_number_counter' => 'required' ,
-            'size_id' => 'required' ,
-            'custom_value1' => 'required' ,
-            'custom_messages' => 'required' ,
-            'quote_number_counter' => 'required' ,
-            'credit_number_counter' => 'required' ,
-            'industry_id' => 'required' ,
-        ]);
+//        $this->validate($request,[
+////            'hc_user_id' => 'required' ,
+//            'hc_account_id' => 'required' ,
+//            'hc_currency_id' => 'required' ,
+//            'hc_name' => 'required' ,
+//            'hc_address' => 'required' ,
+//            'hc_city' => 'required' ,
+//            'hc_state' => 'required' ,
+//            'hc_postal_code' => 'required' ,
+//            'hc_country_id' => 'required' ,
+//            'hc_private_notes' => 'required' ,
+//            'hc_balance' => 'required' ,
+//            'hc_paid_to_date' => 'required' ,
+//            'hc_last_login' => 'required' ,
+//            'hc_website' => 'required' ,
+//            'shipping_city' => 'required' ,
+//            'hc_work_phone' => 'required' ,
+//            'shipping_state' => 'required' ,
+//            'shipping_postal_code' => 'required' ,
+//            'shipping_country_id' => 'required' ,
+//            'shipping_address1' => 'required' ,
+//            'shipping_address2' => 'required' ,
+//            'language_id' => 'required' ,
+//            'payment_terms' => 'required' ,
+//            'task_rate' => 'required' ,
+//            'show_tasks_in_portal' => 'required' ,
+//            'public_notes' => 'required' ,
+//            'invoice_number_counter' => 'required' ,
+//            'size_id' => 'required' ,
+//            'custom_value1' => 'required' ,
+//            'custom_messages' => 'required' ,
+//            'quote_number_counter' => 'required' ,
+//            'credit_number_counter' => 'required' ,
+//            'industry_id' => 'required' ,
+////            'hc_phone' => 'required' ,
+//
+//        ]);
         $client = new Client();
-        $client->hc_user_id= $request->hc_user_id;
         $client->vat_number= $request->vat_number;
         $client->hc_name= $request->hc_name;
         $client->hc_address= $request->hc_address;
@@ -84,6 +85,7 @@ class ClientController extends Controller
         $client->hc_private_notes= $request->hc_private_notes;
         $client->hc_balance= $request->hc_balance;
         $client->hc_paid_to_date= $request->hc_paid_to_date;
+        $client->hc_phone= $request->hc_phone;
 //        $client->hc_last_login= $request->hc_last_login;
 //        $client->hc_website= $request->first_name;
 //        $client->hc_website= $request->last_name;

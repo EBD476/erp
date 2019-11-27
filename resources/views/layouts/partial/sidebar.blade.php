@@ -6,16 +6,6 @@
 
             {{--</a>--}}
 
-
-            <li><a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-                            class="mdi mdi-gauge"></i><span
-                            class="hide-menu">{{__('Dashboard')}} </span></a>
-                <ul aria-expanded="false" class="collapse">
-                    <li><a href="{{route('home')}}">{{__('Dashboard')}}</a></li>
-                </ul>
-            </li>
-
-
             <a href="javascript:void(0)" class="simple-text logo-normal">
                 {{--H&nbsp;&nbsp;A&nbsp;&nbsp;N&nbsp;&nbsp;T&nbsp;&nbsp;A--}}
                 <small>Hanta Smart Home</small>
@@ -25,7 +15,7 @@
 
         <div class="container" style="margin-top: 20px; display: block ;padding-right: 0px;padding-left: 0">
             <div class="dropdown dropleft float-right bg-transparent" style="display: flex ">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                <button type="button" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown"
                         style="padding-right: 10px;padding-left: 160px">
                     <i class="tim-icons icon-chart-pie-36"></i>
                     {{__('Dashboard')}}
@@ -38,7 +28,7 @@
                 </div>
             </div>
             <div class="dropdown dropleft float-right bg-transparent" style="display: flex">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                <button type="button" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown"
                         style="padding-right: 10px;padding-left: 150px">
                     <i class="tim-icons icon-coins"></i>
                     {{__('Orders')}}
@@ -51,7 +41,37 @@
                 </div>
             </div>
             <div class="dropdown dropleft float-right bg-transparent" style="display: flex">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                <button type="button" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown"
+                        style="padding-right: 10px;padding-left: 150px">
+                    <i class="tim-icons icon-coins"></i>
+                    {{__('Agreement')}}
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item nav-link" href="{{ route('agreement.index') }}">
+                        <i class="tim-icons icon-coins"></i>
+                        {{__('Agreement Management')}}
+                    </a>
+                </div>
+            </div>
+            <div class="dropdown dropleft float-right bg-transparent" style="display: flex">
+                <button type="button" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown"
+                        style="padding-right: 10px;padding-left: 150px">
+                    <i class="tim-icons icon-coins"></i>
+                    {{__('Finance')}}
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item nav-link" href="{{ route('agreement.index') }}">
+                        <i class="tim-icons icon-coins"></i>
+                        {{__('tankhah')}}
+                    </a>
+                    <a class="dropdown-item nav-link" href="{{ route('agreement.index') }}">
+                        <i class="tim-icons icon-coins"></i>
+                        {{__('hazine jari')}}
+                    </a>
+                </div>
+            </div>
+            <div class="dropdown dropleft float-right bg-transparent" style="display: flex">
+                <button type="button" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown"
                         style="padding-right: 10px;padding-left: 160px">
                     <i class="tim-icons icon-app"></i>
                     {{__('Product')}}
@@ -61,13 +81,13 @@
                         <i class="tim-icons icon-app" style="size: 8px"></i>
                         {{__('Product')}}
                     </a>
-                    <a class="dropdown-item nav-link" href="{{route('products.index')}}">
-                        <i class="tim-icons icon-paper"></i>
-                        {{__('Manage Products')}}
-                    </a>
                     <a class="dropdown-item nav-link" href="{{route('repository_requirement.index')}}">
                         <i class="tim-icons icon-bullet-list-67"></i>
                         {{__('Product Requirement')}}
+                    </a>
+                    <a class="dropdown-item nav-link" href="{{route('repository-part.index')}}">
+                        <i class="tim-icons icon-paper"></i>
+                        {{__('Part Repository')}}
                     </a>
                     <a class="dropdown-item nav-link" href="{{ route('part.index')}}">
                         <i class="tim-icons icon-settings-gear-63"></i>
@@ -79,8 +99,8 @@
                     </a>
                 </div>
             </div>
-            <div class="dropdown dropleft float-right bg-transparent" style="display: flex">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+            <div class="dropdown dropleft float-right bg-transparent" style="display: flex ">
+                <button type="button" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown"
                         style="padding-right: 10px;padding-left: 160px">
                     <i class="tim-icons icon-molecule-40"></i>
                     {{__('Project')}}
@@ -88,7 +108,7 @@
                 <div class="dropdown-menu">
                     <a class="dropdown-item nav-link" href="{{ route('projects.index') }}">
                         <i class="tim-icons icon-paper"></i>
-                        {{__('Manage Projects')}}
+                        {{__('Projects Management')}}
                     </a>
                     <a class="dropdown-item nav-link" href="{{ route('map')}}">
                         <i class="tim-icons icon-square-pin"></i>
@@ -97,7 +117,7 @@
                 </div>
             </div>
             <div class="dropdown dropleft float-right bg-transparent" style="display: flex">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                <button type="button" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown"
                         style="padding-right: 10px;padding-left: 160px">
                     <i class="tim-icons icon-wallet-43"></i>
                     {{__('Repository')}}
@@ -114,7 +134,24 @@
                 </div>
             </div>
             <div class="dropdown dropleft float-right bg-transparent" style="display: flex">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                <button type="button" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown"
+                        style="padding-right: 10px;padding-left: 160px">
+                    <i class="tim-icons icon-wallet-43"></i>
+                    {{__('Install')}}
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item nav-link" href="{{Route('install.index')}}">
+                        <i class="tim-icons icon-wallet-43"></i>
+                        {{__('Install Management')}}
+                    </a>
+                    <a class="dropdown-item nav-link" href="{{Route('delivery.index')}}">
+                        <i class="tim-icons icon-wallet-43"></i>
+                        {{__('Delivery Management')}}
+                    </a>
+                </div>
+            </div>
+            <div class="dropdown dropleft float-right bg-transparent" style="display: flex">
+                <button type="button" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown"
                         style="padding-right: 10px;padding-left: 160px">
                     <i class="tim-icons icon-headphones"></i>
                     {{__('Help Desk')}}
@@ -124,23 +161,22 @@
                         <i class="tim-icons icon-headphones"></i>
                         {{__('Help Desk')}}
                     </a>
-                </div>
-            </div>
-            <div class="dropdown dropleft float-right bg-transparent" style="display: flex">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                        style="padding-right: 10px;padding-left: 160px">
-                    <i class="tim-icons icon-settings"></i>
-                    {{__('Request')}}
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item nav-link" href="{{ route('request.index') }}">
-                        <i class="tim-icons icon-settings"></i>
-                        {{__('Request')}}
+                    <a class="dropdown-item nav-link" href="{{ route('priority.index') }}">
+                        <i class="tim-icons icon-headphones"></i>
+                        {{__('Priority')}}
+                    </a>
+                    <a class="dropdown-item nav-link" href="{{ route('type.index') }}">
+                        <i class="tim-icons icon-headphones"></i>
+                        {{__('Type')}}
+                    </a>
+                    <a class="dropdown-item nav-link" href="{{ route('ticket.index') }}">
+                        <i class="tim-icons icon-headphones"></i>
+                        {{__('Ticket Status')}}
                     </a>
                 </div>
             </div>
             <div class="dropdown dropleft float-right" style="display: flex">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                <button type="button" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown"
                         style="padding-right: 10px;padding-left: 160px">
                     <i class="tim-icons icon-user-run"></i>
                     {{__('Users')}}
@@ -161,7 +197,7 @@
                 </div>
             </div>
             <div class="dropdown dropleft float-right bg-transparent" style="display: flex">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                <button type="button" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown"
                         style="padding-right: 10px;padding-left: 160px">
                     <i class="tim-icons icon-single-02"></i>
                     {{__('Client')}}
@@ -170,6 +206,19 @@
                     <a class="dropdown-item nav-link" href="{{ route('client.index') }}">
                         <i class="tim-icons icon-single-02"></i>
                         {{__('Client')}}
+                    </a>
+                </div>
+            </div>
+            <div class="dropdown dropleft float-right bg-transparent" style="display: flex">
+                <button type="button" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown"
+                        style="padding-right: 10px;padding-left: 160px">
+                    <i class="tim-icons icon-single-02"></i>
+                    {{__('Setting')}}
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item nav-link" href="{{ route('level.index') }}">
+                        <i class="tim-icons icon-single-02"></i>
+                        {{__('HNT Level')}}
                     </a>
                 </div>
             </div>

@@ -6,6 +6,7 @@ use App\address;
 use App\Client;
 use App\InvoiceStatuses;
 use App\Order;
+use App\OrderState;
 use App\Product;
 use App\Project_Type;
 use App\State;
@@ -17,7 +18,8 @@ class OrderController extends Controller
     public function index()
     {
         $order = Order::ALL();
-        return view('order.index', compact('order'));
+        $progress=OrderState::all();
+        return view('order.index', compact('order','progress'));
     }
 
     public function create()

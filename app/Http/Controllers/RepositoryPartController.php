@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Part;
+use App\RepositoryCreate;
 use App\RepositoryPart;
 use Illuminate\Http\Request;
 
 class RepositoryPartController extends Controller
 {
+    public function index()
+    {
+        $repository=RepositoryPart::ALL();
+        return view('repository_part.index',compact('repository'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -15,7 +22,9 @@ class RepositoryPartController extends Controller
      */
     public function create()
     {
-        return view('repository_part.create');
+        $part_name=Part::all();
+        $repository_name=RepositoryCreate::all();
+        return view('repository_part.create',compact('part_name','repository_name'));
     }
 
     public function store(Request $request)
@@ -30,8 +39,8 @@ class RepositoryPartController extends Controller
         $repository->hrp_repository_id = $request->hrp_repository_id;
         $repository->hrp_part_count = $request->hrp_part_count;
         $repository->save();
+        return json_encode(["response"=>"OK"]);
 
-        return redirect()->route('repositorycreate.index');
     }
 
     /**

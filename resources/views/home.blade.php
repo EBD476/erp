@@ -35,8 +35,8 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Total Projects')}}</p>
-                                    <h3 class="card-title">{{$projects->count()}}</h3>
+                                    <p class="card-category">{{__('Total Orders')}}</p>
+                                    <h3 class="card-title">{{$orders}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Total Orders')}}</p>
+                                    <p class="card-category">{{__('Order queue')}}</p>
                                     <h3 class="card-title">{{$order_req}}</h3>
                                 </div>
                             </div>
@@ -87,8 +87,8 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Total Dealerships')}}</p>
-                                    <h3 class="card-title">20</h3>
+                                    <p class="card-category">{{__('Agreement')}}</p>
+                                    <h3 class="card-title">{{$agreement}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Total Customers')}}</p>
-                                    <h3 class="card-title">300</h3>
+                                    <h3 class="card-title">{{$client}}</h3>
                                 </div>
                             </div>
                         </div>

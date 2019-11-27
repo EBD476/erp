@@ -18,7 +18,7 @@
             </li>
         </ul>
         <div class="copyright fc-ltr">
-            <a href=http://hantaibms.com>Hantaibms</a> Co. by EBD ©2018
+            <a href=http://hantaibms.com>Hantaibms</a> Co. by PGH ©2019
         </div>
     </div>
 </footer>

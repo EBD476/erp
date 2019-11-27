@@ -6,8 +6,7 @@ use App\Part;
 use App\Product;
 use App\ProductPart;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
+use carbon\carbon;
 class PartController extends Controller
 {
     public function index()
@@ -42,15 +41,16 @@ class PartController extends Controller
     {
         $this->validate($request, [
             'hp_name' => 'required',
-            'hp_code' => 'required',
             'hp_part_model' => 'required',
-            'hp_provider' => 'required',
             'hp_category_id' => 'required',
-//            'hp_produce_date' => 'required',
+            'hp_produce_date' => 'required',
         ]);
+        $current_date = Carbon::now();
+        $current_date = $current_date->year . $current_date->month . $current_date->day;
+        $code = "hnt_prt_" . $current_date ;
         $part = new Part();
         $part->hp_name = $request->hp_name;
-        $part->hp_code = $request->hp_code;
+        $part->hp_code = $code;
         $part->hp_part_model = $request->hp_part_model;
         $part->hp_provider = $request->hp_provider;
         $part->hp_category_id = $request->hp_category_id;

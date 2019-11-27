@@ -43,6 +43,14 @@ Route::group(['middleware' => ['auth']], function() {
     route::resource('repository_create','RepositoryCreateController');
     route::resource('provider','ProviderController');
     route::resource('repository-part','RepositoryPartController');
+    route::resource('agreement','AgreementController');
+    route::resource('install','InstallController');
+    route::resource('finance','FinanceController');
+    route::resource('delivery','DeliveryController');
+    route::resource('priority','HDpriorityController');
+    route::resource('type','HDtypeController');
+    route::resource('ticket','TicketStatusController');
+    route::resource('level','HNTLevelController');
     Route::post('order-state/{id}','RepositoryController@order_state')->name('repository.order_state');
     route::get('locale/{lan}', 'LanguageController@locale');
     Route::get('map', function (){
