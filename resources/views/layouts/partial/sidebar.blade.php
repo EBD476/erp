@@ -60,13 +60,17 @@
                     {{__('Finance')}}
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item nav-link" href="{{ route('agreement.index') }}">
+                    <a class="dropdown-item nav-link" href="{{ route('finance.index') }}">
                         <i class="tim-icons icon-coins"></i>
-                        {{__('tankhah')}}
+                        {{__('Finance Product')}}
                     </a>
                     <a class="dropdown-item nav-link" href="{{ route('agreement.index') }}">
                         <i class="tim-icons icon-coins"></i>
-                        {{__('hazine jari')}}
+                        {{__('Fund')}}
+                    </a>
+                    <a class="dropdown-item nav-link" href="{{ route('agreement.index') }}">
+                        <i class="tim-icons icon-coins"></i>
+                        {{__('Current cost')}}
                     </a>
                 </div>
             </div>

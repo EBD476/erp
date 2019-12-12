@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth']], function() {
     route::resource('type','HDtypeController');
     route::resource('ticket','TicketStatusController');
     route::resource('level','HNTLevelController');
+    route::resource('finance','FinanceController');
     Route::post('order-state/{id}','RepositoryController@order_state')->name('repository.order_state');
     route::get('locale/{lan}', 'LanguageController@locale');
     Route::get('map', function (){
