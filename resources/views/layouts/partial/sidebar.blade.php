@@ -60,17 +60,17 @@
                     {{__('Finance')}}
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item nav-link" href="{{ route('finance.index') }}">
+                    <a class="dropdown-item nav-link" href="{{ route('agreement.index') }}">
                         <i class="tim-icons icon-coins"></i>
                         {{__('Finance Product')}}
                     </a>
                     <a class="dropdown-item nav-link" href="{{ route('agreement.index') }}">
                         <i class="tim-icons icon-coins"></i>
-                        {{__('Fund')}}
+                        {{__('fund')}}
                     </a>
                     <a class="dropdown-item nav-link" href="{{ route('agreement.index') }}">
                         <i class="tim-icons icon-coins"></i>
-                        {{__('Current cost')}}
+                        {{__('hazine jari')}}
                     </a>
                 </div>
             </div>
@@ -230,3 +230,173 @@
 
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- Sidebar -->
+<ul class="nav">
+    <li class="nav-item ">
+        <a class="nav-link" href="{{ route('home') }}">
+            <i class="tim-icons icon-chart-pie-36" style="float: right"></i>
+            <p>{{__('Dashboard')}}</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" data-toggle="collapse" href="#componentsExamples" aria-expanded="false">
+            <i class="tim-icons icon-coins" style="float: right"></i>
+            <p>
+                {{__('Order')}}
+                <b class="caret"></b>
+            </p>
+        </a>
+        <div class="collapse" id="componentsExamples" style="">
+            <ul class="nav">
+                <li class="nav-item ">
+                    <a class="nav-link" href="{{ route('order.index') }}">
+                        {{--<span class="sidebar-mini">B</span>--}}
+                        <span class="sidebar-normal"> {{__('Order')}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#formsExamples">
+            <i class="tim-icons icon-coins" style="float: right"></i>
+            <p>
+                {{__('Agreement')}}
+                <b class="caret"></b>
+            </p>
+        </a>
+        <div class="collapse " id="formsExamples">
+            <ul class="nav">
+                <li class="nav-item ">
+                    <a class="nav-link" href="{{ route('agreement.index') }}">
+                        {{--<span class="sidebar-mini">Rf</span>--}}
+                        <span class="sidebar-normal">{{__('Agreement Management')}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#tablesExamples">
+            <i class="tim-icons icon-coins" style="float: right"></i>
+            <p>
+                {{__('Finance')}}
+                <b class="caret"></b>
+            </p>
+        </a>
+        <div class="collapse " id="tablesExamples">
+            <ul class="nav">
+                <li class="nav-item ">
+                    <a class="nav-link" href={{ route('agreement.index') }}>
+                        {{--<span class="sidebar-mini">RT</span>--}}
+                        <span class="sidebar-normal">{{__('Finance Product')}}</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="../tables/extended.html">
+                        {{--<span class="sidebar-mini">ET</span>--}}
+                        <span class="sidebar-normal">{{__('fund')}}</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="../tables/bootstrap-table.html">
+                        {{--<span class="sidebar-mini">BT</span>--}}
+                        <span class="sidebar-normal">{{__('hazine jari')}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#mapsExamples" aria-expanded="true">
+            <i class="tim-icons icon-app" style="float: right"></i>
+            <p>
+                {{__('Product')}}
+                <b class="caret"></b>
+            </p>
+        </a>
+        <div class="collapse show" id="mapsExamples" style="">
+            <ul class="nav">
+                <li class="nav-item ">
+                    <a class="nav-link" href="{{route('repository_requirement.index')}}">
+                        {{--<span class="sidebar-mini">GM</span>--}}
+                        <span class="sidebar-normal">{{__('Product Requirement')}}</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="{{Route('product.index')}}">
+                        {{--<span class="sidebar-mini">VM</span>--}}
+                        <span class="sidebar-normal">{{__('Product')}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+    <li class="nav-item ">
+        <a class="nav-link" href="../charts.html">
+            <i class="nc-icon nc-chart-bar-32" style="float: right"></i>
+            <p>Charts</p>
+        </a>
+    </li>
+    <li class="nav-item ">
+        <a class="nav-link" href="../calendar.html">
+            <i class="nc-icon nc-single-copy-04" style="float: right"></i>
+            <p>Calendar</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#pagesExamples">
+            <i class="nc-icon nc-puzzle-10" style="float: right"></i>
+            <p>
+                Pages
+                <b class="caret"></b>
+            </p>
+        </a>
+        <div class="collapse " id="pagesExamples">
+            <ul class="nav">
+                <li class="nav-item ">
+                    <a class="nav-link" href="../pages/login.html">
+                        <span class="sidebar-mini">LP</span>
+                        <span class="sidebar-normal">Login Page</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="../pages/register.html">
+                        <span class="sidebar-mini">RP</span>
+                        <span class="sidebar-normal">Register Page</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="../pages/lock.html">
+                        <span class="sidebar-mini">LSP</span>
+                        <span class="sidebar-normal">Lock Screen Page</span>
+                    </a>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link" href="../pages/user.html">
+                        <span class="sidebar-mini">UP</span>
+                        <span class="sidebar-normal">User Page</span>
+                    </a>
+                </li>
+                <li class="nav-item  ">
+                    <a class="nav-link" href="#lbd">
+                        <span class="sidebar-mini">MCS</span>
+                        <span class="sidebar-normal">More coming soon...</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+</ul>
+<!-- End of Sidebar -->

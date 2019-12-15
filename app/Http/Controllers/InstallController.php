@@ -30,6 +30,19 @@ class InstallController extends Controller
                 if (OrderProduct::where('hpo_order_id', $id)->count() == $number) {
                     OrderState::where('order_id', $id)
                         ->update(['ho_process_id' => '5']);
+                    $order=Order::Select()->where('id',$id);
+                    $current_date = Carbon::now();
+                    $current_date = $current_date->year . $current_date->month . $current_date->day;
+                    $project = New Project();
+                    $project->hp_project_name =$order->hp_project_name;
+                    $project->hp_project_owner =$order->ho_client;
+                    $project->hp_project_owner_phone =$order->hp_phone_number;
+                    $project->hp_project_type =$order->hp_owner_user;
+                    $project->hp_project_units =$order->hp_number_of_units;
+                    $project->hp_project_address =$order->hp_address;
+                    $project->hp_project_location =$order->hp_project_location;
+                    $project->hp_project_complete_date =$current_date;
+                    $project->save();
                 }
             }
 

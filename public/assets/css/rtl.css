@@ -38,4 +38,5 @@ div.dataTables_wrapper div.dataTables_filter{float: left}
 .white-content .card:not(.card-white) .card-header .card-title,
 .white-content .table>thead>tr>th{font-family: 'IRANSans',sans-serif}
 .card-title{display: flex;}
+.select2-container{width: 200px!important;}
 

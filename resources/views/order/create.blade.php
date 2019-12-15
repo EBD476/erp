@@ -209,10 +209,10 @@
                                 </form>
                             </div>
 
-                            <div role="tabpanel" class="tab-pane" id="tab2">
+                            <div role="tabpanel" class="tab-pane" id="tab2" data-lang="{{app()->getLocale()}}">
                                 <form id="form2"
                                       class="tab-content setting-tab" enctype="multipart/form-data">
-                                    <table class="table invoice-table product-table" style="direction: ltr">
+                                    <table class="table invoice-table product-table" style="direction: ltr" id="table2">
                                         <thead>
                                         <tr>
                                             <th style="min-width:32px;" class="hide-border"></th>
@@ -486,6 +486,8 @@
         var total;
         var discount;
         var total_discount;
+        var remove  = 0;
+
         $(document).ready(function () {
             var client_id;
             var order_id;
@@ -599,9 +601,11 @@
                 });
             });
 
+            var locale = $("#tab2").data('lang');
+
             $(".select-item").select2({
                 theme: "bootstrap",
-                placeholder: '{{__('Select Product')}}',
+                placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
                 // allowClear: true
 
             });
@@ -622,8 +626,10 @@
             $('.sub-total').each(function () {
 
                 total = $(this).text();
-                $("#total").val(total);
-                $("#price").val(total);
+                if (total != "") {
+                    $("#total").val(total);
+                    $("#price").val(total);
+                }
 
             });
             append_item();
@@ -631,6 +637,17 @@
             $(".qty").on('change', function (event) {
                 unit_qty = $(this).val();
                 $('#total').text(1000 * unit_qty);
+
+                total = 0;
+                $('.sub-total').each(function () {
+
+                    current = $(this).text();
+                    if (current != "") {
+                        total = total + parseInt(current);
+                        $("#total").val(total);
+                    }
+
+                });
             });
 
             $("#discount").on('change', function (event) {
@@ -638,7 +655,6 @@
                 total_discount = parseInt(discount) * parseInt(total) / 100;
                 $('#total_discount').val(parseInt(total) - parseInt(total_discount));
             })
-
 
             function append_item() {
 
@@ -668,7 +684,7 @@
                     '\n' +
                     '                                        </td>\n' +
                     '                                        <td>\n' +
-                    '                                            <input type="text" id="unit" class="form-control"\n' +
+                    '                                            <input disabled type="text" id="unit" class="form-control"\n' +
                     '                                                   name="hp_product_price[]">\n' +
                     '                                        </td>\n' +
                     '                                        <td style="display:table-cell">\n' +
@@ -720,19 +736,46 @@
                     '                                    </tr>');
 
 
-                $(".select-item").select2({
-                    theme: "bootstrap"
-                });
+                var locale = $("#tab2").data('lang');
 
                 $(".select-item").select2({
-                    placeholder: '{{__('select product')}}',
-                    allowClear: true
+                    theme: "bootstrap",
+                    placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
+                    // allowClear: true
+
                 });
+
 
                 $(".remove").click(function () {
 
-                    $(this).parent().parent().remove();
+
+                    // alert(3)
+
+
+                    var rowCount = $('#table2 tr').length;
+                    if (rowCount > 2) {
+                        // $('.sub-total').each(function () {
+                        //     current = $(this).text();
+                        //     if (current != "") {
+                        //         total = total - parseInt(current);
+                        //         $("#total").val(total);
+                        //     }
+                        // });
+
+
+
+                        if (remove == 0) {
+                            total = total - parseInt($(this).parent().parent().find('.sub-total').text());
+                            $("#total").val(total);
+                            remove += 1;
+
+                        }
+                         $(this).parent().parent().remove();
+                        remove = 0;
+
+                    }
                 });
+
                 $(".select-item").on('change', function (event) {
 
                     $(this).parent().parent().find("input[name='hp_product_price[]']").val($(this).find("option[value='" + $(this).val() + "']").data('price'));
@@ -743,16 +786,18 @@
                     unit_qty = $(this).parent().parent().find("input[name='invoice_items_qty[]']").val();
                     $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
 
-                    total = 0;
-                    $('.sub-total').each(function () {
-
-                        current = $(this).text();
-                        total = total + parseInt(current);
-                        $("#total").val(total);
-
-                    });
 
                     append_item();
+                });
+
+                total = 0;
+                $('.sub-total').each(function () {
+
+                    current = $(this).text();
+                    if (current != "") {
+                        total = total + parseInt(current);
+                        $("#total").val(total);
+                    }
                 });
 
                 $(".qty").on('change', function (event) {
@@ -761,6 +806,15 @@
                     unit_qty = $(this).val();
                     $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
 
+                    total = 0;
+                    $('.sub-total').each(function () {
+
+                        current = $(this).text();
+                        if (current != "") {
+                            total = total + parseInt(current);
+                            $("#total").val(total);
+                        }
+                    });
 
                 });
 
@@ -803,9 +857,19 @@
         }
 
         $(".remove").click(function () {
-
-            $(this).parent().parent().remove();
+            var rowCount = $('#table2 tr').length;
+            if (rowCount > 2) {
+                $('.sub-total').each(function () {
+                    current = $(this).text();
+                    if (current != "") {
+                        total = total - parseInt(current);
+                        $("#total").val(total);
+                    }
+                });
+                $(this).parent().parent().remove();
+            }
         });
+
 
         map.on('click', onMapClick);
     </script>
