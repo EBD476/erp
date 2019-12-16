@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
-@section('title',__('Help Desk'))
+@section('title',__('Response Support Request'))
 
 @push('css')
-
+    <link href="{{ asset('assets/css/leaflet.css') }}" rel="stylesheet">
+    <link href="{{asset('assets/css/kamadatepicker.min.css')}}" rel="stylesheet"/>
 @endpush
 
 @section('content')
@@ -11,105 +12,88 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-12">
-                    @include('layouts.partial.Msg')
-                </div>
+                {{--<div class="col-md-12">--}}
+                {{--@include('layouts.partial.Msg')--}}
+                {{--</div>--}}
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header card-header-primary">
-                            <h4 class="card-title ">{{__('Help Desk')}}</h4>
+                            <h4 class="card-title ">{{__('Send Response')}}</h4>
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
-                            <form id="form1" enctype="multipart/form-data">
+                            <form id="form1">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Title')}}</label>
-                                            <input required="" type="text" name="hhd_title" class="form-control">
+                                            <label>{{__('Project Name')}}</label>
+                                            <input  rows="4" cols="80"
+                                                    class="form-control"  disabled
+                                                    value="{{$project->hp_project_name}}">
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{__('Project Owner')}}</label>
+                                            <input  rows="4" cols="80"
+                                                    class="form-control"  disabled
+                                                    value="{{$project->hp_project_owner}}">
+                                        </div>
+                                    </div>
+                                </div>
 
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{__('Project Owner Phone')}}</label>
+                                            <input  rows="4" cols="80"
+                                                    class="form-control"  disabled
+                                                    value="{{$project->hp_project_owner_phone}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{__('Project Type')}}</label>
+                                            <input rows="4" cols="80"
+                                                   class="form-control"  disabled
+                                                   value="{{$project_type->hp_name}}">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Type')}}</label>
-                                            <select class="form-control" name="hhd_type">
-                                                @foreach($type as $types)
-                                                    <option value="{{$types->id}}">
-                                                        {{$types->th_name}}
-                                                    </option>
-                                                @endforeach
-                                            </select>
+                                            <label>{{__('Project Address')}}</label>
+                                            <input rows="4" cols="80"
+                                                   class="form-control" id="hp_project_id" disabled
+                                                   value="{{$project->hp_project_address}}">
                                         </div>
-
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{__('Project Description')}}</label>
+                                            <textarea name="hs_description" rows="4" cols="80"
+                                                      class="form-control" id="request_id"
+                                                      disabled data-id="{{$request->id}}">{{$request->hs_description}}</textarea>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Priority')}}</label>
-                                            <select class="form-control" name="hhd_priority">
-                                                @foreach($priority as $priorities)
-                                                    <option value="{{$priorities->id}}">
-                                                        {{$priorities->hdp_name}}
-                                                    </option>
-                                                @endforeach
-                                            </select>
+                                            <label>{{__('Support Response')}}</label>
+                                            <textarea name="hs_description" rows="4" cols="80"
+                                                      class="form-control" id="hs_response"
+                                            ></textarea>
                                         </div>
-
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Ticket Status')}}</label>
-                                            <select class="form-control" name="hhd_ticket_status">
-                                                @foreach($ticket as $tickets)
-                                                    <option value="{{$tickets->id}}">
-                                                        {{$tickets->ts_name}}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Description')}}</label>
-                                            <textarea type="text" required=""
-                                                      aria-invalid="false" class="form-control" name="hhd_problem"></textarea>
-                                        </div>
-
                                     </div>
                                 </div>
 
-                                {{--<div class="row">--}}
-                                {{--<div class="col-md-6">--}}
-                                {{--<div class="form-group">--}}
-                                {{--<label class="bmd-label-floating">{{__('File Atach')}}</label>--}}
-                                {{--<input type="file" class="form-control" name="hhd_file_atach">--}}
-                                {{--</div>--}}
-
-                                {{--</div>--}}
-                                {{--</div>--}}
-                                {{--<div class="row">--}}
-                                {{--<div class="col-md-6">--}}
-                                {{--<div class="form-group">--}}
-                                {{--<label class="bmd-label-floating">{{__('Verify')}}</label>--}}
-                                {{--<input type="checkbox" class="form-control" name="hhd_verify">--}}
-                                {{--</div>--}}
-
-                                {{--</div>--}}
-                                {{--</div>--}}
-                                <a href="{{route('help_desk.index')}}" class="btn badge-danger">{{__('Back')}}</a>
-                                <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                </div>
                             </form>
                         </div>
-
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -125,9 +109,7 @@
                                         {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
                                         <h5 class="title">Hanta IBMS</h5>
                                     </a>
-                            <p class="description">
-                               Help Desk
-                            </p>
+
                         </div>
                         </p>
                         <div class="card-description">
@@ -155,11 +137,17 @@
 @endsection
 
 @push('scripts')
+    <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
+    <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script>
         $(document).ready(function () {
             $("#form1").submit(function (event) {
-                var data = $("#form1").serialize();
+                var data =
+                    {
+                        id:$('#request_id').data('id'),
+                        response : $('#hs_response').val(),
+                    }
                 event.preventDefault();
                 $.blockUI();
                 $.blockUI({
@@ -180,10 +168,11 @@
                 });
 
                 $.ajax({
-                    url: '/help_desk',
+                    url: '/show_data/'+data.id,
                     type: 'POST',
                     data: data,
                     dataType: 'json',
+                    method:'PUT',
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
@@ -191,7 +180,7 @@
                     cache: false,
                 });
             });
-        });
+        })
+        ;
     </script>
-
 @endpush

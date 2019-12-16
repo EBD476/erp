@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Project;
 use App\Project_State;
 use App\Project_Type;
+use App\Support;
+use App\SupportStatus;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Compound;
 
@@ -14,29 +16,31 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::all();
-        return view('projects.index',compact('projects'));
+        return view('projects.index', compact('projects'));
     }
 
-    public function create() {
-        $projects_type=Project_Type::ALL();
-        $projects=Project_State::ALL();
-        return view('projects.create',compact('projects','projects_type'));
+    public function create()
+    {
+        $projects_type = Project_Type::ALL();
+        $projects = Project_State::ALL();
+        return view('projects.create', compact('projects', 'projects_type'));
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
 
-        $this->validate($request,[
-            'project_name' => 'required' ,
-            'project_owner' => 'required' ,
-            'owner_phone' => 'required' ,
-            'project_type' => 'required' ,
-            'project_units' => 'required' ,
-            'project_address' => 'required' ,
-            'project_location' => 'required' ,
+        $this->validate($request, [
+            'project_name' => 'required',
+            'project_owner' => 'required',
+            'owner_phone' => 'required',
+            'project_type' => 'required',
+            'project_units' => 'required',
+            'project_address' => 'required',
+            'project_location' => 'required',
 //            'project_options' => 'required' ,
-            'project_completed' => 'required' ,
-            'project_complete_date' => 'required' ,
-            'project_description' => 'required' ,
+            'project_completed' => 'required',
+            'project_complete_date' => 'required',
+            'project_description' => 'required',
         ]);
 
         $Project = new Project();
@@ -53,38 +57,41 @@ class ProjectController extends Controller
         $Project->hp_project_description = $request->project_description;
         $Project->save();
 
-        return json_encode(["response"=>"OK"]);
+        return json_encode(["response" => "OK"]);
 
     }
 
-    public function show($id) {
+    public function show($id)
+    {
 
     }
 
-    public function edit($id) {
-        $projects_state=Project_State::all();
-        $projects_type=Project_Type::ALL();
-        $project=Project::find($id);
-        return view('projects.edit',compact('project','projects_type','projects_state'));
+    public function edit($id)
+    {
+        $projects_state = Project_State::all();
+        $projects_type = Project_Type::ALL();
+        $project = Project::find($id);
+        return view('projects.edit', compact('project', 'projects_type', 'projects_state'));
 
     }
 
-    public function update(Request $request, $id) {
-        $this->validate($request,[
-            'project_name' => 'required' ,
-            'project_owner' => 'required' ,
-            'owner_phone' => 'required' ,
-            'project_type' => 'required' ,
-            'project_units' => 'required' ,
-            'project_address' => 'required' ,
-            'project_location' => 'required' ,
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'project_name' => 'required',
+            'project_owner' => 'required',
+            'owner_phone' => 'required',
+            'project_type' => 'required',
+            'project_units' => 'required',
+            'project_address' => 'required',
+            'project_location' => 'required',
 //            'project_options' => 'required' ,
-            'project_completed' => 'required' ,
-            'project_complete_date' => 'required' ,
-            'project_description' => 'required' ,
+            'project_completed' => 'required',
+            'project_complete_date' => 'required',
+            'project_description' => 'required',
         ]);
 
-        $Project =Project::find($id);
+        $Project = Project::find($id);
         $Project->hp_project_name = $request->project_name;
         $Project->hp_project_owner = $request->project_owner;
         $Project->hp_project_owner_phone = $request->owner_phone;
@@ -102,9 +109,28 @@ class ProjectController extends Controller
 
     public function destroy($id)
     {
-        $Project=Project::find($id);
+        $Project = Project::find($id);
         $Project->delete();
         return redirect()->back();
+
+    }
+    public function send_request($id)
+    {
+        $request_support = Project::find($id);
+        return view('projects.support_request',compact('request_support'));
+    }
+    public function support_request(Request $request)
+    {
+        $request_support =new Support();
+        $request_support->hs_project_id = $request->id;
+        $request_support->hs_status =1;
+        $request_support->hs_description = $request->description;
+        $request_support->save();
+        $sequence=SupportStatus::select('id')->where('hss_sequence','1')->first();
+
+        Project::where('id', $request->id)
+            ->update(['hp_status' => $sequence->id]);
+        return json_encode(["response" => "OK"]);
 
     }
 

@@ -96,6 +96,9 @@
                                                     <div class="dropdown-menu dropdown-menu-right"
                                                          aria-labelledby="dropdownMenuLink">
                                                         <a class="dropdown-item"
+                                                           href="{{route('projects.send_request',$project->id)}}"
+                                                        >{{__('Send Request')}}</a>
+                                                        <a class="dropdown-item"
                                                            href="{{route('projects.edit',$project->id)}}"
                                                         >{{__('Edit')}}</a>
                                                         <form id="-form-delete{{$project->id}}"

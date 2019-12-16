@@ -34,6 +34,7 @@ class InstallController extends Controller
                     $current_date = Carbon::now();
                     $current_date = $current_date->year . $current_date->month . $current_date->day;
                     $project = New Project();
+                    $project->hp_order_id =$id;
                     $project->hp_project_name =$order->hp_project_name;
                     $project->hp_project_owner =$order->ho_client;
                     $project->hp_project_owner_phone =$order->hp_phone_number;

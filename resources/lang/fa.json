@@ -309,7 +309,7 @@
   "Repository Name":"نام انبار",
   "Agreement":"قرارداد ها",
   "Agreement Management":"مدیریت قراردادها",
-  "Projects Management":"مدیریت روژه ها",
+  "Projects Management":"مدیریت پروژه ها",
   "Invoice Num":"شماره فاکتور",
   "Agreement Number":"شماره قرارداد",
   "Agreement List":"لیست قراردادها",
@@ -332,7 +332,25 @@
   "Finance Product":"پرداخت مشتریان",
   "Fund":"تنخواه",
   "Current cost":"هزینه جاری",
-  "Paid Code":"شناسه پرداخت"
+  "Paid Code":"شناسه پرداخت",
+  "Support":"پشتیبانی",
+  "Support List":"لیست پشتیبانی",
+  "Support Status":"وضعیت پشتیبانی",
+  "New Support Status":"اضافه کردن وضعیت پشتیبانی",
+  "Support Status List":"لیست وضعیت پشتیبانی",
+  "Support Status Name":"نام وضعیت پشتیبانی",
+  "Status Name":"نام وضعیت",
+  "Edit Support Status":"ویرایش وضعیت پشتیبانی",
+  "Support Request":"درخواست های پشتیبانی",
+  "Send Request":"ارسال درخواست",
+  "Show":"نمایش اطلاعات درخواست",
+  "Response Support Request":"پاسخ به درخواست پشتیبانی",
+  "Send Response":"ارسال پاسخ",
+  "All Support Request List":"لیست تمامی درخواست ها",
+  "Project Owner":"مالک پروژه",
+  "Project Owner Phone":"تلفن مالک پروژه",
+  "Support Response":"پاسخ پشتیبانی"
+
 
 
 
