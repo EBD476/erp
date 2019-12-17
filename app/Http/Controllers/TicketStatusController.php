@@ -14,8 +14,11 @@ class TicketStatusController extends Controller
      */
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $ticket=TicketStatus::ALL();
-        return view('ticket_status.index',compact('ticket'));
+        return view('ticket_status.index',compact('ticket','help_desk','priority','type'));
     }
 
     /**
@@ -25,7 +28,10 @@ class TicketStatusController extends Controller
      */
     public function create()
     {
-        return view('ticket_status.create',compact('ticket'));
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        return view('ticket_status.create',compact('ticket','help_desk','priority','type'));
     }
 
     /**
@@ -64,8 +70,11 @@ class TicketStatusController extends Controller
      */
     public function edit(TicketStatus $ticketStatus)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $ticket=TicketStatus::find($ticketStatus);
-        return view('ticket_status.edit',compact('ticket'));
+        return view('ticket_status.edit',compact('ticket','help_desk','priority','type'));
     }
 
     /**

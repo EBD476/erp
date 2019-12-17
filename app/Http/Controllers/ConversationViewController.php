@@ -14,7 +14,10 @@ class ConversationViewController extends Controller
      */
     public function index()
     {
-        //
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+
     }
 
     /**
@@ -24,7 +27,10 @@ class ConversationViewController extends Controller
      */
     public function create()
     {
-        //
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+
     }
 
     /**
@@ -57,7 +63,9 @@ class ConversationViewController extends Controller
      */
     public function edit(ConversationView $conversationView)
     {
-        //
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
     }
 
     /**

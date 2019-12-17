@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet"/>
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 
-    {{--<link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">--}}
+{{--    <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">--}}
     <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/style.min.css') }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-rtl/3.4.0/css/bootstrap-rtl.css" rel="stylesheet"/>
@@ -52,7 +52,7 @@
 <script src="{{ asset('assets/js/app.js') }}" defer></script>
 <script src="{{asset('assets/js/core/jquery.min.js')}} "></script>
 {{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>--}}
-<script type="text/javascript" src="{{asset('assets/js/plugins/perfect-scrollbar.jquery.min.js')}}"></script>
+{{--<script type="text/javascript" src="{{asset('assets/js/plugins/perfect-scrollbar.jquery.min.js')}}"></script>--}}
 <script src="{{asset('assets/js/plugins/popper.min.js')}} "></script>
 <script src="{{asset('assets/js/core/bootstrap.min.js')}} "></script>
 <script>

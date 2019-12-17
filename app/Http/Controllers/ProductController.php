@@ -15,6 +15,9 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $products = Product::all();
         return view('products.index',compact('products'));
     }
@@ -35,6 +38,9 @@ class ProductController extends Controller
      */
     public function create()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         return view('products.create');
     }
 
@@ -75,6 +81,9 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $product=Product::find($id);
         return view('products.edit',compact('product'));
 

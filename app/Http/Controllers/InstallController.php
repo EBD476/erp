@@ -11,9 +11,12 @@ class InstallController extends Controller
 {
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $product=Product::all();
         $invoice_status=DB::select("SELECT hpo_order_id,hp_Invoice_number,hp_project_name,hpo_product_id,hpo_count,hop_due_date,hpo_client_id FROM hnt_invoices , hnt_invoice_items WHERE hnt_invoices.hp_contract_type ='نصب در محل' and   hnt_invoice_items.hpo_status = '4' group by hnt_invoice_items.hpo_order_id ");
-        return view('install.index',['invoice_status'=>$invoice_status],compact('product'));
+        return view('install.index',['invoice_status'=>$invoice_status],compact('product','help_desk','priority','type'));
     }
 //    store data
     public function update(Request $request, $id)

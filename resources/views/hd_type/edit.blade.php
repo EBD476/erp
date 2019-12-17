@@ -25,7 +25,7 @@
                                         <div class="form-group">
                                             <label>{{__('Name')}}</label>
                                             <input name="th_name" type="text" class="form-control" required=""
-                                                   aria-invalid="false">
+                                                   aria-invalid="false" data-id="{{$types->id}}">
                                         </div>
                                     </div>
                                 </div>
@@ -88,7 +88,7 @@
                     }
                 });
                 $.ajax({
-                    url: '/type'+id,
+                    url: '/type'+data.id,
                     type: 'POST',
                     data: data,
                     dataType: 'json',

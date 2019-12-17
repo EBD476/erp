@@ -41,6 +41,9 @@
                                                 {{__('Priority')}}
                                             </th>
                                             <th>
+                                                {{__('Status')}}
+                                            </th>
+                                            <th>
                                                 {{__('Create At')}}
                                             </th>
                                             <th>
@@ -50,6 +53,7 @@
                                             <tbody>
 
                                             @foreach($help_desk as $key => $help_desk)
+                                                @if(auth()->user()->id == $help_desk ->hhd_request_user_id or auth()->user()->name == 'admin')
                                                 <tr>
                                                     <td>
                                                         {{$key + 1}}
@@ -63,11 +67,15 @@
                                                     <td>
                                                         {{$help_desk -> hhd_periority}}
                                                     </td>
+                                                    @foreach($ticket_status as $ticket_statuses)
+                                                        @if($ticket_statuses->id == $help_desk->hhd_ticket_status)
+                                                    <td>
+                                                        {{$ticket_statuses->ts_name}}
+                                                    </td>
+                                                        @endif
+                                                    @endforeach
                                                     <td>
                                                         {{$help_desk -> created_at}}
-                                                    </td>
-                                                    <td>
-                                                        {{$help_desk ->hhd_ticket_status}}
                                                     </td>
                                                     <td>
                                                         <div class="dropdown">
@@ -97,6 +105,7 @@
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                @endif
                                             @endforeach
                                             </tbody>
                                         </table>

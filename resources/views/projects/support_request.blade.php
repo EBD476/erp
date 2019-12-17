@@ -28,11 +28,21 @@
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
+                                            <label>{{__('Request Title')}}</label>
+                                            <input name="hp_project_name" rows="4" cols="80"
+                                                   class="form-control" id="title"
+                                                   value="{{$request_support->hs_title}}"
+                                                   >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
                                             <label>{{__('Project Name')}}</label>
                                             <input name="hp_project_name" rows="4" cols="80"
-                                                   class="form-control" id="hp_project_id" disabled
-                                                   value="{{$request_support->hp_project_name}}"
-                                                   data-id="{{$request_support->id}}">
+                                                   class="form-control" id="hp_project_id" data-id="{{$request_support->id}}" disabled
+                                                   value="{{$request_support->hp_project_name}}">
                                         </div>
                                     </div>
                                 </div>
@@ -181,6 +191,7 @@
                     {
                         id: $("#hp_project_id").data('id'),
                         description :  $("#hs_description").val(),
+                        title: $("#title").val(),
                     }
             event.preventDefault();
             $.blockUI();

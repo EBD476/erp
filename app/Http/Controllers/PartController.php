@@ -11,6 +11,9 @@ class PartController extends Controller
 {
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $product=Product::all();
         $product_part=ProductPart::all();
         $part = Part::all();
@@ -34,6 +37,9 @@ class PartController extends Controller
      */
     public function create()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         return view('part.create');
     }
 
@@ -75,6 +81,9 @@ class PartController extends Controller
      */
     public function edit($id)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $part=Part::find($id);
         return view('part.edit',compact('part'));
 

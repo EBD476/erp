@@ -118,6 +118,7 @@ class PermissionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
+        DD('e');
         $permission = Permission::findOrFail($id);
 
         //Make it impossible to delete this specific permission

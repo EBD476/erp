@@ -10,7 +10,10 @@ class HDtypeController extends Controller
     public function index()
     {
         $type=HDtype::all();
-        return view('hd_type.index',compact('type'));
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $types=HDtype::all();
+        return view('hd_type.index',compact('type','help_desk','priority','type','types'));
     }
 
     /**

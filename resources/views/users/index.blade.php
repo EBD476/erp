@@ -35,8 +35,8 @@
                                             <th>{{__('Name')}}</th>
                                             <th>{{__('Username')}}</th>
                                             <th>{{__('Code')}}</th>
-                                            <th>{{__('Date/Time Created')}}</th>
-                                            <th>{{__('User Roles')}}</th>
+                                            {{--<th>{{__('Date/Time Created')}}</th>--}}
+                                            {{--<th>{{__('User Roles')}}</th>--}}
                                             <th>{{__('Operations')}}</th>
                                         </tr>
                                         </thead>
@@ -48,8 +48,8 @@
                                                 <td>{{ $user->name }}</td>
                                                 <td>{{ $user->username }}</td>
                                                 <td>{{ $user->device_id }}</td>
-                                                <td>{{ $user->created_at->format('F d, Y') }}</td>
-                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
+{{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
+{{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
                                                 <td>
                                                     <a href="{{ route('users.edit', $user->id) }}"
                                                        class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">

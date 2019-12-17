@@ -42,7 +42,7 @@
                                             </thead>
                                             <tbody>
 
-                                            @foreach($type as $key => $types)
+                                            @foreach($types as $key => $types)
                                                 <tr>
                                                     <td>
                                                         {{$types ->id}}

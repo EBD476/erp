@@ -9,8 +9,11 @@ class AgreementController extends Controller
 {
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $agreement = Agreement::all();
-        return view('agreement.index',compact('agreement'));
+        return view('agreement.index',compact('agreement','help_desk','priority','type'));
     }
 
 
@@ -38,8 +41,11 @@ class AgreementController extends Controller
      */
     public function edit($id)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $agreement = Agreement::find($id);
-        return view('agreement.edit',compact('agreement'));
+        return view('agreement.edit',compact('agreement','help_desk','priority','type'));
 
 
     }

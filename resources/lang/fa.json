@@ -349,7 +349,23 @@
   "All Support Request List":"لیست تمامی درخواست ها",
   "Project Owner":"مالک پروژه",
   "Project Owner Phone":"تلفن مالک پروژه",
-  "Support Response":"پاسخ پشتیبانی"
+  "Support Response":"پاسخ پشتیبانی",
+  "User Name:":"نام کاربری :",
+  "Show Response Detail":"نمایش جزییات پاسخ",
+  "Request User Name":"نام کاربری درخواست دهنده",
+  "Response User Name":"نام کاربری پاسخ دهنده",
+  "Show Response List":"نمایش لیست پاسخ ها",
+  "Support Response List":"لیست پاسخ های پشتیبانی",
+  "Show Response":"نمایش اطلاعات پاسخ",
+  "Responded To Your Request":"به درخواست ",
+  "Responded":"شما پاسخ داده است",
+  "Request Title":"عنوان درخواست",
+  "Receiver":"گیرنده",
+  "Receiver Page":"صفحه گیرنده",
+  "show Message":"نمایش پیام",
+  "You Have One Ticket":"شما یک بسته",
+  "From":"از",
+  "H":"دارید"
 
 
 

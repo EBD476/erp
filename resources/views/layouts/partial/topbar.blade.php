@@ -31,38 +31,72 @@
                         <span class="d-lg-none d-md-block">Search</span>
                     </button>
                 </li>
-                {{--<li class="dropdown nav-item">--}}
-                {{--<a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">--}}
-                {{--<div class="notification d-none d-lg-block d-xl-block"></div>--}}
-                {{--<i class="tim-icons icon-sound-wave"></i>--}}
-                {{--<p class="d-lg-none">--}}
-                {{--Notifications--}}
-                {{--</p>--}}
-                {{--</a>--}}
-                {{--<ul class="dropdown-menu dropdown-menu-right dropdown-navbar">--}}
-                {{--<li class="nav-link">--}}
-                {{--<a href="#" class="nav-item dropdown-item">Mike John responded to your email</a>--}}
-                {{--</li>--}}
-                {{--<li class="nav-link">--}}
-                {{--<a href="javascript:void(0)" class="nav-item dropdown-item">You have 5 more tasks</a>--}}
-                {{--</li>--}}
-                {{--<li class="nav-link">--}}
-                {{--<a href="javascript:void(0)" class="nav-item dropdown-item">Your friend Michael is in town</a>--}}
-                {{--</li>--}}
-                {{--<li class="nav-link">--}}
-                {{--<a href="javascript:void(0)" class="nav-item dropdown-item">Another notification</a>--}}
-                {{--</li>--}}
-                {{--<li class="nav-link">--}}
-                {{--<a href="javascript:void(0)" class="nav-item dropdown-item">Another one</a>--}}
-                {{--</li>--}}
-                {{--</ul>--}}
-                {{--</li>--}}
+                <li class="dropdown nav-item">
+                    <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                        <div class="notification d-none d-lg-block d-xl-block"></div>
+                        <i class="tim-icons icon-sound-wave"></i>
+                        <p class="d-lg-none">
+                            Notifications
+                        </p>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
+
+                        <li class="nav-link"><a href="{{route('projects.show_all_response')}}"
+                                                class="nav-item dropdown-item">{{__('Support Response List')}}</a></li>
+                        @foreach($support_response as $responses)
+                                @if($responses->hs_request_user_id == auth()->user()->id)
+                                    <li class="nav-link">
+                                        <a href="{{route('projects.show_response',$responses->id)}}"
+                                           class="nav-item dropdown-item">
+
+                                            {{auth()->user()->name}}
+
+                                            {{__('Responded To Your Request')}}
+
+                                            {{$responses->hs_title}}
+
+                                            {{__('Responded')}}
+                                        </a>
+                                    </li>
+                                @endif
+                        @endforeach
+
+                        @foreach($help_desk as $help_desks)
+                            @if($help_desks->hhd_receiver_user_id == auth()->user()->id)
+                                <li class="nav-link">
+                                    <a href="{{route('help_desk.receive_show',$help_desks->id)}}"
+                                       class="nav-item dropdown-item">
+                                        {{__('You Have One Ticket')}}
+                                        @foreach($type as $types)
+                                            @if($types->id == $help_desks->hhd_type)
+                                                {{$types->th_name}}
+                                            @endif
+                                        @endforeach
+                                        @foreach($priority as $priorities)
+                                            @if($priorities->id == $help_desks->hhd_priority)
+                                                {{$priorities->hdp_name}}
+                                            @endif
+                                        @endforeach
+                                        {{__('From')}}
+                                        {{auth()->user()->name}}
+                                        {{__('H')}}
+                                    </a>
+                                </li>
+                            @endif
+                        @endforeach
+                        {{--<li class="nav-link"><a href="javascript:void(0)" class="nav-item --}}
+                        {{--dropdown-item">Another notification</a></li>--}}
+                        {{--<li class="nav-link"><a href="javascript:void(0)" class="nav-item --}}
+                        {{--dropdown-item">Mike John responded to your email</a></li>--}}
+                        {{--<li class="nav-link"><a href="javascript:void(0)" class="nav-item --}}
+                        {{--dropdown-item">Another one</a></li>--}}
+                    </ul>
+                </li>
                 <li class="dropdown nav-item">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <div class="photo">
                             <img src="{{asset('assets/images/user.jpg')}}" alt="Profile Photo">
                         </div>
-                        {{auth()->user()->username}}
                         <b class="caret d-none d-lg-block d-xl-block"></b>
                         <p class="d-lg-none">
                             Log out

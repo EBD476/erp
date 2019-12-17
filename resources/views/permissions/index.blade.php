@@ -48,7 +48,7 @@
                                                         @method('DELETE')
                                                     </form>
                                                     <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove"
-                                                       onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
+                                                       onclick="if(confirm('آیا از حذف این مجوز اطمینان دارید؟')){
                                                                event.preventDefault();
                                                                document.getElementById('-form-delete{{$permission->id}}').submit();
                                                                }else {

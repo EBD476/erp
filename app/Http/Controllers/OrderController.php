@@ -17,6 +17,9 @@ class OrderController extends Controller
 {
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $order = Order::ALL();
         $progress=OrderState::all();
         return view('order.index', compact('order','progress'));
@@ -24,6 +27,9 @@ class OrderController extends Controller
 
     public function create()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $invoice_statuses=InvoiceStatuses::ALL();
         $client = Client::all();
         $project_type = Project_Type::all();
@@ -76,6 +82,9 @@ class OrderController extends Controller
 
     public function edit($id)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $order = Order::find($id);
         return view('order.edit', compact('order'));
     }
@@ -131,6 +140,9 @@ class OrderController extends Controller
 
     public function preview(Request $request)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $data = $request;
         return view('order.preview', compact('data'));
     }

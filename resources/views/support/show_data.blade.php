@@ -26,6 +26,28 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
+                                            <label>{{__('Request User Name')}}</label>
+                                            @foreach($user as $users)
+                                                @if($users->id == $request->hs_request_user_id)
+                                                    <input rows="4" cols="80"
+                                                           class="form-control" disabled
+                                                           value="{{$users->name}}">
+                                                @endif
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{__('Response User Name')}}</label>
+                                            <input rows="4" cols="80"
+                                                   class="form-control" disabled
+                                                   value={{auth()->user()->name}}>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
                                             <label>{{__('Project Name')}}</label>
                                             <input  rows="4" cols="80"
                                                     class="form-control"  disabled

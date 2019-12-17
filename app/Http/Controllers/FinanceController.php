@@ -18,8 +18,11 @@ class FinanceController extends Controller
      */
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $order = DB::select("SELECT hpo_order_id,hp_project_name FROM hnt_invoices , hnt_invoice_items WHERE hnt_invoice_items.hpo_status = '2' group by hnt_invoice_items.hpo_order_id ");
-        return view('finance.index', compact('order'));
+        return view('finance.index', compact('order','help_desk','priority','type'));
     }
 
     /**

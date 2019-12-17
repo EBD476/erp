@@ -58,6 +58,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('send_request/{id}','ProjectController@send_request')->name('projects.send_request');
     Route::get('show_data/{id}','SupportController@show_data')->name('support.show_data');
     Route::get('show','SupportController@show')->name('support.show');
+    Route::get('show_response/{id}','ProjectController@show_response')->name('projects.show_response');
+    Route::post('receive_verify','HelpDeskController@receive_verify')->name('help_desk.receive_verify');
+    Route::get('receive_show/{id}','HelpDeskController@receive_show')->name('help_desk.receive_show');
+    Route::get('show_all_response','ProjectController@show_all_response')->name('projects.show_all_response');
     Route::post('support_request','ProjectController@support_request')->name('projects.support_request');
     route::get('locale/{lan}', 'LanguageController@locale');
     Route::get('map', function (){

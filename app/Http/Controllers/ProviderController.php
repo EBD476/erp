@@ -14,6 +14,9 @@ class ProviderController extends Controller
      */
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $provider = Provider::all();
         return view('provider.index',compact('provider'));
     }
@@ -34,6 +37,9 @@ class ProviderController extends Controller
      */
     public function create()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         return view('provider.create');
     }
 
@@ -70,6 +76,9 @@ class ProviderController extends Controller
      */
     public function edit($id)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $provider=Provider::find($id);
         return view('provider.edit',compact('provider'));
 

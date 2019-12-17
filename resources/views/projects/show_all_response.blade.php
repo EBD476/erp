@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
-@section('title',__('Priority'))
+@section('title',__('Show Response List'))
+
+@push('script')
+    <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
+@endpush
+
 
 @push('css')
     <link href="{{ asset('assets/css/datatables.min.css') }}" rel="stylesheet">
@@ -12,43 +17,64 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-12">
-                    <a href="{{route('priority.create')}}" class="btn btn-primary float-left mb-lg-2">
-                        <i class="tim-icons icon-simple-add"></i> &nbsp;
-                        {{__('New Priority')}}
-                    </a>
-                </div>
                 <div class="card">
                     <div class="card-body">
                         <div class="col-md-9">
                             <div class="card">
                                 <div class="card-header card-header-primary">
-                                    <h4 class="card-title text-right font-weight-400">{{__('Priority List')}}</h4>
+                                    <h4 class="card-title text-right font-weight-400">{{__('Support Response List')}}</h4>
                                     <p class="card-category"></p>
                                 </div>
                                 <div class="card-body">
-                                    <div class="table-responsive table-hover">
-                                        <table id="table" class="table" cellspacing="0" width="100%">
+                                    <div class="table-responsive">
+                                        <table id="table2" class="table" cellspacing="0" width="100%">
                                             <thead class=" text-primary">
                                             <th>
                                                 {{__('ID')}}
                                             </th>
                                             <th>
-                                                {{__('Name')}}
+                                                {{__('Title')}}
+                                            </th>
+
+                                            <th>
+                                                {{__('Project Name')}}
                                             </th>
                                             <th>
-                                                {{__('Action')}}
+                                                {{__('Status')}}
+                                            </th>
+                                            <th>
+                                                {{__('Created at')}}
+                                            </th>
+                                            <th>
+                                                {{__('action')}}
                                             </th>
                                             </thead>
                                             <tbody>
 
-                                            @foreach($priorities as $key => $priorities)
+                                            @foreach($request as $key => $requests)
                                                 <tr>
                                                     <td>
-                                                        {{$priorities ->id}}
+                                                        {{$key + 1}}
                                                     </td>
                                                     <td>
-                                                        {{$priorities ->hdp_name}}
+                                                        {{$requests->hs_title}}
+                                                    </td>
+                                                    @foreach($project as $projects_name)
+                                                        @if($projects_name->id == $requests -> hs_project_id)
+                                                            <td>
+                                                                {{$projects_name->hp_project_name}}
+                                                            </td>
+                                                        @endif
+                                                    @endforeach
+                                                    @foreach($support_state as $support_states)
+                                                        @if($support_states->id == $requests->hs_status)
+                                                            <td>
+                                                                {{$support_states->hss_name}}
+                                                            </td>
+                                                        @endif
+                                                    @endforeach
+                                                    <td>
+                                                        {{$requests->created_at}}
                                                     </td>
                                                     <td>
                                                         <div class="dropdown">
@@ -60,20 +86,8 @@
                                                             <div class="dropdown-menu dropdown-menu-right"
                                                                  aria-labelledby="dropdownMenuLink">
                                                                 <a class="dropdown-item"
-                                                                   href="{{route('part.edit',$priorities->id)}}"
-                                                                >{{__('Edit')}}</a>
-                                                                <form id="-form-delete{{$priorities->id}}"
-                                                                      style="display: none;" method="POST"
-                                                                      action="{{route('priority.destroy',$priorities->id)}}">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                </form>
-                                                                <a class="dropdown-item"
-                                                                   onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
-                                                                           event.preventDefault();
-                                                                           document.getElementById('-form-delete{{$priorities->id}}').submit();
-                                                                           }else {
-                                                                           event.preventDefault();}">{{__('Delete')}}</a>
+                                                                   href="{{route('projects.show_response',$requests->id)}}"
+                                                                >{{__('Show Response')}}</a>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -114,7 +128,7 @@
         @endsection
 
         @push('scripts')
-            <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
+
             <script src="{{asset('assets/js/plugins/datatables.min.js')}}"></script>
             <script>
                 $(document).ready(function () {
@@ -134,16 +148,5 @@
                     });
 
                 });
-
-                $("#checkbox").on('change', function (event) {
-                    if ($("#checkbox").val() == 1) {
-
-                    }
-                    else {
-                        $("#checkbox").val() == 1
-                    }
-                });
-
-
             </script>
-    @endpush
+        @endpush

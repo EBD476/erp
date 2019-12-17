@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Project Management'))
+@section('title',__('Projects Management'))
 
 @push('script')
     <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>

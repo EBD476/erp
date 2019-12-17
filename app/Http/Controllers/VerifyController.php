@@ -22,10 +22,13 @@ class VerifyController extends Controller
      */
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $order = Order::select('id', 'hp_project_name', 'created_at')
             ->where('hp_Invoice_number',Null)->get();
 //        dd($order);
-        return view('verify_level.index', compact('order'));
+        return view('verify_level.index', compact('order','help_desk','priority','type'));
     }
 
     /**
@@ -69,6 +72,9 @@ class VerifyController extends Controller
      */
     public function edit($id)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
 //        $order_id=Order::SELECT('id')->where('hp_Invoice_number',null);
         $userID = auth()->user()->id;
         $current_verified_order = Verifier::where('hp_verifier_id', $userID and 'process_id','1')->first();
@@ -92,7 +98,7 @@ class VerifyController extends Controller
         }
 
         $order = Order::find($id);
-        return view('verify_level.preview', compact('order', 'first_verifier', 'verifyID', 'selected_priority','current_verified_order'));
+        return view('verify_level.preview', compact('order', 'first_verifier', 'verifyID', 'selected_priority','current_verified_order','help_desk','priority','type'));
 
     }
 

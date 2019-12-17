@@ -16,6 +16,9 @@ class UserController extends Controller
      */
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $users = User::all();
         return view('users.index')->with('users', $users);
     }
@@ -27,9 +30,12 @@ class UserController extends Controller
      */
     public function create()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         //Get all roles and pass it to the view
         $roles = Role::get();
-        return view('users.create', ['roles'=>$roles]);
+        return view('users.create', ['roles'=>$roles],compact('help_desk','priority','type'));
     }
 
     /**
@@ -40,6 +46,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
         //Validate name, email and password fields
         $this->validate($request, [
             'name'=>'required|max:120',
@@ -70,7 +77,10 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return redirect('users');
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        return redirect('users','help_desk','priority','type');
     }
 
     /**
@@ -81,10 +91,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $user = User::findOrFail($id); //Get user with specified id
         $roles = Role::get(); //Get all roles
 
-        return view('users.edit', compact('user', 'roles')); //pass user and roles data to view
+        return view('users.edit', compact('user', 'roles','help_desk','priority','type')); //pass user and roles data to view
 
     }
 

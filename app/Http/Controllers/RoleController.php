@@ -18,9 +18,12 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $roles = Role::all();//Get all roles
 
-        return view('roles.index')->with('roles', $roles);
+        return view('roles.index',compact('help_desk','priority','type'))->with('roles', $roles);
     }
 
     /**
@@ -29,9 +32,12 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create() {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $permissions = Permission::all();//Get all permissions
 
-        return view('roles.create', ['permissions'=>$permissions]);
+        return view('roles.create', ['permissions'=>$permissions],compact('help_desk','priority','type'));
     }
 
     /**
@@ -85,10 +91,13 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $role = Role::findOrFail($id);
         $permissions = Permission::all();
 
-        return view('roles.edit', compact('role', 'permissions'));
+        return view('roles.edit', compact('role', 'permissions','help_desk','priority','type'));
     }
 
     /**

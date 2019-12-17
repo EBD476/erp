@@ -11,8 +11,11 @@ class RepositoryPartController extends Controller
 {
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $repository=RepositoryPart::ALL();
-        return view('repository_part.index',compact('repository'));
+        return view('repository_part.index',compact('repository','help_desk','priority','type'));
     }
 
     /**
@@ -22,9 +25,12 @@ class RepositoryPartController extends Controller
      */
     public function create()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $part_name=Part::all();
         $repository_name=RepositoryCreate::all();
-        return view('repository_part.create',compact('part_name','repository_name'));
+        return view('repository_part.create',compact('part_name','repository_name','help_desk','priority','type'));
     }
 
     public function store(Request $request)
@@ -62,8 +68,11 @@ class RepositoryPartController extends Controller
      */
     public function edit($id)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $repository=RepositoryPart::find($id);
-        return view('repository_part.edit',compact('repository'));
+        return view('repository_part.edit',compact('repository','help_desk','priority','type'));
 
 
     }

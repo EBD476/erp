@@ -65,10 +65,25 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="bmd-label-floating">{{__('Ticket Status')}}</label>
-                                            <select class="form-control" name="hhd_ticket_status">
+                                            <select class="form-control" name="hhd_ticket_status" disabled>
                                                 @foreach($ticket as $tickets)
                                                     <option value="{{$tickets->id}}">
                                                         {{$tickets->ts_name}}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="bmd-label-floating">{{__('Receiver')}}</label>
+                                            <select class="form-control" name="hhd_receiver_user_id">
+                                                @foreach($user as $users)
+                                                    <option value="{{$users->id}}">
+                                                        {{$users->name}}
                                                     </option>
                                                 @endforeach
                                             </select>

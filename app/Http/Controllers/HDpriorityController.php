@@ -14,6 +14,9 @@ class HDpriorityController extends Controller
      */
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
        $priority=HDpriority::all();
        return view('priority.index',compact('priority'));
     }
@@ -64,8 +67,11 @@ class HDpriorityController extends Controller
      */
     public function edit(HDpriority $hDpriority)
     {
-        $priority=HDpriority::find($hDpriority);
-        return view('priority.index',compact('priority'));
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $priorities=HDpriority::find($hDpriority);
+        return view('priority.index',compact('priority','help_desk','priority','type','priorities'));
     }
 
     /**

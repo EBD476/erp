@@ -15,8 +15,11 @@ class ClientController extends Controller
      */
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $client = Client::all();
-        return view('client.index',compact('client'));
+        return view('client.index',compact('client','help_desk','priority','type'));
     }
 
     /**

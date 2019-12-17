@@ -51,7 +51,7 @@
                                                         @method('DELETE')
                                                     </form>
                                                     <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove"
-                                                       onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
+                                                       onclick="if(confirm('آیا از حذف این نقش اطمینان دارید؟')){
                                                                event.preventDefault();
                                                                document.getElementById('-form-delete{{$role->id}}').submit();
                                                                }else {

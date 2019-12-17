@@ -9,6 +9,9 @@ class Repository_RequirementController extends Controller
 {
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $Repositories_Requirement = Repository_Requirement:: all();
         return view('Repository_Requirement.index',compact('Repositories_Requirement'));
     }
@@ -20,6 +23,9 @@ class Repository_RequirementController extends Controller
      */
     public function create()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         return view('Repository_Requirement.create');
     }
 
@@ -67,6 +73,9 @@ class Repository_RequirementController extends Controller
      */
     public function edit($id)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $Repositories_Requirement = Repository_Requirement::find($id);
         return view('Repository_Requirement.edit',compact('Repositories_Requirement'));
     }

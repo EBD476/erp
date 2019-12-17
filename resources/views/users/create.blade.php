@@ -115,9 +115,6 @@
                                             {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
                                             <h5 class="title">Hanta IBMS</h5>
                                         </a>
-                                <p class="description">
-                                    Project Implementors
-                                </p>
                             </div>
                             </p>
                             <div class="card-description">

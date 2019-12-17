@@ -9,8 +9,11 @@ class HNTLevelController extends Controller
 {
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $level=HNTLevel::all();
-        return view('hnt-level.index',compact('level'));
+        return view('hnt-level.index',compact('level','help_desk','priority','type'));
     }
 
     /**
@@ -52,6 +55,9 @@ class HNTLevelController extends Controller
      */
     public function edit($id)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $level=HNTLevel::find($id);
         return view('hnt-level.edit',compact('level'));
     }

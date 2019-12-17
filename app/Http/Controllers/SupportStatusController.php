@@ -9,8 +9,11 @@ class SupportStatusController extends Controller
 {
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $status=SupportStatus::all();
-        return view('support_status.index',compact('status'));
+        return view('support_status.index',compact('status','help_desk','priority','type'));
     }
     /**
      * Show the form for creating a new resource.
@@ -19,7 +22,10 @@ class SupportStatusController extends Controller
      */
     public function create()
     {
-        return view('support_status.create');
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        return view('support_status.create',compact('help_desk','priority','type'));
     }
 
     public function store(Request $request)
@@ -49,8 +55,11 @@ class SupportStatusController extends Controller
      */
     public function edit($id)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $status=SupportStatus::find($id);
-        return view('support_status.edit',compact('status'));
+        return view('support_status.edit',compact('status','help_desk','priority','type'));
 
 
     }

@@ -17,8 +17,11 @@ class VerifierController extends Controller
      */
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $verifier = Verifier::ALL();
-        return view('verifier.index', compact('verifier'));
+        return view('verifier.index', compact('verifier','help_desk','priority','type'));
     }
 
     /**
@@ -28,9 +31,12 @@ class VerifierController extends Controller
      */
     public function create()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $process=ProcessLevel::all();
         $verifier_id=DataUser::all();
-        return view('verifier.create',compact('verifier_id','process'));
+        return view('verifier.create',compact('verifier_id','process','help_desk','priority','type'));
     }
 
     /**
@@ -76,8 +82,11 @@ class VerifierController extends Controller
      */
     public function edit($id)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $verifier = Verifier::find($id);
-        return view('verifier.edit', compact('verifier'));
+        return view('verifier.edit', compact('verifier','help_desk','priority','type'));
     }
 
     /**

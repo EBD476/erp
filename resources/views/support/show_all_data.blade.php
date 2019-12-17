@@ -33,6 +33,9 @@
                                                 {{__('ID')}}
                                             </th>
                                             <th>
+                                                {{__('Request Title')}}
+                                            </th>
+                                            <th>
                                                 {{__('Project Name')}}
                                             </th>
                                             <th>
@@ -51,6 +54,9 @@
                                                 <tr>
                                                     <td>
                                                         {{$key + 1}}
+                                                    </td>
+                                                    <td>
+                                                        {{$requests->hs_title}}
                                                     </td>
                                                     @foreach($project as $projects_name)
                                                         @if($projects_name->id == $requests -> hs_project_id)
