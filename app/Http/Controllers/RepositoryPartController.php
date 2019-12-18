@@ -6,6 +6,9 @@ use App\Part;
 use App\RepositoryCreate;
 use App\RepositoryPart;
 use Illuminate\Http\Request;
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 
 class RepositoryPartController extends Controller
 {

@@ -7,6 +7,9 @@ use App\Product;
 use App\ProductPart;
 use Illuminate\Http\Request;
 use carbon\carbon;
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 class PartController extends Controller
 {
     public function index()
@@ -17,7 +20,7 @@ class PartController extends Controller
         $product=Product::all();
         $product_part=ProductPart::all();
         $part = Part::all();
-        return view('part.index',compact('part','product','product_part'));
+        return view('part.index',compact('part','product','product_part','type','help_desk','priority'));
 //        $select_product_part = DB::select('select count')
     }
 
@@ -40,7 +43,7 @@ class PartController extends Controller
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('part.create');
+        return view('part.create',compact('type','help_desk','priority'));
     }
 
     public function store(Request $request)

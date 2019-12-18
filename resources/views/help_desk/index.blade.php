@@ -52,30 +52,30 @@
                                             </thead>
                                             <tbody>
 
-                                            @foreach($help_desk as $key => $help_desk)
-                                                @if(auth()->user()->id == $help_desk ->hhd_request_user_id or auth()->user()->name == 'admin')
+                                            @foreach($help_desks as $key => $help_desk_index)
+                                                @if(auth()->user()->id == $help_desk_index ->hhd_receiver_user_id or auth()->user()->name == 'admin')
                                                 <tr>
                                                     <td>
                                                         {{$key + 1}}
                                                     </td>
                                                     <td>
-                                                        {{$help_desk -> hhd_title}}
+                                                        {{$help_desk_index -> hhd_title}}
                                                     </td>
                                                     <td>
-                                                        {{$help_desk -> hhd_ticket_id}}
+                                                        {{$help_desk_index -> hhd_ticket_id}}
                                                     </td>
                                                     <td>
-                                                        {{$help_desk -> hhd_periority}}
+                                                        {{$help_desk_index -> hhd_periority}}
                                                     </td>
                                                     @foreach($ticket_status as $ticket_statuses)
-                                                        @if($ticket_statuses->id == $help_desk->hhd_ticket_status)
+                                                        @if($ticket_statuses->id == $help_desk_index->hhd_ticket_status)
                                                     <td>
                                                         {{$ticket_statuses->ts_name}}
                                                     </td>
                                                         @endif
                                                     @endforeach
                                                     <td>
-                                                        {{$help_desk -> created_at}}
+                                                        {{$help_desk_index -> created_at}}
                                                     </td>
                                                     <td>
                                                         <div class="dropdown">
@@ -87,18 +87,18 @@
                                                             <div class="dropdown-menu dropdown-menu-right"
                                                                  aria-labelledby="dropdownMenuLink">
                                                                 <a class="dropdown-item"
-                                                                   href="{{route('help_desk.edit',$help_desk->id)}}"
-                                                                >{{__('Edit')}}</a>
-                                                                <form id="-form-delete{{$help_desk->id}}"
+                                                                   href="{{route('help_desk.receive_show',$help_desk_index->id)}}"
+                                                                >{{__('Show')}}</a>
+                                                                <form id="-form-delete{{$help_desk_index->id}}"
                                                                       style="display: none;" method="POST"
-                                                                      action="{{route('help_desk.destroy',$help_desk->id)}}">
+                                                                      action="{{route('help_desk.destroy',$help_desk_index->id)}}">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                 </form>
                                                                 <a class="dropdown-item"
                                                                    onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
                                                                            event.preventDefault();
-                                                                           document.getElementById('-form-delete{{$help_desk->id}}').submit();
+                                                                           document.getElementById('-form-delete{{$help_desk_index->id}}').submit();
                                                                            }else {
                                                                            event.preventDefault();}">{{__('Delete')}}</a>
                                                             </div>

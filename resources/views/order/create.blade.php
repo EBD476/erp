@@ -137,8 +137,8 @@
                                             <div class="form-group">
                                                 <label class="bmd-label-floating">{{__('Type Project')}}</label>
                                                 <select class="form-control" name="hp_type_project">
-                                                    @foreach($project_type as $type)
-                                                        <option>{{$type->hp_name}}</option>
+                                                    @foreach($project_type as $type_project)
+                                                        <option>{{$type_project->hp_name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -527,6 +527,8 @@
                     cache: false,
                 });
             });
+
+
             $("#form1").submit(function (event) {
                 var data = $("#form1").serialize();
                 event.preventDefault();
@@ -566,6 +568,8 @@
                     cache: false,
                 });
             });
+
+
             $("#form2").submit(function (event) {
                 var data = $("#form2").serialize();
                 event.preventDefault();

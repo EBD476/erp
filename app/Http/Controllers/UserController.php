@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;

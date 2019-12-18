@@ -36,9 +36,9 @@
                                         <div class="form-group">
                                             <label class="bmd-label-floating">{{__('Type')}}</label>
                                             <select class="form-control" name="hhd_type">
-                                                @foreach($type as $types)
-                                                    <option value="{{$types->id}}">
-                                                        {{$types->th_name}}
+                                                @foreach($type as $types_1)
+                                                    <option value="{{$types_1->id}}">
+                                                        {{$types_1->th_name}}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -51,9 +51,9 @@
                                         <div class="form-group">
                                             <label class="bmd-label-floating">{{__('Priority')}}</label>
                                             <select class="form-control" name="hhd_priority">
-                                                @foreach($priority as $priorities)
-                                                    <option value="{{$priorities->id}}">
-                                                        {{$priorities->hdp_name}}
+                                                @foreach($priority as $priority_1)
+                                                    <option value="{{$priority_1->id}}">
+                                                        {{$priority_1->hdp_name}}
                                                     </option>
                                                 @endforeach
                                             </select>

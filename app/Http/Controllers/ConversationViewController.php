@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\ConversationView;
 use Illuminate\Http\Request;
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 
 class ConversationViewController extends Controller
 {

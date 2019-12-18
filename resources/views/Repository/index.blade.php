@@ -7,8 +7,7 @@
 @endpush
 
 @section('content')
-    @role('verifier')
-
+    {{--@role('verifier')--}}
     <div class="content">
         <div class="container-fluid">
             <div class="col-md-12">
@@ -134,14 +133,11 @@
                         </div>
                     </div>
                     {{--End Order Data List--}}
-
                 </div>
-
                 {{--Requirement Product List--}}
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card card-tasks">
-
                             {{--Drop Done Show Details Product List--}}
                             <div class="card-header ">
                                 @foreach($order_all as $orders_all)
@@ -173,7 +169,6 @@
 
                             <div class="card-body ">
                                 <div class="table-full-width table-responsive ps ps--active-y">
-                                    <form id="form1">
                                         <table class="table">
                                             <tbody>
                                             <thead>
@@ -224,7 +219,7 @@
                                                                                                 <input class="form-check-input checkbox"
                                                                                                        type="checkbox"
                                                                                                        data-id="{{$item->hpo_order_id}}"
-                                                                                                        data-pid="{{$item->hpo_product_id}}">
+                                                                                                       data-pid="{{$item->hpo_product_id}}">
                                                                                                 <span class="form-check-sign">
                                                                 <span class="check"></span>
                                                                 </span>
@@ -258,87 +253,82 @@
 
                                                             </tbody>
                                         </table>
-                                        {{--<div class="col-md-12">--}}
-                                            {{--<div class="modal-footer d-flex left">--}}
-                                                {{--<input id="button" type="submit"--}}
-                                                       {{--class="btn btn-deep-orange" value="{{__('Verify')}}">--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-                    {{--//Product Details Modal//--}}
-                    <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"
-                         aria-labelledby="myModalLabel"
-                         aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header text-center">
-                                    <h4 class="modal-title w-100 font-weight-bold">{{__('View Details Data')}}</h4>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <form method="post" id="modal_form" enctype="multipart/form-data">
-                                    <div class="modal-body mx-3">
-                                        <div class="md-form mb-5">
-                                            {{--<i class="fas fa-user prefix grey-text"></i>--}}
-                                            <table class="table" cellspacing="0" width="100%">
-                                                <tbody>
-                                                <thead class=" text-primary">
-                                                <th>
-                                                    {{__('Product Name')}}
-                                                </th>
-                                                <th>
-                                                    {{__('Count')}}
-                                                </th>
-                                                <th>
-                                                    {{__('Inventory Deficit')}}
-                                                </th>
-                                                </thead>
-                                                @foreach($query as $item)
-                                                    @foreach($Repositories as $repository_stock)
-                                                        @if($item->hpo_product_id == $repository_stock->hr_product_id and $item->hpo_status != 'Approved')
-                                                        <tr>
-                                                                <td>
-                                                                    {{$products->hp_product_name}}
-                                                                </td>
-                                                                <td>
-                                                                    {{$item->sum_hpo}}
-                                                                </td>
-                                                                    <td>
-                                                                        {{$item->sum_hpo - $repository_stock->hr_product_stock}}
-                                                                    </td>
-                                                                @endif
-                                                                @endforeach
-                                                                @endforeach
-
-                                                            </tr>
-                                                            </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="modal-footer d-flex justify-content-center">
-                                            <button type="submit"
-                                                    class="btn btn-deep-orange">{{__('Request Send')}}</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
                 {{--End Requirement Product List--}}
             </div>
         </div>
     </div>
-    @endrole
+    {{--//Product Details Modal//--}}
+    <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">{{__('View Details Data')}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="modal_form" enctype="multipart/form-data">
+                    <div class="modal-body mx-3">
+                        <div class="md-form mb-5">
+                            {{--<i class="fas fa-user prefix grey-text"></i>--}}
+                            <table class="table" cellspacing="0" width="100%">
+                                <tbody>
+                                <thead class=" text-primary">
+                                <th>
+                                    {{__('Product Name')}}
+                                </th>
+                                <th>
+                                    {{__('Count')}}
+                                </th>
+                                <th>
+                                    {{__('Inventory Deficit')}}
+                                </th>
+                                </thead>
+                                @foreach($query as $item)
+                                    @foreach($Repositories as $repository_stock)
+                                        @if($item->hpo_product_id == $repository_stock->hr_product_id and $item->hpo_status != 'Approved')
+                                            <input type="hidden" class="repositories_requirement"
+                                                   data-Product_Id="{{$products->id}}"
+                                                   data-Product_Count=" {{$item->sum_hpo}}"
+                                                   data-Inventory_deficit=" {{$item->sum_hpo - $repository_stock->hr_product_stock}}">
+                                            <tr>
+                                                <td>
+                                                    {{$products->hp_product_name}}
+                                                </td>
+                                                <td>
+                                                    {{$item->sum_hpo}}
+                                                </td>
+                                                <td>
+                                                    {{$item->sum_hpo - $repository_stock->hr_product_stock}}
+                                                </td>
+                                                @endif
+                                                @endforeach
+                                                @endforeach
+
+                                            </tr>
+                                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit"
+                                    class="btn btn-deep-orange" form="modal_form"
+                                    value="Submit">{{__('Request Send')}}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{--@endrole--}}
 
 
 @endsection
@@ -348,10 +338,7 @@
     <script>
         $(document).ready(function () {
 
-
-
             // Data Table
-
 
             $('.table1').DataTable({
                 "language": {
@@ -379,12 +366,30 @@
 
                 }
             });
+
             // End Data Table
+
             // Modal Form
-            $("#modal_form").submit(function (event) {
-                var data = $("#modal_form").serialize();
+
+            $('#modal_form').submit(function (event) {
+                var data =
+                    {
+                        Product_Id: $(this).data('Product_Id'),
+                        Product_Count: $(this).data('Product_Id'),
+                        Inventory_deficit: $(this).data('Product_Id'),
+                    }
                 event.preventDefault();
-                $.blockUI();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -399,15 +404,16 @@
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI);
-                        $("#modalRegisterForm").find("input").val("");
                         $("#modalRegisterForm").modal('hide');
                     },
                     cache: false,
                 });
             });
+
             // End Modal Form
 
             // pass checkbox data
+
             $('.checkbox').on('change', function (event) {
 
                 if (event.target.checked) {

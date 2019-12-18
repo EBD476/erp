@@ -365,7 +365,9 @@
   "show Message":"نمایش پیام",
   "You Have One Ticket":"شما یک بسته",
   "From":"از",
-  "H":"دارید"
+  "H":"دارید",
+  "Current User:":"کاربر فعال: ",
+  "Verify Ticket":"تاید بسته"
 
 
 

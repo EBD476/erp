@@ -12,6 +12,9 @@ use App\Repository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use carbon\carbon;
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 class RepositoryController extends Controller
 {
     public function index()
@@ -29,7 +32,7 @@ class RepositoryController extends Controller
         $query_order_product_all = DB::select("SELECT sum(hpo_count) as sum_hpo FROM hnt_invoice_items where hpo_status != 'Approved'");
 
 
-        return view('Repository.index',['repository_product_count'=>$repository_product_count,'query' => $query_order_product, 'client' => $client, 'order_all' => $query_order_product_all], compact('Repositories', 'product', 'orders'));
+        return view('Repository.index',['repository_product_count'=>$repository_product_count,'query' => $query_order_product, 'client' => $client, 'order_all' => $query_order_product_all], compact('Repositories', 'product', 'orders','help_desk','priority','type'));
 
     }
 
@@ -134,7 +137,7 @@ class RepositoryController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $Repositories = Repository::find($id);
-        return view('Repository . edit', compact('Repositories'));
+        return view('Repository . edit', compact('Repositories','type','priority','help_desk'));
     }
 
     /**

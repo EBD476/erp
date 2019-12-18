@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Agreement;
 use Illuminate\Http\Request;
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 
 class AgreementController extends Controller
 {

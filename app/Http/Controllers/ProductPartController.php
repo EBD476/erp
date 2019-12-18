@@ -6,7 +6,9 @@ use App\Part;
 use App\Product;
 use App\ProductPart;
 use Illuminate\Http\Request;
-
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 class ProductPartController extends Controller
 {
     public function index()
@@ -17,7 +19,7 @@ class ProductPartController extends Controller
         $product=Product::ALL();
         $part=Part::ALL();
         $product_part = ProductPart::all();
-        return view('product_part.index',compact('product_part','product','part'));
+        return view('product_part.index',compact('product_part','product','part','type','priority','help_desk'));
     }
 
 
@@ -41,7 +43,7 @@ class ProductPartController extends Controller
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $part_id=Part::all();
         $product_id=Product::all();
-        return view('product_part.create',compact('part_id','product_id'));
+        return view('product_part.create',compact('part_id','product_id','type','priority','help_desk'));
     }
 
     public function store(Request $request)
@@ -75,7 +77,7 @@ class ProductPartController extends Controller
         $part_id=Part::all();
         $product_id=Product::all();
         $product_part=ProductPart::find($id);
-        return view('product_part.edit',compact('product_part','part_id','product_id'));
+        return view('product_part.edit',compact('product_part','part_id','product_id','type','priority','help_desk'));
 
 
     }

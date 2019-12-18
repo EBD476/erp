@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\DataUser;
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 use App\Process;
 use App\ProcessLevel;
 use App\Verifier;

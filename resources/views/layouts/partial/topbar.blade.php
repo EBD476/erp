@@ -43,37 +43,37 @@
 
                         <li class="nav-link"><a href="{{route('projects.show_all_response')}}"
                                                 class="nav-item dropdown-item">{{__('Support Response List')}}</a></li>
-                        @foreach($support_response as $responses)
-                                @if($responses->hs_request_user_id == auth()->user()->id)
-                                    <li class="nav-link">
-                                        <a href="{{route('projects.show_response',$responses->id)}}"
-                                           class="nav-item dropdown-item">
+                        {{--@foreach($support_response as $responses)--}}
+                        {{--@if($responses->hs_request_user_id == auth()->user()->id)--}}
+                        {{--<li class="nav-link">--}}
+                        {{--<a href="{{route('projects.show_response',$responses->id)}}"--}}
+                        {{--class="nav-item dropdown-item">--}}
 
-                                            {{auth()->user()->name}}
+                        {{--{{auth()->user()->name}}--}}
 
-                                            {{__('Responded To Your Request')}}
+                        {{--{{__('Responded To Your Request')}}--}}
 
-                                            {{$responses->hs_title}}
+                        {{--{{$responses->hs_title}}--}}
 
-                                            {{__('Responded')}}
-                                        </a>
-                                    </li>
-                                @endif
-                        @endforeach
+                        {{--{{__('Responded')}}--}}
+                        {{--</a>--}}
+                        {{--</li>--}}
+                        {{--@endif--}}
+                        {{--@endforeach--}}
 
-                        @foreach($help_desk as $help_desks)
-                            @if($help_desks->hhd_receiver_user_id == auth()->user()->id)
+                        @foreach($help_desk as $help_desks_top_bar)
+                            @if($help_desks_top_bar->hhd_receiver_user_id == auth()->user()->id)
                                 <li class="nav-link">
-                                    <a href="{{route('help_desk.receive_show',$help_desks->id)}}"
+                                    <a href="{{route('help_desk.receive_show',$help_desks_top_bar->id)}}"
                                        class="nav-item dropdown-item">
                                         {{__('You Have One Ticket')}}
-                                        @foreach($type as $types)
-                                            @if($types->id == $help_desks->hhd_type)
-                                                {{$types->th_name}}
+                                        @foreach($type as $types_top_bar)
+                                            @if($types_top_bar->id == $help_desks_top_bar->hhd_type)
+                                                {{$types_top_bar->th_name}}
                                             @endif
                                         @endforeach
                                         @foreach($priority as $priorities)
-                                            @if($priorities->id == $help_desks->hhd_priority)
+                                            @if($priorities->id == $help_desks_top_bar->hhd_priority)
                                                 {{$priorities->hdp_name}}
                                             @endif
                                         @endforeach
@@ -102,38 +102,40 @@
                             Log out
                         </p>
                     </a>
-                    <ul class="dropdown-menu dropdown-navbar">
-                        <li class="nav-link">
-                            <a href="javascript:void(0)" class="nav-item dropdown-item">{{__('Profile')}}</a>
-                        </li>
-                        <li class="nav-link">
-                            <a href="javascript:void(0)" class="nav-item dropdown-item">{{__('Settings')}}</a>
-                        </li>
-                        <li class="dropdown-divider"></li>
-                        <h5 class="dropdown-item" >{{__('language')}}</h5>
-                        <li class="nav-link">
-                            <a class="nav-item dropdown-item" href="{{url('/locale/en')}}">{{__('English')}}</a>
-                        </li>
-                        <li class="nav-link">
-                            <a class="nav-item dropdown-item" href="{{url('/locale/fa')}}">{{__('Persian')}}</a>
-                        </li>
-                        <li class="dropdown-divider"></li>
-                        <li class="nav-link">
-                            <a class="nav-item dropdown-item" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
+                <ul class="dropdown-menu dropdown-navbar">
+                    <h5 class="dropdown-item">{{__('Current User:')}}{{auth()->user()->username}}</h5>
+                    <li class="dropdown-divider"></li>
+                    <li class="nav-link">
+                        <a href="javascript:void(0)" class="nav-item dropdown-item">{{__('Profile')}}</a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="javascript:void(0)" class="nav-item dropdown-item">{{__('Settings')}}</a>
+                    </li>
+                    <li class="dropdown-divider"></li>
+                    <h5 class="dropdown-item">{{__('language')}}</h5>
+                    <li class="nav-link">
+                        <a class="nav-item dropdown-item" href="{{url('/locale/en')}}">{{__('English')}}</a>
+                    </li>
+                    <li class="nav-link">
+                        <a class="nav-item dropdown-item" href="{{url('/locale/fa')}}">{{__('Persian')}}</a>
+                    </li>
+                    <li class="dropdown-divider"></li>
+                    <li class="nav-link">
+                        <a class="nav-item dropdown-item" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
                                     document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-                            {{--<a href="javascript:void(0)" class="nav-item dropdown-item">--}}
-                            {{--Log out--}}
-                            {{----}}
-                            {{--</a>--}}
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                  style="display: none;">
-                                @csrf
-                            </form>
-                        </li>
-                    </ul>
+                            {{ __('Logout') }}
+                        </a>
+                        {{--<a href="javascript:void(0)" class="nav-item dropdown-item">--}}
+                        {{--Log out--}}
+                        {{----}}
+                        {{--</a>--}}
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                              style="display: none;">
+                            @csrf
+                        </form>
+                    </li>
+                </ul>
                 </li>
                 <li class="separator d-lg-none"></li>
             </ul>

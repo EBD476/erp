@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\HDpriority;
+use App\HelpDesk;
 use App\HDtype;
 use Illuminate\Http\Request;
 
@@ -62,8 +64,11 @@ class HDtypeController extends Controller
      */
     public function edit(HDpriority $hDpriority)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $priority=HDtype::find($hDpriority);
-        return view('priority.index',compact('priority'));
+        return view('priority.index',compact('priority','priority','type','types'));
     }
 
     /**

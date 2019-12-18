@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Http\Request;
-use phpDocumentor\Reflection\Types\Compound;
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 
 class ProductController extends Controller
 {
@@ -19,7 +21,7 @@ class ProductController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $products = Product::all();
-        return view('products.index',compact('products'));
+        return view('products.index',compact('products','type','priority','help_desk'));
     }
 
 
@@ -41,7 +43,7 @@ class ProductController extends Controller
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('products.create');
+        return view('products.create',compact('type','help_desk','priority'));
     }
 
     public function store(Request $request)
@@ -85,7 +87,7 @@ class ProductController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $product=Product::find($id);
-        return view('products.edit',compact('product'));
+        return view('products.edit',compact('product','type','priority','help_desk'));
 
 
     }

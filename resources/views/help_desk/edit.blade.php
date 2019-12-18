@@ -21,7 +21,7 @@
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="{{route('help_desk.update',$help_desk->id)}}"
+                            <form method="POST" action="{{route('help_desk.update',$help_desks->id)}}"
                                   ENCTYPE="multipart/form-data">
                                 @csrf
                                 @method('PUT')
@@ -30,7 +30,7 @@
                                         <div class="form-group">
                                             <label class="bmd-label-floating">{{__('Title')}}</label>
                                             <input required="" type="text" name="hhd_title" class="form-control"
-                                                   value="{{$help_desk->hhd_title}}">
+                                                   value="{{$help_desks->hhd_title}}">
                                         </div>
 
                                     </div>
@@ -40,8 +40,8 @@
                                         <div class="form-group">
                                             <label class="bmd-label-floating">{{__('Type')}}</label>
                                             <select class="form-control" name="hhd_type">
-                                                @foreach($type as $types)
-                                                    <option value="{{$types->id}}">
+                                                @foreach($type as $types_1)
+                                                    <option value="{{$types_1->id}}">
                                                         {{$types->th_name}}
                                                     </option>
                                                 @endforeach
@@ -82,9 +82,9 @@
                                         <div class="form-group">
                                             <label class="bmd-label-floating">{{__('Priority')}}</label>
                                             <select class="form-control" name="hhd_priority">
-                                                @foreach($priority as $priorities)
-                                                    <option value="{{$priorities->id}}">
-                                                        {{$priorities->hdp_name}}
+                                                @foreach($priority as $priority_1)
+                                                    <option value="{{$priority_1->id}}">
+                                                        {{$priority_1->hdp_name}}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -98,7 +98,7 @@
                                             <label class="bmd-label-floating">{{__('Description')}}</label>
                                             <textarea type="text" required=""
                                                       aria-invalid="false" class="form-control"
-                                                      name="hhd_problem">{{$help_desk->hhd_problem}}</textarea>
+                                                      name="hhd_problem">{{$help_desks->hhd_problem}}</textarea>
                                         </div>
 
                                     </div>

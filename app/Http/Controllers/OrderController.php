@@ -10,8 +10,10 @@ use App\OrderState;
 use App\Product;
 use App\Project_Type;
 use App\State;
-use http\Env\Response;
 use Illuminate\Http\Request;
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 
 class OrderController extends Controller
 {
@@ -22,7 +24,7 @@ class OrderController extends Controller
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $order = Order::ALL();
         $progress=OrderState::all();
-        return view('order.index', compact('order','progress'));
+        return view('order.index', compact('order','progress','type','help_desk','priority'));
     }
 
     public function create()
@@ -36,7 +38,7 @@ class OrderController extends Controller
         $address = address::all();
         $state = State::all();
         $product = Product::all();
-        return view('order.create', compact('address', 'state', 'project_type', 'product','client','invoice_statuses'));
+        return view('order.create', compact('address', 'state', 'project_type', 'product','client','invoice_statuses','type','help_desk','priority'));
     }
 
     public function store(Request $request)
@@ -86,7 +88,7 @@ class OrderController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $order = Order::find($id);
-        return view('order.edit', compact('order'));
+        return view('order.edit', compact('order','type','help_desk','priority'));
     }
 
     public function update(Request $request, $id)
@@ -144,6 +146,6 @@ class OrderController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $data = $request;
-        return view('order.preview', compact('data'));
+        return view('order.preview', compact('data','type','help_desk','priority'));
     }
 }

@@ -8,6 +8,9 @@ use App\OrderProduct;
 use App\OrderState;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 
 class FinanceController extends Controller
 {

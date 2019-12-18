@@ -9,6 +9,9 @@ use App\Project;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 
 class DeliveryController extends Controller
 {

@@ -5,6 +5,9 @@ use App\Client;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Resource_;
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 
 class ClientController extends Controller
 {

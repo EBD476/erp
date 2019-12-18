@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Provider;
 use Illuminate\Http\Request;
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 
 class ProviderController extends Controller
 {
@@ -80,7 +83,7 @@ class ProviderController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $provider=Provider::find($id);
-        return view('provider.edit',compact('provider'));
+        return view('provider.edit',compact('provider','type','priority','help_desk'));
 
 
     }

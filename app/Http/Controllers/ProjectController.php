@@ -9,6 +9,9 @@ use App\Support;
 use App\SupportStatus;
 use App\User;
 use Illuminate\Http\Request;
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 use phpDocumentor\Reflection\Types\Compound;
 
 class ProjectController extends Controller
@@ -16,19 +19,25 @@ class ProjectController extends Controller
 
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $user=User::all();
         $support_response =Support::where('hs_show','0')->get();
         $projects = Project::all();
-        return view('projects.index', compact('projects','user','support_response'));
+        return view('projects.index', compact('projects','user','support_response','type','help_desk','priority'));
     }
 
     public function create()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $user=User::all();
         $support_response =Support::where('hs_show','0')->get();
         $projects_type = Project_Type::ALL();
         $projects = Project_State::ALL();
-        return view('projects.create', compact('projects', 'projects_type','user','support_response'));
+        return view('projects.create', compact('projects', 'projects_type','user','support_response','type','help_desk','priority'));
     }
 
     public function store(Request $request)
@@ -73,12 +82,15 @@ class ProjectController extends Controller
 
     public function edit($id)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $user=User::all();
         $support_response =Support::where('hs_show','0')->get();
         $projects_state = Project_State::all();
         $projects_type = Project_Type::ALL();
         $project = Project::find($id);
-        return view('projects.edit', compact('project', 'projects_type', 'projects_state','user','support_response'));
+        return view('projects.edit', compact('project', 'projects_type', 'projects_state','user','support_response','type','help_desk','priority'));
 
     }
 
@@ -124,10 +136,13 @@ class ProjectController extends Controller
 
     public function send_request($id)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $support_response =Support::where('hs_show','0')->get();
         $user = User::all();
         $request_support = Project::find($id);
-        return view('projects.support_request', compact('request_support', 'user','support_response'));
+        return view('projects.support_request', compact('request_support', 'user','support_response','type','help_desk','priority'));
     }
 
     public function support_request(Request $request)
@@ -150,21 +165,27 @@ class ProjectController extends Controller
 
     public function show_response($id)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $support_response =Support::where('hs_show','0')->get();
         $user=User::all();
         $request = Support::where('id', $id)->first();
         $project = Project::where('id', $request->hs_project_id)->first();
         $project_type = Project_Type::where('id', $project->hp_project_type)->first();
-        return view('projects.show_response_data', compact('project', 'request', 'project_type','user','support_response'));
+        return view('projects.show_response_data', compact('project', 'request', 'project_type','user','support_response','type','help_desk','priority'));
     }
     public function show_all_response()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $user=User::all();
         $support_response =Support::where('hs_show','0')->get();
         $request = Support::where('hs_status', '2')->get();
         $support_state = SupportStatus::ALL();
         $project = Project::all();
-        return view('projects.show_all_response', compact('project', 'request','support_state', 'user','support_response'));
+        return view('projects.show_all_response', compact('project', 'request','support_state', 'user','support_response','type','help_desk','priority'));
 
     }
 

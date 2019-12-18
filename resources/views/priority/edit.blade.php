@@ -19,14 +19,14 @@
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
-                            <form id="form1" >
-                                @csrf
+                            <form id="form1">
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Name')}}</label>
                                             <input name="hp_name" type="text" class="form-control" required=""
-                                                   aria-invalid="false">
+                                                   aria-invalid="false" value="{{$priorities->hp_name}}" id="hp_name"
+                                                   data-id="{{$priorities->id}}">
                                         </div>
                                     </div>
                                 </div>
@@ -68,7 +68,11 @@
     <script>
         $(document).ready(function () {
             $("#form1").submit(function (event) {
-                var data = $("#form1").serialize();
+                var data =
+                    {
+                        id:$("#hp_name").data('id'),
+                        name:$("#hp_name").val(),
+                    }
                 event.preventDefault();
                 $.blockUI();
 
@@ -79,10 +83,11 @@
                 });
 
                 $.ajax({
-                    url: '/priority'+id,
+                    url: '/priority' + data.id,
                     type: 'POST',
                     data: data,
                     dataType: 'json',
+                    method: 'put',
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);

@@ -42,7 +42,7 @@
                                             </thead>
                                             <tbody>
 
-                                            @foreach($priorities as $key => $priorities)
+                                            @foreach($priority as $key => $priorities)
                                                 <tr>
                                                     <td>
                                                         {{$priorities ->id}}

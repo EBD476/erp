@@ -9,6 +9,9 @@ use App\Project_Type;
 use App\Support;
 use App\SupportStatus;
 use App\User;
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 use Illuminate\Http\Request;
 
 class SupportController extends Controller

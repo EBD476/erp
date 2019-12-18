@@ -7,6 +7,9 @@ use App\Product;
 use App\OrderProduct;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 class InstallController extends Controller
 {
     public function index()

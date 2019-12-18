@@ -19,9 +19,12 @@ class HelpDeskController extends Controller
      */
     public function index()
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $ticket_status = TicketStatus::all();
-        $help_desk = HelpDesk::all();
-        return view('help_desk.index', compact('help_desk', 'ticket_status'));
+        $help_desks = HelpDesk::all();
+        return view('help_desk.index', compact('help_desk', 'ticket_status','help_desks','type','priority','help_desks'));
     }
 
     /**
@@ -31,11 +34,12 @@ class HelpDeskController extends Controller
      */
     public function create()
     {
-        $user = User::all();
+        $type=HDtype::all();
         $priority = HDpriority::ALL();
-        $type = HDtype::All();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $user = User::all();
         $ticket = TicketStatus::ALL();
-        return view('help_desk.create', compact('priority', 'type', 'ticket', 'user'));
+        return view('help_desk.create', compact('priority', 'type', 'ticket', 'user','priorities','types','help_desk'));
     }
 
 
@@ -130,12 +134,13 @@ class HelpDeskController extends Controller
      */
     public function edit($id)
     {
-        $user = User::all();
+        $type=HDtype::all();
         $priority = HDpriority::ALL();
-        $type = HDtype::All();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $user = User::all();
         $ticket = TicketStatus::ALL();
-        $help_desk = HelpDesk::find($id);
-        return view('help_desk.edit', compact('help_desk','priority', 'type', 'ticket', 'user'));
+        $help_desks = HelpDesk::find($id);
+        return view('help_desk.edit', compact('help_desk','priority', 'type', 'ticket', 'user','help_desks','priority'));
     }
 
 
@@ -165,24 +170,30 @@ class HelpDeskController extends Controller
 
     public function receive_show($id)
     {
-        $user = User::all();
+        $ticket = TicketStatus::ALL();
+        $type=HDtype::all();
         $priority = HDpriority::ALL();
-        $type = HDtype::All();
-        $help_desk = HelpDesk::find($id);
-        $help_desk->hhd_ticket_status =2;
-        $help_desk->save();
-        return view('help_desk.receiver', compact('help_desk','priority', 'type','user'));
+        $help_desk = HelpDesk::where('hhd_verify','0')->get();
+        $user = User::all();
+        $help_desks = HelpDesk::find($id);
+        $help_desks->hhd_ticket_status =2;
+        $help_desks->save();
+        return view('help_desk.receiver', compact('help_desk','priority','user','type','priority','help_desks','ticket'));
     }
 
 
 
-//    public function receive_verify($id)
-//    {
-//        $help_desk = HelpDesk::find($id);
-//        $help_desk->hhd_verify =1;
-//        $help_desk->hhd_ticket_status =3;
-//        $help_desk->save();
-//    }
+    public function receive_verify(Request $request,$id)
+    {
+        $help_desk = HelpDesk::find($id);
+        if($request->state == 3)
+        {
+            $help_desk->hhd_verify = 1;
+        }
+        $help_desk->hhd_ticket_status =$request->state;
+        $help_desk->save();
+        return json_encode(["response" => "OK"]);
+    }
 
 
 
