@@ -221,6 +221,19 @@
                 <button type="button" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown"
                         style="padding-right: 10px;padding-left: 160px">
                     <i class="tim-icons icon-single-02"></i>
+                    {{__('Conversation View')}}
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item nav-link" href="{{ route('conversation_view.index') }}">
+                        <i class="tim-icons icon-single-02"></i>
+                        {{__('Conversation View')}}
+                    </a>
+                </div>
+            </div>
+            <div class="dropdown dropleft float-right bg-transparent" style="display: flex">
+                <button type="button" class="btn btn-transparent dropdown-toggle" data-toggle="dropdown"
+                        style="padding-right: 10px;padding-left: 160px">
+                    <i class="tim-icons icon-single-02"></i>
                     {{__('Client')}}
                 </button>
                 <div class="dropdown-menu">

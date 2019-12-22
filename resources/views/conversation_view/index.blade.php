@@ -1,126 +1,186 @@
 @extends('layouts.app')
 
-@section('title',__('Help Desk'))
+@section('title',__('Conversation View'))
 
 @push('css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+    <!-- Chat CSS -->
+    <link href="https://mdbootstrap.com/css/addons-pro/chat.css" rel="stylesheet">
+    <!-- Chat CSS - minified-->
+    <link href="https://mdbootstrap.com/css/addons-pro/chat.min.css" rel="stylesheet">
 @endpush
 
 @section('content')
-    {{--@can('browse-menu-user')--}}
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-12">
-{{--                    @can('browse-btn-user')--}}
-                    <a href="{{route('help_desk.create')}}" class="btn btn-primary float-left mb-lg-2"><i class="tim-icons icon-simple-add"></i>{{__('Add New Help Desk')}}</a>
-                </div>
-                    {{--@endcan--}}
+                {{--@endcan--}}
                 <div class="card">
                     <div class="card-body">
-                        <div class="col-md-9">
+                        <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header card-header-primary">
-                                    <h4 class="card-title ">{{__('Help Desk')}}</h4>
+                                    <h4 class="card-title ">{{__('Conversation View')}}</h4>
                                     <p class="card-category"></p>
                                 </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table id="table" class="table" cellspacing="0" width="100%">
-                                            <thead class=" text-primary">
-                                            <th>
-                                                {{__('ID')}}
-                                            </th>
-                                            <th>
-                                                {{__('Title')}}
-                                            </th>
-                                            <th>
-                                                {{__('Ticket Id')}}
-                                            </th>
-                                            <th>
-                                                {{__('Priority')}}
-                                            </th>
-                                            <th>
-                                                {{__('Create At')}}
-                                            </th>
-                                            <th>
-                                                {{__('action')}}
-                                            </th>
-                                            </thead>
-                                            <tbody>
+                                <div class="card purple lighten-4 chat-room">
+                                    <div class="card-body">
 
-                                            @foreach($help_desk as $key => $help_desk)
-                                                <tr>
-                                                    <td>
-                                                        {{$key + 1}}
-                                                    </td>
-                                                    <td>
-                                                        {{$help_desk -> hhd_title}}
-                                                    </td>
-                                                    <td>
-                                                        {{$help_desk -> hhd_ticket_id}}
-                                                    </td>
-                                                    <td>
-                                                        {{$help_desk -> hhd_periority}}
-                                                    </td>
-                                                    <td>
-                                                        {{$help_desk -> created_at}}
-                                                    </td>
-                                                    <td>
-                                                        {{$help_desk ->hhd_ticket_status}}
-                                                    </td>
-                                                    <td>
-                                                        <div class="dropdown">
-                                                            <button type="button"
-                                                                    class="btn btn-link dropdown-toggle btn-icon"
-                                                                    data-toggle="dropdown">
-                                                                <i class="tim-icons icon-settings-gear-63"></i>
+                                        <!-- Grid row -->
+                                        <div class="row px-2">
+
+                                            <!-- Grid column -->
+                                            <div class="col-md-6 col-xl-8 pr-md-4 px-lg-auto px-0">
+
+                                                <div class="chat-message">
+                                                    <ul class="list-unstyled chat">
+                                                        {{--show receive message--}}
+                                                        @foreach($message_send as $messages_receive)
+                                                            @if($messages_receive->hcv_receiver_user_id == $user )
+                                                                <li class="d-flex justify-content-between mb-4">
+                                                                    <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-6.jpg"
+                                                                         alt="avatar"
+                                                                         class="avatar rounded-circle mr-2 ml-0 z-depth-1">
+                                                                    <div class="chat-body white p-3 ml-2 z-depth-1">
+                                                                        <div class="header">
+                                                                            @foreach($user_name as $requester_name)
+                                                                                @if($requester_name->id == $messages_receive->hcv_request_user_id)
+                                                                                    <strong class="primary-font"
+                                                                                            id="">{{$requester_name->name}}</strong>
+                                                                                @endif
+                                                                            @endforeach
+                                                                            <small class="pull-right text-muted"><i
+                                                                                        class="far fa-clock"></i> 12
+                                                                                mins
+                                                                                ago
+                                                                            </small>
+                                                                        </div>
+                                                                        <hr class="w-100">
+                                                                        <p class="mb-0">
+                                                                            {{$messages_receive->hcv_message}}
+                                                                        </p>
+                                                                    </div>
+                                                                </li>
+                                                                <input hidden id="user_receive_id"
+                                                                       data-user_receive_id="{{$messages_receive->hcv_request_user_id}}">
+                                                            @endif
+                                                        @endforeach
+                                                        {{--end receive message--}}
+
+                                                        {{--show send message--}}
+                                                        @foreach($message_send as $message_request_send)
+                                                            @if($message_request_send->hcv_request_user_id == $user )
+                                                                <li class="d-flex justify-content-between mb-4">
+                                                                    <div class="chat-body white p-3 z-depth-1">
+                                                                        <div class="header">
+                                                                            <strong class="primary-font">
+                                                                                {{auth()->user()->name}}
+                                                                            </strong>
+                                                                                <small class="pull-right text-muted"><i
+                                                                                            class="far fa-clock"></i> {{$send_time}}
+                                                                                </small>
+                                                                        </div>
+                                                                        <hr class="w-100">
+                                                                        <p class="mb-0">
+                                                                            {{$message_request_send->hcv_message}}
+                                                                        </p>
+                                                                    </div>
+                                                                    <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg"
+                                                                         alt="avatar"
+                                                                         class="avatar rounded-circle mr-0 ml-3 z-depth-1">
+                                                                </li>
+                                                            @endif
+                                                        @endforeach
+                                                        <form id="message-form">
+                                                            <li class="white">
+                                                                <div class="form-group basic-textarea">
+                                                                <textarea class="form-control pl-2 my-0"
+                                                                          id="exampleFormControlTextarea2" rows="3"
+                                                                          placeholder="{{__('Type your message here...')}}"></textarea>
+                                                                </div>
+                                                            </li>
+                                                            <button type="submit"
+                                                                    class="btn btn-deep-purple btn-rounded btn-sm waves-effect waves-light float-right">
+                                                                {{__('Send')}}
                                                             </button>
-                                                            <div class="dropdown-menu dropdown-menu-right"
-                                                                 aria-labelledby="dropdownMenuLink">
-                                                                <a class="dropdown-item"
-                                                                   href="{{route('help_desk.edit',$help_desk->id)}}"
-                                                                >{{__('Edit')}}</a>
-                                                                <form id="-form-delete{{$help_desk->id}}"
-                                                                      style="display: none;" method="POST"
-                                                                      action="{{route('help_desk.destroy',$help_desk->id)}}">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                </form>
-                                                                <a class="dropdown-item"
-                                                                   onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
-                                                                           event.preventDefault();
-                                                                           document.getElementById('-form-delete{{$help_desk->id}}').submit();
-                                                                           }else {
-                                                                           event.preventDefault();}">{{__('Delete')}}</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            </tbody>
-                                        </table>
+                                                        </form>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                            <!-- Grid column -->
+
+                                            <!-- Grid column -->
+                                            <div class="col-md-6 col-xl-4 px-0">
+
+                                                <h6 class="font-weight-bold mb-3 text-center text-lg-left">{{__('Member')}}</h6>
+                                                <div class="white z-depth-1 px-3 pt-3 pb-0">
+                                                    <ul class="list-unstyled friend-list">
+                                                        {{--<li class="active grey lighten-3 p-2">--}}
+                                                        {{--<a href="#" class="d-flex justify-content-between">--}}
+                                                        {{--<img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg"--}}
+                                                        {{--alt="avatar"--}}
+                                                        {{--class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">--}}
+                                                        {{--<div class="text-small">--}}
+                                                        {{--<strong>John Doe</strong>--}}
+                                                        {{--<p class="last-message text-muted">Hello, Are you--}}
+                                                        {{--there?</p>--}}
+                                                        {{--</div>--}}
+                                                        {{--<div class="chat-footer">--}}
+                                                        {{--<p class="text-smaller text-muted mb-0">Just now</p>--}}
+                                                        {{--<span class="badge badge-danger float-right">1</span>--}}
+                                                        {{--</div>--}}
+                                                        {{--</a>--}}
+                                                        {{--</li>--}}
+                                                        @foreach($user_name as $users_name)
+                                                            @if($users_name->id != auth()->user()->id)
+                                                                <li class="p-2">
+                                                                    <a href="{{route('conversation_view.edit',$users_name->id)}}"
+                                                                       class="d-flex justify-content-between member">
+                                                                        <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-1.jpg"
+                                                                             alt="avatar"
+                                                                             class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1">
+                                                                        <div class="text-small">
+                                                                            <strong>{{$users_name->name}}</strong>
+                                                                            <p class="last-message text-muted">Lorem
+                                                                                ipsum
+                                                                                dolor
+                                                                                sit.</p>
+                                                                            <input hidden class="user_receive_id_null"
+                                                                                   data-user_receive_id_null="{{$users_name->id}}">
+                                                                        </div>
+
+                                                                        @if($counter != null)
+                                                                            <div class="chat-footer">
+                                                                                <p class="text-smaller text-muted mb-0">
+                                                                                    Just now</p>
+                                                                                <span class="badge badge-danger float-right">{{$counter}}</span>
+                                                                            </div>
+                                                                        @else
+                                                                            <div class="chat-footer">
+                                                                                {{--@foreach($time as$last_messages)--}}
+                                                                                <p class="text-smaller text-muted mb-0">
+                                                                                    {{$time}}</p>
+                                                                                <span class="text-muted float-right"><i
+                                                                                            class="fas fa-mail-reply"
+                                                                                            aria-hidden="true"></i></span>
+                                                                                {{--@endforeach--}}
+                                                                            </div>
+                                                                        @endif
+
+                                                                    </a>
+                                                                </li>
+                                                            @endif
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                            <!-- Grid column -->
+
+                                        </div>
+                                        <!-- Grid row -->
+
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <br><br>
-                            <div class="card card-user">
-                                <div class="card-body">
-                                    <p class="card-text">
-                                        <div class="author">
-                                            <div class="block block-one"></div>
-                                            <div class="block block-two"></div>
-                                            <div class="block block-three"></div>
-                                            <div class="block block-four"></div>
-                                            <a href="javascript:void(0)">
-                                                {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
-                                                <h5 class="title">Hanta IBMS</h5>
-                                            </a>
-                                </div>
-                                </p>
-                                <div class="card-description">
                                 </div>
                             </div>
                         </div>
@@ -130,39 +190,36 @@
             </div>
         </div>
     </div>
-        {{--@endcan--}}
-        @endsection
+@endsection
 
-        @push('scripts')
-            <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-            <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
-            <script>
-                $(document).ready(function() {
-                $('#table').DataTable({
-                    "language": {
-                        "sEmptyTable":     "هیچ داده ای در جدول وجود ندارد",
-                        "sInfo":           "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
-                        "sInfoEmpty":      "نمایش 0 تا 0 از 0 رکورد",
-                        "sInfoFiltered":   "(فیلتر شده از _MAX_ رکورد)",
-                        "sInfoPostFix":    "",
-                        "sInfoThousands":  ",",
-                        "sLengthMenu":     "نمایش _MENU_ رکورد",
-                        "sLoadingRecords": "در حال بارگزاری...",
-                        "sProcessing":     "در حال پردازش...",
-                        "sSearch":         "جستجو:",
-                        "sZeroRecords":    "رکوردی با این مشخصات پیدا نشد",
-                        "oPaginate": {
-                            "sFirst":    "ابتدا",
-                            "sLast":     "انتها",
-                            "sNext":     "بعدی",
-                            "sPrevious": "قبلی"
-                        },
-                        "oAria": {
-                            "sSortAscending":  ": فعال سازی نمایش به صورت صعودی",
-                            "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
-                        }
+@push('scripts')
+    <script>
+        $(document).ready(function () {
+            $("#message-form").submit(function (event) {
+                var data =
+                    {
+                        message: $('#exampleFormControlTextarea2').val(),
+                        user_receive_id: $('#user_receive_id').data('user_receive_id') == null ? $('.user_receive_id_null').data('user_receive_id_null') : $('#user_receive_id').data('user_receive_id'),
                     }
-                } );
+                alert(data.user_receive_id);
+                event.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
                 });
-            </script>
-    @endpush
+                $.ajax({
+                    url: '/conversation_view',
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        location.reload();
+                    },
+                    cache: false,
+                });
+            });
+        });
+    </script>
+@endpush

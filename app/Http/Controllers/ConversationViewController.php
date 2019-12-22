@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ConversationView;
+use App\User;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
@@ -17,9 +18,18 @@ class ConversationViewController extends Controller
      */
     public function index()
     {
-        $type=HDtype::all();
+        $user = auth()->user()->id;
+        $last_message=ConversationView::where('hcv_receiver_user_id',$user)->whereNotNull('hcv_message_status')->get()->last()->created_at;
+        $date = $last_message->format('Y-m-d');
+        $time = $last_message->format('H:i');
+        $counter=ConversationView::where('hcv_receiver_user_id',$user)->where('hcv_message_status',null)->count();
+        $user_name = User::all();
+        $user_admin =User::where('name','admin')->get();
+        $message_send = ConversationView::where('hcv_request_user_id', $user)->Where('hcv_request_user_id', $user_admin)->Where('hcv_receiver_user_id', $user_admin)->Where('hcv_receiver_user_id', $user)->get();
+        $type = HDtype::all();
         $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        return view('conversation_view.index', compact('type', 'priority', 'help_desk', 'message_receive', 'message_send', 'user_name', 'user','counter','time','date'));
 
     }
 
@@ -28,69 +38,55 @@ class ConversationViewController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'message' => 'required',
+        ]);
+        $message_request = new ConversationView();
+        $message_request->hcv_receiver_user_id = $request->user_receive_id;
+        $message_request->hcv_request_user_id = auth()->user()->id;
+        $message_request->hcv_message = $request->message;
+        $message_request->save();
+        return json_encode(["response" => "OK"]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\ConversationView  $conversationView
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ConversationView $conversationView)
+    public function edit($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\ConversationView  $conversationView
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ConversationView $conversationView)
-    {
-        $type=HDtype::all();
+        $user = auth()->user()->id;
+        $last_message=ConversationView::where('hcv_receiver_user_id',$user)->whereNotNull('hcv_message_status')->get()->last()->created_at;
+        $date = $last_message->format('Y-m-d');
+        $time = $last_message->format('H:i');
+        $counter=ConversationView::where('hcv_receiver_user_id',$user)->where('hcv_message_status',null)->where('hcv_request_user_id',$id)->count();
+        ConversationView::where('hcv_request_user_id', $id)->where('hcv_receiver_user_id', $user)
+            ->update(['hcv_message_status'=>'1']);
+        $user_name = User::all();
+        $type = HDtype::all();
         $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $message_send = ConversationView::where('hcv_request_user_id', $id)->orWhere('hcv_receiver_user_id', $id)->get();
+        $message_send_created_at = ConversationView::where('hcv_request_user_id', $id)->orWhere('hcv_receiver_user_id', $id)->get()->last()->created_at;
+        $send_time = $message_send_created_at -> format('H:i');
+        return view('conversation_view.index', compact('type', 'priority', 'help_desk' ,'message_send', 'user_name', 'user','counter','last_message','date','time','send_time'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ConversationView  $conversationView
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ConversationView $conversationView)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'hcv_message_receive' => 'required',
+        ]);
+        $message_receive = ConversationView::find($id);
+        $message_receive->hr_name = $request->hr_name;
+        $message_receive->hcv_message_receive = $request->hcv_message_receive;
+        $message_receive->save();
+        return json_encode(["response" => "OK"]);
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\ConversationView  $conversationView
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ConversationView $conversationView)
+    public function destroy($id)
     {
-        //
+        $message = ConversationView::find($id);
+        $message->delete();
+        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
     }
 }
