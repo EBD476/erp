@@ -55,6 +55,9 @@ Route::group(['middleware' => ['auth']], function() {
     route::resource('support_status','SupportStatusController');
     route::resource('support','SupportController');
     route::resource('conversation_view','ConversationViewController');
+    route::resource('bank_account','BankAccountsController');
+    route::resource('bank_account_type','BankAccountTypeController');
+    route::resource('finance_bank','FinanceBankController');
     Route::post('order-state/{id}','RepositoryController@order_state')->name('repository.order_state');
     Route::get('send_request/{id}','ProjectController@send_request')->name('projects.send_request');
     Route::get('show_data/{id}','SupportController@show_data')->name('support.show_data');

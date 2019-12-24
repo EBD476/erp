@@ -19,9 +19,8 @@ class ConversationViewController extends Controller
     public function index()
     {
         $user = auth()->user()->id;
-        $last_message=ConversationView::where('hcv_receiver_user_id',$user)->whereNotNull('hcv_message_status')->get()->last()->created_at;
-        $date = $last_message->format('Y-m-d');
-        $time = $last_message->format('H:i');
+        $last_message=ConversationView::where('hcv_receiver_user_id',$user)->whereNotNull('hcv_message_status')->get();
+        $find_last_message=ConversationView::where('hcv_receiver_user_id',$user)->whereNotNull('hcv_message_status')->get()->last();
         $counter=ConversationView::where('hcv_receiver_user_id',$user)->where('hcv_message_status',null)->count();
         $user_name = User::all();
         $user_admin =User::where('name','admin')->get();
@@ -29,7 +28,7 @@ class ConversationViewController extends Controller
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        return view('conversation_view.index', compact('type', 'priority', 'help_desk', 'message_receive', 'message_send', 'user_name', 'user','counter','time','date'));
+        return view('conversation_view.index', compact('type', 'priority', 'help_desk', 'message_receive', 'message_send', 'user_name', 'user','counter','last_message','find_last_message'));
 
     }
 
@@ -53,21 +52,18 @@ class ConversationViewController extends Controller
 
     public function edit($id)
     {
+        $user_name = User::all();
         $user = auth()->user()->id;
-        $last_message=ConversationView::where('hcv_receiver_user_id',$user)->whereNotNull('hcv_message_status')->get()->last()->created_at;
-        $date = $last_message->format('Y-m-d');
-        $time = $last_message->format('H:i');
+        $last_message=ConversationView::where('hcv_receiver_user_id',$user)->whereNotNull('hcv_message_status')->get();
+        $find_last_message=ConversationView::where('hcv_receiver_user_id',$user)->where('hcv_request_user_id',$id)->whereNotNull('hcv_message_status')->get()->last();
         $counter=ConversationView::where('hcv_receiver_user_id',$user)->where('hcv_message_status',null)->where('hcv_request_user_id',$id)->count();
         ConversationView::where('hcv_request_user_id', $id)->where('hcv_receiver_user_id', $user)
             ->update(['hcv_message_status'=>'1']);
-        $user_name = User::all();
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $message_send = ConversationView::where('hcv_request_user_id', $id)->orWhere('hcv_receiver_user_id', $id)->get();
-        $message_send_created_at = ConversationView::where('hcv_request_user_id', $id)->orWhere('hcv_receiver_user_id', $id)->get()->last()->created_at;
-        $send_time = $message_send_created_at -> format('H:i');
-        return view('conversation_view.index', compact('type', 'priority', 'help_desk' ,'message_send', 'user_name', 'user','counter','last_message','date','time','send_time'));
+        return view('conversation_view.index', compact('type', 'priority', 'help_desk' ,'message_send', 'user_name', 'user','counter','last_message','find_last_message'));
     }
 
     public function update(Request $request, $id)

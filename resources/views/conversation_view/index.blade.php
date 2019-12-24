@@ -36,22 +36,22 @@
                                                         {{--show receive message--}}
                                                         @foreach($message_send as $messages_receive)
                                                             @if($messages_receive->hcv_receiver_user_id == $user )
-                                                                <li class="d-flex justify-content-between mb-4">
-                                                                    <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-6.jpg"
-                                                                         alt="avatar"
-                                                                         class="avatar rounded-circle mr-2 ml-0 z-depth-1">
+                                                                <li class="d-flex justify-content-between mb-4"
+                                                                    style="direction: ltr">
                                                                     <div class="chat-body white p-3 ml-2 z-depth-1">
                                                                         <div class="header">
                                                                             @foreach($user_name as $requester_name)
                                                                                 @if($requester_name->id == $messages_receive->hcv_request_user_id)
+                                                                                    <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-6.jpg"
+                                                                                         alt="avatar"
+                                                                                         class="avatar rounded-circle mr-2 ml-0 z-depth-1">
                                                                                     <strong class="primary-font"
                                                                                             id="">{{$requester_name->name}}</strong>
+
                                                                                 @endif
                                                                             @endforeach
                                                                             <small class="pull-right text-muted"><i
-                                                                                        class="far fa-clock"></i> 12
-                                                                                mins
-                                                                                ago
+                                                                                        class="far fa-clock"></i> {{$messages_receive->created_at->format('H:i')}}
                                                                             </small>
                                                                         </div>
                                                                         <hr class="w-100">
@@ -69,24 +69,25 @@
                                                         {{--show send message--}}
                                                         @foreach($message_send as $message_request_send)
                                                             @if($message_request_send->hcv_request_user_id == $user )
-                                                                <li class="d-flex justify-content-between mb-4">
+                                                                <li class="d-flex justify-content-between mb-4"
+                                                                    style="direction: rtl">
                                                                     <div class="chat-body white p-3 z-depth-1">
                                                                         <div class="header">
                                                                             <strong class="primary-font">
+                                                                                <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg"
+                                                                                     alt="avatar"
+                                                                                     class="avatar rounded-circle mr-0 ml-3 z-depth-1">
                                                                                 {{auth()->user()->name}}
                                                                             </strong>
-                                                                                <small class="pull-right text-muted"><i
-                                                                                            class="far fa-clock"></i> {{$send_time}}
-                                                                                </small>
+                                                                            <small class="pull-right text-muted"><i
+                                                                                        class="far fa-clock"></i> {{$message_request_send->created_at->format('H:i')}}
+                                                                            </small>
                                                                         </div>
                                                                         <hr class="w-100">
                                                                         <p class="mb-0">
                                                                             {{$message_request_send->hcv_message}}
                                                                         </p>
                                                                     </div>
-                                                                    <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg"
-                                                                         alt="avatar"
-                                                                         class="avatar rounded-circle mr-0 ml-3 z-depth-1">
                                                                 </li>
                                                             @endif
                                                         @endforeach
@@ -157,13 +158,15 @@
                                                                             </div>
                                                                         @else
                                                                             <div class="chat-footer">
-                                                                                {{--@foreach($time as$last_messages)--}}
-                                                                                <p class="text-smaller text-muted mb-0">
-                                                                                    {{$time}}</p>
-                                                                                <span class="text-muted float-right"><i
-                                                                                            class="fas fa-mail-reply"
-                                                                                            aria-hidden="true"></i></span>
-                                                                                {{--@endforeach--}}
+                                                                                @foreach($last_message as $last_messages)
+                                                                                    @if($last_messages->hcv_request_user_id == $users_name->id and $find_last_message->created_at == $last_messages->created_at)
+                                                                                        <p class="text-smaller text-muted mb-0">
+                                                                                            {{$last_messages->created_at->format('H:i')}}</p>
+                                                                                        <span class="text-muted float-right"><i
+                                                                                                    class="fas fa-mail-reply"
+                                                                                                    aria-hidden="true"></i></span>
+                                                                                    @endif
+                                                                                @endforeach
                                                                             </div>
                                                                         @endif
 
@@ -201,7 +204,6 @@
                         message: $('#exampleFormControlTextarea2').val(),
                         user_receive_id: $('#user_receive_id').data('user_receive_id') == null ? $('.user_receive_id_null').data('user_receive_id_null') : $('#user_receive_id').data('user_receive_id'),
                     }
-                alert(data.user_receive_id);
                 event.preventDefault();
                 $.ajaxSetup({
                     headers: {

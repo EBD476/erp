@@ -70,7 +70,15 @@
                     </a>
                     <a class="dropdown-item nav-link" href="{{ route('agreement.index') }}">
                         <i class="tim-icons icon-coins"></i>
-                        {{__('hazine jari')}}
+                        {{__('debit')}}
+                    </a>
+                    <a class="dropdown-item nav-link" href="{{ route('agreement.index') }}">
+                        <i class="tim-icons icon-coins"></i>
+                        {{__('revenue')}}
+                    </a>
+                    <a class="dropdown-item nav-link" href="{{ route('agreement.index') }}">
+                        <i class="tim-icons icon-coins"></i>
+                        {{__('Costs')}}
                     </a>
                 </div>
             </div>
