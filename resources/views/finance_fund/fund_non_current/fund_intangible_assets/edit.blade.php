@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Priority'))
+@section('title',__('Funds Intangible Assets'))
 
 
 @section('content')
@@ -15,7 +15,7 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header card-header-primary">
-                            <h4 class="card-title ">{{__('Edit Priority')}}</h4>
+                            <h4 class="card-title ">{{__('Edit Funds Intangible Assets')}}</h4>
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
@@ -24,9 +24,9 @@
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Name')}}</label>
-                                            <input name="hp_name" type="text" class="form-control" required=""
-                                                   aria-invalid="false" value="{{$priorities->hp_name}}" id="hp_name"
-                                                   data-id="{{$priorities->id}}">
+                                            <input name="hfia_name" type="text" class="form-control" required=""
+                                                   aria-invalid="false" value="{{$funds_intangible_assets->hfia_name}}" id="hfia_name"
+                                                   data-id="{{$funds_intangible_assets->id}}">
                                         </div>
                                     </div>
                                 </div>
@@ -50,9 +50,6 @@
                                         {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
                                         <h5 class="title">Hanta IBMS</h5>
                                     </a>
-                            <p class="description">
-                                {{__('Priority')}}
-                            </p>
                         </div>
                         </p>
                     </div>
@@ -70,11 +67,21 @@
             $("#form1").submit(function (event) {
                 var data =
                     {
-                        id:$("#hp_name").data('id'),
-                        name:$("#hp_name").val(),
+                        id:$("#hfia_name").data('id'),
+                        name:$("#hfia_name").val(),
                     }
                 event.preventDefault();
-                $.blockUI();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
 
                 $.ajaxSetup({
                     headers: {
@@ -83,7 +90,7 @@
                 });
 
                 $.ajax({
-                    url: '/priority' + data.id,
+                    url: '/funds_intangible_assets/' + data.id,
                     type: 'POST',
                     data: data,
                     dataType: 'json',

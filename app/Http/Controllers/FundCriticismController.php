@@ -12,10 +12,11 @@ class FundCriticismController extends Controller
 {
     public function index()
     {
+        $criticism = FundCriticism::all();
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
-        return view('priority.index', compact('priority', 'help_desk', 'type'));
+        return view('finance_fund.fund_current_assets.fund_criticism.index', compact('priority', 'help_desk', 'type' , 'criticism'));
     }
 
     /**
@@ -25,7 +26,11 @@ class FundCriticismController extends Controller
      */
     public function create()
     {
-        return view('priority.create');
+        $type = HDtype::all();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $priority = HDpriority::all();
+        $criticism = FundCriticism::all();
+        return view('finance_fund.fund_current_assets.fund_criticism.create',compact('client','priority', 'help_desk', 'type','criticism'));
     }
 
     /**
@@ -37,11 +42,11 @@ class FundCriticismController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'hdp_name' => 'required'
+            'hfc_name' => 'required'
         ]);
-        $priority = New HDpriority();
-        $priority->hdp_name = $request->hdp_name;
-        $priority->save();
+        $criticism = New FundCriticism();
+        $criticism->hfc_name = $request->hfc_name;
+        $criticism->save();
         return json_encode(["response" => "Done"]);
     }
 
@@ -62,13 +67,13 @@ class FundCriticismController extends Controller
      * @param  \App\HDpriority $hDpriority
      * @return \Illuminate\Http\Response
      */
-    public function edit(HDpriority $hDpriority)
+    public function edit($id)
     {
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $priorities = HDpriority::find($hDpriority);
-        return view('priority.index', compact('priority', 'help_desk', 'priority', 'type', 'priorities'));
+        $criticism = FundCriticism::find($id);
+        return view('finance_fund.fund_current_assets.fund_criticism.edit', compact('priority', 'help_desk', 'priority', 'type','criticism'));
     }
 
     /**
@@ -81,11 +86,11 @@ class FundCriticismController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'hdp_name' => 'required'
+            'hfc_name' => 'required'
         ]);
-        $priority = HDpriority:: find($id);
-        $priority->hdp_name = $request->hdp_name;
-        $priority->save();
+        $criticism = FundCriticism:: find($id);
+        $criticism->hfc_name = $request->hfc_name;
+        $criticism->save();
         return json_encode(["response" => "Done"]);
     }
 
@@ -95,10 +100,10 @@ class FundCriticismController extends Controller
      * @param  \App\HDpriority $hDpriority
      * @return \Illuminate\Http\Response
      */
-    public function destroy(HDpriority $hDpriority)
+    public function destroy($id)
     {
-        $priority = HDpriority::find($hDpriority);
-        $priority->delete();
+        $criticism = FundCriticism:: find($id);
+        $criticism->delete();
         return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
     }
 }

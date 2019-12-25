@@ -32,7 +32,10 @@ class ClientController extends Controller
      */
     public function create()
     {
-        return view('client.create');
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        return view('client.create',compact('priority', 'help_desk', 'type'));
     }
 
     /**
@@ -144,8 +147,11 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $client = Client::find($id);
-        return view('client.edit',compact('client'));
+        return view('client.edit',compact('client','priority', 'help_desk', 'type'));
     }
 
     /**

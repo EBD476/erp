@@ -58,6 +58,15 @@ Route::group(['middleware' => ['auth']], function() {
     route::resource('bank_account','BankAccountsController');
     route::resource('bank_account_type','BankAccountTypeController');
     route::resource('finance_bank','FinanceBankController');
+    route::resource('procrastinations_type','FundProcrastinationTypeController');
+    route::resource('procrastinations','FundProcrastinationController');
+    route::resource('criticism','FundCriticismController');
+    route::resource('current_assets','FundCurrentAssetsController');
+    route::resource('fund_non_current','FundNonCurrentController');
+    route::resource('funds_intangible_assets','FundIntangibleAssetsController');
+    route::resource('fund_tangible_fixed_assets','FundTangibleFixedAssetsController');
+    route::resource('fund','FinanceFundController');
+    route::resource('fund_accounts_and_documents_payable','FundAccountsAndDocumentsPayableController');
     Route::post('order-state/{id}','RepositoryController@order_state')->name('repository.order_state');
     Route::get('send_request/{id}','ProjectController@send_request')->name('projects.send_request');
     Route::get('show_data/{id}','SupportController@show_data')->name('support.show_data');

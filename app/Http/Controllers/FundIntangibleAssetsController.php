@@ -15,7 +15,8 @@ class FundIntangibleAssetsController extends Controller
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
-        return view('priority.index', compact('priority', 'help_desk', 'type'));
+        $funds_intangible_assets=FundIntangibleAssets::all();
+        return view('finance_fund.fund_non_current.fund_intangible_assets.index', compact('priority', 'help_desk', 'type','funds_intangible_assets'));
     }
 
     /**
@@ -25,7 +26,10 @@ class FundIntangibleAssetsController extends Controller
      */
     public function create()
     {
-        return view('priority.create');
+        $type = HDtype::all();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $priority = HDpriority::all();
+        return view('finance_fund.fund_non_current.fund_intangible_assets.create',compact('client','priority', 'help_desk', 'type'));
     }
 
     /**
@@ -37,11 +41,11 @@ class FundIntangibleAssetsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'hdp_name' => 'required'
+            'hfia_name' => 'required'
         ]);
-        $priority = New HDpriority();
-        $priority->hdp_name = $request->hdp_name;
-        $priority->save();
+        $funds_intangible_asset = New HDpriority();
+        $funds_intangible_asset->hfia_name = $request->hfia_name;
+        $funds_intangible_asset->save();
         return json_encode(["response" => "Done"]);
     }
 
@@ -62,13 +66,13 @@ class FundIntangibleAssetsController extends Controller
      * @param  \App\HDpriority $hDpriority
      * @return \Illuminate\Http\Response
      */
-    public function edit(HDpriority $hDpriority)
+    public function edit($id)
     {
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $priorities = HDpriority::find($hDpriority);
-        return view('priority.index', compact('priority', 'help_desk', 'priority', 'type', 'priorities'));
+        $funds_intangible_asset = FundIntangibleAssets:: find($id);
+        return view('finance_fund.fund_non_current.fund_intangible_assets.edit', compact('priority', 'help_desk', 'priority', 'type', 'funds_intangible_asset'));
     }
 
     /**
@@ -81,11 +85,11 @@ class FundIntangibleAssetsController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'hdp_name' => 'required'
+            'hfia_name' => 'required'
         ]);
-        $priority = HDpriority:: find($id);
-        $priority->hdp_name = $request->hdp_name;
-        $priority->save();
+        $funds_intangible_asset = FundIntangibleAssets:: find($id);
+        $funds_intangible_asset->hfia_name = $request->hfia_name;
+        $funds_intangible_asset->save();
         return json_encode(["response" => "Done"]);
     }
 
@@ -95,10 +99,10 @@ class FundIntangibleAssetsController extends Controller
      * @param  \App\HDpriority $hDpriority
      * @return \Illuminate\Http\Response
      */
-    public function destroy(HDpriority $hDpriority)
+    public function destroy(HDpriority $id)
     {
-        $priority = HDpriority::find($hDpriority);
-        $priority->delete();
+        $funds_intangible_asset = FundIntangibleAssets:: find($id);
+        $funds_intangible_asset->delete();
         return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
     }
 }

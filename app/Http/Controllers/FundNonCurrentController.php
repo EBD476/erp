@@ -15,7 +15,8 @@ class FundNonCurrentController extends Controller
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
-        return view('priority.index', compact('priority', 'help_desk', 'type'));
+        $fund_non_current=FundNonCurrent::all();
+        return view('finance_fund.fund_non_current.index', compact('priority', 'help_desk', 'type','fund_non_current'));
     }
 
     /**
@@ -25,7 +26,10 @@ class FundNonCurrentController extends Controller
      */
     public function create()
     {
-        return view('priority.create');
+        $type = HDtype::all();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $priority = HDpriority::all();
+        return view('finance_fund.fund_non_current.create',compact('client','priority', 'help_desk', 'type'));
     }
 
     /**
@@ -37,11 +41,11 @@ class FundNonCurrentController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'hdp_name' => 'required'
+            'hnca_name' => 'required'
         ]);
-        $priority = New HDpriority();
-        $priority->hdp_name = $request->hdp_name;
-        $priority->save();
+        $fund_non_current=new FundNonCurrent();
+        $fund_non_current->hnca_name = $request->hnca_name;
+        $fund_non_current->save();
         return json_encode(["response" => "Done"]);
     }
 
@@ -62,13 +66,13 @@ class FundNonCurrentController extends Controller
      * @param  \App\HDpriority $hDpriority
      * @return \Illuminate\Http\Response
      */
-    public function edit(HDpriority $hDpriority)
+    public function edit($id)
     {
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $priorities = HDpriority::find($hDpriority);
-        return view('priority.index', compact('priority', 'help_desk', 'priority', 'type', 'priorities'));
+        $fund_non_current=FundNonCurrent::find($id);
+        return view('finance_fund.fund_non_current.edit', compact('priority', 'help_desk', 'priority', 'type', 'fund_non_current'));
     }
 
     /**
@@ -81,11 +85,11 @@ class FundNonCurrentController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'hdp_name' => 'required'
+            'hnca_name' => 'required'
         ]);
-        $priority = HDpriority:: find($id);
-        $priority->hdp_name = $request->hdp_name;
-        $priority->save();
+        $fund_non_current=FundNonCurrent::find($id);
+        $fund_non_current->hnca_name = $request->hnca_name;
+        $fund_non_current->save();
         return json_encode(["response" => "Done"]);
     }
 
@@ -95,10 +99,10 @@ class FundNonCurrentController extends Controller
      * @param  \App\HDpriority $hDpriority
      * @return \Illuminate\Http\Response
      */
-    public function destroy(HDpriority $hDpriority)
+    public function destroy($id)
     {
-        $priority = HDpriority::find($hDpriority);
-        $priority->delete();
+        $fund_non_current=FundNonCurrent::find($id);
+        $fund_non_current->delete();
         return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
     }
 }

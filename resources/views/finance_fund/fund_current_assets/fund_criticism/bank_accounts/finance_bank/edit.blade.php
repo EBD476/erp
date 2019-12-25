@@ -25,7 +25,8 @@
                                         <div class="form-group">
                                             <label>{{__('Name')}}</label>
                                             <input name="hfb_name" type="text" class="form-control" required=""
-                                                   aria-invalid="false" value="{{$finance_bank->hfb_name}}" id="hfb_name"
+                                                   aria-invalid="false" value="{{$finance_bank->hfb_name}}"
+                                                   id="hfb_name"
                                                    data-id="{{$finance_bank->id}}">
                                         </div>
                                     </div>
@@ -34,8 +35,11 @@
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Bank Account Number')}}</label>
-                                            <input name="hfb_bank_account_number" type="text" class="form-control" required=""
-                                                   aria-invalid="false" value="{{$finance_bank->hfb_bank_account_number}}" id="hfb_bank_account_number">
+                                            <input name="hfb_bank_account_number" type="text" class="form-control"
+                                                   required=""
+                                                   aria-invalid="false"
+                                                   value="{{$finance_bank->hfb_bank_account_number}}"
+                                                   id="hfb_bank_account_number">
                                         </div>
                                     </div>
                                 </div>
@@ -44,7 +48,8 @@
                                         <div class="form-group">
                                             <label>{{__('Account ID')}}</label>
                                             <input name="hfb_account_id" type="text" class="form-control" required=""
-                                                   aria-invalid="false" value="{{$finance_bank->hfb_account_id}}" id="hfb_account_id">
+                                                   aria-invalid="false" value="{{$finance_bank->hfb_account_id}}"
+                                                   id="hfb_account_id">
                                         </div>
                                     </div>
                                 </div>
@@ -53,7 +58,8 @@
                                         <div class="form-group">
                                             <label>{{__('Branch')}}</label>
                                             <input name="hfb_branch" type="text" class="form-control" required=""
-                                                   aria-invalid="false" value="{{$finance_bank->hfb_branch}}" id="hfb_branch">
+                                                   aria-invalid="false" value="{{$finance_bank->hfb_branch}}"
+                                                   id="hfb_branch">
                                         </div>
                                     </div>
                                 </div>
@@ -62,7 +68,8 @@
                                         <div class="form-group">
                                             <label>{{__('Address')}}</label>
                                             <input name="hfb_address" type="text" class="form-control" required=""
-                                                   aria-invalid="false" value="{{$finance_bank->hfb_address}}" id="hfb_address">
+                                                   aria-invalid="false" value="{{$finance_bank->hfb_address}}"
+                                                   id="hfb_address">
                                         </div>
                                     </div>
                                 </div>
@@ -106,11 +113,25 @@
             $("#form1").submit(function (event) {
                 var data =
                     {
-                        id:$("#hfb_name").data('id'),
-                        name:$("#hfb_name").val(),
+                        id: $("#hfb_name").data('id'),
+                        hfb_name: $("#hfb_name").val(),
+                        hfb_bank_account_number: $("#hfb_bank_account_number").val(),
+                        hfb_account_id: $("#hfb_account_id").val(),
+                        hfb_branch: $("#hfb_branch").val(),
+                        hfb_address: $("#hfb_address").val(),
                     }
                 event.preventDefault();
-                $.blockUI();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
 
                 $.ajaxSetup({
                     headers: {

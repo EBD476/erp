@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Priority'))
+@section('title',__('Fund Non Current'))
 
 @push('css')
     <link href="{{ asset('assets/css/datatables.min.css') }}" rel="stylesheet">
@@ -13,9 +13,9 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <a href="{{route('priority.create')}}" class="btn btn-primary float-left mb-lg-2">
+                    <a href="{{route('fund_non_current.create')}}" class="btn btn-primary float-left mb-lg-2">
                         <i class="tim-icons icon-simple-add"></i> &nbsp;
-                        {{__('New Priority')}}
+                        {{__('New Fund Non Current')}}
                     </a>
                 </div>
                 <div class="card">
@@ -23,7 +23,7 @@
                         <div class="col-md-9">
                             <div class="card">
                                 <div class="card-header card-header-primary">
-                                    <h4 class="card-title text-right font-weight-400">{{__('Priority List')}}</h4>
+                                    <h4 class="card-title text-right font-weight-400">{{__('Fund Non Current List')}}</h4>
                                     <p class="card-category"></p>
                                 </div>
                                 <div class="card-body">
@@ -42,13 +42,13 @@
                                             </thead>
                                             <tbody>
 
-                                            @foreach($priority as $key => $priorities)
+                                            @foreach($fund_non_current as $key => $fund_non_currents)
                                                 <tr>
                                                     <td>
-                                                        {{$priorities ->id}}
+                                                        {{$fund_non_currents ->id}}
                                                     </td>
                                                     <td>
-                                                        {{$priorities ->hdp_name}}
+                                                        {{$fund_non_currents ->hnca_name}}
                                                     </td>
                                                     <td>
                                                         <div class="dropdown">
@@ -60,18 +60,18 @@
                                                             <div class="dropdown-menu dropdown-menu-right"
                                                                  aria-labelledby="dropdownMenuLink">
                                                                 <a class="dropdown-item"
-                                                                   href="{{route('part.edit',$priorities->id)}}"
+                                                                   href="{{route('fund_non_current.edit',$fund_non_currents->id)}}"
                                                                 >{{__('Edit')}}</a>
-                                                                <form id="-form-delete{{$priorities->id}}"
+                                                                <form id="-form-delete{{$fund_non_currents->id}}"
                                                                       style="display: none;" method="POST"
-                                                                      action="{{route('priority.destroy',$priorities->id)}}">
+                                                                      action="{{route('fund_non_current.destroy',$fund_non_currents->id)}}">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                 </form>
                                                                 <a class="dropdown-item"
                                                                    onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
                                                                            event.preventDefault();
-                                                                           document.getElementById('-form-delete{{$priorities->id}}').submit();
+                                                                           document.getElementById('-form-delete{{$fund_non_currents->id}}').submit();
                                                                            }else {
                                                                            event.preventDefault();}">{{__('Delete')}}</a>
                                                             </div>

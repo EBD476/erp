@@ -15,7 +15,8 @@ class FundTangibleFixedAssetsController extends Controller
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
-        return view('priority.index', compact('priority', 'help_desk', 'type'));
+        $fund_tangible_fixed_assets = FundTangibleFixedAssets::all();
+        return view('finance_fund.fund_non_current.fund_tangible_fixed_assets.index', compact('priority', 'help_desk', 'type','fund_tangible_fixed_assets'));
     }
 
     /**
@@ -25,7 +26,10 @@ class FundTangibleFixedAssetsController extends Controller
      */
     public function create()
     {
-        return view('priority.create');
+        $type = HDtype::all();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $priority = HDpriority::all();
+        return view('finance_fund.fund_non_current.fund_tangible_fixed_assets.create',compact('priority', 'help_desk', 'type'));
     }
 
     /**
@@ -39,9 +43,11 @@ class FundTangibleFixedAssetsController extends Controller
         $this->validate($request, [
             'hdp_name' => 'required'
         ]);
-        $priority = New HDpriority();
-        $priority->hdp_name = $request->hdp_name;
-        $priority->save();
+        $fund_tangible_fixed_assets = New FundTangibleFixedAssets();
+        $fund_tangible_fixed_assets->hftfa_name = $request->hftfa_name;
+        $fund_tangible_fixed_assets->hftfa_price =$request->hftfa_price;
+        $fund_tangible_fixed_assets->hftfa_count =$request->hftfa_count;
+        $fund_tangible_fixed_assets->save();
         return json_encode(["response" => "Done"]);
     }
 
@@ -62,13 +68,13 @@ class FundTangibleFixedAssetsController extends Controller
      * @param  \App\HDpriority $hDpriority
      * @return \Illuminate\Http\Response
      */
-    public function edit(HDpriority $hDpriority)
+    public function edit($id)
     {
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $priorities = HDpriority::find($hDpriority);
-        return view('priority.index', compact('priority', 'help_desk', 'priority', 'type', 'priorities'));
+        $fund_tangible_fixed_assets = FundTangibleFixedAssets:: find($id);
+        return view('finance_fund.fund_non_current.fund_tangible_fixed_assets.edit', compact('priority', 'help_desk', 'priority', 'type', 'fund_tangible_fixed_assets'));
     }
 
     /**
@@ -83,9 +89,11 @@ class FundTangibleFixedAssetsController extends Controller
         $this->validate($request, [
             'hdp_name' => 'required'
         ]);
-        $priority = HDpriority:: find($id);
-        $priority->hdp_name = $request->hdp_name;
-        $priority->save();
+        $fund_tangible_fixed_assets = FundTangibleFixedAssets:: find($id);
+        $fund_tangible_fixed_assets->hftfa_name = $request->hftfa_name;
+        $fund_tangible_fixed_assets->hftfa_price =$request->hftfa_price;
+        $fund_tangible_fixed_assets->hftfa_count =$request->hftfa_count;
+        $fund_tangible_fixed_assets->save();
         return json_encode(["response" => "Done"]);
     }
 
@@ -95,10 +103,10 @@ class FundTangibleFixedAssetsController extends Controller
      * @param  \App\HDpriority $hDpriority
      * @return \Illuminate\Http\Response
      */
-    public function destroy(HDpriority $hDpriority)
+    public function destroy($id)
     {
-        $priority = HDpriority::find($hDpriority);
-        $priority->delete();
+        $fund_tangible_fixed_assets = FundTangibleFixedAssets:: find($id);
+        $fund_tangible_fixed_assets->delete();
         return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
     }
 }

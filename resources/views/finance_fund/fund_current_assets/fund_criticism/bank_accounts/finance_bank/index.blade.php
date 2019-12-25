@@ -85,18 +85,18 @@
                                                             <div class="dropdown-menu dropdown-menu-right"
                                                                  aria-labelledby="dropdownMenuLink">
                                                                 <a class="dropdown-item"
-                                                                   href="{{route('finance_bank.edit',$priorities->id)}}"
+                                                                   href="{{route('finance_bank.edit',$finance_banks->id)}}"
                                                                 >{{__('Edit')}}</a>
-                                                                <form id="-form-delete{{$priorities->id}}"
+                                                                <form id="-form-delete{{$finance_banks->id}}"
                                                                       style="display: none;" method="POST"
-                                                                      action="{{route('finance_bank.destroy',$priorities->id)}}">
+                                                                      action="{{route('finance_bank.destroy',$finance_banks->id)}}">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                 </form>
                                                                 <a class="dropdown-item"
                                                                    onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
                                                                            event.preventDefault();
-                                                                           document.getElementById('-form-delete{{$priorities->id}}').submit();
+                                                                           document.getElementById('-form-delete{{$finance_banks->id}}').submit();
                                                                            }else {
                                                                            event.preventDefault();}">{{__('Delete')}}</a>
                                                             </div>

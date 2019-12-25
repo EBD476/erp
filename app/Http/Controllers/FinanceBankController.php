@@ -15,6 +15,7 @@ class FinanceBankController extends Controller
         $finance_bank = FinanceBank::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
+        $type = HDtype::all();
         return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.finance_bank.index', compact('priority', 'help_desk', 'type','finance_bank'));
     }
 
@@ -25,7 +26,10 @@ class FinanceBankController extends Controller
      */
     public function create()
     {
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.finance_bank.create');
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $priority = HDpriority::all();
+        $type = HDtype::all();
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.finance_bank.create',compact('type','help_desk','priority'));
     }
 
     /**
@@ -76,7 +80,7 @@ class FinanceBankController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $finance_bank = FinanceBank::find($id);
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.finance_bank.index', compact('priority', 'help_desk', 'priority', 'type','finance_bank'));
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.finance_bank.edit', compact('priority', 'help_desk', 'priority', 'type','finance_bank'));
     }
 
     /**

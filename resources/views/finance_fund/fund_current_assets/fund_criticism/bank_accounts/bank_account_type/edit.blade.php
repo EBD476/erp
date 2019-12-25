@@ -68,10 +68,20 @@
                 var data =
                     {
                         id:$("#hat_name").data('id'),
-                        name:$("#hat_name").val(),
+                        hat_name:$("#hat_name").val(),
                     }
                 event.preventDefault();
-                $.blockUI();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
 
                 $.ajaxSetup({
                     headers: {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BankAccounts;
+use App\FinanceBank;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
@@ -26,7 +27,11 @@ class BankAccountsController extends Controller
      */
     public function create()
     {
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.create');
+        $bank=FinanceBank::all();
+        $type = HDtype::all();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $priority = HDpriority::all();
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.create',compact('priority', 'help_desk', 'type','bank'));
     }
 
     /**
@@ -39,6 +44,7 @@ class BankAccountsController extends Controller
     {
         $this->validate($request, [
             'hba_bank_id' => 'required',
+            'hba_account_number' => 'required',
             'hba_balance' => 'required',
             'hba_debt' => 'required',
             'hba_crediting' => 'required',
@@ -47,6 +53,7 @@ class BankAccountsController extends Controller
         ]);
         $bank_account = New BankAccounts();
         $bank_account->hba_bank_id = $request->hba_bank_id;
+        $bank_account->hba_account_number = $request->hba_account_number;
         $bank_account->hba_balance = $request->hba_balance;
         $bank_account->hba_debt = $request->hba_debt;
         $bank_account->hba_crediting = $request->hba_crediting;
@@ -93,6 +100,7 @@ class BankAccountsController extends Controller
     {
         $this->validate($request, [
             'hba_bank_id' => 'required',
+            'hba_account_number' => 'required',
             'hba_balance' => 'required',
             'hba_debt' => 'required',
             'hba_crediting' => 'required',
@@ -101,6 +109,7 @@ class BankAccountsController extends Controller
         ]);
         $bank_account = BankAccounts:: find($id);
         $bank_account->hba_bank_id = $request->hba_bank_id;
+        $bank_account->hba_account_number = $request->hba_account_number;
         $bank_account->hba_balance = $request->hba_balance;
         $bank_account->hba_debt = $request->hba_debt;
         $bank_account->hba_crediting = $request->hba_crediting;

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Priority'))
+@section('title',__('Procrastination'))
 
 
 @section('content')
@@ -15,25 +15,65 @@
                     <div class="col-md-8">
                         <div class="card">
                             <div class="card-header card-header-primary">
-                                <h4 class="card-title ">{{__('New Priority')}}</h4>
+                                <h4 class="card-title ">{{__('New Procrastination')}}</h4>
                                 <p class="card-category"></p>
                             </div>
                             <div class="card-body">
-                                <form id="form1" >
-                                    @csrf
+                                <form id="form1">
                                     <div class="row">
                                         <div class="col-md-6 pr-md-1">
                                             <div class="form-group">
                                                 <label>{{__('Name')}}</label>
-                                                <input name="hdp_name" type="text" class="form-control" required=""
-                                                       aria-invalid="false"   >
+                                                <input name="hfp_user_id" type="text" class="form-control" required=""
+                                                       aria-invalid="false"
+                                                       id="hfp_user_id">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 pr-md-1">
+                                            <div class="form-group">
+                                                <label>{{__('Type')}}</label>
+                                                <input name="hfp_type_id" type="text" class="form-control" required=""
+                                                       aria-invalid="false"
+                                                       id="hfp_type_id">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 pr-md-1">
+                                            <div class="form-group">
+                                                <label>{{__('Amount')}}</label>
+                                                <input name="hfp_amount" type="text" class="form-control" required=""
+                                                       aria-invalid="false"
+                                                       id="hfp_amount">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 pr-md-1">
+                                            <div class="form-group">
+                                                <label>{{__('Name')}}</label>
+                                                <input name="hfp_name" type="text" class="form-control" required=""
+                                                       aria-invalid="false"
+                                                       id="hfp_name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 pr-md-1">
+                                            <div class="form-group">
+                                                <label>{{__('Receive Name')}}</label>
+                                                <input name="hfp_user_id_receive" type="text" class="form-control" required=""
+                                                       aria-invalid="false"
+                                                       id="hfp_user_id_receive">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                <button type="submit" class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                            </div>
-                            </form>
+                                        <button type="submit" class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                    </div>
+                                </form>
                         </div>
                     </div>
                     </div>
@@ -50,9 +90,6 @@
                                             {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
                                             <h5 class="title">Hanta IBMS</h5>
                                         </a>
-                                <p class="description">
-                                   {{__('Priority')}}
-                                </p>
                             </div>
                             </p>
                         </div>
@@ -70,7 +107,17 @@
             $("#form1").submit(function (event) {
                 var data = $("#form1").serialize();
                 event.preventDefault();
-                $.blockUI();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
 
                 $.ajaxSetup({
                     headers: {
@@ -79,7 +126,7 @@
                 });
 
                 $.ajax({
-                    url: '/priority',
+                    url: '/procrastinations',
                     type: 'POST',
                     data: data,
                     dataType: 'json',

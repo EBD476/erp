@@ -33,6 +33,15 @@
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
+                                            <label>{{__('Bank Account Number')}}</label>
+                                            <input name="hba_account_number" type="text" class="form-control" required=""
+                                                   aria-invalid="false" value="{{$bank_account->hba_account_number}}" id="hba_account_number">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 pr-md-1">
+                                        <div class="form-group">
                                             <label>{{__('Balance')}}</label>
                                             <input name="hba_balance" type="text" class="form-control" required=""
                                                    aria-invalid="false" value="{{$bank_account->hba_balance}}" id="hba_balance"
@@ -111,7 +120,17 @@
             $("#form1").submit(function (event) {
                 var data = $("#form1").serialize();
                 event.preventDefault();
-                $.blockUI();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
 
                 $.ajaxSetup({
                     headers: {

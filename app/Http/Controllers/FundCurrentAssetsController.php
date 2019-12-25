@@ -15,7 +15,8 @@ class FundCurrentAssetsController extends Controller
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
-        return view('priority.index', compact('priority', 'help_desk', 'type'));
+        $current_assets=FundCurrentAssets::all();
+        return view('finance_fund.fund_current_assets.index', compact('priority', 'help_desk', 'type','current_assets'));
     }
 
     /**
@@ -25,7 +26,10 @@ class FundCurrentAssetsController extends Controller
      */
     public function create()
     {
-        return view('priority.create');
+        $type = HDtype::all();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $priority = HDpriority::all();
+        return view('finance_fund.fund_current_assets.create',compact('client','priority', 'help_desk', 'type'));
     }
 
     /**
@@ -37,11 +41,11 @@ class FundCurrentAssetsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'hdp_name' => 'required'
+            'hfca_name' => 'required'
         ]);
-        $priority = New HDpriority();
-        $priority->hdp_name = $request->hdp_name;
-        $priority->save();
+        $current_assets = New FundCurrentAssets();
+        $current_assets->hfca_name = $request->hfca_name;
+        $current_assets->save();
         return json_encode(["response" => "Done"]);
     }
 
@@ -62,13 +66,13 @@ class FundCurrentAssetsController extends Controller
      * @param  \App\HDpriority $hDpriority
      * @return \Illuminate\Http\Response
      */
-    public function edit(HDpriority $hDpriority)
+    public function edit($id)
     {
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $priorities = HDpriority::find($hDpriority);
-        return view('priority.index', compact('priority', 'help_desk', 'priority', 'type', 'priorities'));
+        $current_assets = FundCurrentAssets::find($id);
+        return view('finance_fund.fund_current_assets.edit', compact('priority', 'help_desk', 'priority', 'type','current_assets'));
     }
 
     /**
@@ -81,11 +85,11 @@ class FundCurrentAssetsController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'hdp_name' => 'required'
+            'hfca_name' => 'required'
         ]);
-        $priority = HDpriority:: find($id);
-        $priority->hdp_name = $request->hdp_name;
-        $priority->save();
+        $current_assets = FundCurrentAssets:: find($id);
+        $current_assets->hfca_name = $request->hfca_name;
+        $current_assets->save();
         return json_encode(["response" => "Done"]);
     }
 
@@ -95,10 +99,10 @@ class FundCurrentAssetsController extends Controller
      * @param  \App\HDpriority $hDpriority
      * @return \Illuminate\Http\Response
      */
-    public function destroy(HDpriority $hDpriority)
+    public function destroy($id)
     {
-        $priority = HDpriority::find($hDpriority);
-        $priority->delete();
+        $current_assets = FundCurrentAssets:: find($id);
+        $current_assets->delete();
         return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
     }
 }

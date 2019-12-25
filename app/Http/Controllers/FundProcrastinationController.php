@@ -13,9 +13,10 @@ class FundProcrastinationController extends Controller
     public function index()
     {
         $type = HDtype::all();
+        $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $priority = HDpriority::all();
-        return view('priority.index', compact('priority', 'help_desk', 'type'));
+        $procrastination = FundProcrastination::all();
+        return view('finance_fund.fund_current_assets.fund_criticism.fund_procrastination.index', compact('priority', 'help_desk', 'type','procrastination'));
     }
 
     /**
@@ -25,7 +26,10 @@ class FundProcrastinationController extends Controller
      */
     public function create()
     {
-        return view('priority.create');
+        $type = HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        return view('finance_fund.fund_current_assets.fund_criticism.fund_procrastination.create',compact('client','priority', 'help_desk', 'type'));
     }
 
     /**
@@ -37,11 +41,17 @@ class FundProcrastinationController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'hdp_name' => 'required'
-        ]);
-        $priority = New HDpriority();
-        $priority->hdp_name = $request->hdp_name;
-        $priority->save();
+            'hfp_user_id' => 'required',
+            'hfp_type_id' => 'required',
+            'hfp_amount' => 'required',
+            'hfp_name' => 'required',
+            'hfp_user_id_receive' => 'required',        ]);
+        $procrastination = New FundProcrastination();
+        $procrastination->hfp_user_id = $request->hfp_user_id;
+        $procrastination->hfp_type_id = $request->hfp_type_id;
+        $procrastination->hfp_amount = $request->hfp_amount;
+        $procrastination->hfp_name = $request->hfp_name;
+        $procrastination->hfp_user_id_receive = $request->hfp_user_id_receive;        $procrastination->save();
         return json_encode(["response" => "Done"]);
     }
 
@@ -62,13 +72,13 @@ class FundProcrastinationController extends Controller
      * @param  \App\HDpriority $hDpriority
      * @return \Illuminate\Http\Response
      */
-    public function edit(HDpriority $hDpriority)
+    public function edit($id)
     {
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $priorities = HDpriority::find($hDpriority);
-        return view('priority.index', compact('priority', 'help_desk', 'priority', 'type', 'priorities'));
+        $procrastination = FundProcrastination::find($id);
+        return view('finance_fund.fund_current_assets.fund_criticism.fund_procrastination.edit', compact('priority', 'help_desk', 'priority', 'type','procrastination'));
     }
 
     /**
@@ -81,11 +91,19 @@ class FundProcrastinationController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'hdp_name' => 'required'
+            'hfp_user_id' => 'required',
+            'hfp_type_id' => 'required',
+            'hfp_amount' => 'required',
+            'hfp_name' => 'required',
+            'hfp_user_id_receive' => 'required',
         ]);
-        $priority = HDpriority:: find($id);
-        $priority->hdp_name = $request->hdp_name;
-        $priority->save();
+        $procrastination = FundProcrastination:: find($id);
+        $procrastination->hfp_user_id = $request->hfp_user_id;
+        $procrastination->hfp_type_id = $request->hfp_type_id;
+        $procrastination->hfp_amount = $request->hfp_amount;
+        $procrastination->hfp_name = $request->hfp_name;
+        $procrastination->hfp_user_id_receive = $request->hfp_user_id_receive;
+        $procrastination->save();
         return json_encode(["response" => "Done"]);
     }
 
@@ -95,10 +113,10 @@ class FundProcrastinationController extends Controller
      * @param  \App\HDpriority $hDpriority
      * @return \Illuminate\Http\Response
      */
-    public function destroy(HDpriority $hDpriority)
+    public function destroy($id)
     {
-        $priority = HDpriority::find($hDpriority);
-        $priority->delete();
+        $procrastination = HDpriority::find($id);
+        $procrastination->delete();
         return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
     }
 }

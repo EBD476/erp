@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Priority'))
+@section('title',__('Fund Tangible Fixed Assets'))
 
 
 @section('content')
@@ -15,7 +15,7 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header card-header-primary">
-                            <h4 class="card-title ">{{__('Edit Priority')}}</h4>
+                            <h4 class="card-title ">{{__('Edit Fund Tangible Fixed Assets')}}</h4>
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
@@ -24,9 +24,27 @@
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Name')}}</label>
-                                            <input name="hp_name" type="text" class="form-control" required=""
-                                                   aria-invalid="false" value="{{$priorities->hp_name}}" id="hp_name"
-                                                   data-id="{{$priorities->id}}">
+                                            <input name="hftfa_name" type="text" class="form-control" required=""
+                                                   aria-invalid="false" value="{{$fund_tangible_fixed_assets->hftfa_name}}" id="hftfa_name"
+                                                   data-id="{{$fund_tangible_fixed_assets->id}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 pr-md-1">
+                                        <div class="form-group">
+                                            <label>{{__('Price')}}</label>
+                                            <input name="hftfa_price" type="text" class="form-control" required=""
+                                                   aria-invalid="false" value="{{$fund_tangible_fixed_assets->hftfa_price}}" id="hftfa_price">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 pr-md-1">
+                                        <div class="form-group">
+                                            <label>{{__('Count')}}</label>
+                                            <input name="hftfa_count" type="text" class="form-control" required=""
+                                                   aria-invalid="false" value="{{$fund_tangible_fixed_assets->hftfa_count}}" id="hftfa_count">
                                         </div>
                                     </div>
                                 </div>
@@ -70,11 +88,23 @@
             $("#form1").submit(function (event) {
                 var data =
                     {
-                        id:$("#hp_name").data('id'),
-                        name:$("#hp_name").val(),
+                        id:$("#hftfa_name").data('id'),
+                        hftfa_name:$("#hftfa_name").val(),
+                        hftfa_count:$("#hftfa_count").val(),
+                        hftfa_price:$("#hftfa_price").val(),
                     }
                 event.preventDefault();
-                $.blockUI();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
 
                 $.ajaxSetup({
                     headers: {
@@ -83,7 +113,7 @@
                 });
 
                 $.ajax({
-                    url: '/priority' + data.id,
+                    url: '/fund_tangible_fixed_assets/' + data.id,
                     type: 'POST',
                     data: data,
                     dataType: 'json',

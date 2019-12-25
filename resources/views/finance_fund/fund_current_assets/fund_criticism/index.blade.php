@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Priority'))
+@section('title',__('Criticism'))
 
 @push('css')
     <link href="{{ asset('assets/css/datatables.min.css') }}" rel="stylesheet">
@@ -13,9 +13,9 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <a href="{{route('priority.create')}}" class="btn btn-primary float-left mb-lg-2">
+                    <a href="{{route('criticism.create')}}" class="btn btn-primary float-left mb-lg-2">
                         <i class="tim-icons icon-simple-add"></i> &nbsp;
-                        {{__('New Priority')}}
+                        {{__('New Criticism')}}
                     </a>
                 </div>
                 <div class="card">
@@ -23,7 +23,7 @@
                         <div class="col-md-9">
                             <div class="card">
                                 <div class="card-header card-header-primary">
-                                    <h4 class="card-title text-right font-weight-400">{{__('Priority List')}}</h4>
+                                    <h4 class="card-title text-right font-weight-400">{{__('Criticism List')}}</h4>
                                     <p class="card-category"></p>
                                 </div>
                                 <div class="card-body">
@@ -42,13 +42,13 @@
                                             </thead>
                                             <tbody>
 
-                                            @foreach($priority as $key => $priorities)
+                                            @foreach($criticism as $key => $criticisms)
                                                 <tr>
                                                     <td>
-                                                        {{$priorities ->id}}
+                                                        {{$criticisms ->id}}
                                                     </td>
                                                     <td>
-                                                        {{$priorities ->hdp_name}}
+                                                        {{$criticisms->hfc_name}}
                                                     </td>
                                                     <td>
                                                         <div class="dropdown">
@@ -60,18 +60,27 @@
                                                             <div class="dropdown-menu dropdown-menu-right"
                                                                  aria-labelledby="dropdownMenuLink">
                                                                 <a class="dropdown-item"
-                                                                   href="{{route('part.edit',$priorities->id)}}"
+                                                                   href="{{route('finance_bank.index')}}"
+                                                                > {{__('Bank List')}}</a>
+                                                                <a class="dropdown-item"
+                                                                   href="{{route('bank_account.index')}}"
+                                                                > {{__('Bank Account')}}</a>
+                                                                <a class="dropdown-item"
+                                                                   href="{{route('bank_account_type.index')}}"
+                                                                >{{__('Bank Account Type')}}</a>
+                                                                <a class="dropdown-item"
+                                                                   href="{{route('criticism.edit',$criticisms->id)}}"
                                                                 >{{__('Edit')}}</a>
-                                                                <form id="-form-delete{{$priorities->id}}"
+                                                                <form id="-form-delete{{$criticisms->id}}"
                                                                       style="display: none;" method="POST"
-                                                                      action="{{route('priority.destroy',$priorities->id)}}">
+                                                                      action="{{route('criticism.destroy',$criticisms->id)}}">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                 </form>
                                                                 <a class="dropdown-item"
                                                                    onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
                                                                            event.preventDefault();
-                                                                           document.getElementById('-form-delete{{$priorities->id}}').submit();
+                                                                           document.getElementById('-form-delete{{$criticisms->id}}').submit();
                                                                            }else {
                                                                            event.preventDefault();}">{{__('Delete')}}</a>
                                                             </div>

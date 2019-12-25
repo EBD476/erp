@@ -26,7 +26,10 @@ class BankAccountTypeController extends Controller
      */
     public function create()
     {
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.bank_account_type.create');
+        $type = HDtype::all();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $priority = HDpriority::all();
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.bank_account_type.create',compact('priority', 'help_desk', 'type'));
     }
 
     /**
@@ -69,7 +72,7 @@ class BankAccountTypeController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $bank_account_type = BankAccountType::find($id);
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.bank_account_type.index', compact('priority', 'help_desk', 'priority', 'type','bank_account_type'));
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.bank_account_type.edit', compact('priority', 'help_desk', 'priority', 'type','bank_account_type'));
     }
 
     /**
@@ -98,7 +101,7 @@ class BankAccountTypeController extends Controller
      */
     public function destroy($id)
     {
-        $bank_account_type = HDpriority::find($id);
+        $bank_account_type = BankAccountType::find($id);
         $bank_account_type->delete();
         return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
     }
