@@ -15,7 +15,7 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header card-header-primary">
-                            <h4 class="card-title ">{{__('Edit Product Parts')}}</h4>
+                            <h4 class="card-title ">{{__('Edit Provider')}}</h4>
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
@@ -43,21 +43,21 @@
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Address')}}</label>
-                                            <input name="hp_phone" type="text" class="form-control"
+                                            <input name="hp_address" type="text" class="form-control"
                                                    required=""
-                                                   aria-invalid="false" value="{{$provider->hp_phone}}">
+                                                   aria-invalid="false" value="{{$provider->hp_address}}">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6 pr-md-1">
-                                        <div class="form-group">
-                                            <label>{{__('Account Number')}}</label>
-                                            <input name="hp_account_number" disabled
-                                                   class="form-control"    value="{{$provider->hp_account_number}}">
-                                        </div>
-                                    </div>
-                                </div>
+                                {{--<div class="row">--}}
+                                    {{--<div class="col-md-6 pr-md-1">--}}
+                                        {{--<div class="form-group">--}}
+                                            {{--<label>{{__('Account Number')}}</label>--}}
+                                            {{--<input name="hp_account_number" disabled--}}
+                                                   {{--class="form-control"    value="{{$provider->hp_account_number}}">--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
                                 <div class="card-footer">
                                     <button type="submit"
                                             class="btn btn-fill btn-primary">{{__('Save')}}</button>

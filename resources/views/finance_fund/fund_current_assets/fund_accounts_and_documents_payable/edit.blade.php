@@ -27,8 +27,8 @@
                                             <input name="hfaadp_invoice_number" type="number" class="form-control"
                                                    required=""
                                                    aria-invalid="false" id="hfaadp_invoice_number"
-                                                   data-id="{{ $fund_accounts_and_documents_payable->id}}"
-                                                   value="{{ $fund_accounts_and_documents_payable->hfaadp_invoice_number}}">
+                                                   data-id="{{ $fund_accounts_document_payables->id}}"
+                                                   value="{{ $fund_accounts_document_payables->hfaadp_invoice_number}}">
                                         </div>
                                     </div>
                                 </div>
@@ -39,7 +39,7 @@
                                             <input name="hfaadp_invoice_description" type="text" class="form-control"
                                                    required=""
                                                    aria-invalid="false" id="hfaadp_invoice_description"
-                                                   value="{{$fund_accounts_and_documents_payable->hfaadp_invoice_description}}">
+                                                   value="{{$fund_accounts_document_payables->hfaadp_invoice_description}}">
                                         </div>
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@
                                             <input name="hfaadp_invoice_date" type="number" class="form-control"
                                                    required=""
                                                    aria-invalid="false" id="hfaadp_invoice_date"
-                                                   value="{{$fund_accounts_and_documents_payable->hfaadp_invoice_date }}">
+                                                   value="{{$fund_accounts_document_payables->hfaadp_invoice_date }}">
                                         </div>
                                     </div>
                                 </div>
@@ -61,7 +61,7 @@
                                             <input name="hfaadp_invoice_amount" type="number" class="form-control"
                                                    required=""
                                                    aria-invalid="false" id="hfaadp_invoice_amount"
-                                                   value="{{$fund_accounts_and_documents_payable->hfaadp_invoice_amount}}">
+                                                   value="{{$fund_accounts_document_payables->hfaadp_invoice_amount}}">
                                         </div>
                                     </div>
                                 </div>
@@ -129,7 +129,7 @@
                         });
 
                         $.ajax({
-                            url: '/fund_accounts_and_documents_payable/' + data.id,
+                            url: '/fund_accounts_document_payable/' + data.id,
                             type: 'POST',
                             data: data,
                             dataType: 'json',

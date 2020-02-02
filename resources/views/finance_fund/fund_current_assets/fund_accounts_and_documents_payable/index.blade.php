@@ -51,22 +51,22 @@
                                             </thead>
                                             <tbody>
 
-                                            @foreach($fund_accounts_and_documents_payable as $key => $fund_accounts_and_documents_payables)
+                                            @foreach($fund_accounts_document_payable as $key => $fund_accounts_document_payables)
                                                 <tr>
                                                     <td>
-                                                        {{$fund_accounts_and_documents_payables ->id}}
+                                                        {{$fund_accounts_document_payables ->id}}
                                                     </td>
                                                     <td>
-                                                        {{$fund_accounts_and_documents_payables ->hfaadp_invoice_number}}
+                                                        {{$fund_accounts_document_payables ->hfaadp_invoice_number}}
                                                     </td>
                                                     <td>
-                                                        {{$fund_accounts_and_documents_payables ->hfaadp_invoice_description}}
+                                                        {{$fund_accounts_document_payables ->hfaadp_invoice_description}}
                                                     </td>
                                                     <td>
-                                                        {{$fund_accounts_and_documents_payables ->hfaadp_invoice_date}}
+                                                        {{$fund_accounts_document_payables ->hfaadp_invoice_date}}
                                                     </td>
                                                     <td>
-                                                        {{$fund_accounts_and_documents_payables ->hfaadp_invoice_amount}}
+                                                        {{$fund_accounts_document_payables ->hfaadp_invoice_amount}}
                                                     </td>
                                                     <td>
                                                         <div class="dropdown">
@@ -78,18 +78,18 @@
                                                             <div class="dropdown-menu dropdown-menu-right"
                                                                  aria-labelledby="dropdownMenuLink">
                                                                 <a class="dropdown-item"
-                                                                   href="{{route('fund_accounts_and_documents_payable.edit',$fund_accounts_and_documents_payables->id)}}"
+                                                                   href="{{route('fund_accounts_document_payable.edit',$fund_accounts_document_payables->id)}}"
                                                                 >{{__('Edit')}}</a>
-                                                                <form id="-form-delete{{$fund_accounts_and_documents_payables->id}}"
+                                                                <form id="-form-delete{{$fund_accounts_document_payables->id}}"
                                                                       style="display: none;" method="POST"
-                                                                      action="{{route('fund_accounts_and_documents_payable.destroy',$fund_accounts_and_documents_payables->id)}}">
+                                                                      action="{{route('fund_accounts_document_payable.destroy',$fund_accounts_document_payables->id)}}">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                 </form>
                                                                 <a class="dropdown-item"
                                                                    onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
                                                                            event.preventDefault();
-                                                                           document.getElementById('-form-delete{{$fund_accounts_and_documents_payables->id}}').submit();
+                                                                           document.getElementById('-form-delete{{$fund_accounts_document_payables->id}}').submit();
                                                                            }else {
                                                                            event.preventDefault();}">{{__('Delete')}}</a>
                                                             </div>

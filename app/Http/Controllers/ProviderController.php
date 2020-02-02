@@ -21,7 +21,7 @@ class ProviderController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $provider = Provider::all();
-        return view('provider.index',compact('provider'));
+        return view('provider.index',compact('provider','type','priority','help_desk'));
     }
 
 
@@ -43,7 +43,7 @@ class ProviderController extends Controller
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('provider.create');
+        return view('provider.create',compact('provider','type','priority','help_desk'));
     }
 
     public function store(Request $request)
@@ -114,7 +114,7 @@ class ProviderController extends Controller
         $provider->hp_address = $request->hp_address;
         $provider->hp_account_number = $request->hp_account_number;
         $provider->save();
-        return view('part.index',compact('provider'));
+        return redirect()->back();
 
 
     }

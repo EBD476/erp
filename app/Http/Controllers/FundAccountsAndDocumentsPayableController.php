@@ -15,8 +15,8 @@ class FundAccountsAndDocumentsPayableController extends Controller
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
-        $fund_accounts_and_documents_payable=FundAccountsAndDocumentsPayable::all();
-        return view('finance_fund.fund_current_assets.fund_accounts_and_documents_payable.index', compact('priority', 'help_desk', 'type','fund_accounts_and_documents_payable'));
+        $fund_accounts_document_payable=FundAccountsAndDocumentsPayable::all();
+        return view('finance_fund.fund_current_assets.fund_accounts_and_documents_payable.index', compact('priority', 'help_desk', 'type','fund_accounts_document_payable'));
     }
 
     /**

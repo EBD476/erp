@@ -9,6 +9,7 @@ use App\OrderProduct;
 use App\OrderState;
 use App\Product;
 use App\Repository;
+use App\Repository_Requirement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use carbon\carbon;
@@ -24,12 +25,13 @@ class RepositoryController extends Controller
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $Repositories = Repository:: all();
         $repository_product_count = DB::select("SELECT sum(hr_product_stock) as sum_hpo FROM hnt_repositories");
-        $orders = OrderProduct::all();
+        $orders = OrderProduct::where('hpo_status','3')->get();
         $product = Product::ALL();
         $client = Client::all();
 
         $query_order_product = DB::select("SELECT sum(hpo_count) as sum_hpo , hpo_status , hpo_product_id FROM hnt_products,hnt_invoice_items WHERE hnt_products.id =hnt_invoice_items.hpo_product_id group by hnt_invoice_items.hpo_product_id , hpo_status ");
-        $query_order_product_all = DB::select("SELECT sum(hpo_count) as sum_hpo FROM hnt_invoice_items where hpo_status != 'Approved'");
+        $query_order_product_all = DB::select("SELECT sum(hpo_count) as sum_hpo FROM hnt_invoice_items where hpo_status = '3'");
+
 
 
         return view('Repository.index',['repository_product_count'=>$repository_product_count,'query' => $query_order_product, 'client' => $client, 'order_all' => $query_order_product_all], compact('Repositories', 'product', 'orders','help_desk','priority','type'));
@@ -43,7 +45,10 @@ class RepositoryController extends Controller
      */
     public function create()
     {
-        return view('Repository.create');
+        $type=HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        return view('Repository.create',compact('type','priority','help_desk'));
     }
 
 

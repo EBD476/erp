@@ -360,7 +360,7 @@
                                                         <div class="form-group">
                                                             <div class="form-group">
                                                                 <div class="col-lg-6 col-sm-6">
-                                                                    <input class="form-control"
+                                                                    <input disabled class="form-control"
                                                                            type="text"
                                                                            name="total"
                                                                            id="total">
@@ -375,7 +375,7 @@
                                                         <div class="form-group">
                                                             <div class="form-group">
                                                                 <div class="col-lg-6 col-sm-6">
-                                                                    <input class="form-control"
+                                                                    <input disabled class="form-control"
                                                                            type="text"
                                                                            name="total_discount"
                                                                            id="total_discount">
@@ -417,8 +417,8 @@
                                        class="btn badge-danger">{{__('Back')}}</a>
                                     <button type="submit" class="btn btn-primary"
                                             id="btn-submit2">{{__('Send')}}</button>
-                                    <button type="submit" class="btn btn-primary"
-                                            id="preview">{{__('Preview Factor')}}</button>
+                                    {{--<button type="submit" class="btn btn-primary"--}}
+{{--                                            id="preview">{{__('Preview Factor')}}</button>--}}
                                 </form>
                             </div>
                         </div>
@@ -573,7 +573,6 @@
             $("#form2").submit(function (event) {
                 var data = $("#form2").serialize();
                 event.preventDefault();
-                $.blockUI();
                 $.blockUI({
                     message: '{{__('please wait...')}}', css: {
                         border: 'none',

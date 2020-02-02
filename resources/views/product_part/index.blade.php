@@ -62,7 +62,7 @@
                                             </thead>
 
                                             <tbody>
-                                            @foreach($product_part as $key => $product_part)
+                                            @foreach($product_part as $product_part)
                                                 <tr>
                                                     {{--<form id="form1" enctype="multipart/form-data">--}}
                                                     {{--<td>--}}
@@ -78,7 +78,7 @@
                                                     {{--</td>--}}
                                                     {{--</form>--}}
                                                     <td>
-                                                        {{$product_part ->id}}
+                                                        {{$product_part->id}}
                                                     </td>
 
                                                     @foreach($part as $parts)
@@ -98,7 +98,7 @@
                                                             </td>
                                                         @endif
                                                     @endforeach
-                                                    <td class="text-left">
+                                                    <td>
                                                         {{$product_part -> hpp_part_count}}
                                                     </td>
                                                     <td>

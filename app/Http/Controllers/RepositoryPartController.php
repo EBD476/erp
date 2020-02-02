@@ -18,7 +18,8 @@ class RepositoryPartController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $repository=RepositoryPart::ALL();
-        return view('repository_part.index',compact('repository','help_desk','priority','type'));
+        $part = Part::all();
+        return view('repository_part.index',compact('part','repository','help_desk','priority','type'));
     }
 
     /**
@@ -99,8 +100,7 @@ class RepositoryPartController extends Controller
         $repository->hrp_repository_id = $request->hrp_repository_id;
         $repository->hrp_part_count = $request->hrp_part_count;
         $repository->save();
-        return view('repository_create.index',compact('repository'));
-
+        return redirect()->back();
 
     }
 

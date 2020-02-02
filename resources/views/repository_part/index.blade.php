@@ -42,10 +42,10 @@
                                                 {{__('Name')}}
                                             </th>
                                             <th>
-                                                {{__('Model')}}
+                                                {{__('Count')}}
                                             </th>
                                             <th>
-                                                {{__('Price')}}
+                                                {{__('Repository')}}
                                             </th>
                                             <th>
                                                 {{__('Action')}}
@@ -53,20 +53,24 @@
                                             </thead>
                                             <tbody>
 
-                                            @foreach($repository as $key => $repository)
+                                            @foreach($repository as $key => $repositories)
                                                 <tr>
 
                                                     <td>
                                                         {{$key+1}}
                                                     </td>
+                                                    @foreach($part as $parts)
+                                                        @if( $repositories ->hrp_part_id == $parts->id)
                                                     <td>
-                                                        {{$repository ->hrp_part_id}}
+                                                        {{$parts->hp_name}}
                                                     </td>
-                                                    <td class="text-left">
-                                                        {{$repository -> hrp_repository_id}}
+                                                        @endif
+                                                    @endforeach
+                                                    <td>
+                                                        {{$repositories -> hrp_repository_id}}
                                                     </td>
-                                                    <td class="text-left">
-                                                        {{$repository -> hrp_part_count}}
+                                                    <td>
+                                                        {{$repositories -> hrp_part_count}}
                                                     </td>
                                                     <td>
                                                         <div class="dropdown">
@@ -78,18 +82,18 @@
                                                             <div class="dropdown-menu dropdown-menu-right"
                                                                  aria-labelledby="dropdownMenuLink">
                                                                 <a class="dropdown-item"
-                                                                   href="{{route('repository-part.edit',$repository->id)}}"
+                                                                   href="{{route('repository-part.edit',$repositories->id)}}"
                                                                 >{{__('Edit')}}</a>
-                                                                <form id="-form-delete{{$repository->id}}"
+                                                                <form id="-form-delete{{$repositories->id}}"
                                                                       style="display: none;" method="POST"
-                                                                      action="{{route('repository-part.destroy',$repository->id)}}">
+                                                                      action="{{route('repository-part.destroy',$repositories->id)}}">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                 </form>
                                                                 <a class="dropdown-item"
                                                                    onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
                                                                            event.preventDefault();
-                                                                           document.getElementById('-form-delete{{$repository->id}}').submit();
+                                                                           document.getElementById('-form-delete{{$repositories->id}}').submit();
                                                                            }else {
                                                                            event.preventDefault();}">{{__('Delete')}}</a>
                                                             </div>

@@ -66,7 +66,7 @@ Route::group(['middleware' => ['auth']], function() {
     route::resource('funds_intangible_assets','FundIntangibleAssetsController');
     route::resource('fund_tangible_fixed_assets','FundTangibleFixedAssetsController');
     route::resource('fund','FinanceFundController');
-    route::resource('fund_accounts_and_documents_payable','FundAccountsAndDocumentsPayableController');
+    route::resource('fund_accounts_document_payable','FundAccountsAndDocumentsPayableController');
     Route::post('order-state/{id}','RepositoryController@order_state')->name('repository.order_state');
     Route::get('send_request/{id}','ProjectController@send_request')->name('projects.send_request');
     Route::get('show_data/{id}','SupportController@show_data')->name('support.show_data');

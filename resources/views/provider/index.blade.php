@@ -71,10 +71,10 @@
                                                     <td>
                                                         {{$key + 1}}
                                                     </td>
-                                                    <td class="text-left">
+                                                    <td>
                                                         {{$providers -> hp_name}}
                                                     </td>
-                                                    <td class="text-left">
+                                                    <td>
                                                         {{$providers -> hp_account_number}}
                                                     </td>
                                                     <td>

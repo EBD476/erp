@@ -97,7 +97,7 @@
                 </div>
             </div>
             <div class="copyright text-center">
-                ©2018 <a href=http://hantaibms.com >Hantaibms</a> Co. by EBD
+                ©2020 <a href=http://hantaibms.com >Hantaibms</a> Co. by PGH
             </div>
         </div>
     </div>

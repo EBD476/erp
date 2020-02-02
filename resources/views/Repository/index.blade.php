@@ -23,7 +23,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table1" cellspacing="0" width="100%">
+                                    <table class="table" cellspacing="0" width="100%">
                                         <thead class=" text-primary">
                                         <th>
                                             {{__('ID')}}
@@ -77,7 +77,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table1" cellspacing="0" width="100%">
+                                    <table class="table" cellspacing="0" width="100%">
                                         <thead class=" text-primary">
                                         <th>
                                             {{__('ID')}}
@@ -97,7 +97,7 @@
                                         </thead>
                                         <tbody>
                                         @foreach($orders as $key => $orders_show )
-                                            @if($orders_show->hpo_status != 'Approved')
+                                            @if($orders_show->hpo_status == '3')
                                                 <tr>
                                                     <td>
                                                         {{$key + 1}}
@@ -142,7 +142,7 @@
                             <div class="card-header ">
                                 @foreach($order_all as $orders_all)
                                     @foreach($repository_product_count as $repository_product_counts)
-                                        @if($repository_product_counts->sum_hpo - $orders_all->sum_hpo <= 0)
+                                        @if($orders_all->sum_hpo-$repository_product_counts->sum_hpo   <= 0)
                                             <h6 class="title d-inline">{{__('Inventory Deficit')}}</h6>
                                             {{  $repository_product_counts->sum_hpo - $orders_all->sum_hpo  }}
                                         @endif
@@ -169,90 +169,88 @@
 
                             <div class="card-body ">
                                 <div class="table-full-width table-responsive ps ps--active-y">
-                                        <table class="table">
-                                            <tbody>
-                                            <thead>
-                                            <th><p class="title">{{__('Order ID')}}</p></th>
-                                            <th><p class="title">{{__('Product Name')}}</p></th>
-                                            <th><p class="title">{{__('Inventory')}}</p></th>
-                                            <th><p class="title">{{__('Status Verify')}}</p></th>
-                                            </thead>
-                                            @foreach($orders as $item)
-                                                @if($item->hpo_status != "Approved")
-                                                    @foreach($product as $goods)
-                                                        @foreach($Repositories as $repository_selected)
-                                                            <tr>
-                                                                @if($repository_selected->hr_product_id == $goods->id)
-                                                                    @if($item->hpo_product_id == $repository_selected->hr_product_id)
-                                                                        @foreach($product as $p)
-                                                                            @if($p->id == $repository_selected->hr_product_id )
+                                    <table class="table">
+                                        <tbody>
+                                        <thead>
+                                        <th><p class="title">{{__('Order ID')}}</p></th>
+                                        <th><p class="title">{{__('Product Name')}}</p></th>
+                                        <th><p class="title">{{__('Inventory')}}</p></th>
+                                        <th><p class="title">{{__('Status Verify')}}</p></th>
+                                        </thead>
+                                        @foreach($orders as $item)
+                                            @if($item->hpo_status == "3")
+                                                @foreach($product as $goods)
+                                                    @foreach($Repositories as $repository_selected)
+                                                        <tr>
+                                                            @if($repository_selected->hr_product_id == $goods->id)
+                                                                @if($item->hpo_product_id == $repository_selected->hr_product_id)
+                                                                    @foreach($product as $p)
+                                                                        @if($p->id == $repository_selected->hr_product_id )
 
 
+                                                                            <td>
+                                                                                <p class="text-muted">{{$item->hpo_order_id}}</p>
+                                                                            </td>
+
+
+                                                                            <td>
+                                                                                <p class="text-muted">{{$p->hp_product_name}}</p>
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <p class="text-muted">{{$repository_selected ->hr_product_stock - $item->hpo_count}}</p>
+
+                                                                            </td>
+                                                                            {{--<td class="td-actions text-right">--}}
+                                                                            {{--<button type="button" rel="tooltip" title=""--}}
+                                                                            {{--class="btn btn-link"--}}
+                                                                            {{--data-original-title="Edit Task">--}}
+                                                                            {{--<i class="tim-icons icon-pencil"></i>--}}
+                                                                            {{--</button>--}}
+                                                                            {{--</td>--}}
+                                                                            @if($repository_selected ->hr_product_stock - $item->hpo_count >= 0 )
                                                                                 <td>
-                                                                                    <p class="text-muted">{{$item->hpo_order_id}}</p>
-                                                                                </td>
-
-
-                                                                                <td>
-                                                                                    <p class="text-muted">{{$p->hp_product_name}}</p>
-                                                                                </td>
-
-                                                                                <td>
-                                                                                    <p class="text-muted">{{$repository_selected ->hr_product_stock - $item->hpo_count}}</p>
-                                                                                    <input hidden
-                                                                                           value="{{$repository_selected ->hr_product_stock - $item->hpo_count}}"
-                                                                                           id="computing_repository_requirement"
-                                                                                    >
-
-                                                                                </td>
-                                                                                {{--<td class="td-actions text-right">--}}
-                                                                                {{--<button type="button" rel="tooltip" title=""--}}
-                                                                                {{--class="btn btn-link"--}}
-                                                                                {{--data-original-title="Edit Task">--}}
-                                                                                {{--<i class="tim-icons icon-pencil"></i>--}}
-                                                                                {{--</button>--}}
-                                                                                {{--</td>--}}
-                                                                                @if($repository_selected ->hr_product_stock - $item->hpo_count >= 0 )
-                                                                                    <td>
-                                                                                        <div class="form-check ">
-                                                                                            <label class="form-check-label">
-                                                                                                <input class="form-check-input checkbox"
-                                                                                                       type="checkbox"
-                                                                                                       data-id="{{$item->hpo_order_id}}"
-                                                                                                       data-pid="{{$item->hpo_product_id}}">
-                                                                                                <span class="form-check-sign">
+                                                                                    <div class="form-check ">
+                                                                                        <label class="form-check-label">
+                                                                                            <input class="form-check-input checkbox"
+                                                                                                   type="checkbox"
+                                                                                                   data-id="{{$item->hpo_order_id}}"
+                                                                                                   data-pid="{{$item->hpo_product_id}}"
+                                                                                                   data-computing_repository_requirement="{{$repository_selected ->hr_product_stock - $item->hpo_count}}"
+                                                                                            >
+                                                                                            <span class="form-check-sign">
                                                                 <span class="check"></span>
                                                                 </span>
-                                                                                            </label>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                @else()
-                                                                                    <td>
-                                                                                        <div class="form-check ">
-                                                                                            <label class="form-check-label">
-                                                                                                <input class="form-check-input checkbox"
-                                                                                                       type="checkbox"
-                                                                                                       disabled>
-                                                                                                <span class="form-check-sign">
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </td>
+                                                                            @else()
+                                                                                <td>
+                                                                                    <div class="form-check ">
+                                                                                        <label class="form-check-label">
+                                                                                            <input class="form-check-input checkbox"
+                                                                                                   type="checkbox"
+                                                                                                   disabled>
+                                                                                            <span class="form-check-sign">
                                                                 <span class="check"></span>
                                                                 </span>
-                                                                                            </label>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                @endif
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </td>
                                                                             @endif
-                                                                        @endforeach
-                                                                    @endif
-                                                            </tr>
-                                                            @endif
-                                                            @endforeach
-                                                            @endforeach
-                                                            @endif
+                                                                        @endif
+                                                                    @endforeach
+                                                                @endif
+                                                        </tr>
+                                                        @endif
+                                                        @endforeach
+                                                        @endforeach
+                                                        @endif
 
-                                                            @endforeach
+                                                        @endforeach
 
-                                                            </tbody>
-                                        </table>
+                                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -290,18 +288,23 @@
                                 <th>
                                     {{__('Inventory Deficit')}}
                                 </th>
-                                </thead>
-                                @foreach($query as $item)
+                                </thead> @foreach($query as $item)
                                     @foreach($Repositories as $repository_stock)
-                                        @if($item->hpo_product_id == $repository_stock->hr_product_id and $item->hpo_status != 'Approved')
-                                            <input type="hidden" class="repositories_requirement"
-                                                   data-Product_Id="{{$products->id}}"
-                                                   data-Product_Count=" {{$item->sum_hpo}}"
-                                                   data-Inventory_deficit=" {{$item->sum_hpo - $repository_stock->hr_product_stock}}">
+                                        @if($item->hpo_product_id == $repository_stock->hr_product_id and $item->hpo_status == '3')
+                                            <input type="hidden" class="product-id"
+                                                   data-id[]="{{$item->hpo_product_id}}">
+                                            <input type="hidden" class="inventory-deficit"
+                                                   data-inventory-deficit=" {{$item->sum_hpo}}">
+                                            <input type="hidden" class="product-stock"
+                                                   data-product-stock=" {{$item->sum_hpo - $repository_stock->hr_product_stock}}">
                                             <tr>
+                                                @foreach($product as $products)
+                                                    @if($item->hpo_product_id == $products->id)
                                                 <td>
                                                     {{$products->hp_product_name}}
                                                 </td>
+                                                    @endif
+                                                @endforeach
                                                 <td>
                                                     {{$item->sum_hpo}}
                                                 </td>
@@ -311,7 +314,6 @@
                                                 @endif
                                                 @endforeach
                                                 @endforeach
-
                                             </tr>
                                             </tbody>
                             </table>
@@ -336,48 +338,44 @@
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/plugins/datatables.min.js')}}"></script>
     <script>
-        $(document).ready(function () {
-
-            // Data Table
-
-            $('.table1').DataTable({
-                "language": {
-                    "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
-                    "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
-                    "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
-                    "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
-                    "sInfoPostFix": "",
-                    "sInfoThousands": ",",
-                    "sLengthMenu": "نمایش _MENU_ رکورد",
-                    "sLoadingRecords": "در حال بارگزاری...",
-                    "sProcessing": "در حال پردازش...",
-                    "sSearch": "جستجو:",
-                    "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
-                    "oPaginate": {
-                        "sFirst": "ابتدا",
-                        "sLast": "انتها",
-                        "sNext": "بعدی",
-                        "sPrevious": "قبلی"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
-                        "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
-                    },
-
-                }
-            });
-
+        $(document).ready(function () {// Data Table
+            // data table
+            // $('.table1').DataTable({
+            //     "language": {
+            //         "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
+            //         "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+            //         "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
+            //         "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
+            //         "sInfoPostFix": "",
+            //         "sInfoThousands": ",",
+            //         "sLengthMenu": "نمایش _MENU_ رکورد",
+            //         "sLoadingRecords": "در حال بارگزاری...",
+            //         "sProcessing": "در حال پردازش...",
+            //         "sSearch": "جستجو:",
+            //         "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
+            //         "oPaginate": {
+            //             "sFirst": "ابتدا",
+            //             "sLast": "انتها",
+            //             "sNext": "بعدی",
+            //             "sPrevious": "قبلی"
+            //         },
+            //         "oAria": {
+            //             "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
+            //             "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
+            //         },
+            //
+            //     }
+            // });
             // End Data Table
 
             // Modal Form
 
             $('#modal_form').submit(function (event) {
-                var data =
-                    {
-                        Product_Id: $(this).data('Product_Id'),
-                        Product_Count: $(this).data('Product_Id'),
-                        Inventory_deficit: $(this).data('Product_Id'),
-                    }
+                var data = {
+                    Product_Id: $('.product-id').data('id[]'),
+                    Inventory_deficit: $('.inventory-deficit').data('inventory-deficit'),
+                    Product_Count: $('.product-stock').data('product-stock'),
+                }
                 event.preventDefault();
                 $.blockUI({
                     message: '{{__('please wait...')}}', css: {
@@ -403,7 +401,8 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        setTimeout($.unblockUI);
+                        alert('ok');
+                        setTimeout($.unblockUI, 2000);
                         $("#modalRegisterForm").modal('hide');
                     },
                     cache: false,
@@ -415,13 +414,12 @@
             // pass checkbox data
 
             $('.checkbox').on('change', function (event) {
-
                 if (event.target.checked) {
                     var data = {
                         id: $(this).data('id'),
                         state: $(this)[0].checked == true ? 3 : 2,
                         product: $(this).data('pid'),
-                        computing_repository_requirement: computing_repository_requirement,
+                        computing_repository_requirement: $(this).data('computing_repository_requirement'),
 
                     };
                     $.blockUI({

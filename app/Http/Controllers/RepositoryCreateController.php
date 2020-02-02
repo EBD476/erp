@@ -16,7 +16,7 @@ class RepositoryCreateController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $repository =RepositoryCreate::all();
-        return view('repository_create.index',compact('repository'));
+        return view('repository_create.index',compact('repository','type','priority','help_desk'));
     }
 
 
@@ -38,7 +38,7 @@ class RepositoryCreateController extends Controller
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('repository_create.create');
+        return view('repository_create.create',compact('type','priority','help_desk'));
     }
 
     public function store(Request $request)
@@ -78,7 +78,7 @@ class RepositoryCreateController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $repository=RepositoryCreate::find($id);
-        return view('repository_create.edit',compact('repository'));
+        return view('repository_create.edit',compact('repository','type','priority','help_desk'));
 
 
     }

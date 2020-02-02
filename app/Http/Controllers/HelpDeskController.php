@@ -24,7 +24,8 @@ class HelpDeskController extends Controller
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $ticket_status = TicketStatus::all();
         $help_desks = HelpDesk::all();
-        return view('help_desk.index', compact('help_desk', 'ticket_status','help_desks','type','priority','help_desks'));
+        $help_desks_user = HelpDesk::where('hhd_receiver_user_id',auth()->user()->id)->orwhere('hhd_request_user_id',auth()->user()->id)->get();
+        return view('help_desk.index', compact('help_desks_user','help_desk', 'ticket_status','help_desks','type','priority','help_desks'));
     }
 
     /**

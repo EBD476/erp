@@ -44,7 +44,7 @@ class DeliveryController extends Controller
             if (OrderProduct::where('hpo_order_id', $id)->count() == $number) {
                 OrderState::where('order_id', $id)
                     ->update(['ho_process_id' => '5']);
-                $order=Order::Select()->where('id',$id);
+                $order=Order::where('id',$id)->get()->last();
                 $current_date = Carbon::now();
                 $current_date = $current_date->year . $current_date->month . $current_date->day;
                 $project = New Project();

@@ -88,7 +88,7 @@ class FinanceController extends Controller
         $priority->hf_order_id = $request->id;
         $priority->save();
         OrderProduct::where('hpo_order_id', $id)
-            ->update(['hpo_status' => 6]);
+            ->update(['hpo_status' => 3]);
         OrderState::where('order_id', $id)
             ->update(['ho_process_id' => 3]);
 

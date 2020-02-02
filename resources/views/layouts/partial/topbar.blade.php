@@ -104,21 +104,21 @@
                     </a>
                 <ul class="dropdown-menu dropdown-navbar">
                     <h5 class="dropdown-item">{{__('Current User:')}}{{auth()->user()->username}}</h5>
-                    <li class="dropdown-divider"></li>
-                    <li class="nav-link">
-                        <a href="javascript:void(0)" class="nav-item dropdown-item">{{__('Profile')}}</a>
-                    </li>
-                    <li class="nav-link">
-                        <a href="javascript:void(0)" class="nav-item dropdown-item">{{__('Settings')}}</a>
-                    </li>
-                    <li class="dropdown-divider"></li>
-                    <h5 class="dropdown-item">{{__('language')}}</h5>
-                    <li class="nav-link">
-                        <a class="nav-item dropdown-item" href="{{url('/locale/en')}}">{{__('English')}}</a>
-                    </li>
-                    <li class="nav-link">
-                        <a class="nav-item dropdown-item" href="{{url('/locale/fa')}}">{{__('Persian')}}</a>
-                    </li>
+                    {{--<li class="dropdown-divider"></li>--}}
+                    {{--<li class="nav-link">--}}
+                        {{--<a href="javascript:void(0)" class="nav-item dropdown-item">{{__('Profile')}}</a>--}}
+                    {{--</li>--}}
+                    {{--<li class="nav-link">--}}
+                        {{--<a href="javascript:void(0)" class="nav-item dropdown-item">{{__('Settings')}}</a>--}}
+                    {{--</li>--}}
+                    {{--<li class="dropdown-divider"></li>--}}
+                    {{--<h5 class="dropdown-item">{{__('language')}}</h5>--}}
+                    {{--<li class="nav-link">--}}
+                        {{--<a class="nav-item dropdown-item" href="{{url('/locale/en')}}">{{__('English')}}</a>--}}
+                    {{--</li>--}}
+                    {{--<li class="nav-link">--}}
+                        {{--<a class="nav-item dropdown-item" href="{{url('/locale/fa')}}">{{__('Persian')}}</a>--}}
+                    {{--</li>--}}
                     <li class="dropdown-divider"></li>
                     <li class="nav-link">
                         <a class="nav-item dropdown-item" href="{{ route('logout') }}"

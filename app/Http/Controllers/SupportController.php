@@ -80,7 +80,7 @@ class SupportController extends Controller
         $counter = $status->hs_status + 1;
         Support::where('id', $id)->update(['hs_response' => $request->response, 'hs_status' => $counter, 'hs_response_user_id' => auth()->user()->id]);
         OrderState::where('order_id', $project)->update(['ho_process_id' => '7', 'ho_verifier_id' => auth()->user()->id]);
-        OrderProduct::where('hpo_order_id', $project)->update(['hpo_status' => '7']);
+        OrderProduct::where('hpo_order_id', $project)->update(['hpo_status' => '8']);
         return json_encode(["response" => "عملیات با موفقیت ثبت شد"]);
     }
 

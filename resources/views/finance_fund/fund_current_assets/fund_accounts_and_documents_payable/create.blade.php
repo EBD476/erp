@@ -116,7 +116,7 @@
                         });
 
                         $.ajax({
-                            url: '/fund_accounts_and_documents_payable',
+                            url: '/fund_accounts_document_payable',
                             type: 'POST',
                             data: data,
                             dataType: 'json',

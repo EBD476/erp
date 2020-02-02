@@ -16,38 +16,38 @@
                 </div>
                 <div class="card">
                     <div class="card-header card-header-primary">
-                        <h4 class="card-title ">{{__('Edit Part Count')}}</h4>
+                        <h4 class="card-title ">{{__('Edit Part')}}</h4>
                         <p class="card-category"></p>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{route('repository_part.update',$Repositories->id)}}"
+                        <form method="POST" action="{{route('repository-part.update',$repository->id)}}"
                               ENCTYPE="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Part Id')}}</label>
-                                        <input type="text" class="form-control" name="hrp_part_id" value="{{$Repositories->hrp_part_id}}">
+                                        <input type="text" class="form-control" name="hrp_part_id" value="{{$repository->hrp_part_id}}">
                                     </div>
 
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Repository Name')}}</label>
                                         <input type="text" class="form-control" required=""
-                                               aria-invalid="false" name="hrp_repository_id" value="{{$Repositories->hrp_part_id}}">
+                                               aria-invalid="false" name="hrp_repository_id" value="{{$repository->hrp_part_id}}">
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Count')}}</label>
                                         <textarea class="form-control" required=""
-                                                  aria-invalid="false" name="hrp_part_count"></textarea>
+                                                  aria-invalid="false" name="hrp_part_count" >{{$repository->hrp_part_count}}</textarea>
                                     </div>
                                 </div>
                             </div>

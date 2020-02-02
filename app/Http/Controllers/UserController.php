@@ -23,7 +23,8 @@ class UserController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $users = User::all();
-        return view('users.index')->with('users', $users);
+        $role_user=User::where('id',auth()->user()->id)->get()->first();
+        return view('users.index',compact('role_user','help_desk','type','priority'))->with('users', $users);
     }
 
     /**

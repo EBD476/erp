@@ -129,7 +129,7 @@
                         if (event.target.checked) {
                             var data = {
                                 id: $(this).data('id'),
-                                state: $(this)[0].checked == true ? 2 : 4,
+                                state: $(this)[0].checked == true ? 6 : 4,
 
                             };
                             $.blockUI({

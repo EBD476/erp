@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
 use App\Repository_Requirement;
 use Illuminate\Http\Request;
 use App\HDpriority;
@@ -29,7 +30,8 @@ class Repository_RequirementController extends Controller
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('Repository_Requirement.create',compact('type','priority','help_desk'));
+        $product = Product::all();
+        return view('Repository_Requirement.create',compact('product','type','priority','help_desk'));
     }
 
     /**
@@ -41,9 +43,9 @@ class Repository_RequirementController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'Product_Id' => 'required' ,
-            'Product_Count' => 'required' ,
-//            'Comment' => 'required' ,
+//            'Product_Id' => 'required' ,
+//            'Product_Count' => 'required' ,
+////            'Comment' => 'required' ,
         ]);
 
         $Repositories_Requirement = new Repository_Requirement();
@@ -52,7 +54,7 @@ class Repository_RequirementController extends Controller
         $Repositories_Requirement->Inventory_deficit= $request->Inventory_deficit;
         $Repositories_Requirement->Comment= $request->Comment;
         $Repositories_Requirement->save();
-        return json_encode(["response"=>"OK"]);
+        return json_encode(["response" => "Done"]);
 
     }
 

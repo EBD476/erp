@@ -22,8 +22,6 @@
                         <i class="tim-icons icon-simple-add"></i> &nbsp;
                         {{__('New Repository')}}
                     </a>
-                </div>
-                <div class="col-md-12">
                     <a href="{{route('provider.index')}}" class="btn btn-primary float-left mb-lg-2">
                         <i class="tim-icons icon-simple-add"></i> &nbsp;
                         {{__('Provider')}}

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 use App\Order;
 use App\OrderProduct;
 use App\OrderState;
@@ -10,7 +13,6 @@ use App\Verifier;
 use App\VerifyID;
 use Illuminate\Http\Request;
 use carbon\carbon;
-
 
 
 class VerifyController extends Controller
@@ -22,13 +24,13 @@ class VerifyController extends Controller
      */
     public function index()
     {
-        $type=HDtype::all();
+        $type = HDtype::all();
         $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $order = Order::select('id', 'hp_project_name', 'created_at')
-            ->where('hp_Invoice_number',Null)->get();
+            ->where('hp_Invoice_number', Null)->get();
 //        dd($order);
-        return view('verify_level.index', compact('order','help_desk','priority','type'));
+        return view('verify_level.index', compact('order', 'help_desk', 'priority', 'type'));
     }
 
     /**
@@ -72,12 +74,12 @@ class VerifyController extends Controller
      */
     public function edit($id)
     {
-        $type=HDtype::all();
+        $type = HDtype::all();
         $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
 //        $order_id=Order::SELECT('id')->where('hp_Invoice_number',null);
         $userID = auth()->user()->id;
-        $current_verified_order = Verifier::where('hp_verifier_id', $userID and 'process_id','1')->first();
+        $current_verified_order = Verifier::where('hp_verifier_id', $userID and 'process_id', '1')->first();
         $current_verifier = VerifyID::select('verify_id')->where('verify_id', $userID)->first();
         if ($current_verifier != null) {
             $first_verifier = Process::where('hp_verifier_id', $userID)
@@ -98,7 +100,7 @@ class VerifyController extends Controller
         }
 
         $order = Order::find($id);
-        return view('verify_level.preview', compact('order', 'first_verifier', 'verifyID', 'selected_priority','current_verified_order','help_desk','priority','type'));
+        return view('verify_level.preview', compact('order', 'first_verifier', 'verifyID', 'selected_priority', 'current_verified_order', 'help_desk', 'priority', 'type'));
 
     }
 
@@ -184,12 +186,12 @@ class VerifyController extends Controller
                 // register approve
                 $current_date = Carbon::now();
                 $current_date = $current_date->year . $current_date->month . $current_date->day;
-                $order->hp_Invoice_number ="HNT_" . sprintf("%04d",$id) . "_" . $current_date . "_" . $order->id;;
+                $order->hp_Invoice_number = "HNT_" . sprintf("%04d", $id) . "_" . $current_date . "_" . $order->id;;
                 $order->save();
 
-                $approved=OrderProduct::find($order);
-                $approved->hpo_status="Approved";
-                $approved->save();
+                OrderProduct::where('hpo_order_id', $id)
+                    ->update(['hpo_status' => '2']);
+
             }
 
         }

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\HDpriority;
+use App\HDtype;
+use App\HelpDesk;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -19,8 +22,10 @@ class PermissionController extends Controller
      */
     public function index() {
         $permissions = Permission::all(); //Get all permissions
-
-        return view('permissions.index')->with('permissions', $permissions);
+        $type = HDtype::all();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $priority = HDpriority::all();
+        return view('permissions.index',compact('help_desk','priority','type'))->with('permissions', $permissions);
     }
 
     /**

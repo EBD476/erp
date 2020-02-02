@@ -114,8 +114,7 @@ class ProductController extends Controller
         $product->hp_product_price = $request->product_price;
         $product->hp_description = $request->hp_description;
         $product->save();
-        return view('products.index',compact('products'));
-
+        return redirect()->back();
 
     }
 

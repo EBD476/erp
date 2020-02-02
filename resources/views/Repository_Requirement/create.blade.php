@@ -27,8 +27,14 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Product Id')}}</label>
-                                            <input type="text" class="form-control" name="Product_Id">
+                                            <label class="bmd-label-floating">{{__('Product Name')}}</label>
+                                                <select name="Product_Id" class="form-control">
+                                                    @foreach($product as $products)
+                                                    <option value="{{$products->id}}">
+                                                        {{$products->hp_product_name}}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
                                         </div>
 
                                     </div>
