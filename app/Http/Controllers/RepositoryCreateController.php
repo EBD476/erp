@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\RepositoryCreate;
+use App\User;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
@@ -12,11 +13,12 @@ class RepositoryCreateController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $repository =RepositoryCreate::all();
-        return view('repository_create.index',compact('repository','type','priority','help_desk'));
+        return view('repository_create.index',compact('repository','type','priority','help_desk','user'));
     }
 
 
@@ -35,10 +37,11 @@ class RepositoryCreateController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('repository_create.create',compact('type','priority','help_desk'));
+        return view('repository_create.create',compact('type','priority','help_desk','user'));
     }
 
     public function store(Request $request)
@@ -74,11 +77,12 @@ class RepositoryCreateController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $repository=RepositoryCreate::find($id);
-        return view('repository_create.edit',compact('repository','type','priority','help_desk'));
+        return view('repository_create.edit',compact('repository','type','priority','help_desk','user'));
 
 
     }

@@ -19,12 +19,13 @@ class UserController extends Controller
      */
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $users = User::all();
         $role_user=User::where('id',auth()->user()->id)->get()->first();
-        return view('users.index',compact('role_user','help_desk','type','priority'))->with('users', $users);
+        return view('users.index',compact('role_user','help_desk','type','priority','user'))->with('users', $users);
     }
 
     /**
@@ -34,12 +35,13 @@ class UserController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         //Get all roles and pass it to the view
         $roles = Role::get();
-        return view('users.create', ['roles'=>$roles],compact('help_desk','priority','type'));
+        return view('users.create', ['roles'=>$roles],compact('help_desk','priority','type','user'));
     }
 
     /**
@@ -81,6 +83,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
@@ -95,6 +98,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();

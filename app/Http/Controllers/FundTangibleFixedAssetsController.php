@@ -6,6 +6,7 @@ use App\FundTangibleFixedAssets;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use App\User;
 use Illuminate\Http\Request;
 
 class FundTangibleFixedAssetsController extends Controller
@@ -26,10 +27,11 @@ class FundTangibleFixedAssetsController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
-        return view('finance_fund.fund_non_current.fund_tangible_fixed_assets.create',compact('priority', 'help_desk', 'type'));
+        return view('finance_fund.fund_non_current.fund_tangible_fixed_assets.create',compact('priority', 'help_desk', 'type','user'));
     }
 
     /**
@@ -70,11 +72,12 @@ class FundTangibleFixedAssetsController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $fund_tangible_fixed_assets = FundTangibleFixedAssets:: find($id);
-        return view('finance_fund.fund_non_current.fund_tangible_fixed_assets.edit', compact('priority', 'help_desk', 'priority', 'type', 'fund_tangible_fixed_assets'));
+        return view('finance_fund.fund_non_current.fund_tangible_fixed_assets.edit', compact('priority', 'help_desk', 'priority', 'type', 'fund_tangible_fixed_assets','user'));
     }
 
     /**

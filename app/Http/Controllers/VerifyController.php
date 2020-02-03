@@ -9,6 +9,7 @@ use App\Order;
 use App\OrderProduct;
 use App\OrderState;
 use App\Process;
+use App\User;
 use App\Verifier;
 use App\VerifyID;
 use Illuminate\Http\Request;
@@ -24,13 +25,14 @@ class VerifyController extends Controller
      */
     public function index()
     {
+        $user=User::all();
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $order = Order::select('id', 'hp_project_name', 'created_at')
             ->where('hp_Invoice_number', Null)->get();
 //        dd($order);
-        return view('verify_level.index', compact('order', 'help_desk', 'priority', 'type'));
+        return view('verify_level.index', compact('order', 'help_desk', 'priority', 'type','user'));
     }
 
     /**
@@ -74,6 +76,7 @@ class VerifyController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
@@ -100,7 +103,7 @@ class VerifyController extends Controller
         }
 
         $order = Order::find($id);
-        return view('verify_level.preview', compact('order', 'first_verifier', 'verifyID', 'selected_priority', 'current_verified_order', 'help_desk', 'priority', 'type'));
+        return view('verify_level.preview', compact('order', 'first_verifier', 'verifyID', 'selected_priority', 'current_verified_order', 'help_desk', 'priority', 'type','user'));
 
     }
 

@@ -24,7 +24,7 @@
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Name')}}</label>
-                                            <input name="th_name" type="text" class="form-control" required=""
+                                            <input id="th_name" type="text" class="form-control" required=""
                                                    aria-invalid="false" data-id="{{$types->id}}">
                                         </div>
                                     </div>
@@ -67,10 +67,22 @@
     <script>
         $(document).ready(function () {
             $("#form1").submit(function (event) {
-                var data = $("#form1").serialize();
+                var data = {
+                    th_name: $('#th_name').val(),
+                    id: $('#th_name').data('id'),
+            }
                 event.preventDefault();
-                $.blockUI();
-
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

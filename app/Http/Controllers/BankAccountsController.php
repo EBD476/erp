@@ -7,17 +7,19 @@ use App\FinanceBank;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use App\User;
 use Illuminate\Http\Request;
 
 class BankAccountsController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $bank_account = BankAccounts::all();
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.index', compact('priority', 'help_desk', 'type', 'bank_account'));
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.index', compact('priority', 'help_desk', 'type', 'bank_account','user'));
     }
 
     /**
@@ -27,11 +29,12 @@ class BankAccountsController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $bank=FinanceBank::all();
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.create',compact('priority', 'help_desk', 'type','bank'));
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.create',compact('priority', 'help_desk', 'type','bank','user'));
     }
 
     /**

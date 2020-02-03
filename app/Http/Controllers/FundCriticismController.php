@@ -6,17 +6,19 @@ use App\FundCriticism;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use App\User;
 use Illuminate\Http\Request;
 
 class FundCriticismController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $criticism = FundCriticism::all();
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
-        return view('finance_fund.fund_current_assets.fund_criticism.index', compact('priority', 'help_desk', 'type' , 'criticism'));
+        return view('finance_fund.fund_current_assets.fund_criticism.index', compact('priority', 'help_desk', 'type' , 'criticism','user'));
     }
 
     /**
@@ -26,11 +28,12 @@ class FundCriticismController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
         $criticism = FundCriticism::all();
-        return view('finance_fund.fund_current_assets.fund_criticism.create',compact('client','priority', 'help_desk', 'type','criticism'));
+        return view('finance_fund.fund_current_assets.fund_criticism.create',compact('client','priority', 'help_desk', 'type','criticism','user'));
     }
 
     /**
@@ -69,11 +72,12 @@ class FundCriticismController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $criticism = FundCriticism::find($id);
-        return view('finance_fund.fund_current_assets.fund_criticism.edit', compact('priority', 'help_desk', 'priority', 'type','criticism'));
+        return view('finance_fund.fund_current_assets.fund_criticism.edit', compact('priority', 'help_desk', 'priority', 'type','criticism','user'));
     }
 
     /**

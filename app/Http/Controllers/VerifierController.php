@@ -8,6 +8,7 @@ use App\HDtype;
 use App\HelpDesk;
 use App\Process;
 use App\ProcessLevel;
+use App\User;
 use App\Verifier;
 use Illuminate\Http\Request;
 
@@ -20,11 +21,12 @@ class VerifierController extends Controller
      */
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $verifier = Verifier::ALL();
-        return view('verifier.index', compact('verifier','help_desk','priority','type'));
+        return view('verifier.index', compact('verifier','help_desk','priority','type','user'));
     }
 
     /**
@@ -34,12 +36,13 @@ class VerifierController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $process=ProcessLevel::all();
         $verifier_id=DataUser::all();
-        return view('verifier.create',compact('verifier_id','process','help_desk','priority','type'));
+        return view('verifier.create',compact('verifier_id','process','help_desk','priority','type','user'));
     }
 
     /**
@@ -85,11 +88,12 @@ class VerifierController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $verifier = Verifier::find($id);
-        return view('verifier.edit', compact('verifier','help_desk','priority','type'));
+        return view('verifier.edit', compact('verifier','help_desk','priority','type','user'));
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\SupportStatus;
+use App\User;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
@@ -12,11 +13,12 @@ class SupportStatusController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $status=SupportStatus::all();
-        return view('support_status.index',compact('status','help_desk','priority','type'));
+        return view('support_status.index',compact('status','help_desk','priority','type','user'));
     }
     /**
      * Show the form for creating a new resource.
@@ -25,10 +27,11 @@ class SupportStatusController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('support_status.create',compact('help_desk','priority','type'));
+        return view('support_status.create',compact('help_desk','priority','type','user'));
     }
 
     public function store(Request $request)
@@ -58,11 +61,12 @@ class SupportStatusController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $status=SupportStatus::find($id);
-        return view('support_status.edit',compact('status','help_desk','priority','type'));
+        return view('support_status.edit',compact('status','help_desk','priority','type','user'));
 
 
     }

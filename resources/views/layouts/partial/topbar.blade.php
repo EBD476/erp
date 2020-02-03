@@ -33,7 +33,11 @@
                 </li>
                 <li class="dropdown nav-item">
                     <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                        <div class="notification d-none d-lg-block d-xl-block"></div>
+                        @foreach($help_desk as $check_status)
+                            @if($check_status->hhd_receiver_user_id == auth()->user()->id and $check_status->hhd_ticket_status == 1)
+                                <div class="notification d-none d-lg-block d-xl-block"></div>
+                            @endif
+                        @endforeach
                         <i class="tim-icons icon-sound-wave"></i>
                         <p class="d-lg-none">
                             Notifications
@@ -42,7 +46,8 @@
                     <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
 
                         <li class="nav-link"><a href="{{route('projects.show_all_response')}}"
-                                                class="nav-item dropdown-item">{{__('Support Response List')}}</a></li>
+                                                class="nav-item dropdown-item">{{__('Support Response List')}}</a>
+                        </li>
                         {{--@foreach($support_response as $responses)--}}
                         {{--@if($responses->hs_request_user_id == auth()->user()->id)--}}
                         {{--<li class="nav-link">--}}
@@ -77,8 +82,12 @@
                                                 {{$priorities->hdp_name}}
                                             @endif
                                         @endforeach
-                                        {{__('From')}}
-                                        {{auth()->user()->name}}
+                                        @foreach($user as $users)
+                                            @if($users->id == $help_desks_top_bar->hhd_request_user_id)
+                                                {{__('From')}}
+                                                {{$users->name}}
+                                            @endif
+                                        @endforeach
                                         {{__('H')}}
                                     </a>
                                 </li>
@@ -102,40 +111,40 @@
                             Log out
                         </p>
                     </a>
-                <ul class="dropdown-menu dropdown-navbar">
-                    <h5 class="dropdown-item">{{__('Current User:')}}{{auth()->user()->username}}</h5>
-                    {{--<li class="dropdown-divider"></li>--}}
-                    {{--<li class="nav-link">--}}
+                    <ul class="dropdown-menu dropdown-navbar">
+                        <h5 class="dropdown-item">{{__('Current User:')}}{{auth()->user()->username}}</h5>
+                        {{--<li class="dropdown-divider"></li>--}}
+                        {{--<li class="nav-link">--}}
                         {{--<a href="javascript:void(0)" class="nav-item dropdown-item">{{__('Profile')}}</a>--}}
-                    {{--</li>--}}
-                    {{--<li class="nav-link">--}}
+                        {{--</li>--}}
+                        {{--<li class="nav-link">--}}
                         {{--<a href="javascript:void(0)" class="nav-item dropdown-item">{{__('Settings')}}</a>--}}
-                    {{--</li>--}}
-                    {{--<li class="dropdown-divider"></li>--}}
-                    {{--<h5 class="dropdown-item">{{__('language')}}</h5>--}}
-                    {{--<li class="nav-link">--}}
+                        {{--</li>--}}
+                        {{--<li class="dropdown-divider"></li>--}}
+                        {{--<h5 class="dropdown-item">{{__('language')}}</h5>--}}
+                        {{--<li class="nav-link">--}}
                         {{--<a class="nav-item dropdown-item" href="{{url('/locale/en')}}">{{__('English')}}</a>--}}
-                    {{--</li>--}}
-                    {{--<li class="nav-link">--}}
+                        {{--</li>--}}
+                        {{--<li class="nav-link">--}}
                         {{--<a class="nav-item dropdown-item" href="{{url('/locale/fa')}}">{{__('Persian')}}</a>--}}
-                    {{--</li>--}}
-                    <li class="dropdown-divider"></li>
-                    <li class="nav-link">
-                        <a class="nav-item dropdown-item" href="{{ route('logout') }}"
-                           onclick="event.preventDefault();
+                        {{--</li>--}}
+                        <li class="dropdown-divider"></li>
+                        <li class="nav-link">
+                            <a class="nav-item dropdown-item" href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
                                     document.getElementById('logout-form').submit();">
-                            {{ __('Logout') }}
-                        </a>
-                        {{--<a href="javascript:void(0)" class="nav-item dropdown-item">--}}
-                        {{--Log out--}}
-                        {{----}}
-                        {{--</a>--}}
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                              style="display: none;">
-                            @csrf
-                        </form>
-                    </li>
-                </ul>
+                                {{ __('Logout') }}
+                            </a>
+                            {{--<a href="javascript:void(0)" class="nav-item dropdown-item">--}}
+                            {{--Log out--}}
+                            {{----}}
+                            {{--</a>--}}
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                  style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
+                    </ul>
                 </li>
                 <li class="separator d-lg-none"></li>
             </ul>

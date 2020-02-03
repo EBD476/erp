@@ -3,7 +3,7 @@
 @section('title',__('Repository'))
 
 @push('css')
-
+    <link href="{{asset('assets/css/kamadatepicker.min.css')}}" rel="stylesheet"/>
 @endpush
 
 @section('content')
@@ -22,16 +22,20 @@
                         <form id="form1" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="bmd-label-floating">{{__('Product Id')}}</label>
-                                        <input type="text" class="form-control" name="hr_product_id">
+                                        <label class="bmd-label-floating">{{__('Product Name')}}</label>
+                                        <select class="form-control" name="hr_product_id">
+                                            @foreach($product as $products)
+                                                <option value=" {{$products->id}}">
+                                                    {{$products->hp_product_name}}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
 
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Product Stock')}}</label>
                                         <input type="text" class="form-control" required=""
@@ -40,34 +44,37 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="bmd-label-floating">{{__('Comment')}}</label>
-                                        <textarea class="form-control" required=""
-                                                  aria-invalid="false" name="hr_comment"></textarea>
+                                        <label class="bmd-label-floating">{{__('Provider')}}</label>
+                                        <select class="form-control"
+                                                aria-invalid="false" name="hr_provider_code">
+                                            @foreach($provider as $providers)
+                                                <option value="{{$providers->id}}">
+                                                    {{$providers->hp_name}}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Entry Date')}}</label>
                                         <input class="form-control" required=""
-                                               aria-invalid="false" name="hr_entry_date">
+                                               aria-invalid="false" name="hr_entry_date" id="test-date-id"
+                                        >
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="bmd-label-floating">{{__('Exit')}}</label>
-                                        <input class="form-control" required=""
-                                               aria-invalid="false" name="hr_exit">
+                                        <label class="bmd-label-floating">{{__('Exit Date')}}</label>
+                                        <input class="form-control"
+                                               aria-invalid="false" name="hr_exit" id="test-date-id">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Contradiction')}}</label>
                                         <input class="form-control" required=""
@@ -76,16 +83,14 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="bmd-label-floating">{{__('Provider Code')}}</label>
-                                        <input class="form-control" required=""
-                                               aria-invalid="false" name="hr_provider_code">
+                                        <label class="bmd-label-floating">{{__('Comment')}}</label>
+                                        <textarea class="form-control" required=""
+                                                  aria-invalid="false" name="hr_comment"></textarea>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Return Value')}}</label>
                                         <input class="form-control" required=""
@@ -93,15 +98,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="bmd-label-floating">{{__('Status Return Part')}}</label>
-                                        <input class="form-control" required=""
-                                               aria-invalid="false" name="hr_status_return_part">
-                                    </div>
-                                </div>
-                            </div>
+                            {{--<div class="row">--}}
+                            {{--<div class="col-md-6">--}}
+                            {{--<div class="form-group">--}}
+                            {{--<label class="bmd-label-floating">{{__('Status Return Part')}}</label>--}}
+                            {{--<input class="form-control" required=""--}}
+                            {{--aria-invalid="false" name="hr_status_return_part">--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
+                            {{--</div>--}}
                             <a href="{{route('repository.index')}}" class="btn badge-danger">{{__('Back')}}</a>
 
                             <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
@@ -121,8 +126,17 @@
             $("#form1").submit(function (event) {
                 var data = $("#form1").serialize();
                 event.preventDefault();
-                $.blockUI();
-
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -141,6 +155,16 @@
                     cache: false,
                 });
             });
+        });
+    </script>
+    {{--datapicker--}}
+    <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
+    <script>
+        kamaDatepicker('test-date-id', {
+            buttonsColor: "blue",
+            forceFarsiDigits: true,
+            nextButtonIcon: "fa fa-arrow-circle-right",
+            previousButtonIcon: "fa fa-arrow-circle-left"
         });
     </script>
 @endpush

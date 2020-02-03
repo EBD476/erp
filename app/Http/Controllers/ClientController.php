@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Client;
+use App\User;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Resource_;
@@ -18,11 +19,12 @@ class ClientController extends Controller
      */
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $client = Client::all();
-        return view('client.index',compact('client','help_desk','priority','type'));
+        return view('client.index',compact('client','help_desk','priority','type','user'));
     }
 
     /**
@@ -32,10 +34,11 @@ class ClientController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('client.create',compact('priority', 'help_desk', 'type'));
+        return view('client.create',compact('priority', 'help_desk', 'type','user'));
     }
 
     /**
@@ -147,11 +150,12 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $client = Client::find($id);
-        return view('client.edit',compact('client','priority', 'help_desk', 'type'));
+        return view('client.edit',compact('client','priority', 'help_desk', 'type','user'));
     }
 
     /**
@@ -164,39 +168,39 @@ class ClientController extends Controller
     public function update(Request $request,$id)
     {
         $this->validate($request,[
-           'hc_user_id' => 'required' ,
-            'hc_account_id' => 'required' ,
-            'hc_currency_id' => 'required' ,
-            'hc_name' => 'required' ,
-            'hc_address' => 'required' ,
-            'hc_city' => 'required' ,
-            'hc_state' => 'required' ,
-            'hc_postal_code' => 'required' ,
-            'hc_country_id' => 'required' ,
-            'hc_private_notes' => 'required' ,
-            'hc_balance' => 'required' ,
-            'hc_paid_to_date' => 'required' ,
-            'hc_last_login' => 'required' ,
-            'hc_website' => 'required' ,
-            'shipping_city' => 'required' ,
-            'hc_work_phone' => 'required' ,
-            'shipping_state' => 'required' ,
-            'shipping_postal_code' => 'required' ,
-            'shipping_country_id' => 'required' ,
-            'shipping_address1' => 'required' ,
-            'shipping_address2' => 'required' ,
-            'language_id' => 'required' ,
-            'payment_terms' => 'required' ,
-            'task_rate' => 'required' ,
-            'show_tasks_in_portal' => 'required' ,
-            'public_notes' => 'required' ,
-            'invoice_number_counter' => 'required' ,
-            'size_id' => 'required' ,
-            'custom_value1' => 'required' ,
-            'custom_messages' => 'required' ,
-            'quote_number_counter' => 'required' ,
-            'credit_number_counter' => 'required' ,
-            'industry_id' => 'required' ,
+//           'hc_user_id' => 'required' ,
+//            'hc_account_id' => 'required' ,
+//            'hc_currency_id' => 'required' ,
+//            'hc_name' => 'required' ,
+//            'hc_address' => 'required' ,
+//            'hc_city' => 'required' ,
+//            'hc_state' => 'required' ,
+//            'hc_postal_code' => 'required' ,
+//            'hc_country_id' => 'required' ,
+//            'hc_private_notes' => 'required' ,
+//            'hc_balance' => 'required' ,
+//            'hc_paid_to_date' => 'required' ,
+//            'hc_last_login' => 'required' ,
+//            'hc_website' => 'required' ,
+//            'shipping_city' => 'required' ,
+//            'hc_work_phone' => 'required' ,
+//            'shipping_state' => 'required' ,
+//            'shipping_postal_code' => 'required' ,
+//            'shipping_country_id' => 'required' ,
+//            'shipping_address1' => 'required' ,
+//            'shipping_address2' => 'required' ,
+//            'language_id' => 'required' ,
+//            'payment_terms' => 'required' ,
+//            'task_rate' => 'required' ,
+//            'show_tasks_in_portal' => 'required' ,
+//            'public_notes' => 'required' ,
+//            'invoice_number_counter' => 'required' ,
+//            'size_id' => 'required' ,
+//            'custom_value1' => 'required' ,
+//            'custom_messages' => 'required' ,
+//            'quote_number_counter' => 'required' ,
+//            'credit_number_counter' => 'required' ,
+//            'industry_id' => 'required' ,
         ]);
 //        $id=$request->client_id;
         $client=Client::find($id);

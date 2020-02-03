@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Part;
 use App\Product;
 use App\ProductPart;
+use App\Provider;
+use App\User;
 use Illuminate\Http\Request;
 use carbon\carbon;
 use App\HDpriority;
@@ -14,13 +16,14 @@ class PartController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $product=Product::all();
         $product_part=ProductPart::all();
         $part = Part::all();
-        return view('part.index',compact('part','product','product_part','type','help_desk','priority'));
+        return view('part.index',compact('part','product','product_part','type','help_desk','priority','user'));
 //        $select_product_part = DB::select('select count')
     }
 
@@ -40,10 +43,12 @@ class PartController extends Controller
      */
     public function create()
     {
+        $provider=Provider::all();
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('part.create',compact('type','help_desk','priority'));
+        return view('part.create',compact('type','help_desk','priority','user','provider'));
     }
 
     public function store(Request $request)
@@ -84,11 +89,12 @@ class PartController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $part=Part::find($id);
-        return view('part.edit',compact('part'));
+        return view('part.edit',compact('part','user','type','priority','help_desk'));
 
 
     }

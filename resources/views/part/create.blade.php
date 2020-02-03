@@ -46,8 +46,18 @@
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Provider')}}</label>
-                                            <input name="hp_provider" type="text" class="form-control"
-                                                   aria-invalid="false">
+                                            <select name="hp_provider" type="text" class="form-control">
+                                                @foreach($provider as $providers)
+                                                    <option value="{{$providers->id}}">
+                                                        {{$providers->hp_name}}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <div class="text-light">
+                                                <a class="pointer" href="#" data-toggle="modal"
+                                                   data-target="#modalRegisterForm">
+                                                    {{__('Add New Provider')}}</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -65,7 +75,7 @@
                                         <div class="form-group">
                                             <label>{{__('Produce Date')}}</label>
                                             <input name="hp_produce_date" type="text" class="form-control" required=""
-                                                   aria-invalid="false"  id="test-date-id">
+                                                   aria-invalid="false" id="test-date-id">
                                         </div>
                                     </div>
                                 </div>
@@ -100,6 +110,47 @@
         </div>
     </div>
     {{--@endcan--}}
+    {{--//Provider Details Modal//--}}
+    <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">{{__('New Provider')}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="modal_form" enctype="multipart/form-data">
+                    <div class="modal-body mx-3">
+                        <div class="md-form mb-5">
+                            <div class="form-group" data-success="right">
+                                <label class="bmd-label-floating" style="float: right">{{__('Name')}}</label>
+                                <input class="form-control" name="hp_name">
+                            </div>
+                        </div>
+                    <div class="md-form mb-5">
+                        <label class="bmd-label-floating" style="float: right">{{__('Phone')}}</label>
+                        <input name="hp_phone" type="text" class="form-control" required=""
+                               aria-invalid="false">
+                    </div>
+                    <div class="md-form mb-5">
+                        <label class="bmd-label-floating" style="float: right">{{__('Address')}}</label>
+                        <input name="hp_address" type="text" class="form-control" required=""
+                               aria-invalid="false">
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                        </div>
+                    </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{--@endrole--}}
 @endsection
 
 @push('scripts')
@@ -136,6 +187,41 @@
                     success: function (data) {
                         alert(data.response);
                         setTimeout($.unblockUI, 2000);
+                        location.reload();
+                    },
+                    cache: false,
+                });
+            });
+            $("#modal_form").submit(function (event) {
+                var data = $("#modal_form").serialize();
+                event.preventDefault();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url: '/provider',
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        setTimeout($.unblockUI, 2000);
+                        $("#modalRegisterForm").modal('hide');
                         location.reload();
                     },
                     cache: false,

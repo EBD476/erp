@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\HNTLevel;
+use App\User;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
@@ -12,11 +13,12 @@ class HNTLevelController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $level=HNTLevel::all();
-        return view('hnt-level.index',compact('level','help_desk','priority','type'));
+        return view('hnt-level.index',compact('level','help_desk','priority','type','user'));
     }
 
     /**
@@ -58,11 +60,12 @@ class HNTLevelController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $level=HNTLevel::find($id);
-        return view('hnt-level.edit',compact('level'));
+        return view('hnt-level.edit',compact('level','type','priority','help_desk','user'));
     }
 
     /**

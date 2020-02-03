@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use App\Repository_Requirement;
+use App\User;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
@@ -13,11 +14,12 @@ class Repository_RequirementController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $Repositories_Requirement = Repository_Requirement:: all();
-        return view('Repository_Requirement.index',compact('Repositories_Requirement','type','priority','help_desk'));
+        return view('Repository_Requirement.index',compact('Repositories_Requirement','type','priority','help_desk','user'));
     }
 
     /**
@@ -27,11 +29,12 @@ class Repository_RequirementController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $product = Product::all();
-        return view('Repository_Requirement.create',compact('product','type','priority','help_desk'));
+        return view('Repository_Requirement.create',compact('product','type','priority','help_desk','user'));
     }
 
     /**
@@ -79,11 +82,12 @@ class Repository_RequirementController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $Repositories_Requirement = Repository_Requirement::find($id);
-        return view('Repository_Requirement.edit',compact('Repositories_Requirement','type','priority','help_desk'));
+        return view('Repository_Requirement.edit',compact('Repositories_Requirement','type','priority','help_desk','user'));
     }
 
     /**

@@ -6,17 +6,19 @@ use App\FundProcrastination;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use App\User;
 use Illuminate\Http\Request;
 
 class FundProcrastinationController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $procrastination = FundProcrastination::all();
-        return view('finance_fund.fund_current_assets.fund_criticism.fund_procrastination.index', compact('priority', 'help_desk', 'type','procrastination'));
+        return view('finance_fund.fund_current_assets.fund_criticism.fund_procrastination.index', compact('priority', 'help_desk', 'type','procrastination','user'));
     }
 
     /**
@@ -26,10 +28,11 @@ class FundProcrastinationController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        return view('finance_fund.fund_current_assets.fund_criticism.fund_procrastination.create',compact('client','priority', 'help_desk', 'type'));
+        return view('finance_fund.fund_current_assets.fund_criticism.fund_procrastination.create',compact('client','priority', 'help_desk', 'type','user'));
     }
 
     /**
@@ -74,11 +77,12 @@ class FundProcrastinationController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $procrastination = FundProcrastination::find($id);
-        return view('finance_fund.fund_current_assets.fund_criticism.fund_procrastination.edit', compact('priority', 'help_desk', 'priority', 'type','procrastination'));
+        return view('finance_fund.fund_current_assets.fund_criticism.fund_procrastination.edit', compact('priority', 'help_desk', 'priority', 'type','procrastination','user'));
     }
 
     /**

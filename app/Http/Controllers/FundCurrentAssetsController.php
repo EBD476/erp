@@ -6,17 +6,19 @@ use App\FundCurrentAssets;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use App\User;
 use Illuminate\Http\Request;
 
 class FundCurrentAssetsController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
         $current_assets=FundCurrentAssets::all();
-        return view('finance_fund.fund_current_assets.index', compact('priority', 'help_desk', 'type','current_assets'));
+        return view('finance_fund.fund_current_assets.index', compact('priority', 'help_desk', 'type','current_assets','user'));
     }
 
     /**
@@ -26,10 +28,11 @@ class FundCurrentAssetsController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
-        return view('finance_fund.fund_current_assets.create',compact('client','priority', 'help_desk', 'type'));
+        return view('finance_fund.fund_current_assets.create',compact('client','priority', 'help_desk', 'type','user'));
     }
 
     /**
@@ -68,11 +71,12 @@ class FundCurrentAssetsController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $current_assets = FundCurrentAssets::find($id);
-        return view('finance_fund.fund_current_assets.edit', compact('priority', 'help_desk', 'priority', 'type','current_assets'));
+        return view('finance_fund.fund_current_assets.edit', compact('priority', 'help_desk', 'priority', 'type','current_assets','user'));
     }
 
     /**

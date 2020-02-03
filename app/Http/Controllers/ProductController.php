@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use App\User;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
@@ -17,11 +18,12 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $products = Product::all();
-        return view('products.index',compact('products','type','priority','help_desk'));
+        return view('products.index',compact('products','type','priority','help_desk','user'));
     }
 
 
@@ -40,6 +42,7 @@ class ProductController extends Controller
      */
     public function create()
     {
+
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
@@ -83,11 +86,12 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $product=Product::find($id);
-        return view('products.edit',compact('product','type','priority','help_desk'));
+        return view('products.edit',compact('product','type','priority','help_desk','user'));
 
 
     }
@@ -101,7 +105,6 @@ class ProductController extends Controller
      */
     public function update(Request $request,$id)
     {
-        $products=Product::ALL();
         $this->validate($request, [
             'product_name' => 'required',
             'product_model' => 'required',

@@ -454,8 +454,10 @@
   "Fund Accounts And Documents Payable List":"",
   "Edit Fund Accounts And Documents Payable":"",
   "Edit Part":"ویرایش قطعات",
-  "Edit Provider":"ویرایش تامین کننده"
-
-
-
+  "Edit Provider":"ویرایش تامین کننده",
+  "Add New Provider":"تامین کننده جدید",
+  "Return Value":"مرجوعی",
+  "Contradiction":"تناقض",
+  "Entry Date":"تاریخ ورود",
+  "Exit Date":"تاریخ خروج"
 }

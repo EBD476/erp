@@ -12,11 +12,12 @@ class BankAccountTypeController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $bank_account_type=BankAccountType::all();
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.bank_account_type.index', compact('priority', 'help_desk', 'type','bank_account_type'));
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.bank_account_type.index', compact('priority', 'help_desk', 'type','bank_account_type','user'));
     }
 
     /**
@@ -26,10 +27,11 @@ class BankAccountTypeController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.bank_account_type.create',compact('priority', 'help_desk', 'type'));
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.bank_account_type.create',compact('priority', 'help_desk', 'type','user'));
     }
 
     /**
@@ -68,11 +70,12 @@ class BankAccountTypeController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $bank_account_type = BankAccountType::find($id);
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.bank_account_type.edit', compact('priority', 'help_desk', 'priority', 'type','bank_account_type'));
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.bank_account_type.edit', compact('priority', 'help_desk', 'priority', 'type','bank_account_type','user'));
     }
 
     /**

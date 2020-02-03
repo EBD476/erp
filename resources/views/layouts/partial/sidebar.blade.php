@@ -519,8 +519,12 @@
                                 <span class="sidebar-normal">{{__('Product Parts')}}</span>
                             </a>
                         </li>
-
-
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('provider.index')}}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal">{{__('Provider')}}</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>
@@ -752,6 +756,95 @@
                                 <a class="nav-link" href="{{ route('level.index') }}">
                                     <i class="tim-icons icon-single-02"></i>
                                     <span class="sidebar-normal"> {{__('HNT Level')}}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+            </li>
+        </ul>
+        <!-- End of Sidebar -->
+        @endrole
+        @role('order')
+        <!-- Sidebar -->
+        <ul class="nav">
+            <li class="nav-item ">
+                <a class="nav-link" href="{{ route('home') }}">
+                    <i class="tim-icons icon-chart-pie-36" style="float: right"></i>
+                    <p>{{__('Dashboard')}}</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-toggle="collapse" href="#componentsExamples" aria-expanded="false">
+                    <i class="tim-icons icon-coins" style="float: right"></i>
+                    <p>
+                        {{__('Order')}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse" id="componentsExamples" style="">
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('order.index') }}">
+                                <i class="tim-icons icon-coins"></i>
+                                <span class="sidebar-normal"> {{__('Order')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#HelpDeskExamples">
+                    <i class="tim-icons icon-headphones" style="float: right"></i>
+                    <p>
+                        {{__('Help Desk')}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse " id="HelpDeskExamples">
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('help_desk.index') }}">
+                                <i class="tim-icons icon-headphones"></i>
+                                <span class="sidebar-normal"> {{__('Help Desk')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#UsersExamples">
+                        <i class="tim-icons icon-user-run" style="float: right"></i>
+                        <p>
+                            {{__('Users')}}
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse " id="UsersExamples">
+                        <ul class="nav">
+                            <li class="nav-item ">
+                                <a class="nav-link" href="{{ route('users.index') }}">
+                                    <i class="tim-icons icon-paper"></i>
+                                    <span class="sidebar-normal">{{__('Manage Users')}}</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+            <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#ClientExamples">
+                        <i class="tim-icons icon-single-02" style="float: right"></i>
+                        <p>
+                            {{__('Client')}}
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse " id="ClientExamples">
+                        <ul class="nav">
+                            <li class="nav-item ">
+                                <a class="nav-link" href="{{ route('client.index') }}">
+                                    <i class="tim-icons icon-single-02"></i>
+                                    <span class="sidebar-normal"> {{__('Client')}}</span>
                                 </a>
                             </li>
                         </ul>
@@ -1185,7 +1278,12 @@
                                 <span class="sidebar-normal">{{__('Product Parts')}}</span>
                             </a>
                         </li>
-
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('provider.index')}}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal">{{__('Provider')}}</span>
+                            </a>
+                        </li>
 
                     </ul>
                 </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Part;
 use App\Product;
 use App\ProductPart;
+use App\User;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
@@ -13,13 +14,14 @@ class ProductPartController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $product=Product::ALL();
         $part=Part::ALL();
         $product_part = ProductPart::all();
-        return view('product_part.index',compact('product_part','product','part','type','priority','help_desk'));
+        return view('product_part.index',compact('product_part','product','part','type','priority','help_desk','user'));
     }
 
 
@@ -38,12 +40,13 @@ class ProductPartController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $part_id=Part::all();
         $product_id=Product::all();
-        return view('product_part.create',compact('part_id','product_id','type','priority','help_desk'));
+        return view('product_part.create',compact('part_id','product_id','type','priority','help_desk','user'));
     }
 
     public function store(Request $request)
@@ -71,13 +74,14 @@ class ProductPartController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $part_id=Part::all();
         $product_id=Product::all();
         $product_part=ProductPart::find($id);
-        return view('product_part.edit',compact('product_part','part_id','product_id','type','priority','help_desk'));
+        return view('product_part.edit',compact('product_part','part_id','product_id','type','priority','help_desk','user'));
 
 
     }

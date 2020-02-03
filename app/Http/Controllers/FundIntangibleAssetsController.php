@@ -6,17 +6,19 @@ use App\FundIntangibleAssets;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use App\User;
 use Illuminate\Http\Request;
 
 class FundIntangibleAssetsController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
         $funds_intangible_assets=FundIntangibleAssets::all();
-        return view('finance_fund.fund_non_current.fund_intangible_assets.index', compact('priority', 'help_desk', 'type','funds_intangible_assets'));
+        return view('finance_fund.fund_non_current.fund_intangible_assets.index', compact('priority', 'help_desk', 'type','funds_intangible_assets','user'));
     }
 
     /**
@@ -26,10 +28,11 @@ class FundIntangibleAssetsController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $type = HDtype::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
-        return view('finance_fund.fund_non_current.fund_intangible_assets.create',compact('client','priority', 'help_desk', 'type'));
+        return view('finance_fund.fund_non_current.fund_intangible_assets.create',compact('client','priority', 'help_desk', 'type','user'));
     }
 
     /**
@@ -68,11 +71,12 @@ class FundIntangibleAssetsController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $funds_intangible_asset = FundIntangibleAssets:: find($id);
-        return view('finance_fund.fund_non_current.fund_intangible_assets.edit', compact('priority', 'help_desk', 'priority', 'type', 'funds_intangible_asset'));
+        return view('finance_fund.fund_non_current.fund_intangible_assets.edit', compact('priority', 'help_desk', 'priority', 'type', 'funds_intangible_asset','user'));
     }
 
     /**

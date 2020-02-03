@@ -74,8 +74,6 @@
             $("#form1").submit(function (event) {
                 var data = $("#form1").serialize();
                 event.preventDefault();
-                $.blockUI();
-
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

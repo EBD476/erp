@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\User;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
@@ -12,13 +13,14 @@ class VerifyRepositoryController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $product = Order::select('id', 'hp_product_selection', 'created_at')
             ->whereNotNull('hp_Invoice_number')->get();
 //        dd($order);
-        return view('verify_level.index', compact('product','help_desk','priority','type'));
+        return view('verify_level.index', compact('product','help_desk','priority','type','user'));
     }
 
     /**

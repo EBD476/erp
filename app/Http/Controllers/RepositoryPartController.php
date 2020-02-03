@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Part;
 use App\RepositoryCreate;
 use App\RepositoryPart;
+use App\User;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
@@ -14,12 +15,13 @@ class RepositoryPartController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $repository=RepositoryPart::ALL();
         $part = Part::all();
-        return view('repository_part.index',compact('part','repository','help_desk','priority','type'));
+        return view('repository_part.index',compact('part','repository','help_desk','priority','type','user'));
     }
 
     /**
@@ -29,12 +31,13 @@ class RepositoryPartController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $part_name=Part::all();
         $repository_name=RepositoryCreate::all();
-        return view('repository_part.create',compact('part_name','repository_name','help_desk','priority','type'));
+        return view('repository_part.create',compact('part_name','repository_name','help_desk','priority','type','user'));
     }
 
     public function store(Request $request)
@@ -72,11 +75,12 @@ class RepositoryPartController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $repository=RepositoryPart::find($id);
-        return view('repository_part.edit',compact('repository','help_desk','priority','type'));
+        return view('repository_part.edit',compact('repository','help_desk','priority','type','user'));
 
 
     }

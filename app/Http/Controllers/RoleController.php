@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -21,12 +22,13 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $roles = Role::all();//Get all roles
 
-        return view('roles.index',compact('help_desk','priority','type'))->with('roles', $roles);
+        return view('roles.index',compact('help_desk','priority','type','user'))->with('roles', $roles);
     }
 
     /**
@@ -35,12 +37,13 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create() {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $permissions = Permission::all();//Get all permissions
 
-        return view('roles.create', ['permissions'=>$permissions],compact('help_desk','priority','type'));
+        return view('roles.create', ['permissions'=>$permissions],compact('help_desk','priority','type','user'));
     }
 
     /**
@@ -94,13 +97,14 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $role = Role::findOrFail($id);
         $permissions = Permission::all();
 
-        return view('roles.edit', compact('role', 'permissions','help_desk','priority','type'));
+        return view('roles.edit', compact('role', 'permissions','help_desk','priority','type','user'));
     }
 
     /**

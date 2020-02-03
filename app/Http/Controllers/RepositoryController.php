@@ -8,8 +8,10 @@ use App\Order;
 use App\OrderProduct;
 use App\OrderState;
 use App\Product;
+use App\Provider;
 use App\Repository;
 use App\Repository_Requirement;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use carbon\carbon;
@@ -20,6 +22,7 @@ class RepositoryController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
@@ -34,7 +37,7 @@ class RepositoryController extends Controller
 
 
 
-        return view('Repository.index',['repository_product_count'=>$repository_product_count,'query' => $query_order_product, 'client' => $client, 'order_all' => $query_order_product_all], compact('Repositories', 'product', 'orders','help_desk','priority','type'));
+        return view('Repository.index',['repository_product_count'=>$repository_product_count,'query' => $query_order_product, 'client' => $client, 'order_all' => $query_order_product_all], compact('user','Repositories', 'product', 'orders','help_desk','priority','type'));
 
     }
 
@@ -45,10 +48,13 @@ class RepositoryController extends Controller
      */
     public function create()
     {
+        $product=Product::all();
+        $provider=Provider::all();
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('Repository.create',compact('type','priority','help_desk'));
+        return view('Repository.create',compact('type','priority','help_desk','user','provider','product'));
     }
 
 
@@ -138,11 +144,12 @@ class RepositoryController extends Controller
     public
     function edit($id)
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $Repositories = Repository::find($id);
-        return view('Repository . edit', compact('Repositories','type','priority','help_desk'));
+        return view('Repository . edit', compact('Repositories','type','priority','help_desk','user'));
     }
 
     /**

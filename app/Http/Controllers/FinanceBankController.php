@@ -6,17 +6,19 @@ use App\FinanceBank;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use App\User;
 use Illuminate\Http\Request;
 
 class FinanceBankController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $finance_bank = FinanceBank::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
         $type = HDtype::all();
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.finance_bank.index', compact('priority', 'help_desk', 'type','finance_bank'));
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.finance_bank.index', compact('priority', 'help_desk', 'type','finance_bank','user'));
     }
 
     /**
@@ -26,10 +28,11 @@ class FinanceBankController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $priority = HDpriority::all();
         $type = HDtype::all();
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.finance_bank.create',compact('type','help_desk','priority'));
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.finance_bank.create',compact('type','help_desk','priority','user'));
     }
 
     /**
@@ -76,11 +79,12 @@ class FinanceBankController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $finance_bank = FinanceBank::find($id);
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.finance_bank.edit', compact('priority', 'help_desk', 'priority', 'type','finance_bank'));
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.finance_bank.edit', compact('priority', 'help_desk', 'priority', 'type','finance_bank','user'));
     }
 
     /**

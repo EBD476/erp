@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\TicketStatus;
+use App\User;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
@@ -17,11 +18,12 @@ class TicketStatusController extends Controller
      */
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $ticket=TicketStatus::ALL();
-        return view('ticket_status.index',compact('ticket','help_desk','priority','type'));
+        return view('ticket_status.index',compact('ticket','help_desk','priority','type','user'));
     }
 
     /**
@@ -31,10 +33,11 @@ class TicketStatusController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('ticket_status.create',compact('ticket','help_desk','priority','type'));
+        return view('ticket_status.create',compact('ticket','help_desk','priority','type','user'));
     }
 
     /**
@@ -73,11 +76,12 @@ class TicketStatusController extends Controller
      */
     public function edit(TicketStatus $ticketStatus)
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $ticket=TicketStatus::find($ticketStatus);
-        return view('ticket_status.edit',compact('ticket','help_desk','priority','type'));
+        return view('ticket_status.edit',compact('ticket','help_desk','priority','type','user'));
     }
 
     /**

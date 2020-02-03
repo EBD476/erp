@@ -74,7 +74,6 @@
             $("#form1").submit(function (event) {
                 var data = $("#form1").serialize();
                 event.preventDefault();
-                $.blockUI();
                 $.blockUI({
                     message: '{{__('please wait...')}}', css: {
                         border: 'none',

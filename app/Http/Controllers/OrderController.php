@@ -11,6 +11,7 @@ use App\OrderState;
 use App\Product;
 use App\Project_Type;
 use App\State;
+use App\User;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
@@ -20,16 +21,18 @@ class OrderController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $order = Order::ALL();
         $progress=OrderState::all();
-        return view('order.index', compact('order','progress','type','help_desk','priority'));
+        return view('order.index', compact('order','progress','type','help_desk','priority','user'));
     }
 
     public function create()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
@@ -39,7 +42,7 @@ class OrderController extends Controller
         $address = address::all();
         $state = State::all();
         $product = Product::all();
-        return view('order.create', compact('address', 'state', 'project_type', 'product','client','invoice_statuses','type','help_desk','priority'));
+        return view('order.create', compact('address', 'state', 'project_type', 'product','client','invoice_statuses','type','help_desk','priority','product','user'));
     }
 
     public function store(Request $request)
@@ -85,6 +88,7 @@ class OrderController extends Controller
 
     public function edit($id)
     {
+        $user=User::all();
         $invoice_statuses=InvoiceStatuses::ALL();
         $client = Client::all();
         $project_type = Project_Type::all();
@@ -97,7 +101,7 @@ class OrderController extends Controller
         $project = Order::find($id);
         $items = OrderProduct::where('hpo_order_id',$id)->get();
         $items_all = OrderProduct::select('hpo_discount','hpo_total','hpo_status','hpo_total_discount','hop_due_date','hpo_order_id')->where('hpo_order_id',$id)->get()->last();
-        return view('order.edit', compact('items_all','invoice_statuses','client','project_type','address','state','product','project','items','type','help_desk','priority'));
+        return view('order.edit', compact('items_all','invoice_statuses','client','project_type','address','state','product','project','items','type','help_desk','priority','user'));
     }
 
     public function update(Request $request, $id)

@@ -18,6 +18,7 @@ class ConversationViewController extends Controller
      */
     public function index()
     {
+        $user=User::all();
         $user = auth()->user()->id;
         $last_message=ConversationView::where('hcv_receiver_user_id',$user)->whereNotNull('hcv_message_status')->get();
         $find_last_message=ConversationView::where('hcv_receiver_user_id',$user)->whereNotNull('hcv_message_status')->get()->last();

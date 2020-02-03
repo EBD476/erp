@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Agreement;
+use App\User;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
@@ -12,11 +13,12 @@ class AgreementController extends Controller
 {
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $agreement = Agreement::all();
-        return view('agreement.index',compact('agreement','help_desk','priority','type'));
+        return view('agreement.index',compact('user','agreement','help_desk','priority','type'));
     }
 
 
@@ -44,11 +46,12 @@ class AgreementController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $agreement = Agreement::find($id);
-        return view('agreement.edit',compact('agreement','help_desk','priority','type'));
+        return view('agreement.edit',compact('user','agreement','help_desk','priority','type'));
 
 
     }

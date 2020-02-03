@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Provider;
+use App\User;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
@@ -17,11 +18,12 @@ class ProviderController extends Controller
      */
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $provider = Provider::all();
-        return view('provider.index',compact('provider','type','priority','help_desk'));
+        return view('provider.index',compact('provider','type','priority','help_desk','user'));
     }
 
 
@@ -40,10 +42,11 @@ class ProviderController extends Controller
      */
     public function create()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('provider.create',compact('provider','type','priority','help_desk'));
+        return view('provider.create',compact('provider','type','priority','help_desk','user'));
     }
 
     public function store(Request $request)
@@ -79,11 +82,12 @@ class ProviderController extends Controller
      */
     public function edit($id)
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $provider=Provider::find($id);
-        return view('provider.edit',compact('provider','type','priority','help_desk'));
+        return view('provider.edit',compact('provider','type','priority','help_desk','user'));
 
 
     }

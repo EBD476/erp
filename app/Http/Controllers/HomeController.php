@@ -10,6 +10,7 @@ use App\HelpDesk;
 use App\Order;
 use App\Project;
 use App\Support;
+use App\User;
 
 class HomeController extends Controller
 {
@@ -36,6 +37,7 @@ class HomeController extends Controller
 //            'username' => 'admin',
 //            'password' => Hash::make('admin'),
 //        ));
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
@@ -48,7 +50,7 @@ class HomeController extends Controller
             ->where('hp_Invoice_number', Null)->get();
         $projects =  Project::all();
         $orders =  Order::all()->count();
-        return view('home',compact('order','projects','order_req','agreement','client','orders','support_response','help_desk','priority','type'));
+        return view('home',compact('user','order','projects','order_req','agreement','client','orders','support_response','help_desk','priority','type'));
 
 
     }

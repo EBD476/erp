@@ -84,7 +84,6 @@
                             lid: $('#lid').data('lid'),
                         };
                         event.preventDefault();
-                        $.blockUI();
                         $.blockUI({
                             message: '{{__('please wait...')}}', css: {
                                 border: 'none',

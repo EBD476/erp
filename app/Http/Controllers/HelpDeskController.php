@@ -19,13 +19,14 @@ class HelpDeskController extends Controller
      */
     public function index()
     {
+        $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $ticket_status = TicketStatus::all();
         $help_desks = HelpDesk::all();
         $help_desks_user = HelpDesk::where('hhd_receiver_user_id',auth()->user()->id)->orwhere('hhd_request_user_id',auth()->user()->id)->get();
-        return view('help_desk.index', compact('help_desks_user','help_desk', 'ticket_status','help_desks','type','priority','help_desks'));
+        return view('help_desk.index', compact('help_desks_user','help_desk', 'ticket_status','help_desks','type','priority','help_desks','user'));
     }
 
     /**
@@ -40,7 +41,7 @@ class HelpDeskController extends Controller
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $user = User::all();
         $ticket = TicketStatus::ALL();
-        return view('help_desk.create', compact('priority', 'type', 'ticket', 'user','priorities','types','help_desk'));
+        return view('help_desk.create', compact('priority', 'type', 'ticket', 'user','priorities','types','help_desk','user'));
     }
 
 
