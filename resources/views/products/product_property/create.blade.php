@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Products'))
+@section('title',__('Products Property'))
 
 
 @section('content')
@@ -14,17 +14,16 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header card-header-primary">
-                            <h4 class="card-title ">{{__('New Product')}}</h4>
+                            <h4 class="card-title ">{{__('New Products Property')}}</h4>
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
                             <form id="form1">
-                                @csrf
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
-                                            <label>{{__('Product Name')}}</label>
-                                            <input name="product_name" type="text" class="form-control" required=""
+                                            <label>{{__('Property Name')}}</label>
+                                            <input name="hpp_property_name" type="text" class="form-control" required=""
                                                    aria-invalid="false">
                                         </div>
                                     </div>
@@ -32,64 +31,14 @@
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
-                                            <label>{{__('Product Model')}}</label>
-                                            <input name="product_model" type="text" class="form-control" required=""
-                                                   aria-invalid="false">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 pr-md-1">
-                                        <div class="form-group">
-                                            <label>{{__('Product Color')}}</label>
-                                            <select class="form-control" name="hp_product_color_id">
-                                                @foreach($color as $colors)
-                                                    <option value="{{$colors->id}}">
-                                                        {{$colors->hn_color_name}}
+                                            <label>{{__('Items')}}</label>
+                                            <select name="hpp_property_items" class="form-control">
+                                                @foreach($items as $item)
+                                                    <option value="{{$item->id}}">
+                                                        {{$item->hppi_items_name}}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 pr-md-1">
-                                        <div class="form-group">
-                                            <label>{{__('Product Property')}}</label>
-                                            <select class="form-control" name="hp_product_property">
-                                                @foreach($properties as $property)
-                                                    <option value="{{$property->id}}">
-                                                        {{$property->hpp_property_name }} @foreach ($items as $item) @if($item->id == $property->hpp_property_items) {{$item->hppi_items_name}} @endif @endforeach
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 pr-md-1">
-                                        <div class="form-group">
-                                            <label>{{__('Product Size')}}</label>
-                                            <input name="hp_product_size"  class="form-control" required=""
-                                                   aria-invalid="false">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 pr-md-1">
-                                        <div class="form-group">
-                                            <label>{{__('Product Price')}}</label>
-                                            <input name="product_price" type="text" class="form-control" required=""
-                                                   aria-invalid="false">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 pr-md-1">
-                                        <div class="form-group">
-                                            <label>{{__('Description')}}</label>
-                                            <input name="hp_description" type="text" class="form-control" required=""
-                                                   aria-invalid="false">
                                         </div>
                                     </div>
                                 </div>
@@ -167,7 +116,7 @@
                 });
 
                 $.ajax({
-                    url: '/product',
+                    url: '/product-property',
                     type: 'POST',
                     data: data,
                     dataType: 'json',

@@ -31,7 +31,7 @@ Route::group(['middleware' => ['auth']], function() {
     route::resource('repository', 'RepositoryController');
     route::resource('repository_requirement', 'Repository_RequirementController');
     route::resource('request', 'RequestController');
-    route::post('preview','OrderController@preview')->name('order.preview');
+    route::get('preview','OrderController@preview')->name('order.preview');
     route::post('checkbox','ProductController@checkbox')->name('product.checkbox');
     route::resource('verifier', 'VerifierController');
     route::resource('permission', 'PermissionController');
@@ -67,6 +67,9 @@ Route::group(['middleware' => ['auth']], function() {
     route::resource('fund_tangible_fixed_assets','FundTangibleFixedAssetsController');
     route::resource('fund','FinanceFundController');
     route::resource('fund_accounts_document_payable','FundAccountsAndDocumentsPayableController');
+    route::resource('product-color','ProductColorController');
+    route::resource('product-property','ProductPropertyController');
+    route::resource('product-property-items','ProductPropertyItemsController');
     Route::post('order-state/{id}','RepositoryController@order_state')->name('repository.order_state');
     Route::get('send_request/{id}','ProjectController@send_request')->name('projects.send_request');
     Route::get('show_data/{id}','SupportController@show_data')->name('support.show_data');

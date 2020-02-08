@@ -144,7 +144,24 @@
                                 <span class="sidebar-normal">{{__('Product Parts')}}</span>
                             </a>
                         </li>
-
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product-color.index')}}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal">{{__('Product Color')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product-property.index')}}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal">{{__('Product Property')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product-property-items.index')}}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal">{{__('Product Property Items')}}</span>
+                            </a>
+                        </li>
 
                     </ul>
                 </div>
@@ -523,6 +540,24 @@
                             <a class="nav-link" href="{{ route('provider.index')}}">
                                 <i class="tim-icons icon-single-02"></i>
                                 <span class="sidebar-normal">{{__('Provider')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product-color.index')}}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal">{{__('Product Color')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product-property.index')}}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal">{{__('Product Property')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product-property-items.index')}}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal">{{__('Product Property Items')}}</span>
                             </a>
                         </li>
                     </ul>
@@ -1284,7 +1319,24 @@
                                 <span class="sidebar-normal">{{__('Provider')}}</span>
                             </a>
                         </li>
-
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product-color.index')}}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal">{{__('Product Color')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product-property.index')}}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal">{{__('Product Property')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product-property-items.index')}}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal">{{__('Product Property Items')}}</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>

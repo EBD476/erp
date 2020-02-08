@@ -43,6 +43,43 @@
                                     <div class="row">
                                         <div class="col-md-6 pr-md-1">
                                             <div class="form-group">
+                                                <label>{{__('Product Color')}}</label>
+                                                <select class="form-control" name="hp_product_color_id">
+                                                    @foreach($color as $colors)
+                                                        <option value="{{$colors->id}}">
+                                                            {{$colors->hn_color_name}}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 pr-md-1">
+                                            <div class="form-group">
+                                                <label>{{__('Product Property')}}</label>
+                                                <select class="form-control" name="hp_product_property">
+                                                    @foreach($properties as $property)
+                                                        <option value="{{$property->id}}">
+                                                            {{$property->hpp_property_name}}@foreach ($items as $item) @if($item->id == $property->hpp_property_items) {{$item->hppi_items_name}} @endif @endforeach
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 pr-md-1">
+                                            <div class="form-group">
+                                                <label>{{__('Product Size')}}</label>
+                                                <input name="hp_product_size"  class="form-control" required=""
+                                                       aria-invalid="false"  value="{{$product->hp_product_size}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 pr-md-1">
+                                            <div class="form-group">
                                                 <label>{{__('Product Price')}}</label>
                                                 <input name="product_price" type="text" class="form-control"  required=""
                                                        aria-invalid="false" value="{{$product->hp_product_price}}">

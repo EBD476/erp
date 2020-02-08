@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\address;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
@@ -9,6 +10,8 @@ use App\Order;
 use App\OrderProduct;
 use App\OrderState;
 use App\Process;
+use App\Product;
+use App\Project_State;
 use App\User;
 use App\Verifier;
 use App\VerifyID;
@@ -76,11 +79,6 @@ class VerifyController extends Controller
      */
     public function edit($id)
     {
-        $user=User::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-//        $order_id=Order::SELECT('id')->where('hp_Invoice_number',null);
         $userID = auth()->user()->id;
         $current_verified_order = Verifier::where('hp_verifier_id', $userID and 'process_id', '1')->first();
         $current_verifier = VerifyID::select('verify_id')->where('verify_id', $userID)->first();
@@ -102,8 +100,17 @@ class VerifyController extends Controller
 
         }
 
+        $user = User::all();
+        $type = HDtype::all();
+        $priority = HDpriority::ALL();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $order = Order::find($id);
-        return view('verify_level.preview', compact('order', 'first_verifier', 'verifyID', 'selected_priority', 'current_verified_order', 'help_desk', 'priority', 'type','user'));
+        $product = Product::all();
+        $data = OrderProduct::where('hpo_order_id',$id)->get();
+        $data_dis = OrderProduct::where('hpo_order_id',$id)->get()->last();
+        $city = address:: where('id', $order->hp_address_city_id)->get()->last();
+        $state = Project_State:: where('id', $order->hp_address_state_id)->get()->last();
+        return view('verify_level.preview', compact('order', 'first_verifier', 'verifyID', 'selected_priority', 'current_verified_order', 'help_desk', 'priority', 'type','user','product','data','state','city','data_dis'));
 
     }
 

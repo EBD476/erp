@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Products'))
+@section('title',__('Products Property'))
 
 
 @section('content')
@@ -14,82 +14,33 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header card-header-primary">
-                            <h4 class="card-title ">{{__('New Product')}}</h4>
+                            <h4 class="card-title ">{{__('Edit Products Property')}}</h4>
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
                             <form id="form1">
-                                @csrf
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
-                                            <label>{{__('Product Name')}}</label>
-                                            <input name="product_name" type="text" class="form-control" required=""
-                                                   aria-invalid="false">
+                                            <label>{{__('Property Name')}}</label>
+                                            <input id="hpp_property_name" type="text" class="form-control" required=""
+                                                   aria-invalid="false" value="{{$properties->hpp_property_name}}">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
-                                            <label>{{__('Product Model')}}</label>
-                                            <input name="product_model" type="text" class="form-control" required=""
-                                                   aria-invalid="false">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 pr-md-1">
-                                        <div class="form-group">
-                                            <label>{{__('Product Color')}}</label>
-                                            <select class="form-control" name="hp_product_color_id">
-                                                @foreach($color as $colors)
-                                                    <option value="{{$colors->id}}">
-                                                        {{$colors->hn_color_name}}
+                                            <label>{{__('Items')}}</label>
+                                            <select data-id="{{$properties->id}}" id="hpp_property_items" class="form-control">
+                                                @foreach($items as $item)
+                                                    <option value="{{$item->id}}">
+                                                        {{$item->hppi_items_name}}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 pr-md-1">
-                                        <div class="form-group">
-                                            <label>{{__('Product Property')}}</label>
-                                            <select class="form-control" name="hp_product_property">
-                                                @foreach($properties as $property)
-                                                    <option value="{{$property->id}}">
-                                                        {{$property->hpp_property_name }} @foreach ($items as $item) @if($item->id == $property->hpp_property_items) {{$item->hppi_items_name}} @endif @endforeach
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 pr-md-1">
-                                        <div class="form-group">
-                                            <label>{{__('Product Size')}}</label>
-                                            <input name="hp_product_size"  class="form-control" required=""
-                                                   aria-invalid="false">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 pr-md-1">
-                                        <div class="form-group">
-                                            <label>{{__('Product Price')}}</label>
-                                            <input name="product_price" type="text" class="form-control" required=""
-                                                   aria-invalid="false">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 pr-md-1">
-                                        <div class="form-group">
-                                            <label>{{__('Description')}}</label>
-                                            <input name="hp_description" type="text" class="form-control" required=""
-                                                   aria-invalid="false">
+                                            <input id="hpp_property_items" type="text" class="form-control" required=""
+                                                   aria-invalid="false" value="{{$properties->hpp_property_items}}">
                                         </div>
                                     </div>
                                 </div>
@@ -146,8 +97,13 @@
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script>
         $(document).ready(function () {
+
             $("#form1").submit(function (event) {
-                var data = $("#form1").serialize();
+                var data = {
+                    id: $('#hpp_property_name').data('id'),
+                    hpp_property_name: $('#hpp_property_name').val(),
+                    hpp_property_items: $('#hpp_property_items').val(),
+                };
                 event.preventDefault();
                 $.blockUI({
                     message: '{{__('please wait...')}}', css: {
@@ -160,17 +116,18 @@
                         color: '#fff'
                     }
                 });
+                //token
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
-
                 $.ajax({
-                    url: '/product',
+                    url: '/product-property/' + data.id,
                     type: 'POST',
                     data: data,
                     dataType: 'json',
+                    method:'put',
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);

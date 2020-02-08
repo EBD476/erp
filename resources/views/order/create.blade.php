@@ -49,7 +49,6 @@
                             <div role="tabpanel" class="tab-pane active" id="tab1">
                                 <form id="form1"
                                       class="tab-content setting-tab" enctype="multipart/form-data">
-                                    @csrf
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
@@ -242,7 +241,22 @@
                                                     @foreach($product as $product_item)
                                                         <option value="{{$product_item->id}}"
                                                                 data-price="{{$product_item->hp_product_price}}">
-                                                            {{$product_item->hp_product_name }}
+                                                            {{$product_item->hp_product_name . $product_item->hp_product_model . $product_item->hp_product_size}}
+                                                            @foreach($color as $colors)
+                                                                @if($colors->id == $product_item->hp_product_color_id)
+                                                                    {{$colors->hn_color_name}}
+                                                                @endif
+                                                            @endforeach
+                                                            @foreach($properties as $property)
+                                                                @if($property->id== $product_item->hp_product_property)
+                                                                    {{$property->hpp_property_name}}
+                                                                    @foreach ($items as $item)
+                                                                        @if($item->id == $property->hpp_property_items)
+                                                                            {{$item->hppi_items_name}}
+                                                                        @endif
+                                                                    @endforeach
+                                                                @endif
+                                                            @endforeach
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -253,7 +267,7 @@
                                                         data-bind="value: notes, valueUpdate: 'afterkeydown', attr: {name: 'invoice_items[' + $index() + '][notes]'}"
                                                         rows="1" cols="60" style="resize: vertical; height: 42px;"
                                                         class="form-control word-wrap"
-                                                        name="invoice_items[0][notes]"></textarea>
+                                                        name="hpo_description"></textarea>
 
                                             </td>
                                             <td>
@@ -417,8 +431,8 @@
                                        class="btn badge-danger">{{__('Back')}}</a>
                                     <button type="submit" class="btn btn-primary"
                                             id="btn-submit2">{{__('Send')}}</button>
-                                    {{--<button type="submit" class="btn btn-primary"--}}
-{{--                                            id="preview">{{__('Preview Factor')}}</button>--}}
+                                    <button type="submit" class="btn btn-primary"
+                                            id="preview">{{__('Preview Factor')}}</button>
                                 </form>
                             </div>
                         </div>
@@ -486,7 +500,7 @@
         var total;
         var discount;
         var total_discount;
-        var remove  = 0;
+        var remove = 0;
 
         $(document).ready(function () {
             var client_id;
@@ -532,7 +546,6 @@
             $("#form1").submit(function (event) {
                 var data = $("#form1").serialize();
                 event.preventDefault();
-                $.blockUI();
                 $.blockUI({
                     message: '{{__('please wait...')}}', css: {
                         border: 'none',
@@ -570,7 +583,7 @@
             });
 
 
-            $("#form2").submit(function (event) {
+            $("#btn-submit2").on('click', function (event) {
                 var data = $("#form2").serialize();
                 event.preventDefault();
                 $.blockUI({
@@ -597,7 +610,6 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        alert(data.response);
                         setTimeout($.unblockUI, 2000);
                     },
                     cache: false,
@@ -668,11 +680,30 @@
                     '                $parent.invoice_items_without_tasks().length > 1" class="fa fa-sort"></i>\n' +
                     '                                        </td>\n' +
                     '                                        <td>\n' +
-                    '                                                        <select name="name[]" class="select-item combobox-container">\n' +
+                    '                                                       <select name="name[]" class="select-item combobox-container">\n' +
                     '                                                            <option value=""></option>' +
                     '                                                            @foreach($product as $product_item)\n' +
                     '                                                                <option value="{{$product_item->id}}" data-price="{{$product_item->hp_product_price}}">\n' +
                     '                                                                    {{$product_item->hp_product_name }}\n' +
+
+
+                    '                                                            @foreach($color as $colors) \n' +
+                    '                                                            @if($colors->id == $product_item->hp_product_color_id) \n' +
+                    '                                                            {{$colors->hn_color_name}} \n' +
+                    '                                                            @endif \n' +
+                    '                                                            @endforeach \n' +
+                    '                                                            @foreach($properties as $property) \n' +
+                    '                                                            @if($property->id== $product_item->hp_product_property) \n' +
+                    '                                                            {{$property->hpp_property_name}} \n' +
+                    '                                                            @foreach ($items as $item)\n' +
+                    '                                                            @if($item->id == $property->hpp_property_items) \n' +
+                    '                                                            {{$item->hppi_items_name}} \n' +
+                    '                                                            @endif \n' +
+                    '                                                            @endforeach \n' +
+                    '                                                            @endif \n' +
+                    '                                                            @endforeach \n' +
+
+
                     '                                                                </option>\n' +
                     '                                                            @endforeach\n' +
                     '                                                        </select>\n' +
@@ -766,14 +797,13 @@
                         // });
 
 
-
                         if (remove == 0) {
                             total = total - parseInt($(this).parent().parent().find('.sub-total').text());
                             $("#total").val(total);
                             remove += 1;
 
                         }
-                         $(this).parent().parent().remove();
+                        $(this).parent().parent().remove();
                         remove = 0;
 
                     }
@@ -808,7 +838,6 @@
                     unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
                     unit_qty = $(this).val();
                     $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
-
                     total = 0;
                     $('.sub-total').each(function () {
 
@@ -828,7 +857,7 @@
     </script>
     <script>
         $('#preview').on('click', function () {
-            $('#form1').attr('action', '{{route('order.preview')}}');
+            $('#form2').attr('action', '{{route('order.preview')}}', 'method', 'post');
         })
     </script>
     <script type="text/javascript">

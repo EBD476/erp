@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use App\ProductColor;
+use App\ProductProperty;
+use App\ProductPropertyItems;
 use App\User;
 use Illuminate\Http\Request;
 use App\HDpriority;
@@ -42,11 +45,14 @@ class ProductController extends Controller
      */
     public function create()
     {
-
+        $items = ProductPropertyItems::all();
+        $user=User::all();
+        $properties = ProductProperty::all();
+        $color = ProductColor::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('products.create',compact('type','help_desk','priority'));
+        return view('products.create',compact('type','help_desk','priority','color','items','properties','user'));
     }
 
     public function store(Request $request)
@@ -56,12 +62,17 @@ class ProductController extends Controller
             'product_model' => 'required',
             'product_price' => 'required',
             'hp_description' => 'required',
+            'hp_product_size' => 'required',
+            'hp_product_color_id' => 'required',
         ]);
         $product = new Product();
         $product->hp_product_name = $request->product_name;
         $product->hp_product_model = $request->product_model;
         $product->hp_product_price = $request->product_price;
+        $product->hp_product_property = $request->hp_product_property;
+        $product->hp_product_color_id = $request->hp_product_color_id;
         $product->hp_description = $request->hp_description;
+        $product->hp_product_size = $request->hp_product_size;
         $product->save();
 
         return json_encode(["response"=>"OK"]);
@@ -86,12 +97,15 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        $properties = ProductProperty::all();
+        $color = ProductColor::all();
+        $items = ProductPropertyItems::all();
         $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $product=Product::find($id);
-        return view('products.edit',compact('product','type','priority','help_desk','user'));
+        return view('products.edit',compact('product','type','priority','help_desk','user','items','color','properties'));
 
 
     }
@@ -116,6 +130,9 @@ class ProductController extends Controller
         $product->hp_product_model = $request->product_model;
         $product->hp_product_price = $request->product_price;
         $product->hp_description = $request->hp_description;
+        $product->hp_product_property = $request->hp_product_property;
+        $product->hp_product_color_id = $request->hp_product_color_id;
+        $product->hp_product_size = $request->hp_product_size;
         $product->save();
         return redirect()->back();
 
