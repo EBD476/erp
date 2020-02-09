@@ -19,8 +19,9 @@ class OrderProductController extends Controller
             $product->hpo_client_id = $request->hpo_client_id;
             $product->hop_due_date = $request->hop_due_date;
             $product->hpo_discount = $request->hpo_discount;
-            $product->hpo_description = $request->hpo_description;
-            $product->hpo_total = $request->price;
+            $product->hpo_description = $request->invoice_items[$index];
+            $product->hpo_total = $request->total;
+            $product->hpo_total_all = $request->all_total;
             $product->hpo_total_discount = $request->total_discount;
             $product->hpo_status = '1';
             $product->save();

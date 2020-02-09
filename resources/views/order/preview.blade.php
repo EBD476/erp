@@ -48,7 +48,7 @@
                         <thead>
                         <tr>
                             <td class="text-left"><h4
-                                        style="margin-top:30px;">{{__('Date:')}} {{$data->hop_due_date}}</h4>
+                                        {{--style="margin-top:30px;">{{__('Date:')}} {{$data->hop_due_date}}</h4>--}}
                             </td>
                             <td class="text-center"><h1
                                         style="margin-top:70px; margin-right: 150px ; margin-left: 150px">{{__('Pre Invoice Sales Of Product')}}</h1>
@@ -92,14 +92,14 @@
                                 <tr>
                                     <td class="thick-line"></td>
                                     <td class="thick-line"></td>
-                                    <td class="thick-line text-left">{{$data->invoice_items}}</td>
+{{--                                    <td class="thick-line text-left">{{$data->hpo_discount}}</td>--}}
                                     <td class="thick-line text-right"><strong>{{__('Discount')}}</strong></td>
 
                                 </tr>
                                 <tr>
                                     <td class="no-line"></td>
                                     <td class="no-line"></td>
-                                    <td class="no-line text-left">{{$data->hpo_total_discount}}</td>
+{{--                                    <td class="no-line text-left">{{$data->hpo_total_discount}}</td>--}}
                                     <td class="no-line text-right"><strong>{{__('Total including discount')}}</strong>
                                     </td>
 
@@ -107,7 +107,7 @@
                                 <tr>
                                     <td class="no-line"></td>
                                     <td class="no-line"></td>
-                                    <td class="no-line text-left">{{$data->total}}</td>
+{{--                                    <td class="no-line text-left">{{$data->total}}</td>--}}
                                     <td class="no-line text-right"><strong>{{__('Totals')}}</strong></td>
 
                                 </tr>

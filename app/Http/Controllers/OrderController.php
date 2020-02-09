@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use Illuminate\View\View;
 
 class OrderController extends Controller
 {
@@ -169,9 +170,11 @@ class OrderController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $data = $request;
+//        dd($data);
         $order = Order:: where('id', $request->hpo_order_id)->get()->last();
         $city = address:: where('id', $order->hp_address_city_id)->get()->last();
         $state = Project_State:: where('id', $order->hp_address_state_id)->get()->last();
-        return view('order.preview', compact('data', 'type', 'help_desk', 'priority', 'user', 'product', 'order','city','state'));
+        return view('order.preview',['data' => $data], compact( 'type', 'help_desk', 'priority', 'user', 'product', 'order','city','state'));
+//        return view('order.preview', compact( 'type', 'help_desk', 'priority', 'user', 'product', 'order','city','state'))->with('data', $data);
     }
 }
