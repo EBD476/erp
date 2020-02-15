@@ -51,7 +51,7 @@
                                         <h5 class="title">Hanta IBMS</h5>
                                     </a>
                             <p class="description">
-                                {{__('Priority')}}
+{{--                                {{__('Priority')}}--}}
                             </p>
                         </div>
                         </p>

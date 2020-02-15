@@ -13,7 +13,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <a href="{{route('fund_accounts_and_documents_payable.create')}}" class="btn btn-primary float-left mb-lg-2">
+                    <a href="{{route('fund_accounts_document_payable.create')}}" class="btn btn-primary float-left mb-lg-2">
                         <i class="tim-icons icon-simple-add"></i> &nbsp;
                         {{__('New Fund Accounts And Documents Payable')}}
                     </a>

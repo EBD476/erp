@@ -297,8 +297,6 @@
                                                         <div class="form-group">
                                                             <div class="col-lg-6 col-sm-6">
                                                                 <div class="input-group"><input class="form-control"
-                                                                                                {{--data-bind="value: discount, valueUpdate: 'afterkeydown'"--}}
-                                                                                                {{--min="0" step="any"--}}
                                                                                                 id="discount"
                                                                                                 type="number"
                                                                                                 name="hpo_discount">
@@ -327,9 +325,10 @@
                                                             <div class="form-group">
                                                                 <div class="col-lg-6 col-sm-6">
                                                                     <input disabled class="form-control"
+                                                                           id="all_total"
                                                                            type="text"
                                                                            name="all_total"
-                                                                           id="all_total">
+                                                                    >
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -342,9 +341,10 @@
                                                             <div class="form-group">
                                                                 <div class="col-lg-6 col-sm-6">
                                                                     <input disabled class="form-control"
+                                                                           id="total_discount"
                                                                            type="text"
                                                                            name="total_discount"
-                                                                           id="total_discount">
+                                                                    >
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -377,6 +377,8 @@
                                     {{--Hidden Object--}}
                                     <input type="hidden" id="client_id" name="hpo_client_id">
                                     <input type="hidden" id="order_id" name="hpo_order_id">
+                                    <input id="all_dis" name="all_dis" type="hidden">
+                                    <input id="all_tot" name="all_tot" type="hidden">
                                     {{--End Hidden Object--}}
 
                                     <a href="{{route('order.index')}}"
@@ -593,7 +595,7 @@
                     if (total != "") {
                         $("#all_total").val(total);
                         $("#all_total").text(total);
-                        $("#price").val(total);
+                        $("#all_tot").val(total);
                     }
 
                 });
@@ -608,6 +610,7 @@
                     total = $("#all_total").val();
                     if (discount != "") {
                         total_discount = parseInt(discount) * parseInt(total) / 100;
+                        $("#all_dis").val(parseInt(total) - parseInt(total_discount))
                         $("#total_discount").val(parseInt(total) - parseInt(total_discount))
                         $("#total_discount").text(parseInt(total) - parseInt(total_discount))
                     }
@@ -628,39 +631,11 @@
                     total = $('#all_total').val();
                     discount = $(this).val();
                     total_discount = parseInt(discount) * parseInt(total) / 100;
+                    $('#all_dis').val(parseInt(total) - parseInt(total_discount));
                     $('#total_discount').val(parseInt(total) - parseInt(total_discount));
                     $('#total_discount').text(parseInt(total) - parseInt(total_discount));
                 })
 
-
-                $(".remove").click(function () {
-
-
-                    var rowCount = $('#table2 tr').length;
-
-                    if (rowCount > 2) {
-
-                        if ($(this).parent().parent().find('.sub-total').text() != "") {
-                            all = $("#all_total").val();
-                            total = all - parseInt($(this).parent().parent().find('.sub-total').text());
-                            alert(total);
-                            $('#all_total').val(total);
-                        }
-
-
-                        if (remove == 0) {
-
-                            total = all - parseInt($(this).parent().parent().find('.sub-total').text());
-                            $("#all_total").val(total);
-                            remove += 1;
-
-                        }
-
-                        $(this).parent().parent().remove();
-                        remove = 0;
-
-                    }
-                });
 
                 append_item();
 
@@ -743,7 +718,7 @@
 
                         $(this).parent().parent().find("input[name='hp_product_price[]']").val($(this).find("option[value='" + $(this).val() + "']").data('price'));
                         $(this).parent().parent().find("input[name='invoice_items_qty[]']").val('1');
-                        // event.preventDefault();
+
 
                         unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
                         unit_qty = $(this).parent().parent().find("input[name='invoice_items_qty[]']").val();
@@ -756,12 +731,14 @@
                             current = $(this).text();
                             if (current != "") {
                                 total = total + parseInt(current);
+                                $("#all_tot").val(total);
                                 $("#all_total").val(total);
                                 $("#all_total").text(total);
-                                if ($('#discount').val != "") {
+                                if ($('#discount').val() != "") {
                                     total1 = $('#all_total').val();
                                     discount = $('#discount').val();
                                     total_discount = parseInt(discount) * parseInt(total1) / 100;
+                                    $('#all_dis').val(parseInt(total1) - parseInt(total_discount));
                                     $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
                                     $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
                                 }
@@ -778,6 +755,7 @@
                             total = $("#all_total").val();
                             if (discount != "") {
                                 total_discount = parseInt(discount) * parseInt(total) / 100;
+                                $("#all_dis").val(parseInt(total) - parseInt(total_discount))
                                 $("#total_discount").val(parseInt(total) - parseInt(total_discount))
                                 $("#total_discount").text(parseInt(total) - parseInt(total_discount))
                             }
@@ -787,6 +765,7 @@
                                 current = $(this).text();
                                 if (current != "") {
                                     total = total + parseInt(current);
+                                    $("#all_tot").val(total);
                                     $("#all_total").val(total);
                                     $("#all_total").text(total);
                                 }
@@ -797,6 +776,7 @@
                         $("#discount").on('change', function (event) {
                             discount = $(this).val();
                             total_discount = parseInt(discount) * parseInt(total) / 100;
+                            $('#all_dis').val(parseInt(total) - parseInt(total_discount));
                             $('#total_discount').val(parseInt(total) - parseInt(total_discount));
                             $('#total_discount').text(parseInt(total) - parseInt(total_discount));
                         });
@@ -811,12 +791,13 @@
                                 if ($(this).parent().parent().find('.sub-total').text() != "") {
                                     all = $("#all_total").val();
                                     total = all - parseInt($(this).parent().parent().find('.sub-total').text());
-                                    alert(all);
                                     $('#all_total').val(total);
+                                    $('#all_tot').val(total);
                                     if ($('#discount').val != "") {
                                         total1 = $('#all_total').val();
                                         discount = $('#discount').val();
                                         total_discount = parseInt(discount) * parseInt(total1) / 100;
+                                        $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
                                         $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
                                         $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
                                     }
@@ -826,6 +807,7 @@
                                 if (remove == 0) {
 
                                     total = all - parseInt($(this).parent().parent().find('.sub-total').text());
+                                    $("#all_tot").val(total);
                                     $("#all_total").val(total);
                                     remove += 1;
 
@@ -842,7 +824,8 @@
 
                 }
 
-            });
+            })
+
 
         });
 
