@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\address;
+use App\Client;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
@@ -110,7 +111,8 @@ class VerifyController extends Controller
         $data_dis = OrderProduct::where('hpo_order_id',$id)->get()->last();
         $city = address:: where('id', $order->hp_address_city_id)->get()->last();
         $state = Project_State:: where('id', $order->hp_address_state_id)->get()->last();
-        return view('verify_level.preview', compact('order', 'first_verifier', 'verifyID', 'selected_priority', 'current_verified_order', 'help_desk', 'priority', 'type','user','product','data','state','city','data_dis'));
+        $client =Client::all();
+        return view('verify_level.preview', compact('client','order', 'first_verifier', 'verifyID', 'selected_priority', 'current_verified_order', 'help_desk', 'priority', 'type','user','product','data','state','city','data_dis'));
 
     }
 

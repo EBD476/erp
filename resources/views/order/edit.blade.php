@@ -343,7 +343,7 @@
                                                 <select name="name[]" class="select-item combobox-container">
                                                     <option value=""></option>
                                                     @foreach($product as $product_item)
-                                                        <option value="{{$product_item->id}}"
+                                                        <option id="name" value="{{$product_item->id}}"
                                                                 data-price="{{$product_item->hp_product_price}}">
                                                             {{$product_item->hp_product_name . $product_item->hp_product_model . $product_item->hp_product_size}}
                                                             @foreach($color as $colors)
@@ -968,6 +968,35 @@
 
                 }
 
+                var data = {
+                    name: $(this).parent().parent().find('#name').val(),
+                    total: $(this).parent().parent().find('.sub-total').text(),
+                    hpo_order_id: $("#order_id").val(),
+                    hpo_client_id: $("#order_id_show").data('client'),
+                    hop_due_date: $("#test-date-id").val(),
+                    hpo_discount: $("#discount").val(),
+                    all_tot: $("#all_total").val(),
+                    all_dis: $("#total_discount").val(),
+                }
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url: '/order_product',
+                    type: 'Post',
+                    data: data,
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        alert(ok);
+                    },
+                    cache: false,
+                });
+
+
             })
 
             $("#discount").on('change', function (event) {
@@ -999,6 +1028,7 @@
                     if (current != "") {
                         total = total + parseInt(current);
                         $("#all_total").val(total);
+                        $("#all_tot").val(total);
                         $("#all_total").text(total);
                     }
 
@@ -1044,12 +1074,9 @@
                         remove += 1;
 
                     }
-
-                    $(this).parent().parent().remove();
                     var data = {
                         id: $(".name").data('id')
                     }
-                    alert(data.id);
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1068,11 +1095,11 @@
                         },
                         cache: false,
                     });
+                    $(this).parent().parent().remove();
                     remove = 0;
 
                 }
             });
-
         });
 
         $('#preview').on('click', function () {
