@@ -9,7 +9,8 @@
 @section('content')
     <!------ Include the above in your HEAD tag ---------->
     <div class="container">
-        <form id="form1">
+        <form action="{{route('order_product.store')}}" method="POST" ENCTYPE="multipart/form-data">
+            @CSRF
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-default">
@@ -19,6 +20,7 @@
                                 <tr>
                                     <td class="text-left"><h4
                                                 style="margin-top:30px;">{{__('Date:')}} {{$data->hop_due_date}}</h4>
+                                        <input name="hop_due_date" value="{{$data->hop_due_date}}" type="hidden">
                                     </td>
                                     <td class="text-center"><h1
                                                 style="margin-top:70px; margin-right: 150px ; margin-left: 150px">{{__('Pre Invoice Sales Of Product')}}</h1>
@@ -35,12 +37,25 @@
                             <div class="table-responsive">
                                 <table class="table table-condensed">
                                     <thead>
-                                    <tr> <th class="text-center"><strong>{{__('Owner profile')}}
-                                                &nbsp;{{$order->ho_client}}
-                                                &nbsp;{{$order->hp_phone_number}}</strong></th>
-                                        <th class="text-center">{{__('Employer Name:')}}&nbsp;{{$order->hp_employer_name}}</th>
-                                        <th class="text-center">{{__('Project Name:')}}&nbsp;{{$order->hp_project_name}}</th>
-                                        <th class="text-center">&nbsp;{{__('Type Project:')}}&nbsp;{{$order->hp_type_project}}</th>
+                                    <tr>
+                                        <th class="text-center">
+                                            <strong>{{__('Owner profile')}}
+                                                @foreach($client as $clients)
+                                                    @if($clients->id == $order->ho_client)
+                                                        &nbsp;{{$clients->hc_name}}
+                                                    @endif
+                                                @endforeach
+                                                &nbsp;{{$order->hp_phone_number}}</strong>
+                                            <input value="{{$order->ho_client}}" name="hpo_client_id" type="hidden">
+                                            <input value="{{$order->id}}" name="hpo_order_id" type="hidden">
+                                        </th>
+                                        <th class="text-center">
+                                            {{__('Employer Name:')}}
+                                            &nbsp;{{$order->hp_employer_name}}</th>
+                                        <th class="text-center">{{__('Project Name:')}}
+                                            &nbsp;{{$order->hp_project_name}}</th>
+                                        <th class="text-center">&nbsp;{{__('Type Project:')}}
+                                            &nbsp;{{$order->hp_type_project}}</th>
                                         <th class="text-center">
                                             {{__('Address:')}}&nbsp;{{$state->hp_project_state}}{{$city->hp_city }}
                                             &nbsp;{{$order->hp_address}}
@@ -67,11 +82,19 @@
                                             @if($products->id == $data->name[$index])
                                                 <tr>
                                                     <td class="text-center">{{$key + 1}}</td>
+                                                    <input type="hidden" value="{{$data->name[$index]}}" name="name[]">
                                                     <td class="text-center">{{$products->hp_product_name . $products->hp_product_model . $products->hp_product_color_id . $products->hp_product_size . $products->hp_product_property . $products->hp_product_code_number}}</td>
                                                     <td class="text-center">{{$data->invoice_items[$index]}}</td>
+                                                    <input value="{{$data->invoice_items[$index]}}"
+                                                           name="invoice_items[]" type="hidden">
                                                     <td class="text-center">{{$products->hp_product_price}}</td>
                                                     <td class="text-center">{{$data->invoice_items_qty[$index]}}</td>
+                                                    <input value="{{$data->invoice_items_qty[$index]}}"
+                                                           name="invoice_items_qty[]" type="hidden">
                                                     <td class="text-center">{{$data->total[$index]}}</td>
+                                                    <input value="{{$data->total[$index]}}" name="total[]"
+                                                           type="hidden">
+                                                    <td hidden="hidden">{{$index++}}</td>
                                                 </tr>
                                             @endif
                                         @endforeach
@@ -84,6 +107,7 @@
                                             <th class="no-line"></th>
                                             <th class="no-line">
                                                 <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Totals')}}</strong>&nbsp;{{$data->all_tot}}
+                                                <input value="{{$data->all_tot}}" name="all_tot" type="hidden">
                                             </th>
 
                                         </tr>
@@ -93,6 +117,8 @@
                                             <th class="no-line">
                                                 <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Discount')}}
                                                     %&nbsp;</strong>{{$data->hpo_discount}}&nbsp;&nbsp;
+                                                <input value="{{$data->hpo_discount}}" name="hpo_discount"
+                                                       type="hidden">
                                             </th>
                                         </tr>
                                         <tr>
@@ -101,6 +127,7 @@
                                             <th class="no-line">
                                                 <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Total including discount:')}}
                                                     &nbsp;</strong>{{$data->all_dis}}</th>
+                                            <input value="{{$data->all_dis}}" name="all_dis" type="hidden">
                                         </tr>
                                         <tr>
                                             <th class="no-line"></th>
@@ -112,60 +139,58 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <button type="submit" class="btn-outline-light"
-                                    id="btn-submit">{{__('Verify')}}</button>
-
-                            <button type="submit" class="btn-outline-light"
-                                    id="btn-submit2">{{__('Back')}}</button>
-                        </div>
-                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-outline-light">{{__('Verify')}}</button>
+                    <a href="{{route('order.create')}}" class="btn btn-outline-light">{{__('Back')}}</a>
                 </div>
             </div>
         </form>
     </div>
+
 @endsection
 @push('script')
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script>
-        $(document).ready(function () {
-            alert(1);
-            $("#btn-submit").on('click', function (event) {
-                var data = $("#form1").serialize();
-                event.preventDefault();
-                $.blockUI({
-                    message: '{{__('please wait...')}}', css: {
-                        border: 'none',
-                        padding: '15px',
-                        backgroundColor: '#000',
-                        '-webkit-border-radius': '10px',
-                        '-moz-border-radius': '10px',
-                        opacity: .5,
-                        color: '#fff'
-                    }
-                });
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
+        {{--$(document).ready(function () {--}}
 
-                $.ajax({
-                    url: '/order_product',
-                    type: 'POST',
-                    data: data,
-                    dataType: 'json',
-                    async: false,
-                    success: function (data) {
-                        setTimeout($.unblockUI, 2000);
-                    },
-                    cache: false,
-                });
-            });
-        });
+            {{--$("#form1").submit('click', function (event) {--}}
+                {{--var data = $("#form1").serialize();--}}
+                {{--event.preventDefault();--}}
+                {{--$.blockUI({--}}
+                    {{--message: '{{__('please wait...')}}', css: {--}}
+                        {{--border: 'none',--}}
+                        {{--padding: '15px',--}}
+                        {{--backgroundColor: '#000',--}}
+                        {{--'-webkit-border-radius': '10px',--}}
+                        {{--'-moz-border-radius': '10px',--}}
+                        {{--opacity: .5,--}}
+                        {{--color: '#fff'--}}
+                    {{--}--}}
+                {{--});--}}
+                {{--$.ajaxSetup({--}}
+                    {{--headers: {--}}
+                        {{--'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
+                    {{--}--}}
+                {{--});--}}
+
+                {{--$.ajax({--}}
+                    {{--url: '/order_product',--}}
+                    {{--type: 'POST',--}}
+                    {{--data: data,--}}
+                    {{--dataType: 'json',--}}
+                    {{--async: false,--}}
+                    {{--success: function (data) {--}}
+                        {{--setTimeout($.unblockUI, 2000);--}}
+                    {{--},--}}
+                    {{--cache: false,--}}
+                {{--});--}}
+            {{--});--}}
+        {{--});--}}
     </script>
 @endpush
 

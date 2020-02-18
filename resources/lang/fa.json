@@ -261,7 +261,8 @@
   "Count": "تعداد",
   "Forgot Your Password?": "رمز عبور خود را فراموش کرده اید؟",
   "Statuses": "وضعیت",
-  "Total including discount": "مجموع با احتساب تخفیف:",
+  "Total Including discount": "مجموع با احتساب تخفیف:",
+  "Total Including Discount:": "مجموع با احتساب تخفیف:",
   "Total including discount:": "مجموع:",
   "Action": "فعالیت",
   "Provider": "تامین کننده",
@@ -495,6 +496,8 @@
   "Edit Agreement":"ویرایش اطلاعات قرارداد",
   "Edit Order":"ویرایش سفارش:",
   "Send New Product":"ثبت محصول جدید",
-  "Send Modify":"ویرایش محصول ثبت شده"
+  "Send Modify":"ویرایش محصول ثبت شده",
+  "Modify List of Material":"ویرایش لیست محصولات",
+  "Insert List of Material":"اضافه کردن به لیست محصولات"
 
 }

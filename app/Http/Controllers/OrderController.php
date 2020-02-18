@@ -167,6 +167,7 @@ class OrderController extends Controller
 
     public function preview(Request $request)
     {
+        $client = Client::all();
         $product = Product::all();
         $user = User::all();
         $type = HDtype::all();
@@ -176,7 +177,6 @@ class OrderController extends Controller
         $order = Order:: where('id', $request->hpo_order_id)->get()->last();
         $city = address:: where('id', $order->hp_address_city_id)->get()->last();
         $state = Project_State:: where('id', $order->hp_address_state_id)->get()->last();
-        return view('order.preview', ['data' => $data], compact('type', 'help_desk', 'priority', 'user', 'product', 'order', 'city', 'state'));
-//        return view('order.preview', compact( 'type', 'help_desk', 'priority', 'user', 'product', 'order','city','state'))->with('data', $data);
+        return view('order.preview', ['data' => $data], compact('client','order_product','type', 'help_desk', 'priority', 'user', 'product', 'order', 'city', 'state'));
     }
 }
