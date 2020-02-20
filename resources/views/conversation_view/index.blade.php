@@ -10,7 +10,7 @@
 @endpush
 
 @section('content')
-    <div class="content">
+    <div class="content persian">
         <div class="container-fluid">
             <div class="row">
                 {{--@endcan--}}

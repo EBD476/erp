@@ -8,7 +8,7 @@
 
 @section('content')
     {{--@can('browse-menu-user')--}}
-    <div class="content">
+    <div class="content persian">
         <div class="container-fluid">
 
                 <div class="col-md-12">

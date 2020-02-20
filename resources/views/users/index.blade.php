@@ -8,7 +8,7 @@
 
 @section('content')
     @role('Admin')
-    <div class="wrap main-content" data-scrollbar>
+    <div class="wrap main-content persian" data-scrollbar>
         <div class="content">
             <div class="col-lg-12 ">
                 <h3><i class="fa fa-user pull-right">&nbsp;{{__('User Administration')}}</i>

@@ -9,7 +9,7 @@
 @section('content')
 
 
-    <div class="wrap main-content" data-scrollbar>
+    <div class="wrap main-content persian" data-scrollbar>
         <div class="content">
             <a href="{{ route('users.index') }}" class="btn btn-primary pull-left"><i
                         class="tim-icons icon-simple-add"></i>{{__('Users')}}</a>

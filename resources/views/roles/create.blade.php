@@ -5,7 +5,7 @@
 @section('content')
 
     <div class="wrap main-content" data-scrollbar>
-        <div class="content">
+        <div class="content persian">
             <div class="card">
                 <div class="card-body">
                     <div class="col-md-8">

@@ -4,7 +4,7 @@
 
 @section('content')
     @role('Admin')
-    <div class="wrap main-content" data-scrollbar>
+    <div class="wrap main-content persian" data-scrollbar>
         <div class="content">
             <div class="card">
                 <div class="card-body">

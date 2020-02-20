@@ -8,7 +8,7 @@
 
 @section('content')
     {{--@role('verifier')--}}
-    <div class="content">
+    <div class="content persian">
         <div class="container-fluid">
             <div class="col-md-12">
                 <a href="{{route('repository.create')}}"

@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="wrap main-content" data-scrollbar>
+    <div class="wrap main-content persian" data-scrollbar>
         <div class="content">
             <div class="col-md-12">
                 <h3>

@@ -11,7 +11,7 @@
 
 @section('content')
     {{--@can('browse-menu-user')--}}
-    <div class="content">
+    <div class="content persian">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
@@ -25,9 +25,8 @@
                         <div class="row pull-left">
                             <div class="col-md-12 pull-left">
                                 <div class="form-group">
-                                    <label class="persian">12345678</label>
                                     <label class="bmd-label-floating">{{__('Order ID:')}}</label>
-                                    <label class="bmd-label-floating"  id="order_id_show"></label>
+                                    <label class="bmd-label-floating" id="order_id_show"></label>
                                 </div>
                             </div>
                         </div>
@@ -107,7 +106,7 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label class="bmd-label-floating">{{__('Phone Number')}}</label>
-                                                <input type="number" class="form-control" required=""
+                                                <input type="number" class="form-control persian" required=""
                                                        aria-invalid="false"
                                                        name="hp_phone_number">
                                             </div>
@@ -820,7 +819,6 @@
                     });
 
 
-
                 }
 
                 append_item();
@@ -862,6 +860,7 @@
             }
             loc = L.marker([jsonLoc.lat, jsonLoc.lng], {icon: greenIcon}).addTo(map);
         }
+
         map.on('click', onMapClick);
     </script>
     {{--datapicker--}}

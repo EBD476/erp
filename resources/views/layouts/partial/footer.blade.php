@@ -1,5 +1,5 @@
 <footer class="footer">
-    <div class="container-fluid">
+    <div class="container-fluid persian">
         {{--<ul class="nav">--}}
             {{--<li class="nav-item">--}}
                 {{--<a href="javascript:void(0)" class="nav-link">--}}

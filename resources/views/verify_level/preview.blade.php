@@ -7,7 +7,7 @@
 
 @section('content')
     <!------ Include the above in your HEAD tag ---------->
-    <div class="content">
+    <div class="content persian">
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">

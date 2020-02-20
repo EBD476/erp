@@ -108,6 +108,7 @@ class OrderProductController extends Controller
         $item->delete();
         return json_encode(["response" => "OK"]);
 
+<<<<<<< HEAD
     }
 
     public function createpdf(){
@@ -144,5 +145,7 @@ class OrderProductController extends Controller
             ->margins(20, 0, 0, 20)
             ->download();
         Browsershot ::url('https://example.com')->save($pathToImage);
+=======
+>>>>>>> 465845c6112d0783125620eda3697424609fb35b
     }
 }

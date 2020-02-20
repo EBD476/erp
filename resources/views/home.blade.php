@@ -36,7 +36,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Total Orders')}}</p>
-                                    <h3 class="card-title">{{$orders}}</h3>
+                                    <h3 class="card-title persian">{{$orders}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +62,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Order queue')}}</p>
-                                    <h3 class="card-title">{{$order_req}}</h3>
+                                    <h3 class="card-title persian">{{$order_req}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Agreement')}}</p>
-                                    <h3 class="card-title">{{$agreement}}</h3>
+                                    <h3 class="card-title persian">{{$agreement}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Total Customers')}}</p>
-                                    <h3 class="card-title">{{$client}}</h3>
+                                    <h3 class="card-title persian">{{$client}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -405,13 +405,13 @@
                                 <tbody>
                                 @foreach($order as $order)
                                     <tr>
-                                        <td>
+                                        <td class="persian">
                                             {{$order->id }}
                                         </td>
                                         <td>
                                             {{$order->hp_project_name }}
                                         </td>
-                                        <td>
+                                        <td class="persian">
                                             {{$order->created_at}}
                                         </td>
                                         <td>
@@ -459,7 +459,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Total Orders')}}</p>
-                                    <h3 class="card-title">{{$orders}}</h3>
+                                    <h3 class="card-title persian">{{$orders}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -485,7 +485,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Order queue')}}</p>
-                                    <h3 class="card-title">{{$order_req}}</h3>
+                                    <h3 class="card-title persian">{{$order_req}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -511,7 +511,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Agreement')}}</p>
-                                    <h3 class="card-title">{{$agreement}}</h3>
+                                    <h3 class="card-title persian">{{$agreement}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -537,7 +537,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Total Customers')}}</p>
-                                    <h3 class="card-title">{{$client}}</h3>
+                                    <h3 class="card-title persian">{{$client}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -828,13 +828,13 @@
                                 <tbody>
                                 @foreach($order as $order)
                                     <tr>
-                                        <td>
+                                        <td class="persian" >
                                             {{$order->id }}
                                         </td>
-                                        <td>
+                                        <td class="persian">
                                             {{$order->hp_project_name }}
                                         </td>
-                                        <td>
+                                        <td class="persian">
                                             {{$order->created_at}}
                                         </td>
                                         <td>
@@ -882,7 +882,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Total Orders')}}</p>
-                                    <h3 class="card-title">{{$orders}}</h3>
+                                    <h3 class="card-title persian">{{$orders}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -908,7 +908,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Order queue')}}</p>
-                                    <h3 class="card-title">{{$order_req}}</h3>
+                                    <h3 class="card-title persian">{{$order_req}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -934,7 +934,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Agreement')}}</p>
-                                    <h3 class="card-title">{{$agreement}}</h3>
+                                    <h3 class="card-title persian">{{$agreement}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -960,7 +960,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Total Customers')}}</p>
-                                    <h3 class="card-title">{{$client}}</h3>
+                                    <h3 class="card-title persian">{{$client}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -1251,13 +1251,13 @@
                                 <tbody>
                                 @foreach($order as $order)
                                     <tr>
-                                        <td>
+                                        <td class="persian">
                                             {{$order->id }}
                                         </td>
                                         <td>
                                             {{$order->hp_project_name }}
                                         </td>
-                                        <td>
+                                        <td class="persian">
                                             {{$order->created_at}}
                                         </td>
                                         <td>
@@ -1305,7 +1305,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Total Orders')}}</p>
-                                    <h3 class="card-title">{{$orders}}</h3>
+                                    <h3 class="card-title persian">{{$orders}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -1331,7 +1331,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Order queue')}}</p>
-                                    <h3 class="card-title">{{$order_req}}</h3>
+                                    <h3 class="card-title persian">{{$order_req}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -1357,7 +1357,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Agreement')}}</p>
-                                    <h3 class="card-title">{{$agreement}}</h3>
+                                    <h3 class="card-title persian">{{$agreement}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -1383,7 +1383,7 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Total Customers')}}</p>
-                                    <h3 class="card-title">{{$client}}</h3>
+                                    <h3 class="card-title persian">{{$client}}</h3>
                                 </div>
                             </div>
                         </div>
