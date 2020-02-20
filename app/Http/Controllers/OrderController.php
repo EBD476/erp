@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use Illuminate\View\View;
 
 class OrderController extends Controller
 {
@@ -95,6 +96,9 @@ class OrderController extends Controller
 
     public function edit($id)
     {
+        $items = ProductPropertyItems::all();
+        $properties = ProductProperty::all();
+        $color = ProductColor::all();
         $user = User::all();
         $invoice_statuses = InvoiceStatuses::ALL();
         $client = Client::all();
@@ -106,32 +110,32 @@ class OrderController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $project = Order::find($id);
-        $items = OrderProduct::where('hpo_order_id', $id)->get();
-        $items_all = OrderProduct::select('hpo_discount', 'hpo_total', 'hpo_status', 'hpo_total_discount', 'hop_due_date', 'hpo_order_id')->where('hpo_order_id', $id)->get()->last();
-        return view('order.edit', compact('items_all', 'invoice_statuses', 'client', 'project_type', 'address', 'state', 'product', 'project', 'items', 'type', 'help_desk', 'priority', 'user'));
+        $invoices_items = OrderProduct::where('hpo_order_id', $id)->get();
+        $items_all = OrderProduct::select('hpo_total_all','hpo_discount', 'hpo_total', 'hpo_status', 'hpo_total_discount', 'hop_due_date', 'hpo_order_id')->where('hpo_order_id', $id)->get()->last();
+        return view('order.edit', compact('invoices_items', 'color', 'properties', 'items_all', 'invoice_statuses', 'client', 'project_type', 'address', 'state', 'product', 'project', 'items', 'type', 'help_desk', 'priority', 'user'));
     }
 
     public function update(Request $request, $id)
 
     {
         $this->validate($request, [
-            'hp_project_name' => 'required',
-            'hp_employer_name' => 'required',
-            'hp_phone_number' => 'required',
-            'hp_connector' => 'required',
-            'hp_type_project' => 'required',
-            'hp_owner_user' => 'required',
-            'hp_project_area' => 'required',
-            'hp_number_of_units' => 'required',
-            'hp_address_id' => 'required',
-            'hp_State' => 'required',
-            'hp_city' => 'required',
-            'hp_address' => 'required',
-            'hp_project_location' => 'required',
-            'hp_contract_type' => 'required',
-            'hp_registrant' => 'required',
+//            'hp_project_name' => 'required',
+//            'hp_employer_name' => 'required',
+//            'hp_phone_number' => 'required',
+//            'hp_connector' => 'required',
+//            'hp_type_project' => 'required',
+//            'hp_owner_user' => 'required',
+//            'hp_project_area' => 'required',
+//            'hp_number_of_units' => 'required',
+//            'hp_address_id' => 'required',
+//            'hp_State' => 'required',
+//            'hp_city' => 'required',
+//            'hp_address' => 'required',
+//            'hp_project_location' => 'required',
+//            'hp_contract_type' => 'required',
+//            'hp_registrant' => 'required',
         ]);
-        $current_user = auth()->user()->username;
+        $current_user = auth()->user()->id;
         $order = Order::find($id);
         $order->hp_project_name = $request->hp_project_name;
         $order->hp_employer_name = $request->hp_employer_name;
@@ -163,6 +167,7 @@ class OrderController extends Controller
 
     public function preview(Request $request)
     {
+        $client = Client::all();
         $product = Product::all();
         $user = User::all();
         $type = HDtype::all();
@@ -172,6 +177,6 @@ class OrderController extends Controller
         $order = Order:: where('id', $request->hpo_order_id)->get()->last();
         $city = address:: where('id', $order->hp_address_city_id)->get()->last();
         $state = Project_State:: where('id', $order->hp_address_state_id)->get()->last();
-        return view('order.preview', compact('data', 'type', 'help_desk', 'priority', 'user', 'product', 'order','city','state'));
+        return view('order.preview', ['data' => $data], compact('client','order_product','type', 'help_desk', 'priority', 'user', 'product', 'order', 'city', 'state'));
     }
 }

@@ -22,15 +22,6 @@ class AgreementController extends Controller
     }
 
 
-
-    public function checkbox(Request $request , $id)
-    {
-        $checkbox=Part::find($id);
-        $checkbox->hp_statuse=$request->checkbox;
-        $checkbox->save();
-    }
-
-
     /**
      * Display the specified resource.
      *
@@ -70,21 +61,10 @@ class AgreementController extends Controller
      */
     public function update(Request $request,$id)
     {
-        $this->validate($request, [
-            'hg_agreement_number' => 'required',
-            'hg_invoice' => 'required',
-            'hg_client' => 'required',
-            'hg_description' => 'required',
-        ]);
-        $agreement = Agreement($id);
-        $agreement->hg_agreement_number = $request->hg_agreement_number;
-        $agreement->hg_invoice = $request->hg_invoice;
-        $agreement->hg_client = $request->hg_client;
+        $agreement =Agreement::find($id);
         $agreement->hg_description = $request->hg_description;
         $agreement->save();
-        return view('agreement.index');
-
-
+        return json_encode(["response" => "Done"]);
     }
 
     /**

@@ -88,10 +88,11 @@
                     }
                 });
                 $.ajax({
-                    url: '/type'+id,
+                    url: '/type/'+data.id,
                     type: 'POST',
                     data: data,
                     dataType: 'json',
+                    method:'put',
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);

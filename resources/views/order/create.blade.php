@@ -25,8 +25,9 @@
                         <div class="row pull-left">
                             <div class="col-md-12 pull-left">
                                 <div class="form-group">
+                                    <label class="persian">12345678</label>
                                     <label class="bmd-label-floating">{{__('Order ID:')}}</label>
-                                    <label class="bmd-label-floating" id="order_id_show"></label>
+                                    <label class="bmd-label-floating"  id="order_id_show"></label>
                                 </div>
                             </div>
                         </div>
@@ -70,7 +71,7 @@
                                                 <label class="bmd-label-floating">{{__('Client Name')}}</label>
                                                 <select id="client_name" name="ho_client" class="form-control">
                                                     @foreach($client as $clients)
-                                                        <option>{{$clients->hc_name}}</option>
+                                                        <option value="{{$clients->id}}">{{$clients->hc_name}}</option>
                                                     @endforeach
                                                 </select>
                                                 <div class="text-light">
@@ -219,10 +220,6 @@
                                             <th style="width:100%">{{__('Description')}}</th>
                                             <th style="min-width:120px">{{__('Unit Cost')}}</th>
                                             <th style="min-width:120px;display:table-cell">{{__('Quantity')}}</th>
-                                            <th style="min-width:120px;display:none">{{__('Discount')}}</th>
-                                            <th style="min-width:120px;display:none;"
-                                                data-bind="visible: $root.invoice_item_taxes.show">Tax
-                                            </th>
                                             <th style="min-width:120px;">{{__('Line Total')}}</th>
                                             <th style="min-width:32px;" class="hide-border"></th>
                                         </tr>
@@ -264,57 +261,24 @@
                                             </td>
                                             <td>
                                                 <textarea
-                                                        data-bind="value: notes, valueUpdate: 'afterkeydown', attr: {name: 'invoice_items[' + $index() + '][notes]'}"
+                                                        data-bind="value: notes, valueUpdate: 'afterkeydown', attr: {name: 'invoice_items[]'}"
                                                         rows="1" cols="60" style="resize: vertical; height: 42px;"
                                                         class="form-control word-wrap"
-                                                        name="hpo_description"></textarea>
-
+                                                        name="invoice_items[]"></textarea>
                                             </td>
                                             <td>
                                                 <input disabled type="text" id="unit" class="form-control"
                                                        name="hp_product_price[]">
+                                                <input name="price" id="price" type="hidden">
                                             </td>
                                             <td style="display:table-cell">
                                                 <input
                                                         style="text-align: right" class="form-control invoice-item qty"
                                                         name="invoice_items_qty[]">
                                             </td>
-                                            <td style="display:none">
-                                                <input data-bind="value: discount, valueUpdate: 'afterkeydown', attr: {name: 'invoice_items[' + $index() + '][discount]'}"
-                                                       style="text-align: right" class="form-control invoice-item"
-                                                       name="invoice_items[0][discount]">
-                                            </td>
-                                            <td style="display:none;"
-                                                data-bind="visible: $root.invoice_item_taxes.show">
-                                                <select class="form-control"
-                                                        data-bind="value: tax1, event:{change:onTax1Change}" id=""
-                                                        name="">
-                                                    <option value=""></option>
-                                                </select>
-                                                <input type="text"
-                                                       data-bind="value: tax_name1, attr: {name: 'invoice_items[' + $index() + '][tax_name1]'}"
-                                                       style="display:none" name="invoice_items[0][tax_name1]">
-                                                <input type="text"
-                                                       data-bind="value: tax_rate1, attr: {name: 'invoice_items[' + $index() + '][tax_rate1]'}"
-                                                       style="display:none" name="invoice_items[0][tax_rate1]">
-                                                <div data-bind="visible: $root.invoice().account.enable_second_tax_rate == '1'"
-                                                     style="display: none;">
-                                                    <select class="form-control tax-select"
-                                                            data-bind="value: tax2, event:{change:onTax2Change}" id="-2"
-                                                            name="">
-                                                        <option value=""></option>
-                                                    </select>
-                                                </div>
-                                                <input type="text"
-                                                       data-bind="value: tax_name2, attr: {name: 'invoice_items[' + $index() + '][tax_name2]'}"
-                                                       style="display:none" name="invoice_items[0][tax_name2]">
-                                                <input type="text"
-                                                       data-bind="value: tax_rate2, attr: {name: 'invoice_items[' + $index() + '][tax_rate2]'}"
-                                                       style="display:none" name="invoice_items[0][tax_rate2]">
-                                            </td>
                                             <td style="text-align:right;padding-top:9px !important" nowrap="">
                                                 <div class="line-total sub-total" name="total[]"></div>
-                                                <input name="price" id="price" type="hidden">
+                                                <input name="total[]" class="sub-total" type="hidden">
                                             </td>
                                             <td style="cursor:pointer" class="hide-border td-icon">
                                                 <i class="tim-icons icon-simple-remove remove" title="Remove item"/>
@@ -334,22 +298,9 @@
                                                         <div class="form-group">
                                                             <div class="col-lg-6 col-sm-6">
                                                                 <div class="input-group"><input class="form-control"
-                                                                                                {{--data-bind="value: discount, valueUpdate: 'afterkeydown'"--}}
-                                                                                                {{--min="0" step="any"--}}
                                                                                                 id="discount"
                                                                                                 type="number"
                                                                                                 name="hpo_discount">
-                                                                    {{--<select--}}
-                                                                    {{--class="form-control"--}}
-                                                                    {{--data-bind="value: is_amount_discount, event:{ change: isAmountDiscountChanged}"--}}
-                                                                    {{--id="is_amount_discount">--}}
-                                                                    {{--<option--}}
-                                                                    {{--id="0" value="0">Percent--}}
-                                                                    {{--</option>--}}
-                                                                    {{--<option--}}
-                                                                    {{--id="1" value="1">Amount--}}
-                                                                    {{--</option>--}}
-                                                                    {{--</select>--}}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -375,9 +326,10 @@
                                                             <div class="form-group">
                                                                 <div class="col-lg-6 col-sm-6">
                                                                     <input disabled class="form-control"
+                                                                           id="all_total"
                                                                            type="text"
-                                                                           name="total"
-                                                                           id="total">
+                                                                           name="all_total"
+                                                                    >
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -390,9 +342,10 @@
                                                             <div class="form-group">
                                                                 <div class="col-lg-6 col-sm-6">
                                                                     <input disabled class="form-control"
+                                                                           id="total_discount"
                                                                            type="text"
                                                                            name="total_discount"
-                                                                           id="total_discount">
+                                                                    >
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -425,6 +378,8 @@
                                     {{--Hidden Object--}}
                                     <input type="hidden" id="client_id" name="hpo_client_id">
                                     <input type="hidden" id="order_id" name="hpo_order_id">
+                                    <input id="all_dis" name="all_dis" type="hidden">
+                                    <input id="all_tot" name="all_tot" type="hidden">
                                     {{--End Hidden Object--}}
 
                                     <a href="{{route('order.index')}}"
@@ -495,6 +450,7 @@
 @push('scripts')
     <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
     <script src="{{asset('assets/js/leaflet.js')}}"></script>
     <script>
         var total;
@@ -570,7 +526,6 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        alert(data.response);
                         setTimeout($.unblockUI, 2000);
                         client_id = data.client_id;
                         order_id = data.order_id;
@@ -624,213 +579,27 @@
                 // allowClear: true
 
             });
-        });
+
+            $(".select-item").on('change', function (event) {
+
+                $("#unit").val($(this).find("option[value='" + $(this).val() + "']").data('price'));
+                $('.qty').val('1');
+
+                unit_count = $("#unit").val();
+                unit_qty = $(".qty").val();
+                $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
+                $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
 
 
-        $(".select-item").on('change', function (event) {
-            // event.preventDefault();
-            $("#unit").val($(this).find("option[value='" + $(this).val() + "']").data('price'));
-            $('.qty').val('1');
-
-            unit_count = $("#unit").val();
-            unit_qty = $(".qty").val();
-            $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
-
-            // $('#total').text(unit_count * unit_qty);
-
-            $('.sub-total').each(function () {
-
-                total = $(this).text();
-                if (total != "") {
-                    $("#total").val(total);
-                    $("#price").val(total);
-                }
-
-            });
-            append_item();
-
-            $(".qty").on('change', function (event) {
-                unit_qty = $(this).val();
-                $('#total').text(1000 * unit_qty);
-
-                total = 0;
                 $('.sub-total').each(function () {
 
-                    current = $(this).text();
-                    if (current != "") {
-                        total = total + parseInt(current);
-                        $("#total").val(total);
+                    total = $(this).text();
+                    if (total != "") {
+                        $("#all_total").val(total);
+                        $("#all_total").text(total);
+                        $("#all_tot").val(total);
                     }
 
-                });
-            });
-
-            $("#discount").on('change', function (event) {
-                discount = $(this).val();
-                total_discount = parseInt(discount) * parseInt(total) / 100;
-                $('#total_discount').val(parseInt(total) - parseInt(total_discount));
-            })
-
-            function append_item() {
-
-                $('.table').append('<tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"\n' +
-                    '                                        class="sortable-row ui-sortable-handle" style="">\n' +
-                    '                                        <td class="hide-border td-icon">\n' +
-                    '                                            <i style="display:none" data-bind="visible: actionsVisible() &amp;&amp;\n' +
-                    '                $parent.invoice_items_without_tasks().length > 1" class="fa fa-sort"></i>\n' +
-                    '                                        </td>\n' +
-                    '                                        <td>\n' +
-                    '                                                       <select name="name[]" class="select-item combobox-container">\n' +
-                    '                                                            <option value=""></option>' +
-                    '                                                            @foreach($product as $product_item)\n' +
-                    '                                                                <option value="{{$product_item->id}}" data-price="{{$product_item->hp_product_price}}">\n' +
-                    '                                                                    {{$product_item->hp_product_name }}\n' +
-
-
-                    '                                                            @foreach($color as $colors) \n' +
-                    '                                                            @if($colors->id == $product_item->hp_product_color_id) \n' +
-                    '                                                            {{$colors->hn_color_name}} \n' +
-                    '                                                            @endif \n' +
-                    '                                                            @endforeach \n' +
-                    '                                                            @foreach($properties as $property) \n' +
-                    '                                                            @if($property->id== $product_item->hp_product_property) \n' +
-                    '                                                            {{$property->hpp_property_name}} \n' +
-                    '                                                            @foreach ($items as $item)\n' +
-                    '                                                            @if($item->id == $property->hpp_property_items) \n' +
-                    '                                                            {{$item->hppi_items_name}} \n' +
-                    '                                                            @endif \n' +
-                    '                                                            @endforeach \n' +
-                    '                                                            @endif \n' +
-                    '                                                            @endforeach \n' +
-
-
-                    '                                                                </option>\n' +
-                    '                                                            @endforeach\n' +
-                    '                                                        </select>\n' +
-                    '\n' +
-                    '                                        </td>\n' +
-                    '                                        <td>\n' +
-                    '                                                <textarea\n' +
-                    '                                                        data-bind="value: notes, valueUpdate: \'afterkeydown\', attr: {name: \'invoice_items[\' + $index() + \'][notes]\'}"\n' +
-                    '                                                        rows="1" cols="60" style="resize: vertical; height: 42px;"\n' +
-                    '                                                        class="form-control word-wrap"\n' +
-                    '                                                        name="invoice_items[0][notes]"></textarea>\n' +
-                    '\n' +
-                    '                                        </td>\n' +
-                    '                                        <td>\n' +
-                    '                                            <input disabled type="text" id="unit" class="form-control"\n' +
-                    '                                                   name="hp_product_price[]">\n' +
-                    '                                        </td>\n' +
-                    '                                        <td style="display:table-cell">\n' +
-                    '                                            <input \n' +
-                    '                                                   style="text-align: right" class="form-control invoice-item qty"\n' +
-                    '                                                   name="invoice_items_qty[]">\n' +
-                    '                                        </td>\n' +
-                    '                                        <td style="display:none">\n' +
-                    '                                            <input data-bind="value: discount, valueUpdate: \'afterkeydown\', attr: {name: \'invoice_items[\' + $index() + \'][discount]\'}"\n' +
-                    '                                                   style="text-align: right" class="form-control invoice-item"\n' +
-                    '                                                   name="invoice_items[0][discount]">\n' +
-                    '                                        </td>\n' +
-                    '                                        <td style="display:none;"\n' +
-                    '                                            data-bind="visible: $root.invoice_item_taxes.show">\n' +
-                    '                                            <select class="form-control"\n' +
-                    '                                                    data-bind="value: tax1, event:{change:onTax1Change}" id=""\n' +
-                    '                                                    name="">\n' +
-                    '                                                <option value=""></option>\n' +
-                    '                                            </select>\n' +
-                    '                                            <input type="text"\n' +
-                    '                                                   data-bind="value: tax_name1, attr: {name: \'invoice_items[\' + $index() + \'][tax_name1]\'}"\n' +
-                    '                                                   style="display:none" name="invoice_items[0][tax_name1]">\n' +
-                    '                                            <input type="text"\n' +
-                    '                                                   data-bind="value: tax_rate1, attr: {name: \'invoice_items[\' + $index() + \'][tax_rate1]\'}"\n' +
-                    '                                                   style="display:none" name="invoice_items[0][tax_rate1]">\n' +
-                    '                                            <div data-bind="visible: $root.invoice().account.enable_second_tax_rate == \'1\'"\n' +
-                    '                                                 style="display: none;">\n' +
-                    '                                                <select class="form-control tax-select"\n' +
-                    '                                                        data-bind="value: tax2, event:{change:onTax2Change}" id="-2"\n' +
-                    '                                                        name="">\n' +
-                    '                                                    <option value=""></option>\n' +
-                    '                                                </select>\n' +
-                    '                                            </div>\n' +
-                    '                                            <input type="text"\n' +
-                    '                                                   data-bind="value: tax_name2, attr: {name: \'invoice_items[\' + $index() + \'][tax_name2]\'}"\n' +
-                    '                                                   style="display:none" name="invoice_items[0][tax_name2]">\n' +
-                    '                                            <input type="text"\n' +
-                    '                                                   data-bind="value: tax_rate2, attr: {name: \'invoice_items[\' + $index() + \'][tax_rate2]\'}"\n' +
-                    '                                                   style="display:none" name="invoice_items[0][tax_rate2]">\n' +
-                    '                                        </td>\n' +
-                    '                                        <td style="text-align:right;padding-top:9px !important" nowrap="">\n' +
-                    '                                            <div name="total[]" class="line-total sub-total"></div>\n' +
-                    '                                        </td>\n' +
-                    '                                        <td style="cursor:pointer" class="hide-border td-icon">\n' +
-                    '                                            <i \n' +
-                    '                                               \n' +
-                    '                                               class="tim-icons icon-simple-remove remove"  title="Remove item">\n' +
-                    '                                            </i></td>\n' +
-                    '                                    </tr>');
-
-
-                var locale = $("#tab2").data('lang');
-
-                $(".select-item").select2({
-                    theme: "bootstrap",
-                    placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
-                    // allowClear: true
-
-                });
-
-
-                $(".remove").click(function () {
-
-
-                    // alert(3)
-
-
-                    var rowCount = $('#table2 tr').length;
-                    if (rowCount > 2) {
-                        // $('.sub-total').each(function () {
-                        //     current = $(this).text();
-                        //     if (current != "") {
-                        //         total = total - parseInt(current);
-                        //         $("#total").val(total);
-                        //     }
-                        // });
-
-
-                        if (remove == 0) {
-                            total = total - parseInt($(this).parent().parent().find('.sub-total').text());
-                            $("#total").val(total);
-                            remove += 1;
-
-                        }
-                        $(this).parent().parent().remove();
-                        remove = 0;
-
-                    }
-                });
-
-                $(".select-item").on('change', function (event) {
-
-                    $(this).parent().parent().find("input[name='hp_product_price[]']").val($(this).find("option[value='" + $(this).val() + "']").data('price'));
-                    $(this).parent().parent().find("input[name='invoice_items_qty[]']").val('1');
-                    // event.preventDefault();
-
-                    unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
-                    unit_qty = $(this).parent().parent().find("input[name='invoice_items_qty[]']").val();
-                    $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
-
-
-                    append_item();
-                });
-
-                total = 0;
-                $('.sub-total').each(function () {
-
-                    current = $(this).text();
-                    if (current != "") {
-                        total = total + parseInt(current);
-                        $("#total").val(total);
-                    }
                 });
 
                 $(".qty").on('change', function (event) {
@@ -838,24 +607,230 @@
                     unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
                     unit_qty = $(this).val();
                     $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
+                    $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
+                    discount = $("#discount").val();
+                    total = $("#all_total").val();
+                    if (discount != "") {
+                        total_discount = parseInt(discount) * parseInt(total) / 100;
+                        $("#all_dis").val(parseInt(total) - parseInt(total_discount))
+                        $("#total_discount").val(parseInt(total) - parseInt(total_discount))
+                        $("#total_discount").text(parseInt(total) - parseInt(total_discount))
+                    }
                     total = 0;
                     $('.sub-total').each(function () {
 
                         current = $(this).text();
                         if (current != "") {
                             total = total + parseInt(current);
-                            $("#total").val(total);
+                            $("#all_total").val(total);
+                            $("#all_total").text(total);
                         }
                     });
 
                 });
 
-            }
+                $("#discount").on('change', function (event) {
+                    total = $('#all_total').val();
+                    discount = $(this).val();
+                    total_discount = parseInt(discount) * parseInt(total) / 100;
+                    $('#all_dis').val(parseInt(total) - parseInt(total_discount));
+                    $('#total_discount').val(parseInt(total) - parseInt(total_discount));
+                    $('#total_discount').text(parseInt(total) - parseInt(total_discount));
+                })
+
+                function append_item() {
+
+                    $('.table').append('<tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"\n' +
+                        '                                        class="sortable-row ui-sortable-handle" style="">\n' +
+                        '                                        <td class="hide-border td-icon">\n' +
+                        '                                            <i style="display:none" data-bind="visible: actionsVisible() &amp;&amp;\n' +
+                        '                $parent.invoice_items_without_tasks().length > 1" class="fa fa-sort"></i>\n' +
+                        '                                        </td>\n' +
+                        '                                        <td>\n' +
+                        '                                                       <select name="name[]" class="select-item combobox-container">\n' +
+                        '                                                            <option value=""></option>' +
+                        '                                                            @foreach($product as $product_item)\n' +
+                        '                                                                <option value="{{$product_item->id}}" data-price="{{$product_item->hp_product_price}}">\n' +
+                        '                                                                    {{$product_item->hp_product_name }}\n' +
+
+
+                        '                                                            @foreach($color as $colors) \n' +
+                        '                                                            @if($colors->id == $product_item->hp_product_color_id) \n' +
+                        '                                                            {{$colors->hn_color_name}} \n' +
+                        '                                                            @endif \n' +
+                        '                                                            @endforeach \n' +
+                        '                                                            @foreach($properties as $property) \n' +
+                        '                                                            @if($property->id== $product_item->hp_product_property) \n' +
+                        '                                                            {{$property->hpp_property_name}} \n' +
+                        '                                                            @foreach ($items as $item)\n' +
+                        '                                                            @if($item->id == $property->hpp_property_items) \n' +
+                        '                                                            {{$item->hppi_items_name}} \n' +
+                        '                                                            @endif \n' +
+                        '                                                            @endforeach \n' +
+                        '                                                            @endif \n' +
+                        '                                                            @endforeach \n' +
+
+
+                        '                                                                </option>\n' +
+                        '                                                            @endforeach\n' +
+                        '                                                        </select>\n' +
+                        '\n' +
+                        '                                        </td>\n' +
+                        '                                        <td>\n' +
+                        '                                                <textarea\n' +
+                        '                                                        data-bind="value: notes, valueUpdate: \'afterkeydown\', attr: {name: \'invoice_items[]\'}"\n' +
+                        '                                                        rows="1" cols="60" style="resize: vertical; height: 42px;"\n' +
+                        '                                                        class="form-control word-wrap"\n' +
+                        '                                                        name="invoice_items[]"></textarea>\n' +
+                        '\n' +
+                        '                                        </td>\n' +
+                        '                                        <td>\n' +
+                        '                                            <input disabled type="text" id="unit" class="form-control"\n' +
+                        '                                                   name="hp_product_price[]">\n' +
+                        '                                        </td>\n' +
+                        '                                        <td style="display:table-cell">\n' +
+                        '                                            <input \n' +
+                        '                                                   style="text-align: right" class="form-control invoice-item qty"\n' +
+                        '                                                   name="invoice_items_qty[]">\n' +
+                        '                                        </td>\n' +
+                        '                                        <td style="text-align:right;padding-top:9px !important" nowrap="">\n' +
+                        '                                            <div name="total[]" class="line-total sub-total"></div>\n' +
+                        '                                            <input name="total[]"class="sub-total" type="hidden">\n' +
+                        '                                        </td>\n' +
+                        '                                        <td style="cursor:pointer" class="hide-border td-icon">\n' +
+                        '                                            <i \n' +
+                        '                                               \n' +
+                        '                                               class="tim-icons icon-simple-remove remove"  title="Remove item">\n' +
+                        '                                            </i></td>\n' +
+                        '                                    </tr>'
+                    )
+                    ;
+
+                    var locale = $("#tab2").data('lang');
+
+                    $(".select-item").select2({
+                        theme: "bootstrap",
+                        placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
+                    });
+
+                    $(".select-item").on('change', function (event) {
+
+                        $(this).parent().parent().find("input[name='hp_product_price[]']").val($(this).find("option[value='" + $(this).val() + "']").data('price'));
+                        $(this).parent().parent().find("input[name='invoice_items_qty[]']").val('1');
+
+
+                        unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
+                        unit_qty = $(this).parent().parent().find("input[name='invoice_items_qty[]']").val();
+                        $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
+                        $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
+
+                        total = 0;
+                        $('.sub-total').each(function () {
+
+                            current = $(this).text();
+                            if (current != "") {
+                                total = total + parseInt(current);
+                                $("#all_tot").val(total);
+                                $("#all_total").val(total);
+                                $("#all_total").text(total);
+                                if ($('#discount').val() != "") {
+                                    total1 = $('#all_total').val();
+                                    discount = $('#discount').val();
+                                    total_discount = parseInt(discount) * parseInt(total1) / 100;
+                                    $('#all_dis').val(parseInt(total1) - parseInt(total_discount));
+                                    $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
+                                    $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
+                                }
+                            }
+                        });
+
+                        $(".qty").on('change', function (event) {
+
+                            unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
+                            unit_qty = $(this).val();
+                            $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
+                            $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
+                            discount = $("#discount").val();
+                            total = $("#all_total").val();
+                            if (discount != "") {
+                                total_discount = parseInt(discount) * parseInt(total) / 100;
+                                $("#all_dis").val(parseInt(total) - parseInt(total_discount))
+                                $("#total_discount").val(parseInt(total) - parseInt(total_discount))
+                                $("#total_discount").text(parseInt(total) - parseInt(total_discount))
+                            }
+                            total = 0;
+                            $('.sub-total').each(function () {
+
+                                current = $(this).text();
+                                if (current != "") {
+                                    total = total + parseInt(current);
+                                    $("#all_tot").val(total);
+                                    $("#all_total").val(total);
+                                    $("#all_total").text(total);
+                                }
+                            });
+
+                        });
+
+                        $("#discount").on('change', function (event) {
+                            discount = $(this).val();
+                            total_discount = parseInt(discount) * parseInt(total) / 100;
+                            $('#all_dis').val(parseInt(total) - parseInt(total_discount));
+                            $('#total_discount').val(parseInt(total) - parseInt(total_discount));
+                            $('#total_discount').text(parseInt(total) - parseInt(total_discount));
+                        });
+
+                        $(".remove").click(function () {
+
+                            var rowCount = $('#table2 tr').length;
+
+                            if (rowCount > 2) {
+                                if ($(this).parent().parent().find('.sub-total').text() != "") {
+                                    all = $("#all_total").val();
+                                    total = all - parseInt($(this).parent().parent().find('.sub-total').text());
+                                    $('#all_total').val(total);
+                                    $('#all_tot').val(total);
+                                    if ($('#discount').val() != "") {
+                                        total1 = $('#all_total').val();
+                                        discount = $('#discount').val();
+                                        total_discount = parseInt(discount) * parseInt(total1) / 100;
+                                        $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
+                                        $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
+                                        $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
+                                    }
+                                }
+
+                                if (remove == 0) {
+
+                                    total = all - parseInt($(this).parent().parent().find('.sub-total').text());
+                                    $("#all_tot").val(total);
+                                    $("#all_total").val(total);
+                                    remove += 1;
+
+                                }
+
+                                $(this).parent().parent().remove();
+                                remove = 0;
+
+                            }
+                        });
+
+                        append_item();
+
+                    });
+
+
+
+                }
+
+                append_item();
+
+
+            })
+
+
         });
 
-
-    </script>
-    <script>
         $('#preview').on('click', function () {
             $('#form2').attr('action', '{{route('order.preview')}}', 'method', 'post');
         })
@@ -887,26 +862,9 @@
             }
             loc = L.marker([jsonLoc.lat, jsonLoc.lng], {icon: greenIcon}).addTo(map);
         }
-
-        $(".remove").click(function () {
-            var rowCount = $('#table2 tr').length;
-            if (rowCount > 2) {
-                $('.sub-total').each(function () {
-                    current = $(this).text();
-                    if (current != "") {
-                        total = total - parseInt(current);
-                        $("#total").val(total);
-                    }
-                });
-                $(this).parent().parent().remove();
-            }
-        });
-
-
         map.on('click', onMapClick);
     </script>
     {{--datapicker--}}
-    <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
     <script>
         kamaDatepicker('test-date-id', {
             buttonsColor: "blue",

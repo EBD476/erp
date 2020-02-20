@@ -28,6 +28,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('products', 'ProductController');
     route::resource('product', 'ProductController');
     route::resource('order_product','OrderProductController');
+    route::post('createpdf','OrderProductController@createpdf')->name('order_product.createpdf');
     route::resource('repository', 'RepositoryController');
     route::resource('repository_requirement', 'Repository_RequirementController');
     route::resource('request', 'RequestController');

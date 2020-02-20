@@ -63,7 +63,7 @@
                                                                    href="{{route('criticism.index',$funds->id)}}"
                                                                 >{{__('Show Criticism List')}}</a>
                                                                 <a class="dropdown-item"
-                                                                   href="{{route('fund_accounts_and_documents_payable.index',$funds->id)}}"
+                                                                   href="{{route('fund_accounts_document_payable.index',$funds->id)}}"
                                                                 >{{__('Show Accounts and Documents Payable List')}}</a>
                                                                 <a class="dropdown-item"
                                                                    href="{{route('fund.edit',$funds->id)}}"
