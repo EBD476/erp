@@ -7,6 +7,7 @@
 
 @section('content')
     <!------ Include the above in your HEAD tag ---------->
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="card">
@@ -129,8 +130,8 @@
                 </div>
             </div>
         </div>
-
-
+    </div>
+    @endrole
 @endsection
 
 

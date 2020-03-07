@@ -4,7 +4,7 @@
 
 
 @section('content')
-    {{--    @can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -74,7 +74,7 @@
             </div>
         </div>
     </div>
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')
@@ -109,6 +109,7 @@
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
+                        window.location.href = "/product_items";
                     },
                     cache: false,
                 });

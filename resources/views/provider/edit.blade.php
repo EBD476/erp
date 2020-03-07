@@ -4,7 +4,7 @@
 
 
 @section('content')
-    {{--    @can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -50,13 +50,13 @@
                                     </div>
                                 </div>
                                 {{--<div class="row">--}}
-                                    {{--<div class="col-md-6 pr-md-1">--}}
-                                        {{--<div class="form-group">--}}
-                                            {{--<label>{{__('Account Number')}}</label>--}}
-                                            {{--<input name="hp_account_number" disabled--}}
-                                                   {{--class="form-control"    value="{{$provider->hp_account_number}}">--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
+                                {{--<div class="col-md-6 pr-md-1">--}}
+                                {{--<div class="form-group">--}}
+                                {{--<label>{{__('Account Number')}}</label>--}}
+                                {{--<input name="hp_account_number" disabled--}}
+                                {{--class="form-control"    value="{{$provider->hp_account_number}}">--}}
+                                {{--</div>--}}
+                                {{--</div>--}}
                                 {{--</div>--}}
                                 <div class="card-footer">
                                     <button type="submit"
@@ -106,8 +106,7 @@
             </div>
         </div>
     </div>
-    </div>
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')

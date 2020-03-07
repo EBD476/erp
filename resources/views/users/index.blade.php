@@ -42,27 +42,27 @@
                                         </thead>
 
                                         <tbody>
-                                        @foreach ($users as $user)
+                                        @foreach ($users as $user_select)
                                             <tr>
 
-                                                <td>{{ $user->name }}</td>
-                                                <td>{{ $user->username }}</td>
-                                                <td>{{ $user->device_id }}</td>
+                                                <td>{{ $user_select->name }}</td>
+                                                <td>{{ $user_select->username }}</td>
+                                                <td>{{ $user_select->device_id }}</td>
 {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
 {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
                                                 <td>
-                                                    <a href="{{ route('users.edit', $user->id) }}"
+                                                    <a href="{{ route('users.edit', $user_select->id) }}"
                                                        class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
                                                         <i class="tim-icons icon-pencil"></i></a>
-                                                    <form id="-form-delete{{$user->id}}" style="display: none;"
-                                                          method="POST" action="{{route('users.destroy', $user->id)}}">
+                                                    <form id="-form-delete{{$user_select->id}}" style="display: none;"
+                                                          method="POST" action="{{route('users.destroy', $user_select->id)}}">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
                                                     <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove"
                                                        onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
                                                                event.preventDefault();
-                                                               document.getElementById('-form-delete{{$user->id}}').submit();
+                                                               document.getElementById('-form-delete{{$user_select->id}}').submit();
                                                                }else {
                                                                event.preventDefault();}"><i
                                                                 class="tim-icons icon-simple-remove"></i></a>

@@ -11,7 +11,7 @@
 @endpush
 
 @section('content')
-{{--    @can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -58,7 +58,7 @@
                                             <select name="project_type" class="form-control ltr">
                                                 <option value="{{$project->id}}">{{$project->hp_name}}</option>
                                                 @foreach($projects_type as $project_type)
-                                                <option value="{{$project_type->id}}">{{$project_type->hp_name}}</option>
+                                                    <option value="{{$project_type->id}}">{{$project_type->hp_name}}</option>
                                                 @endforeach
                                             </select>
                                             {{--<input  name="project_type"type="text" class="form-control" placeholder="{{__('Project Type')}}" >--}}
@@ -211,8 +211,7 @@
             </div>
         </div>
     </div>
-
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')

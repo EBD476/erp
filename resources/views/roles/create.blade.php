@@ -3,7 +3,7 @@
 @section('title', '| Add Role')
 
 @section('content')
-
+    @role('Admin')
     <div class="wrap main-content" data-scrollbar>
         <div class="content persian">
             <div class="card">
@@ -99,4 +99,5 @@
             </div>
         </div>
     </div>
+    @endrole
 @endsection

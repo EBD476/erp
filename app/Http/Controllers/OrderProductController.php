@@ -62,8 +62,7 @@ class OrderProductController extends Controller
                     $index++;
                 }
             }
-//        return json_encode(["response" => "OK"]);
-            return view('order.index', compact('order', 'user', 'type', 'priority', 'help_desk', 'progress'));
+        return json_encode(["response" => "OK"]);
         }
     }
 
@@ -95,8 +94,8 @@ class OrderProductController extends Controller
         }
 //        }
 
-//            return json_encode(["response" => "OK"]);
-        return redirect()->back();
+            return json_encode(["response" => "OK"]);
+//        return redirect()->back();
     }
 
 //    delete invoice items
@@ -108,7 +107,6 @@ class OrderProductController extends Controller
         $item->delete();
         return json_encode(["response" => "OK"]);
 
-<<<<<<< HEAD
     }
 
     public function createpdf(){
@@ -145,7 +143,29 @@ class OrderProductController extends Controller
             ->margins(20, 0, 0, 20)
             ->download();
         Browsershot ::url('https://example.com')->save($pathToImage);
-=======
->>>>>>> 465845c6112d0783125620eda3697424609fb35b
+    }
+
+    public function fill(Request $request)
+    {
+        $start = $request->start;
+        $length = $request->length;
+        $search = $request->search['value'];
+        if ($search == '') {
+            $order = Order::skip($start)->take($length)->get();
+        } else {
+            $order = Order::where('id', 'LIKE', "%$search%")
+                ->orwhere('hp_project_name', 'LIKE', "%$search%")
+                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
+                ->orwhere('hp_connector', 'LIKE', "%$search%")
+                ->get();
+        }
+
+        $data = '';
+        foreach ($order as $orders) {
+            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+        }
+        $data = substr($data, 0, -1);
+        $orders_count = Order::all()->count();
+        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
     }
 }

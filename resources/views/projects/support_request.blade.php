@@ -10,7 +10,7 @@
 
 
 @section('content')
-    {{--    @can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -32,7 +32,7 @@
                                             <input name="hp_project_name" rows="4" cols="80"
                                                    class="form-control" id="title"
                                                    value="{{$request_support->hs_title}}"
-                                                   >
+                                            >
                                         </div>
                                     </div>
                                 </div>
@@ -41,7 +41,8 @@
                                         <div class="form-group">
                                             <label>{{__('Project Name')}}</label>
                                             <input name="hp_project_name" rows="4" cols="80"
-                                                   class="form-control" id="hp_project_id" data-id="{{$request_support->id}}" disabled
+                                                   class="form-control" id="hp_project_id"
+                                                   data-id="{{$request_support->id}}" disabled
                                                    value="{{$request_support->hp_project_name}}">
                                         </div>
                                     </div>
@@ -128,7 +129,7 @@
 
         </div>
     </div>
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')
@@ -190,40 +191,40 @@
                 var data =
                     {
                         id: $("#hp_project_id").data('id'),
-                        description :  $("#hs_description").val(),
+                        description: $("#hs_description").val(),
                         title: $("#title").val(),
                     }
-            event.preventDefault();
-            $.blockUI();
-            $.blockUI({
-                message: '{{__('please wait...')}}', css: {
-                    border: 'none',
-                    padding: '15px',
-                    backgroundColor: '#000',
-                    '-webkit-border-radius': '10px',
-                    '-moz-border-radius': '10px',
-                    opacity: .5,
-                    color: '#fff'
-                }
-            });
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+                event.preventDefault();
+                $.blockUI();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
-            $.ajax({
-                url: '/support_request',
-                type: 'POST',
-                data: data,
-                dataType: 'json',
-                async: false,
-                success: function (data) {
-                    setTimeout($.unblockUI, 2000);
-                },
-                cache: false,
+                $.ajax({
+                    url: '/support_request',
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        setTimeout($.unblockUI, 2000);
+                    },
+                    cache: false,
+                });
             });
-        });
         })
         ;
     </script>

@@ -7,8 +7,7 @@
 @endpush
 
 @section('content')
-
-
+    @role('Admin')
     <div class="wrap main-content persian" data-scrollbar>
         <div class="content">
             <a href="{{ route('users.index') }}" class="btn btn-primary pull-left"><i
@@ -46,7 +45,8 @@
                                                        class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
                                                         <i class="tim-icons icon-pencil"></i></a>
 
-                                                    <form action="{{route('roles.destroy', $role->id)}}" style="display: none;">
+                                                    <form action="{{route('roles.destroy', $role->id)}}"
+                                                          style="display: none;">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
@@ -96,38 +96,38 @@
             </div>
         </div>
     </div>
-
+    @endrole
 @endsection
 @push('scripts')
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#table').DataTable({
                 "language": {
-                    "sEmptyTable":     "هیچ داده ای در جدول وجود ندارد",
-                    "sInfo":           "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
-                    "sInfoEmpty":      "نمایش 0 تا 0 از 0 رکورد",
-                    "sInfoFiltered":   "(فیلتر شده از _MAX_ رکورد)",
-                    "sInfoPostFix":    "",
-                    "sInfoThousands":  ",",
-                    "sLengthMenu":     "نمایش _MENU_ رکورد",
+                    "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
+                    "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                    "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
+                    "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ",",
+                    "sLengthMenu": "نمایش _MENU_ رکورد",
                     "sLoadingRecords": "در حال بارگزاری...",
-                    "sProcessing":     "در حال پردازش...",
-                    "sSearch":         "جستجو:",
-                    "sZeroRecords":    "رکوردی با این مشخصات پیدا نشد",
+                    "sProcessing": "در حال پردازش...",
+                    "sSearch": "جستجو:",
+                    "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
                     "oPaginate": {
-                        "sFirst":    "ابتدا",
-                        "sLast":     "انتها",
-                        "sNext":     "بعدی",
+                        "sFirst": "ابتدا",
+                        "sLast": "انتها",
+                        "sNext": "بعدی",
                         "sPrevious": "قبلی"
                     },
                     "oAria": {
-                        "sSortAscending":  ": فعال سازی نمایش به صورت صعودی",
+                        "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
                         "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
                     }
                 }
-            } );
+            });
         });
     </script>
 @endpush

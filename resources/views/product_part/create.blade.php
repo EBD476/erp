@@ -4,7 +4,7 @@
 
 
 @section('content')
-    {{--    @can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -20,7 +20,6 @@
                         </div>
                         <div class="card-body">
                             <form id="form1">
-                                @csrf
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
@@ -40,11 +39,11 @@
                                         <div class="form-group">
                                             <label>{{__('Part Model')}}</label>
                                             <select class="form-control" name="hp_part_model">
-                                            @foreach($part_id as $parts_id)
-                                                <option>
-                                                    {{$parts_id->hp_part_model}}
-                                                </option>
-                                            @endforeach
+                                                @foreach($part_id as $parts_id)
+                                                    <option>
+                                                        {{$parts_id->hp_part_model}}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -118,8 +117,7 @@
             </div>
         </div>
     </div>
-    </div>
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')
@@ -154,6 +152,8 @@
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
+                        window.location.href = "/product_part";
+
                     },
                     cache: false,
                 });

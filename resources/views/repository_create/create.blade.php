@@ -4,7 +4,7 @@
 
 
 @section('content')
-    {{--    @can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -19,8 +19,7 @@
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
-                            <form id="form1" action="{{route('repository_create.store')}}">
-                                @csrf
+                            <form id="form1">
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
@@ -96,8 +95,7 @@
             </div>
         </div>
     </div>
-    </div>
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')
@@ -126,13 +124,14 @@
                 });
 
                 $.ajax({
-                    url: '/product',
+                    url: '/repository_create',
                     type: 'POST',
                     data: data,
                     dataType: 'json',
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
+                        window.location.href = "/repository_create";
                     },
                     cache: false,
                 });

@@ -10,12 +10,12 @@
 
 
 @section('content')
-    {{--    @can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
                 {{--<div class="col-md-12">--}}
-                    {{--@include('layouts.partial.Msg')--}}
+                {{--@include('layouts.partial.Msg')--}}
                 {{--</div>--}}
                 <div class="col-md-8">
                     <div class="card">
@@ -25,7 +25,6 @@
                         </div>
                         <div class="card-body">
                             <form id="form1">
-                                @csrf
                                 <div class="row">
                                     <div class="col-md-5 pr-md-1">
                                         <div class="form-group">
@@ -54,9 +53,9 @@
                                         <div class="form-group">
                                             <label>{{__('Project Type')}}</label>
                                             <select name="project_type" class="form-control ltr">
-                                                    @foreach($projects_type as $project_type)
-                                                        <option value="{{$project_type->id}}">{{$project_type->hp_name}}</option>
-                                                    @endforeach
+                                                @foreach($projects_type as $project_type)
+                                                    <option value="{{$project_type->id}}">{{$project_type->hp_name}}</option>
+                                                @endforeach
                                             </select>
                                             {{--<input  name="project_type"type="text" class="form-control" placeholder="{{__('Project Type')}}" >--}}
                                         </div>
@@ -234,15 +233,14 @@
 
         </div>
     </div>
-    </div>
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')
     <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
     <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
     <script>
-            kamaDatepicker('test-date-id', {
+        kamaDatepicker('test-date-id', {
             buttonsColor: "blue",
             forceFarsiDigits: true,
             nextButtonIcon: "fa fa-arrow-circle-right",
@@ -322,6 +320,7 @@
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
+                        window.location.href = "/project";
                     },
                     cache: false,
                 });

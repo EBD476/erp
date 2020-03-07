@@ -5,7 +5,7 @@
 @push('css')
 @endpush
 @section('content')
-    {{--@can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -16,7 +16,6 @@
                 <div class="card">
                     <div class="col-md-12">
                         <form id="form_details_contact" enctype="multipart/form-data">
-                            @csrf
                             <div class="row">
                                 <div class="col-md-6">
                                     @include('layouts.partial.Msg')
@@ -27,30 +26,21 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="bmd-label-floating">{{__('First Name')}}</label>
-                                                        <input type="text" class="form-control" name="">
-                                                    </div>
-
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="bmd-label-floating">{{__('Last Name')}}</label>
-                                                        <input type="text" class="form-control"
-                                                               name="">
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="bmd-label-floating">{{__('Email')}}</label>
-                                                        <input type="text" class="form-control" name="email">
+                                                        <input type="text" class="form-control" name="hc_name">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="bmd-label-floating">{{__('Phone')}}</label>
-                                                        <input type="text" class="form-control" name="phone">
+                                                        <input type="text" class="form-control" name="hc_phone">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="bmd-label-floating">{{__('Email')}}</label>
+                                                        <input type="text" class="form-control" name="hc_email">
                                                     </div>
                                                 </div>
                                             </div>
@@ -65,21 +55,11 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label class="bmd-label-floating">{{__('Name')}}</label>
-                                                        <input type="text" class="form-control" name="hc_name">
-                                                    </div>
-
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
                                                         <label class="bmd-label-floating">{{__('ID Number')}}</label>
                                                         <input type="text" class="form-control"
-                                                               name="hc_user_id">
+                                                               name="hc_account_id">
                                                     </div>
-
                                                 </div>
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="bmd-label-floating">{{__('VAT Number')}}</label>
@@ -87,7 +67,9 @@
                                                     </div>
 
                                                 </div>
-                                                <div class="col-md-6">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label class="bmd-label-floating">{{__('Website')}}</label>
                                                         <input type="text" class="form-control"
@@ -105,7 +87,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-md-12 hidden" id="client_details" >
+                <div class="col-md-12 hidden" id="client_details">
                     <div class="row">
                         <div class="col-md-12">
                             @include('layouts.partial.Msg')
@@ -113,81 +95,81 @@
                                 <div class="card-body">
                                     <h6 class="card-subtitle">{{__('Additional Info')}}</h6>
                                     <ul class="nav nav-pills" style="float: none">
-                                        {{--<li class="nav-item col-md-2" >--}}
-                                            {{--<a class="nav-link active" href="#tab3" data-toggle="tab" role="tab">--}}
-                                                {{--{{__('Setting')}}--}}
-                                            {{--</a>--}}
-                                        {{--</li>--}}
-                                        <li class="nav-item col-md-3" >
-                                            <a class="nav-link active" href="#tab4" data-toggle="tab" role="tab">
+                                        <li class="nav-item col-md-2">
+                                            <a class="nav-link active" href="#tab4" data-toggle="tab"
+                                               role="tab">
                                                 {{__('Notes')}}
                                             </a>
                                         </li>
-                                        <li class="nav-item col-md-3">
+                                        <li class="nav-item col-md-2">
                                             <a class="nav-link" href="#tab5" data-toggle="tab" role="tab">
                                                 {{__('Message')}}
                                             </a>
                                         </li>
-                                        <li class="nav-item col-md-3" >
+                                        <li class="nav-item col-md-2">
                                             <a class="nav-link" href="#tab6" data-toggle="tab" role="tab">
                                                 {{__('Classify')}}
                                             </a>
                                         </li>
-                                        <li class="nav-item col-md-3">
+                                        <li class="nav-item col-md-2">
                                             <a class="nav-link" href="#tab7" data-toggle="tab" role="tab">
                                                 {{__('Address')}}
                                             </a>
                                         </li>
-                                    </ul>
-                                    <form  id="form_tab_panel_1" class="tab-content setting-tab"
+                                        <li class="nav-item col-md-2" >
+                                            <a class="nav-link" href="#" data-toggle="tab" role="tab">
+                                                {{__('Setting')}}
+                                            </a>
+                                        </li>
+                                    </ul>                                    <form id="form_tab_panel_1" class="tab-content setting-tab"
                                           enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
                                         {{--<div role="tabpanel" class="tab-pane active" id="tab3">--}}
-                                            {{--<div class="row">--}}
-                                                {{--<div class="col-md-6">--}}
-                                                    {{--<div class="form-group">--}}
-                                                        {{--<label class="bmd-label-floating">{{__('Currency')}}</label>--}}
-                                                        {{--<input type="text" class="form-control"--}}
-                                                               {{--name="hc_currency_id">--}}
-                                                    {{--</div>--}}
+                                        {{--<div class="row">--}}
+                                        {{--<div class="col-md-6">--}}
+                                        {{--<div class="form-group">--}}
+                                        {{--<label class="bmd-label-floating">{{__('Currency')}}</label>--}}
+                                        {{--<input type="text" class="form-control"--}}
+                                        {{--name="hc_currency_id">--}}
+                                        {{--</div>--}}
 
-                                                {{--</div>--}}
-                                                {{--<div class="col-md-6">--}}
-                                                    {{--<div class="form-group">--}}
-                                                        {{--<label class="bmd-label-floating">{{__('Language')}}</label>--}}
-                                                        {{--<input type="text" class="form-control"--}}
-                                                               {{--name="language_id">--}}
-                                                    {{--</div>--}}
+                                        {{--</div>--}}
+                                        {{--<div class="col-md-6">--}}
+                                        {{--<div class="form-group">--}}
+                                        {{--<label class="bmd-label-floating">{{__('Language')}}</label>--}}
+                                        {{--<input type="text" class="form-control"--}}
+                                        {{--name="language_id">--}}
+                                        {{--</div>--}}
 
-                                                {{--</div>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="row">--}}
-                                                {{--<div class="col-md-6">--}}
-                                                    {{--<div class="form-group">--}}
-                                                        {{--<label class="bmd-label-floating">{{__('Payment Terms')}}</label>--}}
-                                                        {{--<input type="text" class="form-control"--}}
-                                                               {{--name="payment_terms">--}}
-                                                    {{--</div>--}}
+                                        {{--</div>--}}
+                                        {{--</div>--}}
+                                        {{--<div class="row">--}}
+                                        {{--<div class="col-md-6">--}}
+                                        {{--<div class="form-group">--}}
+                                        {{--<label class="bmd-label-floating">{{__('Payment Terms')}}</label>--}}
+                                        {{--<input type="text" class="form-control"--}}
+                                        {{--name="payment_terms">--}}
+                                        {{--</div>--}}
 
-                                                {{--</div>--}}
-                                                {{--<div class="col-md-6">--}}
-                                                    {{--<div class="form-group">--}}
-                                                        {{--<label class="bmd-label-floating">{{__('Task Rate')}}</label>--}}
-                                                        {{--<input type="text" class="form-control"--}}
-                                                               {{--name="task_rate">--}}
-                                                    {{--</div>--}}
+                                        {{--</div>--}}
+                                        {{--<div class="col-md-6">--}}
+                                        {{--<div class="form-group">--}}
+                                        {{--<label class="bmd-label-floating">{{__('Task Rate')}}</label>--}}
+                                        {{--<input type="text" class="form-control"--}}
+                                        {{--name="task_rate">--}}
+                                        {{--</div>--}}
 
-                                                {{--</div>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="row">--}}
-                                                {{--<div class="col-md-6">--}}
-                                                    {{--<div class="form-group">--}}
-                                                        {{--<label class="bmd-label-floating">{{__('Client Portal')}}</label>--}}
-                                                        {{--<input type="checkbox" name="show_tasks_in_portal">--}}
-                                                    {{--</div>--}}
-                                                {{--</div>--}}
-                                            {{--</div>--}}
+                                        {{--</div>--}}
+                                        {{--</div>--}}
+                                        {{--<div class="row">--}}
+                                        {{--<div class="col-md-6">--}}
+                                        {{--<div class="form-group">--}}
+                                        {{--<label class="bmd-label-floating">{{__('Client Portal')}}</label>--}}
+                                        {{--<input type="checkbox" name="show_tasks_in_portal">--}}
+                                        {{--</div>--}}
+                                        {{--</div>--}}
+                                        {{--</div>--}}
                                         {{--</div>--}}
                                         <div role="tabpanel" class="tab-pane" id="tab4">
                                             <div class="row">
@@ -228,14 +210,6 @@
                                                         <input type="text" class="form-control"
                                                                name="credit_number_counter">
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="bmd-label-floating">{{__('Unapproved Quote')}}</label>
-                                                        <input type="text" class="form-control"
-                                                               name="quote_number_counter">
-                                                    </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -325,7 +299,7 @@
             </div>
         </div>
     </div>
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')
@@ -363,7 +337,7 @@
                         // alert(data.id);
                         setTimeout($.unblockUI, 2000);
                         $('#client_details').removeClass('hidden');
-                        client_id=data.id;
+                        client_id = data.id;
                     },
                     cache: false,
                 });
@@ -372,8 +346,17 @@
             $("#form_tab_panel_1").submit(function (event) {
                 var data = $("#form_tab_panel_1").serialize();
                 event.preventDefault();
-                $.blockUI();
-
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -381,7 +364,7 @@
                 });
 
                 $.ajax({
-                    url: '/client/'+client_id,
+                    url: '/client/' + client_id,
                     type: 'POST',
                     data: data,
                     dataType: 'json',
@@ -389,7 +372,7 @@
                     success: function (data) {
                         alert(data.response);
                         setTimeout($.unblockUI, 2000);
-                       // location.reload();
+                        // location.reload();
                         window.location.href = "/client";
                     },
                     cache: false,

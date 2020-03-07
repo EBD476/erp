@@ -8,7 +8,7 @@
 @endpush
 
 @section('content')
-    {{--@can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -207,11 +207,13 @@
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
+                        window.location.href = "/support";
                     },
                     cache: false,
                 });
             });
         })
         ;
-    </script>
+    </script></div>
+    @endrole
 @endpush

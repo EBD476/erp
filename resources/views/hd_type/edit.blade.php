@@ -4,7 +4,7 @@
 
 
 @section('content')
-    {{--@can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -19,7 +19,7 @@
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
-                            <form id="form1" >
+                            <form id="form1">
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
@@ -59,7 +59,7 @@
             </div>
         </div>
     </div>
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')
@@ -70,7 +70,7 @@
                 var data = {
                     th_name: $('#th_name').val(),
                     id: $('#th_name').data('id'),
-            }
+                }
                 event.preventDefault();
                 $.blockUI({
                     message: '{{__('please wait...')}}', css: {
@@ -100,7 +100,7 @@
                     }
                 });
                 $.ajax({
-                    url: '/type'+data.id,
+                    url: '/type' + data.id,
                     type: 'POST',
                     data: data,
                     dataType: 'json',

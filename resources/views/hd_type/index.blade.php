@@ -8,7 +8,7 @@
 @endpush
 
 @section('content')
-    {{--@can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -90,19 +90,20 @@
                             <div class="card card-user">
                                 <div class="card-body">
                                     <p class="card-text">
-                                        <div class="author">
-                                            <div class="block block-one"></div>
-                                            <div class="block block-two"></div>
-                                            <div class="block block-three"></div>
-                                            <div class="block block-four"></div>
-                                            <a href="javascript:void(0)">
-                                                {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
-                                                <h5 class="title">Hanta IBMS</h5>
-                                            </a>
-                                </div>
-                                </p>
-                                <div class="card-description">
+                                    <div class="author">
+                                        <div class="block block-one"></div>
+                                        <div class="block block-two"></div>
+                                        <div class="block block-three"></div>
+                                        <div class="block block-four"></div>
+                                        <a href="javascript:void(0)">
+                                            {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
+                                            <h5 class="title">Hanta IBMS</h5>
+                                        </a>
+                                    </div>
+                                    </p>
+                                    <div class="card-description">
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -110,40 +111,41 @@
                 </div>
             </div>
         </div>
-        {{--@endcan--}}
-        @endsection
+    </div>
+    @endrole
+@endsection
 
-        @push('scripts')
-            <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
-            <script src="{{asset('assets/js/plugins/datatables.min.js')}}"></script>
-            <script>
-                $(document).ready(function () {
-                    $('#table').DataTable({
-                        "pagingType": "full_numbers",
-                        "lengthMenu": [
-                            [10, 25, 50, -1],
-                            [10, 25, 50, "All"]
-                        ],
-                        responsive: true,
-                        language: {
-                            search: "_INPUT_",
-                            searchPlaceholder: "عبارت جستجو",
-                            "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Persian.json"
-                        }
+@push('scripts')
+    <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/datatables.min.js')}}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#table').DataTable({
+                "pagingType": "full_numbers",
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "All"]
+                ],
+                responsive: true,
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "عبارت جستجو",
+                    "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Persian.json"
+                }
 
-                    });
+            });
 
-                });
+        });
 
-                $("#checkbox").on('change', function (event) {
-                    if ($("#checkbox").val() == 1) {
+        $("#checkbox").on('change', function (event) {
+            if ($("#checkbox").val() == 1) {
 
-                    }
-                    else {
-                        $("#checkbox").val() == 1
-                    }
-                });
+            }
+            else {
+                $("#checkbox").val() == 1
+            }
+        });
 
 
-            </script>
-    @endpush
+    </script>
+@endpush

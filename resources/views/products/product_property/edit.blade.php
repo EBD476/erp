@@ -4,7 +4,7 @@
 
 
 @section('content')
-    {{--    @can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -32,7 +32,8 @@
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Items')}}</label>
-                                            <select data-id="{{$properties->id}}" id="hpp_property_items" class="form-control">
+                                            <select data-id="{{$properties->id}}" id="hpp_property_items"
+                                                    class="form-control">
                                                 @foreach($items as $item)
                                                     <option value="{{$item->id}}">
                                                         {{$item->hppi_items_name}}
@@ -90,7 +91,7 @@
             </div>
         </div>
     </div>
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')
@@ -127,10 +128,11 @@
                     type: 'POST',
                     data: data,
                     dataType: 'json',
-                    method:'put',
+                    method: 'put',
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
+                        window.location.href = "/product_property";
                     },
                     cache: false,
                 });

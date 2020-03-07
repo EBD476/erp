@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    {{--    @can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -23,7 +23,6 @@
                         </div>
                         <div class="card-body">
                             <form id="form1">
-                                @csrf
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
@@ -109,7 +108,6 @@
             </div>
         </div>
     </div>
-    {{--@endcan--}}
     {{--//Provider Details Modal//--}}
     <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel"
@@ -130,27 +128,27 @@
                                 <input class="form-control" name="hp_name">
                             </div>
                         </div>
-                    <div class="md-form mb-5">
-                        <label class="bmd-label-floating" style="float: right">{{__('Phone')}}</label>
-                        <input name="hp_phone" type="text" class="form-control" required=""
-                               aria-invalid="false">
-                    </div>
-                    <div class="md-form mb-5">
-                        <label class="bmd-label-floating" style="float: right">{{__('Address')}}</label>
-                        <input name="hp_address" type="text" class="form-control" required=""
-                               aria-invalid="false">
-                    </div>
-                    <div class="col-md-12">
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                        <div class="md-form mb-5">
+                            <label class="bmd-label-floating" style="float: right">{{__('Phone')}}</label>
+                            <input name="hp_phone" type="text" class="form-control" required=""
+                                   aria-invalid="false">
                         </div>
-                    </div>
+                        <div class="md-form mb-5">
+                            <label class="bmd-label-floating" style="float: right">{{__('Address')}}</label>
+                            <input name="hp_address" type="text" class="form-control" required=""
+                                   aria-invalid="false">
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    {{--@endrole--}}
+    @endrole
 @endsection
 
 @push('scripts')
@@ -222,7 +220,7 @@
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
                         $("#modalRegisterForm").modal('hide');
-                        location.reload();
+                        window.location.href = "/part";
                     },
                     cache: false,
                 });

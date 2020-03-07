@@ -97,13 +97,9 @@ class ClientController extends Controller
         $client->hc_private_notes= $request->hc_private_notes;
         $client->hc_balance= $request->hc_balance;
         $client->hc_paid_to_date= $request->hc_paid_to_date;
-        $client->hc_phone= $request->hc_phone;
-//        $client->hc_last_login= $request->hc_last_login;
-//        $client->hc_website= $request->first_name;
-//        $client->hc_website= $request->last_name;
-        $client->send_reminders= $request->email;
+        $client->hc_email= $request->hc_email;
         $client->hc_website= $request->hc_website;
-        $client->hc_work_phone= $request->phone;
+        $client->hc_work_phone= $request->hc_work_phone;
         $client->shipping_city= $request->shipping_city;
         $client->shipping_state= $request->shipping_state;
         $client->shipping_postal_code= $request->shipping_postal_code;
@@ -124,6 +120,7 @@ class ClientController extends Controller
         $client->quote_number_counter= $request->quote_number_counter;
         $client->credit_number_counter= $request->credit_number_counter;
         $client->industry_id= $request->industry_id;
+        $client->hc_phone= $request->hc_phone;
         $client->save();
         return json_encode(["response" => "OK","id"=>$client->id,"client_name"=>$client->hc_name]);
 
@@ -204,9 +201,8 @@ class ClientController extends Controller
         ]);
 //        $id=$request->client_id;
         $client=Client::find($id);
-//        $client->hc_user_id= $request->hc_user_id;
-//        $client->vat_number= $request->vat_number;
-//        $client->hc_name= $request->hc_name;
+        $client->vat_number= $request->vat_number;
+        $client->hc_name= $request->hc_name;
         $client->hc_address= $request->hc_address;
         $client->hc_city= $request->hc_city;
         $client->hc_state= $request->hc_state;
@@ -215,10 +211,7 @@ class ClientController extends Controller
         $client->hc_private_notes= $request->hc_private_notes;
         $client->hc_balance= $request->hc_balance;
         $client->hc_paid_to_date= $request->hc_paid_to_date;
-//        $client->hc_last_login= $request->hc_last_login;
-//        $client->hc_website= $request->first_name;
-//        $client->hc_website= $request->last_name;
-        $client->send_reminders= $request->send_reminders;
+        $client->hc_email= $request->hc_email;
         $client->hc_website= $request->hc_website;
         $client->hc_work_phone= $request->hc_work_phone;
         $client->shipping_city= $request->shipping_city;
@@ -258,5 +251,28 @@ class ClientController extends Controller
         $client = Client::find($id);
         $client->delete();
         return redirect()->back()->with('successMSG','عملیات حذف اطلاعات با موفقیت انجام شد.');
+    }
+    public function fill(Request $request)
+    {
+        $start = $request->start;
+        $length = $request->length;
+        $search = $request->search['value'];
+        if ($search == '') {
+            $order = Order::skip($start)->take($length)->get();
+        } else {
+            $order = Order::where('id', 'LIKE', "%$search%")
+                ->orwhere('hp_project_name', 'LIKE', "%$search%")
+                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
+                ->orwhere('hp_connector', 'LIKE', "%$search%")
+                ->get();
+        }
+
+        $data = '';
+        foreach ($order as $orders) {
+            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+        }
+        $data = substr($data, 0, -1);
+        $orders_count = Order::all()->count();
+        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
     }
 }

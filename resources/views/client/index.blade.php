@@ -3,17 +3,18 @@
 @section('title',__('Client'))
 
 @push('css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+    <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
 @endpush
 
 @section('content')
-{{--    @can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-{{--                    @can('browse-btn-user')--}}
-                    <a href="{{route('client.create')}}" class="btn btn-primary float-left mb-lg-2"><i class="tim-icons icon-simple-add"></i>{{__('Create new client')}}</a>
+                    {{--                    @can('browse-btn-user')--}}
+                    <a href="{{route('client.create')}}" class="btn btn-primary float-left mb-lg-2"><i
+                                class="tim-icons icon-simple-add"></i>{{__('Create new client')}}</a>
                     {{--@endcan--}}
                 </div>
                 <div class="card">
@@ -32,13 +33,10 @@
                                                 {{__('ID')}}
                                             </th>
                                             <th>
-                                                {{__('User ID')}}
+                                                {{__('Name')}}
                                             </th>
                                             <th>
                                                 {{__('Create At')}}
-                                            </th>
-                                            <th>
-                                                {{__('Update At')}}
                                             </th>
                                             <th>
                                                 {{__('action')}}
@@ -52,13 +50,10 @@
                                                         {{$key + 1}}
                                                     </td>
                                                     <td>
-                                                        {{$client -> hc_user_id}}
+                                                        {{$client -> hc_name}}
                                                     </td>
                                                     <td>
                                                         {{$client -> created_at}}
-                                                    </td>
-                                                    <td>
-                                                        {{$client -> updated_at}}
                                                     </td>
                                                     <td>
                                                         <div class="dropdown">
@@ -79,7 +74,7 @@
                                                                     @method('DELETE')
                                                                 </form>
                                                                 <a class="dropdown-item"
-                                                                   onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
+                                                                   onclick="if(confirm('آیا از حذف این مشتری اطمینان دارید؟')){
                                                                            event.preventDefault();
                                                                            document.getElementById('-form-delete{{$client->id}}').submit();
                                                                            }else {
@@ -102,87 +97,28 @@
                             <div class="card card-user">
                                 <div class="card-body">
                                     <p class="card-text">
-                                        <div class="author">
-                                            <div class="block block-one"></div>
-                                            <div class="block block-two"></div>
-                                            <div class="block block-three"></div>
-                                            <div class="block block-four"></div>
-                                            <a href="javascript:void(0)">
-                                                {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
-                                                <h5 class="title">Hanta IBMS</h5>
-                                            </a>
-                                </div>
-                                </p>
-                                <div class="card-description">
+                                    <div class="author">
+                                        <div class="block block-one"></div>
+                                        <div class="block block-two"></div>
+                                        <div class="block block-three"></div>
+                                        <div class="block block-four"></div>
+                                        <a href="javascript:void(0)">
+                                            {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
+                                            <h5 class="title">Hanta IBMS</h5>
+                                        </a>
+                                    </div>
+                                    </p>
+                                    <div class="card-description">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
     </div>
-        {{--@endcan--}}
-        @endsection
+    @endrole
+@endsection
 
-        @push('scripts')
-            <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-            <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
-            <script>
-                $(document).ready(function () {
-                    $('#table').DataTable({
-                        "language": {
-                            "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
-                            "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
-                            "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
-                            "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
-                            "sInfoPostFix": "",
-                            "sInfoThousands": ",",
-                            "sLengthMenu": "نمایش _MENU_ رکورد",
-                            "sLoadingRecords": "در حال بارگزاری...",
-                            "sProcessing": "در حال پردازش...",
-                            "sSearch": "جستجو:",
-                            "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
-                            "oPaginate": {
-                                "sFirst": "ابتدا",
-                                "sLast": "انتها",
-                                "sNext": "بعدی",
-                                "sPrevious": "قبلی"
-                            },
-                            "oAria": {
-                                "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
-                                "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
-                            },
-
-                        }
-                    });
-                    $('#table1').DataTable({
-                        "language": {
-                            "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
-                            "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
-                            "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
-                            "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
-                            "sInfoPostFix": "",
-                            "sInfoThousands": ",",
-                            "sLengthMenu": "نمایش _MENU_ رکورد",
-                            "sLoadingRecords": "در حال بارگزاری...",
-                            "sProcessing": "در حال پردازش...",
-                            "sSearch": "جستجو:",
-                            "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
-                            "oPaginate": {
-                                "sFirst": "ابتدا",
-                                "sLast": "انتها",
-                                "sNext": "بعدی",
-                                "sPrevious": "قبلی"
-                            },
-                            "oAria": {
-                                "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
-                                "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
-                            },
-
-                        }
-                    });
-                });
-            </script>
-    @endpush

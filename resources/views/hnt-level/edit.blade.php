@@ -4,7 +4,7 @@
 
 
 @section('content')
-    {{--@can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -24,19 +24,21 @@
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Level Name')}}</label>
-                                            <input id="name" name="hp_process_name" type="text" class="form-control" required=""
+                                            <input id="name" name="hp_process_name" type="text" class="form-control"
+                                                   required=""
                                                    aria-invalid="false"
                                                    data-name="{{$level->hp_process_name}}"
-                                            value="{{$level->hp_process_name}}" >
+                                                   value="{{$level->hp_process_name}}">
                                         </div>
                                     </div>
                                 </div>
-                                <input id="id"  class="hidden" data-id="{{$level->id}}">
+                                <input id="id" class="hidden" data-id="{{$level->id}}">
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Level ID')}}</label>
-                                            <input id="lid" name="hp_process_id" type="number" class="form-control" required=""
+                                            <input id="lid" name="hp_process_id" type="number" class="form-control"
+                                                   required=""
                                                    aria-invalid="false"
                                                    data-lid="{{$level->hp_process_id}}"
                                                    value="{{$level->hp_process_id}}">
@@ -69,51 +71,52 @@
                 </div>
             </div>
         </div>
-        {{--@endcan--}}
-        @endsection
+    </div>
+    @endrole
+@endsection
 
-        @push('scripts')
-            <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
-            <script>
-                $(document).ready(function () {
+@push('scripts')
+    <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
 
-                    $("#form1").submit(function (event) {
-                        var data = {
-                            id: $('#id').data('id'),
-                            name: $('#name').data('name'),
-                            lid: $('#lid').data('lid'),
-                        };
-                        event.preventDefault();
-                        $.blockUI({
-                            message: '{{__('please wait...')}}', css: {
-                                border: 'none',
-                                padding: '15px',
-                                backgroundColor: '#000',
-                                '-webkit-border-radius': '10px',
-                                '-moz-border-radius': '10px',
-                                opacity: .5,
-                                color: '#fff'
-                            }
-                        });
-                        //token
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-                        $.ajax({
-                            url: '/level/' + data.id,
-                            type: 'POST',
-                            data: data,
-                            dataType: 'json',
-                            async: false,
-                            success: function (data) {
-                                alert(data.response);
-                                setTimeout($.unblockUI, 2000);
-                            },
-                            cache: false,
-                        });
-                    });
+            $("#form1").submit(function (event) {
+                var data = {
+                    id: $('#id').data('id'),
+                    name: $('#name').data('name'),
+                    lid: $('#lid').data('lid'),
+                };
+                event.preventDefault();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
                 });
-            </script>
-    @endpush
+                //token
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: '/level/' + data.id,
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        alert(data.response);
+                        setTimeout($.unblockUI, 2000);
+                    },
+                    cache: false,
+                });
+            });
+        });
+    </script>
+@endpush

@@ -86,4 +86,5 @@ class ConversationViewController extends Controller
         $message->delete();
         return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
     }
+
 }

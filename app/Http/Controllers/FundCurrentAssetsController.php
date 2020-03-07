@@ -109,4 +109,28 @@ class FundCurrentAssetsController extends Controller
         $current_assets->delete();
         return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
     }
+
+    public function fill(Request $request)
+    {
+        $start = $request->start;
+        $length = $request->length;
+        $search = $request->search['value'];
+        if ($search == '') {
+            $order = Order::skip($start)->take($length)->get();
+        } else {
+            $order = Order::where('id', 'LIKE', "%$search%")
+                ->orwhere('hp_project_name', 'LIKE', "%$search%")
+                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
+                ->orwhere('hp_connector', 'LIKE', "%$search%")
+                ->get();
+        }
+
+        $data = '';
+        foreach ($order as $orders) {
+            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+        }
+        $data = substr($data, 0, -1);
+        $orders_count = Order::all()->count();
+        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+    }
 }

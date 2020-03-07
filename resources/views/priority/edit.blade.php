@@ -4,7 +4,7 @@
 
 
 @section('content')
-    {{--@can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -60,7 +60,7 @@
             </div>
         </div>
     </div>
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')
@@ -70,8 +70,8 @@
             $("#form1").submit(function (event) {
                 var data =
                     {
-                        id:$("#hp_name").data('id'),
-                        name:$("#hp_name").val(),
+                        id: $("#hp_name").data('id'),
+                        name: $("#hp_name").val(),
                     }
                 event.preventDefault();
                 $.blockUI({
@@ -100,7 +100,7 @@
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
-                        location.reload();
+                        window.location.href = "/priority";
                     },
                     cache: false,
                 });

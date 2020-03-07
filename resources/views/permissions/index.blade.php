@@ -3,7 +3,7 @@
 @section('title', '| Permissions')
 
 @section('content')
-
+    @role('Admin')
     <div class="wrap main-content persian" data-scrollbar>
         <div class="content">
             <div class="col-md-12">
@@ -43,7 +43,8 @@
                                                        class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
                                                         <i class="tim-icons icon-pencil"></i></a>
 
-                                                    <form action="{{route('permissions.destroy', $permission->id)}}" style="display: none;">
+                                                    <form action="{{route('permissions.destroy', $permission->id)}}"
+                                                          style="display: none;">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
@@ -91,4 +92,5 @@
             </div>
         </div>
     </div>
+    @endrole
 @endsection

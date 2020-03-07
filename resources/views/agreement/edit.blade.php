@@ -4,7 +4,7 @@
 
 
 @section('content')
-    {{--    @can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -72,50 +72,52 @@
                 </div>
             </div>
         </div>
-        @endsection
-        @push('scripts')
-            <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
-            <script>
-                $(document).ready(function () {
-                    $("#form1").submit(function (event) {
-                        var data =
-                            {
-                                id:$('#hg_description').data('id'),
-                                hg_description:$('#hg_description').val()
-                            }
-                        event.preventDefault();
-                        $.blockUI();
+    </div>
+    @endrole
+@endsection
+@push('scripts')
+    <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            $("#form1").submit(function (event) {
+                var data =
+                    {
+                        id: $('#hg_description').data('id'),
+                        hg_description: $('#hg_description').val()
+                    }
+                event.preventDefault();
+                $.blockUI();
 
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-                        $.blockUI({
-                            message: '{{__('please wait...')}}', css: {
-                                border: 'none',
-                                padding: '15px',
-                                backgroundColor: '#000',
-                                '-webkit-border-radius': '10px',
-                                '-moz-border-radius': '10px',
-                                opacity: .5,
-                                color: '#fff'
-                            }
-                        });
-                        $.ajax({
-                            url: '/agreement/' + data.id,
-                            type: 'POST',
-                            data: data,
-                            dataType: 'json',
-                            method: 'put',
-                            async: false,
-                            success: function (data) {
-                                setTimeout($.unblockUI, 2000);
-                                location.reload();
-                            },
-                            cache: false,
-                        });
-                    });
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
                 });
-            </script>
-    @endpush
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+                $.ajax({
+                    url: '/agreement/' + data.id,
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    method: 'put',
+                    async: false,
+                    success: function (data) {
+                        setTimeout($.unblockUI, 2000);
+                        location.reload();
+                    },
+                    cache: false,
+                });
+            });
+        });
+    </script>
+@endpush

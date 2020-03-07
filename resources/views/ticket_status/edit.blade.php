@@ -4,7 +4,7 @@
 
 
 @section('content')
-    {{--@can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -19,7 +19,8 @@
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
-                            <form id="form1" >
+                            <form id="form1">
+                                <input value="{{$ticket_status->id}}" id="id">
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
@@ -59,14 +60,16 @@
             </div>
         </div>
     </div>
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script>
+
         $(document).ready(function () {
             $("#form1").submit(function (event) {
+                var id = $('#id').val();
                 var data = $("#form1").serialize();
                 event.preventDefault();
                 $.blockUI();
@@ -78,14 +81,14 @@
                 });
 
                 $.ajax({
-                    url: '/ticket'+id,
+                    url: '/ticket' + id,
                     type: 'POST',
                     data: data,
                     dataType: 'json',
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
-                        location.reload();
+                        window.location.href = "/ticket";
                     },
                     cache: false,
                 });

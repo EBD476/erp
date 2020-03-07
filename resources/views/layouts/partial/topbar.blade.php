@@ -82,10 +82,10 @@
                                                 {{$priorities->hdp_name}}
                                             @endif
                                         @endforeach
-                                        @foreach($user as $users)
-                                            @if($users->id == $help_desks_top_bar->hhd_request_user_id)
+                                        @foreach($user as $user_all)
+                                            @if($user_all->id == $help_desks_top_bar->hhd_request_user_id)
                                                 {{__('From')}}
-                                                {{$users->name}}
+                                                {{$user_all->name}}
                                             @endif
                                         @endforeach
                                         {{__('H')}}

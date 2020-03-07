@@ -4,7 +4,7 @@
 
 
 @section('content')
-    {{--    @can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -145,8 +145,7 @@
             </div>
         </div>
     </div>
-    </div>
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')

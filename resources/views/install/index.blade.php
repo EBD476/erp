@@ -8,7 +8,7 @@
 @endpush
 
 @section('content')
-    {{--@can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -114,76 +114,78 @@
                     </div>
                 </div>
             </div>
-            {{--@endcan--}}
-            @endsection
+        </div>
+    </div>
+    @endrole
+@endsection
 
-            @push('scripts')
-                <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
-                <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
-                <script src="{{asset('assets/js/plugins/datatables.min.js')}}"></script>
-                <script>
-                    $(document).ready(function () {
-                        $('#table').DataTable({
-                            "pagingType": "full_numbers",
-                            "lengthMenu": [
-                                [10, 25, 50, -1],
-                                [10, 25, 50, "All"]
-                            ],
-                            responsive: true,
-                            language: {
-                                search: "_INPUT_",
-                                searchPlaceholder: "عبارت جستجو",
-                                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Persian.json"
-                            }
+@push('scripts')
+    <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/datatables.min.js')}}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#table').DataTable({
+                "pagingType": "full_numbers",
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "All"]
+                ],
+                responsive: true,
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "عبارت جستجو",
+                    "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Persian.json"
+                }
 
-                        });
+            });
 
-                    });
+        });
 
-                    // pass checkbox data
-                    $('.checkbox').on('change', function (event) {
-                        if (event.target.checked) {
-                            var data = {
-                                id: $(this).data('id'),
-                                state: $(this)[0].checked == true ? 5 : 4,
+        // pass checkbox data
+        $('.checkbox').on('change', function (event) {
+            if (event.target.checked) {
+                var data = {
+                    id: $(this).data('id'),
+                    state: $(this)[0].checked == true ? 5 : 4,
 
-                            };
-                            $.blockUI({
-                                message: '{{__('please wait...')}}', css: {
-                                    border: 'none',
-                                    padding: '15px',
-                                    backgroundColor: '#000',
-                                    '-webkit-border-radius': '10px',
-                                    '-moz-border-radius': '10px',
-                                    opacity: .5,
-                                    color: '#fff'
-                                }
-                            });
-                            //token
-                            $.ajaxSetup({
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                }
-                            });
-                            $.ajax({
-                                url: '/install/' + data.id,
-                                type: 'POST',
-                                data: data,
-                                dataType: 'json',
-                                async: false,
-                                method: 'PUT',
-                                success: function (data) {
-                                    alert(data.response);
-                                    setTimeout($.unblockUI, 2000);
-                                    location.reload();
-                                },
-                                cache: false,
-                            });
-                        }
+                };
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+                //token
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: '/install/' + data.id,
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    async: false,
+                    method: 'PUT',
+                    success: function (data) {
+                        alert(data.response);
+                        setTimeout($.unblockUI, 2000);
+                        location.reload();
+                    },
+                    cache: false,
+                });
+            }
 
 
-                    });
-                    // End data pass
+        });
+        // End data pass
 
-                </script>
-    @endpush
+    </script>
+@endpush

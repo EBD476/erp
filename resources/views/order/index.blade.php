@@ -233,7 +233,7 @@
                                                             <div class="dropdown-menu dropdown-menu-right"
                                                                  aria-labelledby="dropdownMenuLink">
                                                                 <a class="dropdown-item"
-                                                                href="{{route('order.edit',$orders->id)}}"
+                                                                   href="{{route('order.edit',$orders->id)}}"
                                                                 >{{__('Edit')}}</a>
                                                                 <form id="-form-delete{{$orders->id}}"
                                                                       style="display: none;" method="POST"

@@ -4,7 +4,7 @@
 
 
 @section('content')
-    {{--@can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -24,10 +24,11 @@
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Status Name')}}</label>
-                                            <input id="name" name="hss_name" type="text" class="form-control" required=""
+                                            <input id="name" name="hss_name" type="text" class="form-control"
+                                                   required=""
                                                    aria-invalid="false"
                                                    data-name="{{$status->hss_name}}"
-                                            value="{{$status->hss_name}}" >
+                                                   value="{{$status->hss_name}}">
                                         </div>
                                     </div>
                                 </div>
@@ -57,52 +58,53 @@
                 </div>
             </div>
         </div>
-        {{--@endcan--}}
-        @endsection
+    </div>
+    @endrole
+@endsection
 
-        @push('scripts')
-            <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
-            <script>
-                $(document).ready(function () {
+@push('scripts')
+    <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
 
-                    $("#form1").submit(function (event) {
-                        var data = {
-                            id: $('#id').data('id'),
-                            name: $('#name').data('name'),
-                        };
-                        event.preventDefault();
-                        $.blockUI();
-                        $.blockUI({
-                            message: '{{__('please wait...')}}', css: {
-                                border: 'none',
-                                padding: '15px',
-                                backgroundColor: '#000',
-                                '-webkit-border-radius': '10px',
-                                '-moz-border-radius': '10px',
-                                opacity: .5,
-                                color: '#fff'
-                            }
-                        });
-                        //token
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-                        $.ajax({
-                            url: '/support_status/' + data.id,
-                            type: 'POST',
-                            data: data,
-                            dataType: 'json',
-                            async: false,
-                            Methods:'PUT',
-                            success: function (data) {
-                                alert(data.response);
-                                setTimeout($.unblockUI, 2000);
-                            },
-                            cache: false,
-                        });
-                    });
+            $("#form1").submit(function (event) {
+                var data = {
+                    id: $('#id').data('id'),
+                    name: $('#name').data('name'),
+                };
+                event.preventDefault();
+                $.blockUI();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
                 });
-            </script>
-    @endpush
+                //token
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: '/support_status/' + data.id,
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    async: false,
+                    Methods: 'PUT',
+                    success: function (data) {
+                        setTimeout($.unblockUI, 2000);
+                        window.location.href = "/support_status";
+                    },
+                    cache: false,
+                });
+            });
+        });
+    </script>
+@endpush

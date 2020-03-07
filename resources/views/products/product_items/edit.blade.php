@@ -4,7 +4,7 @@
 
 
 @section('content')
-    {{--    @can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -23,7 +23,8 @@
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Items Name')}}</label>
-                                            <input data-id="{{$items->id}}" id="hppi_items_name" type="text" class="form-control" required=""
+                                            <input data-id="{{$items->id}}" id="hppi_items_name" type="text"
+                                                   class="form-control" required=""
                                                    aria-invalid="false" value="{{ $items->hppi_items_name}}">
                                         </div>
                                     </div>
@@ -74,7 +75,7 @@
             </div>
         </div>
     </div>
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')
@@ -110,10 +111,11 @@
                     type: 'POST',
                     data: data,
                     dataType: 'json',
-                    method:'put',
+                    method: 'put',
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
+                        window.location.href = "/product_items";
                     },
                     cache: false,
                 });

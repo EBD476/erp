@@ -60,7 +60,10 @@
     $(document).ready(function () {
 
 
-        $('body').persianNum();
+        $('body').persianNum({
+            forbiddenTag: ['input','div']
+
+        })
 
 
         sidebar_mini_active = false;

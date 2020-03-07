@@ -11,7 +11,7 @@
 
 @section('content')
     @role('Admin')
-    <div class="content">
+    <div class="content persian">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
@@ -25,7 +25,6 @@
                         <div class="row pull-left">
                             <div class="col-md-12 pull-left">
                                 <div class="form-group">
-                                    <input id="hpo_order_id" value="{{$project->id}}" type="hidden">
                                     <label class="bmd-label-floating">{{__('Order ID:')}}</label>
                                     <label class="bmd-label-floating" id="order_id_show" data-id="{{$project->id}}"
                                            data-client="{{$project->ho_client}}">{{$project->id}}</label>
@@ -231,8 +230,8 @@
                             </div>
 
                             <div role="tabpanel" class="tab-pane" id="tab2" data-lang="{{app()->getLocale()}}">
-                                <form id="form2"
-                                      class="tab-content setting-tab" enctype="multipart/form-data">
+                                <form id="form2">
+                                    <input id="pid" type="hidden" value="{{$project->id}}">
                                     <table class="table invoice-table product-table" style="direction: ltr" id="table2">
                                         <thead>
                                         <tr>
@@ -251,81 +250,8 @@
                                         </thead>
                                         <tbody data-bind="sortable: { data: invoice_items_without_tasks, allowDrop: false, afterMove: onDragged} "
                                                class="ui-sortable">
-                                        @foreach($invoices_items as $invoices_item)
-                                            <input name="pid[]" value="{{$invoices_item->id}}" type="hidden">
-                                            <tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"
-                                                class="sortable-row ui-sortable-handle" style="">
-                                                <td class="hide-border td-icon">
-                                                    <i style="display:none" class="fa fa-sort"></i>
-                                                </td>
-                                                <td>
-                                                    <select name="name[]"
-                                                            class="select-item combobox-container name"
-                                                            data-id="{{$invoices_item->id}}">
-                                                        @foreach($product as $product_selected)
-                                                            @if($product_selected->id == $invoices_item->hpo_product_id)
-                                                                <option value="{{$product_selected->id}}">{{$product_selected->hp_product_name}}</option>
-                                                            @endif
-                                                        @endforeach
-                                                        @foreach($product as $product_item)
-                                                            <option value="{{$product_item->id}}"
-                                                                    data-price="{{$product_item->hp_product_price}}">
-                                                                {{$product_item->hp_product_name . $product_item->hp_product_model . $product_item->hp_product_size}}
-                                                                @foreach($color as $colors)
-                                                                    @if($colors->id == $product_item->hp_product_color_id)
-                                                                        {{$colors->hn_color_name}}
-                                                                    @endif
-                                                                @endforeach
-                                                                @foreach($properties as $property)
-                                                                    @if($property->id== $product_item->hp_product_property)
-                                                                        {{$property->hpp_property_name}}
-                                                                        @foreach ($items as $item)
-                                                                            @if($item->id == $property->hpp_property_items)
-                                                                                {{$item->hppi_items_name}}
-                                                                            @endif
-                                                                        @endforeach
-                                                                    @endif
-                                                                @endforeach
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                <textarea
-                                                        data-bind="value: notes, valueUpdate: 'afterkeydown', attr: {name: 'invoice_items[]'}"
-                                                        rows="1" cols="60" style="resize: vertical; height: 42px;"
-                                                        class="form-control word-wrap invoice_items"
-                                                        name="invoice_items[]">{{$invoices_item->hpo_description}}</textarea>
-                                                </td>
-                                                <td>
-                                                    @foreach($product as $product_item_price)
-                                                        @if($invoices_item->hpo_product_id == $product_item_price->id)
-                                                            <input disabled type="text"
-                                                                   class="form-control unit"
-                                                                   name="hp_product_price[]"
-                                                                   value="{{$product_item_price->hp_product_price}}">
-                                                        @endif
-                                                    @endforeach
-                                                </td>
-                                                <td style="display:table-cell">
-                                                    <input
-                                                            style="text-align: right"
-                                                            class="form-control invoice_items qty"
-                                                            name="invoice_items_qty[]"
-                                                            value="{{$invoices_item->hpo_count}}">
-                                                </td>
-                                                <td style="text-align:right;padding-top:9px !important" nowrap="">
-                                                    <div class="line-total sub-total"
-                                                         name="total[]">{{$invoices_item->hpo_total}}</div>
-                                                    <input name="total[]" class="sub-total" type="hidden"
-                                                           value="{{$invoices_item->hpo_total}}">
-                                                </td>
-                                                <td style="cursor:pointer" class="hide-border td-icon">
-                                                    <i class="tim-icons icon-simple-remove remove"
-                                                       title="Remove item"/>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                        <div hidden>{{  $index = 0 }}</div>
+
                                         </tbody>
                                         <tbody data-bind="sortable: { data: invoice_items_without_tasks, allowDrop: false, afterMove: onDragged} "
                                                class="ui-sortable">
@@ -405,7 +331,7 @@
                                                                                                 id="discount"
                                                                                                 type="number"
                                                                                                 name="hpo_discount"
-                                                                                                value="{{$items_all->hpo_discount}}">
+                                                                                                value="{{$invoices_items->hpo_discount}}">
                                                                     &nbsp
                                                                 </div>
                                                             </div>
@@ -421,7 +347,7 @@
                                                                        id="test-date-id"
                                                                        type="text"
                                                                        name="hop_due_date"
-                                                                       value="{{$items_all->hop_due_date}}"
+                                                                       value="{{$invoices_items->hop_due_date}}"
                                                                 >
                                                                 &nbsp
                                                             </div>
@@ -438,7 +364,7 @@
                                                                            id="all_total"
                                                                            type="text"
                                                                            name="all_total"
-                                                                           value="{{$items_all->hpo_total_all}}"
+                                                                           value="{{$invoices_items->all_tot}}"
                                                                     >
                                                                     &nbsp
                                                                 </div>
@@ -456,7 +382,7 @@
                                                                            id="total_discount"
                                                                            type="text"
                                                                            name="total_discount"
-                                                                           value="{{$items_all->hpo_total_discount}}"
+                                                                           value="{{$invoices_items->all_dis}}"
                                                                     >
                                                                     &nbsp
                                                                 </div>
@@ -493,17 +419,16 @@
                                            value="{{$project->ho_client}}">
                                     <input type="hidden" id="order_id" name="hpo_order_id" value="{{$project->id}}">
                                     <input id="all_dis" name="all_dis" type="hidden"
-                                           value="{{$items_all->hpo_total_discount}}">
+                                           value="{{$invoices_items->hpo_total_discount}}">
                                     <input id="all_tot" name="all_tot" type="hidden"
-                                           value="{{$items_all->hpo_total_all}}">
+                                           value="{{$invoices_items->hpo_total_all}}">
                                     {{--End Hidden Object--}}
                                     <div class="col-md-12">
                                         <a href="{{route('order.index')}}"
                                            class="btn btn-primary">{{__('Back')}}</a>
-                                        <button id="btn_submit" type="submit"
-                                                class="btn btn-primary">{{__('Send Modify')}}</button>
-                                        {{--<button type="submit" class="btn btn-primary"--}}
-                                        {{--id="preview">{{__('Preview Factor')}}</button>--}}
+                                        <button id="btn_submit_form2" type="submit" class="btn btn-primary">{{__('Send Modify')}}</button>
+                                        <button type="submit" class="btn btn-primary"
+                                        id="preview">{{__('Preview Factor')}}</button>
                                     </div>
                                 </form>
                             </div>
@@ -668,9 +593,9 @@
                 });
             });
 
-            $("#btn_submit").on('click', function (event) {
+            $("#btn_submit_form2").on('click', function (event) {
                 var data = $("#form2").serialize();
-                var hpo_order_id = $("#hpo_order_id").val();
+                var pid = $("#pid").val();
                 event.preventDefault();
                 $.blockUI({
                     message: '{{__('please wait...')}}', css: {
@@ -690,14 +615,13 @@
                 });
 
                 $.ajax({
-                    url: '/order_product/' + hpo_order_id,
+                    url: '/order_product/' + pid,
                     type: 'POST',
                     method: 'put',
                     data: data,
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        alert(data.response);
                         setTimeout($.unblockUI, 2000);
                     },
                     cache: false,
@@ -978,7 +902,6 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        alert(ok);
                     },
                     cache: false,
                 });
@@ -1004,9 +927,9 @@
                 total = $("#all_total").val();
                 if (discount != "") {
                     total_discount = parseInt(discount) * parseInt(total) / 100;
-                    $("#all_dis").val(parseInt(total) - parseInt(total_discount));
-                    $("#total_discount").val(parseInt(total) - parseInt(total_discount));
-                    $("#total_discount").text(parseInt(total) - parseInt(total_discount));
+                    $("#all_dis").val(parseInt(total) - parseInt(total_discount))
+                    $("#total_discount").val(parseInt(total) - parseInt(total_discount))
+                    $("#total_discount").text(parseInt(total) - parseInt(total_discount))
                 }
                 total = 0;
                 $('.sub-total').each(function () {
@@ -1077,6 +1000,8 @@
                         dataType: 'json',
                         async: false,
                         success: function (data) {
+                            window.location.href = "/order";
+                            setTimeout($.unblockUI, 2000);
                         },
                         cache: false,
                     });

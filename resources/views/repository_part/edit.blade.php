@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    {{--    @can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -28,7 +28,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Part Id')}}</label>
-                                        <input type="text" class="form-control" name="hrp_part_id" value="{{$repository->hrp_part_id}}">
+                                        <input type="text" class="form-control" name="hrp_part_id"
+                                               value="{{$repository->hrp_part_id}}">
                                     </div>
 
                                 </div>
@@ -38,7 +39,8 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Repository Name')}}</label>
                                         <input type="text" class="form-control" required=""
-                                               aria-invalid="false" name="hrp_repository_id" value="{{$repository->hrp_part_id}}">
+                                               aria-invalid="false" name="hrp_repository_id"
+                                               value="{{$repository->hrp_part_id}}">
                                     </div>
                                 </div>
                             </div>
@@ -47,13 +49,14 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Count')}}</label>
                                         <textarea class="form-control" required=""
-                                                  aria-invalid="false" name="hrp_part_count" >{{$repository->hrp_part_count}}</textarea>
+                                                  aria-invalid="false"
+                                                  name="hrp_part_count">{{$repository->hrp_part_count}}</textarea>
                                     </div>
                                 </div>
                             </div>
-                                <a href="{{route('repository.index')}}" class="btn badge-danger">{{__('Back')}}</a>
+                            <a href="{{route('repository.index')}}" class="btn badge-danger">{{__('Back')}}</a>
 
-                                <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
+                            <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
                         </form>
                     </div>
 
@@ -62,7 +65,7 @@
             </div>
         </div>
     </div>
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')

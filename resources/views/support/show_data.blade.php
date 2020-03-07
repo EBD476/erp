@@ -8,7 +8,7 @@
 @endpush
 
 @section('content')
-    {{--@can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -204,5 +204,6 @@
             });
         })
         ;
-    </script>
+    </script></div>
+    @endrole
 @endpush

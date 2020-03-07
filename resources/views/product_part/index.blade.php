@@ -2,18 +2,13 @@
 
 @section('title',__('Products'))
 
-@push('script')
-    <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
-@endpush
-
-
 @push('css')
     <link href="{{ asset('assets/css/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/leaflet.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
-    {{--@can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -22,7 +17,8 @@
                         <i class="tim-icons icon-simple-add"></i>
                         {{__('New Product Part')}}
                     </a>
-                    <a class="btn btn-primary float-left mb-lg-2" data-target="#modalRegisterForm" href="#" data-toggle="modal">
+                    <a class="btn btn-primary float-left mb-lg-2" data-target="#modalRegisterForm" href="#"
+                       data-toggle="modal">
                         {{__('Computing Product')}}
                     </a>
                 </div>
@@ -217,66 +213,68 @@
                     </div>
                 </div>
             </div>
-            {{--@endcan--}}
-            @endsection
+        </div>
+    </div>
+    @endrole
+@endsection
 
-            @push('scripts')
+@push('scripts')
 
-                <script src="{{asset('assets/js/plugins/datatables.min.js')}}"></script>
-                <script>
-                    $(document).ready(function () {
-                        $('#table').DataTable({
-                            "pagingType": "full_numbers",
-                            "lengthMenu": [
-                                [10, 25, 50, -1],
-                                [10, 25, 50, "All"]
-                            ],
-                            responsive: true,
-                            language: {
-                                search: "_INPUT_",
-                                searchPlaceholder: "عبارت جستجو",
-                                "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Persian.json"
-                            }
+    <script src="{{asset('assets/js/plugins/datatables.min.js')}}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#table').DataTable({
+                "pagingType": "full_numbers",
+                "lengthMenu": [
+                    [10, 25, 50, -1],
+                    [10, 25, 50, "All"]
+                ],
+                responsive: true,
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "عبارت جستجو",
+                    "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Persian.json"
+                }
 
-                        });
+            });
 
-                    });
+        });
 
-                    $("#checkbox").on('change', function (event) {
-                        if ($("#checkbox").val() == 1) {
+        $("#checkbox").on('change', function (event) {
+            if ($("#checkbox").val() == 1) {
 
-                        }
-                        else {
-                            $("#checkbox").val() == 1
-                        }
-                    });
+            }
+            else {
+                $("#checkbox").val() == 1
+            }
+        });
 
-                    // Modal Form
-                    $("#modal_form").submit(function (event) {
-                        var data = $("#modal_form").serialize();
-                        event.preventDefault();
-                        $.blockUI();
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
+        // Modal Form
+        $("#modal_form").submit(function (event) {
+            var data = $("#modal_form").serialize();
+            event.preventDefault();
+            $.blockUI();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
-                        $.ajax({
-                            url: '/repository_requirement',
-                            type: 'POST',
-                            data: data,
-                            dataType: 'json',
-                            async: false,
-                            success: function (data) {
-                                setTimeout($.unblockUI);
-                                $("#modalRegisterForm").find("input").val("");
-                                $("#modalRegisterForm").modal('hide');
-                            },
-                            cache: false,
-                        });
-                    });
-                    // End Modal Form
+            $.ajax({
+                url: '/repository_requirement',
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    setTimeout($.unblockUI);
+                    $("#modalRegisterForm").find("input").val("");
+                    $("#modalRegisterForm").modal('hide');
+                },
+                cache: false,
+            });
+        });
+        // End Modal Form
 
-                </script>
-    @endpush
+    </script>
+@endpush

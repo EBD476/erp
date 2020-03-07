@@ -112,7 +112,7 @@
                 </div>
             </div>
         </div>
-
+    </div>
         @endrole
         @role('Admin')
     <div class="wrap main-content" data-scrollbar>
@@ -223,6 +223,7 @@
                 </div>
             </div>
         </div>
+    </div>
         @endrole
         @role('finance')
         <div class="wrap main-content" data-scrollbar>
@@ -318,6 +319,7 @@
                     </div>
                 </div>
             </div>
+        </div>
             @endrole
             @role('dealership')
         <div class="wrap main-content" data-scrollbar>
@@ -413,6 +415,7 @@
                     </div>
                 </div>
             </div>
+        </div>
             @endrole
             @role('repository')
         <div class="wrap main-content" data-scrollbar>
@@ -508,6 +511,7 @@
                     </div>
                 </div>
             </div>
+        </div>
             @endrole
             @role('product')
         <div class="wrap main-content" data-scrollbar>
@@ -603,6 +607,7 @@
                     </div>
                 </div>
             </div>
+        </div>
             @endrole
             @role('geust')
         <div class="wrap main-content" data-scrollbar>
@@ -698,5 +703,6 @@
                     </div>
                 </div>
             </div>
+        </div>
             @endrole
 @endsection

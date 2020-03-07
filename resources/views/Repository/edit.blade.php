@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    {{--    @can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -57,7 +57,8 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Entry Date')}}</label>
                                         <input class="form-control" required=""
-                                                  aria-invalid="false" name="hr_entry_date" value="{{$Repositories-> hr_entry_date}}">
+                                               aria-invalid="false" name="hr_entry_date"
+                                               value="{{$Repositories-> hr_entry_date}}">
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +67,7 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Exit')}}</label>
                                         <input class="form-control" required=""
-                                                  aria-invalid="false" name="hr_exit" value="{{$Repositories-> hr_exit}}">
+                                               aria-invalid="false" name="hr_exit" value="{{$Repositories-> hr_exit}}">
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +76,8 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Contradiction')}}</label>
                                         <input class="form-control" required=""
-                                                  aria-invalid="false" name="hr_contradiction" value="{{$Repositories-> hr_contradiction}}">
+                                               aria-invalid="false" name="hr_contradiction"
+                                               value="{{$Repositories-> hr_contradiction}}">
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +86,8 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Provider Code')}}</label>
                                         <input class="form-control" required=""
-                                                  aria-invalid="false" name="hr_provider_code" value="{{$Repositories-> hr_provider_code}}">
+                                               aria-invalid="false" name="hr_provider_code"
+                                               value="{{$Repositories-> hr_provider_code}}">
                                     </div>
                                 </div>
                             </div>
@@ -93,7 +96,8 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Return Value')}}</label>
                                         <input class="form-control" required=""
-                                                  aria-invalid="false" name="hr_return_value" value="{{$Repositories-> hr_return_value}}">
+                                               aria-invalid="false" name="hr_return_value"
+                                               value="{{$Repositories-> hr_return_value}}">
                                     </div>
                                 </div>
                             </div>
@@ -102,13 +106,14 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Status Return Part')}}</label>
                                         <input class="form-control" required=""
-                                                  aria-invalid="false" name="hr_status_return_part" value="{{$Repositories-> hr_status_return_part}}">
+                                               aria-invalid="false" name="hr_status_return_part"
+                                               value="{{$Repositories-> hr_status_return_part}}">
                                     </div>
                                 </div>
                             </div>
-                                <a href="{{route('repository.index')}}" class="btn badge-danger">{{__('Back')}}</a>
+                            <a href="{{route('repository.index')}}" class="btn badge-danger">{{__('Back')}}</a>
 
-                                <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
+                            <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
                         </form>
                     </div>
 
@@ -117,7 +122,7 @@
             </div>
         </div>
     </div>
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')

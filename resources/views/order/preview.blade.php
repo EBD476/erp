@@ -2,11 +2,9 @@
 
 @section('title',__('Order'))
 
-@push('css')
-@endpush
-
 @section('content')
     <!------ Include the above in your HEAD tag ---------->
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="card">
@@ -15,9 +13,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <form action="{{route('order_product.store')}}" method="POST"
-                                          ENCTYPE="multipart/form-data">
-                                        @CSRF
+                                    <form id="form1">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <table class="table table-condensed">
@@ -55,7 +51,7 @@
                                                                 <input value="{{$order->ho_client}}"
                                                                        name="hpo_client_id"
                                                                        type="hidden">
-                                                                <input value="{{$order->id}}" name="hpo_order_id"
+                                                                <input value="{{$order->id}}" name="hpo_order_id" id="hpo_order_id"
                                                                        type="hidden">
                                                             </th>
                                                             <th class="text-center">
@@ -132,45 +128,48 @@
                                                                 </th>
 
                                                             </tr>
-                                                            <tr>
-                                                                <th class="no-line"></th>
-                                                                <th class="no-line"></th>
-                                                                <th class="no-line">
-                                                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Discount')}}
-                                                                        %&nbsp;</strong>{{$data->hpo_discount}}&nbsp;&nbsp;
-                                                                    <input value="{{$data->hpo_discount}}"
-                                                                           name="hpo_discount"
+                                                            @if($data->hpo_discount != "")
+                                                                <tr>
+                                                                    <th class="no-line"></th>
+                                                                    <th class="no-line"></th>
+                                                                    <th class="no-line">
+                                                                        <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Discount')}}
+                                                                            %&nbsp;</strong>{{$data->hpo_discount}}
+                                                                        &nbsp;&nbsp;
+                                                                        <input value="{{$data->hpo_discount}}"
+                                                                               name="hpo_discount"
+                                                                               type="hidden">
+                                                                    </th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="no-line"></th>
+                                                                    <th class="no-line"></th>
+                                                                    <th class="no-line">
+                                                                        <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Total including discount:')}}
+                                                                            &nbsp;</strong>{{$data->all_dis}}</th>
+                                                                    <input value="{{$data->all_dis}}" name="all_dis"
                                                                            type="hidden">
-                                                                </th>
-                                                            </tr>
-                                                            <tr>
-                                                                <th class="no-line"></th>
-                                                                <th class="no-line"></th>
-                                                                <th class="no-line">
-                                                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Total including discount:')}}
-                                                                        &nbsp;</strong>{{$data->all_dis}}</th>
-                                                                <input value="{{$data->all_dis}}" name="all_dis"
-                                                                       type="hidden">
-                                                            </tr>
-                                                            <tr>
-                                                                <th class="no-line"></th>
-                                                                <th class="no-line"></th>
-                                                                &nbsp;
-                                                            </tr>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="no-line"></th>
+                                                                    <th class="no-line"></th>
+                                                                    &nbsp;
+                                                                </tr>
+                                                            @endif
                                                         </table>
                                                     </table>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <button type="submit"
-                                                        class="btn btn-outline-light">{{__('Verify')}}</button>
-                                                <a href="{{route('order.create')}}"
-                                                   class="btn btn-outline-light">{{__('Back')}}</a>
-                                            </div>
-                                        </div>
                                     </form>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button type="submit"
+                                                    id="btn-1" class="btn btn-outline-light">{{__('Verify')}}</button>
+                                            <button id="edit_pre" type="submit"
+                                                    class="btn btn-outline-light">{{__('Back')}}</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -179,49 +178,71 @@
             </div>
         </div>
     </div>
-
-
+    @endrole
 @endsection
-@push('script')
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+@push('scripts')
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script>
-        {{--$(document).ready(function () {--}}
+        $(document).ready(function () {
+            $('#edit_pre').on('click', function (event) {
+                var oid =$("#hpo_order_id").val();
+                var data = $("#form1").serialize();
+                event.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
-        {{--$("#form1").submit('click', function (event) {--}}
-        {{--var data = $("#form1").serialize();--}}
-        {{--event.preventDefault();--}}
-        {{--$.blockUI({--}}
-        {{--message: '{{__('please wait...')}}', css: {--}}
-        {{--border: 'none',--}}
-        {{--padding: '15px',--}}
-        {{--backgroundColor: '#000',--}}
-        {{--'-webkit-border-radius': '10px',--}}
-        {{--'-moz-border-radius': '10px',--}}
-        {{--opacity: .5,--}}
-        {{--color: '#fff'--}}
-        {{--}--}}
-        {{--});--}}
-        {{--$.ajaxSetup({--}}
-        {{--headers: {--}}
-        {{--'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
-        {{--}--}}
-        {{--});--}}
+                $.ajax({
+                    url: '/edit_pre/'+ oid,
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    method:'put',
+                    async: false,
+                    success: function (data) {
+                        $('.content').html(data);
+                    },
+                    cache: false,
+                });
+            })
+            $("#btn-1").on('click', function (event) {
+                var data = $("#form1").serialize();
+                event.preventDefault();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
-        {{--$.ajax({--}}
-        {{--url: '/order_product',--}}
-        {{--type: 'POST',--}}
-        {{--data: data,--}}
-        {{--dataType: 'json',--}}
-        {{--async: false,--}}
-        {{--success: function (data) {--}}
-        {{--setTimeout($.unblockUI, 2000);--}}
-        {{--},--}}
-        {{--cache: false,--}}
-        {{--});--}}
-        {{--});--}}
-        {{--});--}}
+                $.ajax({
+                    url: '/order_product',
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        setTimeout($.unblockUI, 2000);
+                        window.location.href = "/order";
+                    },
+                    cache: false,
+                });
+            });
+        });
+
     </script>
+
 @endpush
 

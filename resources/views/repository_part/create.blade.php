@@ -7,6 +7,7 @@
 @endpush
 
 @section('content')
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -20,7 +21,6 @@
                     </div>
                     <div class="card-body">
                         <form id="form1">
-                            @csrf
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -65,6 +65,7 @@
             </div>
         </div>
     </div>
+    @endrole
 @endsection
 
 @push('scripts')
@@ -99,6 +100,7 @@
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
+                        window.location.href = "/repository_part";
                     },
                     cache: false,
                 });

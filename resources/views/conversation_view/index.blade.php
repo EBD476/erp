@@ -10,6 +10,7 @@
 @endpush
 
 @section('content')
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -193,6 +194,7 @@
             </div>
         </div>
     </div>
+    @endrole
 @endsection
 
 @push('scripts')

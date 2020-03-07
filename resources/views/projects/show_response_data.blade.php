@@ -8,7 +8,7 @@
 @endpush
 
 @section('content')
-    {{--@can('browse-menu-user')--}}
+    @role('Admin')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -39,9 +39,9 @@
                                             <label>{{__('Request User Name')}}</label>
                                             @foreach($user as $users)
                                                 @if($users->id == $request->hs_request_user_id)
-                                                <input rows="4" cols="80"
-                                                       class="form-control" disabled
-                                                       value="{{$users->name}}">
+                                                    <input rows="4" cols="80"
+                                                           class="form-control" disabled
+                                                           value="{{$users->name}}">
                                                 @endif
                                             @endforeach
                                         </div>
@@ -126,7 +126,7 @@
                                 </div>
 
                                 {{--<div class="card-footer">--}}
-                                    {{--<button type="submit" class="btn btn-fill btn-primary">{{__('Send')}}</button>--}}
+                                {{--<button type="submit" class="btn btn-fill btn-primary">{{__('Send')}}</button>--}}
                                 {{--</div>--}}
                             </form>
                         </div>
@@ -169,54 +169,55 @@
                 </div>
             </div>
         </div>
-        {{--@endcan--}}
-        @endsection
+    </div>
+    @endrole
+@endsection
 
-        @push('scripts')
-            <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
-            <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
-            <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
-            <script>
-                $(document).ready(function () {
-                    $("#form1").submit(function (event) {
-                        var data =
-                            {
-                                id: $('#request_id').data('id'),
-                                response: $('#hs_response').val(),
-                            }
-                        event.preventDefault();
-                        $.blockUI();
-                        $.blockUI({
-                            message: '{{__('please wait...')}}', css: {
-                                border: 'none',
-                                padding: '15px',
-                                backgroundColor: '#000',
-                                '-webkit-border-radius': '10px',
-                                '-moz-border-radius': '10px',
-                                opacity: .5,
-                                color: '#fff'
-                            }
-                        });
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
+@push('scripts')
+    <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
+    <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
+    <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            $("#form1").submit(function (event) {
+                var data =
+                    {
+                        id: $('#request_id').data('id'),
+                        response: $('#hs_response').val(),
+                    }
+                event.preventDefault();
+                $.blockUI();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
-                        $.ajax({
-                            url: '/show_data/' + data.id,
-                            type: 'POST',
-                            data: data,
-                            dataType: 'json',
-                            method: 'PUT',
-                            async: false,
-                            success: function (data) {
-                                setTimeout($.unblockUI, 2000);
-                            },
-                            cache: false,
-                        });
-                    });
-                })
-                ;
-            </script>
-    @endpush
+                $.ajax({
+                    url: '/show_data/' + data.id,
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    method: 'PUT',
+                    async: false,
+                    success: function (data) {
+                        setTimeout($.unblockUI, 2000);
+                    },
+                    cache: false,
+                });
+            });
+        })
+        ;
+    </script>
+@endpush
