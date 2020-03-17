@@ -2,6 +2,11 @@
 
 @section('title',__('Products'))
 
+@push('css')
+    <link href="{{asset('assets/css/select2.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/select2-bootstrap4.min.css')}}" rel="stylesheet"/>
+@endpush
+
 
 @section('content')
     @role('Admin')
@@ -19,7 +24,6 @@
                         </div>
                         <div class="card-body">
                             <form id="form1">
-                                @csrf
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
@@ -40,28 +44,18 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
+                                        <label>{{__('Product Color')}}</label>
                                         <div class="form-group">
-                                            <label>{{__('Product Color')}}</label>
-                                            <select class="form-control" name="hp_product_color_id">
-                                                @foreach($color as $colors)
-                                                    <option value="{{$colors->id}}">
-                                                        {{$colors->hn_color_name}}
-                                                    </option>
-                                                @endforeach
+                                            <select class="select-item-color form-control"  name="hp_product_color_id">
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
+                                        <label>{{__('Product Property')}}</label>
                                         <div class="form-group">
-                                            <label>{{__('Product Property')}}</label>
-                                            <select class="form-control" name="hp_product_property">
-                                                @foreach($properties as $property)
-                                                    <option value="{{$property->id}}">
-                                                        {{$property->hpp_property_name }} @foreach ($items as $item) @if($item->id == $property->hpp_property_items) {{$item->hppi_items_name}} @endif @endforeach
-                                                    </option>
-                                                @endforeach
+                                            <select class="select-product-property form-control" name="hp_product_property">
                                             </select>
                                         </div>
                                     </div>
@@ -93,13 +87,33 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                                </div>
+                                <input type="hidden" name="product_image" id="product_image">
                             </form>
+                            <div class="card-body" style="display: flex ; border: 1px dashed;">
+                                <form action="{{url('/product-image-save')}}" class="dropzone" id="dropzone"
+                                      enctype="multipart/form-data">
+                                    @csrf
+                                    @method('POST')
+                                    <div class="row">
+                                        <div class="col-md-6 pr-md-1">
+                                            <div class="form-group">
+                                                <label for="exampleInputFile">{{__('Image')}}</label>
+                                                <input type="file" class="form-control"
+                                                       name="file" multiple>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <br>
+                            <div class="card-footer">
+                                <button id="sub_form1" type="submit"
+                                        class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-4">
                     <div class="card card-user">
                         <div class="card-body">
@@ -144,9 +158,60 @@
 
 @push('scripts')
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/plugins/dropzone.js')}}"></script>
+    <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
     <script>
         $(document).ready(function () {
-            $("#form1").submit(function (event) {
+
+            var locale = $("#form1").data('lang');
+
+            $(".select-item-color").select2({
+                ajax: {
+                    dir: "rtl",
+                    language: "fa",
+                    url: '/json-data-fill_data_product_item',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                dir: 'rtl',
+                placeholder: ( 'انتخاب رنگ محصول'),
+
+            });
+
+            $(".select-product-property").select2({
+                dir: "rtl",
+                language: "fa",
+                ajax: {
+                    url: '/json-data-fill_data_product_property',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ( 'انتخاب مشخصه ظاهری محصول'),
+            });
+
+            $("#sub_form1").on('click', function (event) {
                 var data = $("#form1").serialize();
                 event.preventDefault();
                 $.blockUI({
@@ -180,6 +245,28 @@
                 });
             });
         });
+
+        Dropzone.options.dropzone =
+            {
+                maxFilesize: 12,
+                // فایل نوع آبجکت است
+                renameFile: function (file) {
+                    var dt = new Date();
+                    var time = dt.getTime();
+                    return time + '-' + file.name;
+                },
+                acceptedFiles: ".jpeg,.jpg,.png,.gif",
+                addRemoveLinks: true,
+                timeout: 5000,
+                success: function (file, response) {
+                    alert(file);
+                    // اسم اینپوت و مقداری که باید به آن ارسال شود
+                    $('#product_image').val(file.upload.filename);
+                },
+                error: function (file, response) {
+                    return false;
+                }
+            };
     </script>
 @endpush
 

@@ -11,7 +11,7 @@
 
 @section('content')
     @role('Admin')
-    <div class="content persian">
+    <div class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
@@ -67,11 +67,10 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="bmd-label-floating">{{__('Client Name')}}</label>
-                                                <select id="client_name" name="ho_client" class="form-control">
-                                                    @foreach($client as $clients)
-                                                        <option value="{{$clients->id}}">{{$clients->hc_name}}</option>
-                                                    @endforeach
+                                                <label class="bmd-label-floating"
+                                                       style="margin-top: -20px">{{__('Client Name')}}</label>
+                                                <select id="client_name" name="ho_client"
+                                                        class="select-client form-control">
                                                 </select>
                                                 <div class="text-light">
                                                     <a class="pointer" href="#" data-toggle="modal"
@@ -211,9 +210,10 @@
                             <div role="tabpanel" class="tab-pane" id="tab2" data-lang="{{app()->getLocale()}}">
                                 <form id="form2"
                                       class="tab-content setting-tab" enctype="multipart/form-data">
-                                    <table class="table invoice-table product-table" style="direction: ltr" id="table2">
+                                    <table class="table invoice-table product-table" style="direction: rtl" id="table2">
                                         <thead>
                                         <tr>
+                                            <th></th>
                                             <th style="min-width:32px;" class="hide-border"></th>
                                             <th style="min-width:120px;width:25%">{{__('Item')}}</th>
                                             <th style="width:100%">{{__('Description')}}</th>
@@ -231,30 +231,11 @@
                                                 <i style="display:none" data-bind="visible: actionsVisible() &amp;&amp;
                 $parent.invoice_items_without_tasks().length > 1" class="fa fa-sort"></i>
                                             </td>
+                                            <td><i class="tim-icons icon-simple-add" id="add-row" title="Add item"/>
+                                            </td>
                                             <td>
                                                 <select name="name[]" class="select-item combobox-container">
                                                     <option value=""></option>
-                                                    @foreach($product as $product_item)
-                                                        <option value="{{$product_item->id}}"
-                                                                data-price="{{$product_item->hp_product_price}}">
-                                                            {{$product_item->hp_product_name . $product_item->hp_product_model . $product_item->hp_product_size}}
-                                                            @foreach($color as $colors)
-                                                                @if($colors->id == $product_item->hp_product_color_id)
-                                                                    {{$colors->hn_color_name}}
-                                                                @endif
-                                                            @endforeach
-                                                            @foreach($properties as $property)
-                                                                @if($property->id== $product_item->hp_product_property)
-                                                                    {{$property->hpp_property_name}}
-                                                                    @foreach ($items as $item)
-                                                                        @if($item->id == $property->hpp_property_items)
-                                                                            {{$item->hppi_items_name}}
-                                                                        @endif
-                                                                    @endforeach
-                                                                @endif
-                                                            @endforeach
-                                                        </option>
-                                                    @endforeach
                                                 </select>
 
                                             </td>
@@ -272,15 +253,16 @@
                                             </td>
                                             <td style="display:table-cell">
                                                 <input
-                                                        style="text-align: right" class="form-control invoice-item qty"
+                                                        style="text-align: right" class="form-control invoice-item"
+                                                        id="qty"
                                                         name="invoice_items_qty[]">
                                             </td>
                                             <td style="text-align:right;padding-top:9px !important" nowrap="">
-                                                <div class="line-total sub-total" name="total[]"></div>
-                                                <input name="total[]" class="sub-total" type="hidden">
+                                                <div class="line-total" id="sub-total" name="total[]"></div>
+                                                <input name="total[]" id="sub-total" type="hidden">
                                             </td>
                                             <td style="cursor:pointer" class="hide-border td-icon">
-                                                <i class="tim-icons icon-simple-remove remove" title="Remove item"/>
+                                                <i class="tim-icons icon-simple-remove" id="rmv1" title="Remove item"/>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -335,7 +317,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <label class="bmd-label-floating">{{__('Total including discount:')}}</label>
+                                                    <label class="bmd-label-floating">{{__('Total including discount')}}
+                                                        :</label>
                                                     <div class="col-md-12 ">
                                                         <div class="form-group">
                                                             <div class="form-group">
@@ -385,8 +368,7 @@
                                        class="btn badge-danger">{{__('Back')}}</a>
                                     <button type="submit" class="btn btn-primary"
                                             id="btn-submit2">{{__('Send')}}</button>
-                                    <button type="submit" class="btn btn-primary"
-                                            id="preview">{{__('Preview Factor')}}</button>
+                                    <button id="preview" class="btn btn-primary">{{__('Preview Factor')}}</button>
                                 </form>
                             </div>
                         </div>
@@ -456,10 +438,13 @@
         var discount;
         var total_discount;
         var remove = 0;
+        var last_total = 0;
 
         $(document).ready(function () {
+
             var client_id;
             var order_id;
+
 
             $("#modal_form").submit(function (event) {
                 var data = $("#modal_form").serialize();
@@ -497,7 +482,6 @@
                 });
             });
 
-
             $("#form1").submit(function (event) {
                 var data = $("#form1").serialize();
                 event.preventDefault();
@@ -531,11 +515,12 @@
                         $("#order_id").val(order_id);
                         $("#client_id").val(client_id);
                         $("#order_id_show").text(order_id);
+                        $("#tab1").removeClass("active");
+                        $("#tab2").addClass("active");
                     },
                     cache: false,
                 });
             });
-
 
             $("#btn-submit2").on('click', function (event) {
                 var data = $("#form2").serialize();
@@ -574,27 +559,95 @@
 
             var locale = $("#tab2").data('lang');
 
-            $(".select-item").select2({
+            $(".select-client").select2({
+                dir: "rtl",
+                language: "fa",
+                ajax: {
+                    url: '/json-data-fill_data',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
                 theme: "bootstrap",
-                placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
-                // allowClear: true
-
+                placeholder: (locale == 'fa' ? 'انتخاب مشتری' : 'Select Client'),
             });
 
-            $(".select-item").on('change', function (event) {
+            $(".select-item").select2({
+                ajax: {
+                    url: '/json-data-fill_data_product',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                dir: 'rtl',
+                placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
+                templateResult: formatRepo,
+                templateSelection: formatRepoSelection
+                // allowClear: true
 
-                $("#unit").val($(this).find("option[value='" + $(this).val() + "']").data('price'));
-                $('.qty').val('1');
+            }).on('select2:select', function (event) {
+
+                var result = event.params.data;
+
+                $("#unit").val(result.hp_product_price);
+                $('#qty').val('1');
 
                 unit_count = $("#unit").val();
-                unit_qty = $(".qty").val();
-                $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
-                $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
+                unit_qty = $("#qty").val();
 
+                $("#sub-total").text(unit_count * unit_qty);
+                $("#sub-total").val(unit_count * unit_qty);
 
-                $('.sub-total').each(function () {
+                $("#rmv1").click(function (event) {
+                    var rowCount = $('#table2 tr').length;
+                    if (rowCount > 2) {
+                        if ($('#sub-total').text() != "") {
+                            all = $("#all_total").val();
+                            var total_each = all - parseInt($('#sub-total').val());
+                            $('#all_total').val(total_each);
+                            $('#all_tot').val(total_each);
+                            if ($('#discount').val() != "") {
+                                total1 = $('#all_total').val();
+                                discount = $('#discount').val();
+                                total_discount = parseInt(discount) * parseInt(total1) / 100;
+                                $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
+                                $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
+                                $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
+                            }
+                        }
 
-                    total = $(this).text();
+                        if (remove == 0) {
+                            total = all - parseInt($('#sub-total').val());
+                            $("#all_tot").val(total);
+                            $("#all_total").val(total);
+                        }
+
+                        $(this).parent().parent().remove();
+                        remove = 0;
+                    }
+                })
+
+                $('#sub-total').each(function () {
+                    total = $('#sub-total').text();
                     if (total != "") {
                         $("#all_total").val(total);
                         $("#all_total").text(total);
@@ -603,12 +656,11 @@
 
                 });
 
-                $(".qty").on('change', function (event) {
-
-                    unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
-                    unit_qty = $(this).val();
-                    $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
-                    $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
+                $("#qty").on('change', function (event) {
+                    unit_count = $("#unit").val();
+                    unit_qty = $("#qty").val();
+                    $('#sub-total').text(unit_count * unit_qty);
+                    $('#sub-total').val(unit_count * unit_qty);
                     discount = $("#discount").val();
                     total = $("#all_total").val();
                     if (discount != "") {
@@ -618,9 +670,8 @@
                         $("#total_discount").text(parseInt(total) - parseInt(total_discount))
                     }
                     total = 0;
-                    $('.sub-total').each(function () {
-
-                        current = $(this).text();
+                    $('#sub-total').each(function () {
+                        current = $('#sub-total').val();
                         if (current != "") {
                             total = total + parseInt(current);
                             $("#all_total").val(total);
@@ -632,165 +683,302 @@
 
                 $("#discount").on('change', function (event) {
                     total = $('#all_total').val();
-                    discount = $(this).val();
+                    discount = $('#discount').val();
                     total_discount = parseInt(discount) * parseInt(total) / 100;
                     $('#all_dis').val(parseInt(total) - parseInt(total_discount));
                     $('#total_discount').val(parseInt(total) - parseInt(total_discount));
                     $('#total_discount').text(parseInt(total) - parseInt(total_discount));
                 })
 
-                function append_item() {
+            });
 
-                    $('.table').append('<tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"\n' +
-                        '                                        class="sortable-row ui-sortable-handle" style="">\n' +
-                        '                                        <td class="hide-border td-icon">\n' +
-                        '                                            <i style="display:none" data-bind="visible: actionsVisible() &amp;&amp;\n' +
-                        '                $parent.invoice_items_without_tasks().length > 1" class="fa fa-sort"></i>\n' +
-                        '                                        </td>\n' +
-                        '                                        <td>\n' +
-                        '                                                       <select name="name[]" class="select-item combobox-container">\n' +
-                        '                                                            <option value=""></option>' +
-                        '                                                            @foreach($product as $product_item)\n' +
-                        '                                                                <option value="{{$product_item->id}}" data-price="{{$product_item->hp_product_price}}">\n' +
-                        '                                                                    {{$product_item->hp_product_name }}\n' +
+            function formatRepo(repo) {
 
+                if (repo.loading) {
+                    return repo.text;
+                }
 
-                        '                                                            @foreach($color as $colors) \n' +
-                        '                                                            @if($colors->id == $product_item->hp_product_color_id) \n' +
-                        '                                                            {{$colors->hn_color_name}} \n' +
-                        '                                                            @endif \n' +
-                        '                                                            @endforeach \n' +
-                        '                                                            @foreach($properties as $property) \n' +
-                        '                                                            @if($property->id== $product_item->hp_product_property) \n' +
-                        '                                                            {{$property->hpp_property_name}} \n' +
-                        '                                                            @foreach ($items as $item)\n' +
-                        '                                                            @if($item->id == $property->hpp_property_items) \n' +
-                        '                                                            {{$item->hppi_items_name}} \n' +
-                        '                                                            @endif \n' +
-                        '                                                            @endforeach \n' +
-                        '                                                            @endif \n' +
-                        '                                                            @endforeach \n' +
+                var $container = $(
+                    "<div class='select2-result-repository clearfix'>" +
+                    "<div class='select2-result-repository__avatar'><img src='/img/products/" + repo.hp_product_image + "' /></div>" +
+                    "<div class='select2-result-repository__meta'>" +
+                    "<div class='select2-result-repository__title'></div>" +
+                    "<div class='select2-result-repository__description'></div>" +
+                    "<div class='select2-result-repository__color'></div>" +
+                    "<div class='select2-result-repository__statistics'>" +
+                    // "<div class='select2-result-repository__forks'><i class='fa fa-flash'></i> </div>" +
+                    // "<div class='select2-result-repository__stargazers'><i class='fa fa-star'></i> </div>" +
+                    // "<div class='select2-result-repository__watchers'><i class='fa fa-eye'></i> </div>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>"
+                );
 
+                $container.find(".select2-result-repository__title").text(repo.text);
+                $container.find(".select2-result-repository__description").text("{{__('Price')}}" + " : " + repo.hp_product_price);
+                $container.find(".select2-result-repository__color").text("{{__('Color')}}" + " : " + repo.hn_color_name);
+                $container.find(".select2-result-repository__statistics").text("{{__('Property')}}" + " : " + repo.hpp_property_name + repo.hppi_items_name);
+                // $container.find(".select2-result-repository__forks").append(repo.forks_count + " Forks");
+                // $container.find(".select2-result-repository__stargazers").append(repo.stargazers_count + " Stars");
+                // $container.find(".select2-result-repository__watchers").append(repo.watchers_count + " Watchers");
 
-                        '                                                                </option>\n' +
-                        '                                                            @endforeach\n' +
-                        '                                                        </select>\n' +
-                        '\n' +
-                        '                                        </td>\n' +
-                        '                                        <td>\n' +
-                        '                                                <textarea\n' +
-                        '                                                        data-bind="value: notes, valueUpdate: \'afterkeydown\', attr: {name: \'invoice_items[]\'}"\n' +
-                        '                                                        rows="1" cols="60" style="resize: vertical; height: 42px;"\n' +
-                        '                                                        class="form-control word-wrap"\n' +
-                        '                                                        name="invoice_items[]"></textarea>\n' +
-                        '\n' +
-                        '                                        </td>\n' +
-                        '                                        <td>\n' +
-                        '                                            <input disabled type="text" id="unit" class="form-control"\n' +
-                        '                                                   name="hp_product_price[]">\n' +
-                        '                                        </td>\n' +
-                        '                                        <td style="display:table-cell">\n' +
-                        '                                            <input \n' +
-                        '                                                   style="text-align: right" class="form-control invoice-item qty"\n' +
-                        '                                                   name="invoice_items_qty[]">\n' +
-                        '                                        </td>\n' +
-                        '                                        <td style="text-align:right;padding-top:9px !important" nowrap="">\n' +
-                        '                                            <div name="total[]" class="line-total sub-total"></div>\n' +
-                        '                                            <input name="total[]"class="sub-total" type="hidden">\n' +
-                        '                                        </td>\n' +
-                        '                                        <td style="cursor:pointer" class="hide-border td-icon">\n' +
-                        '                                            <i \n' +
-                        '                                               \n' +
-                        '                                               class="tim-icons icon-simple-remove remove"  title="Remove item">\n' +
-                        '                                            </i></td>\n' +
-                        '                                    </tr>'
-                    )
-                    ;
+                return $container;
+            }
 
-                    var locale = $("#tab2").data('lang');
+            function formatRepoSelection(repo) {
+                return repo.id || repo.text;
+            }
 
-                    $(".select-item").select2({
-                        theme: "bootstrap",
-                        placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
-                    });
+            // add new row to table 2
+            $("#add-row").on('click', function (event) {
+                $(this).removeClass('icon-simple-add');
+                $(this).addClass('icon-simple-remove');
 
-                    $(".select-item").on('change', function (event) {
+                if ($(this).hasClass('icon-simple-remove')) {
+                    //remove item operations
+                    append_item();
+                }
+            });
 
-                        $(this).parent().parent().find("input[name='hp_product_price[]']").val($(this).find("option[value='" + $(this).val() + "']").data('price'));
-                        $(this).parent().parent().find("input[name='invoice_items_qty[]']").val('1');
+            function append_item() {
+                $('.table').append('<tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"\n' +
+                    '                                       class="sortable-row ui-sortable-handle" style="">\n' +
+                    '                                        <td class="hide-border td-icon">\n' +
+                    '                                            <i style="display:none" data-bind="visible: actionsVisible() &amp;&amp;\n' +
+                    '   ' +
+                    '' +
+                    '             $parent.invoice_items_without_tasks().length > 1" class="fa fa-sort"></i>\n' +
+                    '                                        </td>\n' +
+                    '                      <td> <i class="tim-icons icon-simple-add" id="add-row' + $("#table2 tr").length + '" title="Add item"/></td>\n' +
+                    '                                        <td>\n' +
+                    '                                                       <select name="name[]" class="select-item combobox-container">\n' +
+                    '                                                            <option value=""></option>' +
+                    '                                                        </select>\n' +
+                    '\n' +
+                    '                                        </td>\n' +
+                    '                                        <td>\n' +
+                    '                                                <textarea\n' +
+                    '                                                        data-bind="value: notes, valueUpdate: \'afterkeydown\', attr: {name: \'invoice_items[]\'}"\n' +
+                    '                                                        rows="1" cols="60" style="resize: vertical; height: 42px;"\n' +
+                    '                                                        class="form-control word-wrap"\n' +
+                    '                                                        name="invoice_items[]"></textarea>\n' +
+                    '\n' +
+                    '                                        </td>\n' +
+                    '                                        <td>\n' +
+                    '                                            <input disabled type="text" id= "unit' + $("#table2 tr").length + '" class="form-control"\n' +
+                    '                                                   name="hp_product_price[]">\n' +
+                    '                                        </td>\n' +
+                    '                                        <td style="display:table-cell">\n' +
+                    '                                            <input \n' +
+                    '                                                   style="text-align: right" class="form-control invoice-item "\n' +
+                    '                                                 id= "qty' + $("#table2 tr").length + '"   name="invoice_items_qty[]">\n' +
+                    '                                        </td>\n' +
+                    '                                        <td style="text-align:right;padding-top:9px !important" nowrap="">\n' +
+                    '                                            <div name="total[]" class="line-total" id="sub-total' + $("#table2 tr").length + '"></div>\n' +
+                    '                                            <input name="total[]" id="sub-total' + $("#table2 tr").length + '" type="hidden">\n' +
+                    '                                        </td>\n' +
+                    '                                        <td style="cursor:pointer" class="hide-border td-icon">\n' +
+                    '                                            <i \n' +
+                    '                                               \n' +
+                    '                                               class="tim-icons icon-simple-remove" id=rmv' + $("#table2 tr").length + '  title="Remove item">\n' +
+                    '                                            </i></td>\n' +
+                    '                                    </tr>'
+                );
 
+                var locale = $("#tab2").data('lang');
 
-                        unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
-                        unit_qty = $(this).parent().parent().find("input[name='invoice_items_qty[]']").val();
-                        $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
-                        $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
+                $(".select-item").select2({
+                    ajax: {
+                        url: '/json-data-fill_data_product',
+                        dataType: 'json',
+                        data: function (params) {
+                            return {
+                                search: params.term, // search term
+                                page: params.page
+                            };
+                        },
+                        processResults: function (data) {
+                            return {
+                                results: data.results
+                            }
+                        }
+                    },
+                    theme: "bootstrap",
+                    dir: 'rtl',
+                    placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
+                    templateResult: formatRepo,
+                    templateSelection: formatRepoSelection
+                    // allowClear: true
 
-                        total = 0;
-                        $('.sub-total').each(function () {
+                }).on('select2:select', function (event) {
 
-                            current = $(this).text();
-                            if (current != "") {
-                                total = total + parseInt(current);
-                                $("#all_tot").val(total);
-                                $("#all_total").val(total);
-                                $("#all_total").text(total);
+                    var result = event.params.data;
+
+                    $("#unit" + parseInt($("#table2 tr").length - 1)).val(result.hp_product_price);
+
+                    $('#qty' + parseInt($("#table2 tr").length - 1)).val('1');
+
+                    unit_count = $("#unit" + parseInt($("#table2 tr").length - 1)).val();
+
+                    unit_qty = $("#qty" + parseInt($("#table2 tr").length - 1)).val();
+
+                    $("#sub-total" + parseInt($("#table2 tr").length - 1)).text(unit_count * unit_qty);
+
+                    $("#sub-total" + parseInt($("#table2 tr").length - 1)).val(unit_count * unit_qty);
+
+                    $("#rmv1").click(function (event) {
+                        var rowCount = $('#table2 tr').length;
+                        if (rowCount > 2) {
+                            if ($('#sub-total').text() != "") {
+                                all = $("#all_total").val();
+                                var total_each = all - parseInt($('#sub-total').val());
+                                $('#all_total').val(total_each);
+                                $('#all_tot').val(total_each);
                                 if ($('#discount').val() != "") {
                                     total1 = $('#all_total').val();
                                     discount = $('#discount').val();
                                     total_discount = parseInt(discount) * parseInt(total1) / 100;
-                                    $('#all_dis').val(parseInt(total1) - parseInt(total_discount));
+                                    $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
                                     $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
                                     $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
                                 }
                             }
-                        });
 
-                        $(".qty").on('change', function (event) {
-
-                            unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
-                            unit_qty = $(this).val();
-                            $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
-                            $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
-                            discount = $("#discount").val();
-                            total = $("#all_total").val();
-                            if (discount != "") {
-                                total_discount = parseInt(discount) * parseInt(total) / 100;
-                                $("#all_dis").val(parseInt(total) - parseInt(total_discount))
-                                $("#total_discount").val(parseInt(total) - parseInt(total_discount))
-                                $("#total_discount").text(parseInt(total) - parseInt(total_discount))
+                            if (remove == 0) {
+                                total = all - parseInt($('#sub-total').val());
+                                $("#all_tot").val(total);
+                                $("#all_total").val(total);
                             }
-                            total = 0;
-                            $('.sub-total').each(function () {
 
-                                current = $(this).text();
+                            $(this).parent().parent().remove();
+                            remove = 0;
+                        }
+                    })
+
+                    $('.line-total').each(function () {
+
+                        current = $(this).text();
+                        subtotal = $('#sub-total').val();
+                        if (current != "") {
+                            total = 0;
+                            if (current != "") {
+                                total = parseInt(subtotal) + parseInt(current);
+                                $("#all_tot").val(total);
+                                $("#all_total").val(total);
+                                $("#all_total").text(total);
+                            }
+
+                        }
+                    });
+
+                    $("#qty" + parseInt($("#table2 tr").length - 1)).on('change', function (event) {
+                        unit_count = $("#unit" + parseInt($("#table2 tr").length - 1)).val();
+                        unit_qty = $("#qty" + parseInt($("#table2 tr").length - 1)).val();
+                        $('#sub-total' + parseInt($("#table2 tr").length - 1)).text(unit_count * unit_qty);
+                        $('#sub-total' + parseInt($("#table2 tr").length - 1)).val(unit_count * unit_qty);
+                        discount = $("#discount").val();
+                        total = $("#all_total").val();
+                        if (discount != "") {
+                            total_discount = parseInt(discount) * parseInt(total) / 100;
+                            $("#all_dis").val(parseInt(total) - parseInt(total_discount))
+                            $("#total_discount").val(parseInt(total) - parseInt(total_discount))
+                            $("#total_discount").text(parseInt(total) - parseInt(total_discount))
+                        }
+                        total = 0;
+                        $('#sub-total' + parseInt($("#table2 tr").length - 1)).each(function () {
+                            current = $('#sub-total' + parseInt($("#table2 tr").length - 1)).val();
+                            total = $('#sub-total').text();
+                            if (total != "") {
+                                total = 0;
+                                // current = $(this).text();
                                 if (current != "") {
                                     total = total + parseInt(current);
                                     $("#all_tot").val(total);
                                     $("#all_total").val(total);
                                     $("#all_total").text(total);
+
+
+                                    $("#all_total").val(total);
+                                    $("#all_total").text(total);
+                                    $("#all_tot").val(total);
                                 }
-                            });
 
+                            }
                         });
 
-                        $("#discount").on('change', function (event) {
-                            discount = $(this).val();
-                            total_discount = parseInt(discount) * parseInt(total) / 100;
-                            $('#all_dis').val(parseInt(total) - parseInt(total_discount));
-                            $('#total_discount').val(parseInt(total) - parseInt(total_discount));
-                            $('#total_discount').text(parseInt(total) - parseInt(total_discount));
-                        });
+                    });
 
-                        $(".remove").click(function () {
+                    $("#discount").on('change', function (event) {
+                        total = $('#all_total').val();
+                        discount = $('#discount').val();
+                        total_discount = parseInt(discount) * parseInt(total) / 100;
+                        $('#all_dis').val(parseInt(total) - parseInt(total_discount));
+                        $('#total_discount').val(parseInt(total) - parseInt(total_discount));
+                        $('#total_discount').text(parseInt(total) - parseInt(total_discount));
+                    })
+                });
 
+                // add new row len _1 to table 2
+                $("#add-row" + parseInt($("#table2 tr").length - 1)).on('click', function (event) {
+
+                    append_item();
+
+                    $(this).removeClass('icon-simple-add');
+                    $(this).addClass('icon-simple-remove');
+
+                    if ($(this).hasClass('icon-simple-remove')) {
+                        //remove item operations
+                    }
+
+                    var locale = $("#tab2").data('lang');
+
+                    $(".select-item").select2({
+                        ajax: {
+                            url: '/json-data-fill_data_product',
+                            dataType: 'json',
+                            data: function (params) {
+                                return {
+                                    search: params.term, // search term
+                                    page: params.page
+                                };
+                            },
+                            processResults: function (data) {
+                                return {
+                                    results: data.results
+                                }
+                            }
+                        },
+                        theme: "bootstrap",
+                        dir: 'rtl',
+                        placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
+                        templateResult: formatRepo,
+                        templateSelection: formatRepoSelection
+                        // allowClear: true
+
+                    }).on('select2:select', function (event) {
+
+                        var result = event.params.data;
+
+                        $("#unit" + parseInt($("#table2 tr").length - 1)).val(result.hp_product_price);
+
+                        $('#qty' + parseInt($("#table2 tr").length - 1)).val('1');
+
+                        unit_count = $("#unit" + parseInt($("#table2 tr").length - 1)).val();
+
+                        unit_qty = $("#qty" + parseInt($("#table2 tr").length - 1)).val();
+
+                        $("#sub-total" + parseInt($("#table2 tr").length - 1)).text(unit_count * unit_qty);
+
+                        $("#sub-total" + parseInt($("#table2 tr").length - 1)).val(unit_count * unit_qty);
+
+                        $("#rmv1").click(function (event) {
                             var rowCount = $('#table2 tr').length;
-
                             if (rowCount > 2) {
-                                if ($(this).parent().parent().find('.sub-total').text() != "") {
+                                if ($('#sub-total').text() != "") {
                                     all = $("#all_total").val();
-                                    total = all - parseInt($(this).parent().parent().find('.sub-total').text());
-                                    $('#all_total').val(total);
-                                    $('#all_tot').val(total);
+                                    var total_each = all - parseInt($('#sub-total').val());
+                                    $('#all_total').val(total_each);
+                                    $('#all_tot').val(total_each);
                                     if ($('#discount').val() != "") {
                                         total1 = $('#all_total').val();
                                         discount = $('#discount').val();
@@ -802,39 +990,141 @@
                                 }
 
                                 if (remove == 0) {
-
-                                    total = all - parseInt($(this).parent().parent().find('.sub-total').text());
+                                    total = all - parseInt($('#sub-total').val());
                                     $("#all_tot").val(total);
                                     $("#all_total").val(total);
-                                    remove += 1;
-
                                 }
 
                                 $(this).parent().parent().remove();
                                 remove = 0;
-
                             }
+                        })
+
+                        // alert('#sub-total'+parseInt($('#table2 tr').length - 1));
+
+                        //    $('#sub-total'+parseInt($('#table2 tr').length - 1)).on('change',function () {
+
+                        //sum totals
+                        //alert(current);
+                        current = parseInt($('#sub-total' + parseInt($('#table2 tr').length - 1)).text());
+                        subtotal = $("#all_total").text()
+                        if (current != "") {
+                            //total = 0;
+                            if (current != "") {
+                                if ($('#table2 tr').length - 1 == 3) {
+                                    total = parseInt(current) + parseInt(subtotal);
+                                } else {
+                                    total = parseInt(current) + parseInt(last_total);
+                                }
+                                $("#all_tot").val(total);
+                                $("#all_total").val(total);
+                                $("#all_total").text(total);
+                                last_total = parseInt($("#all_total").text());
+                            }
+
+                        }
+                        //   });
+
+                        $("#qty" + parseInt($("#table2 tr").length - 1)).on('change', function (event) {
+                            unit_count = $("#unit" + parseInt($("#table2 tr").length - 1)).val();
+                            unit_qty = $("#qty" + parseInt($("#table2 tr").length - 1)).val();
+                            $('#sub-total' + parseInt($("#table2 tr").length - 1)).text(unit_count * unit_qty);
+                            $('#sub-total' + parseInt($("#table2 tr").length - 1)).val(unit_count * unit_qty);
+                            discount = $("#discount").val();
+                            total = $("#all_total").val();
+                            if (discount != "") {
+                                total_discount = parseInt(discount) * parseInt(total) / 100;
+                                $("#all_dis").val(parseInt(total) - parseInt(total_discount))
+                                $("#total_discount").val(parseInt(total) - parseInt(total_discount))
+                                $("#total_discount").text(parseInt(total) - parseInt(total_discount))
+                            }
+
                         });
 
-                        append_item();
-
+                        $("#discount").on('change', function (event) {
+                            total = $('#all_total').val();
+                            discount = $('#discount').val();
+                            total_discount = parseInt(discount) * parseInt(total) / 100;
+                            $('#all_dis').val(parseInt(total) - parseInt(total_discount));
+                            $('#total_discount').val(parseInt(total) - parseInt(total_discount));
+                            $('#total_discount').text(parseInt(total) - parseInt(total_discount));
+                        })
                     });
 
+                });
 
-                }
-
-                append_item();
-
-
-            })
-
-
+            }
         });
 
+        //edit preview factor
+        $('#edit_pre').on('click', function (event) {
+            var oid = $("#hpo_order_id").val();
+            var data = $("#form1").serialize();
+            event.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+
+            $.ajax({
+                url: '/edit_pre/' + oid,
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                method: 'put',
+
+                success: function (data) {
+                    $('.container-fluid').html(data.response);
+                },
+                cache: false,
+            });
+        });
+
+        //send form1 data
+        $("#btn-1").on('click', function (event) {
+            var data = $("#form1").serialize();
+            event.preventDefault();
+            $.blockUI({
+                message: '{{__('please wait...')}}', css: {
+                    border: 'none',
+                    padding: '15px',
+                    backgroundColor: '#000',
+                    '-webkit-border-radius': '10px',
+                    '-moz-border-radius': '10px',
+                    opacity: .5,
+                    color: '#fff'
+                }
+            });
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: '/order_product',
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    setTimeout($.unblockUI, 2000);
+                    window.location.href = "/order";
+                },
+                cache: false,
+            });
+        });
+
+
+        //preview factor
         $('#preview').on('click', function () {
             $('#form2').attr('action', '{{route('order.preview')}}', 'method', 'post');
         })
+
     </script>
+
     <script type="text/javascript">
         var loc;
         var greenIcon = L.icon({
@@ -865,7 +1155,9 @@
 
         map.on('click', onMapClick);
     </script>
+
     {{--datapicker--}}
+
     <script>
         kamaDatepicker('test-date-id', {
             buttonsColor: "blue",
@@ -874,4 +1166,5 @@
             previousButtonIcon: "fa fa-arrow-circle-left"
         });
     </script>
+
 @endpush

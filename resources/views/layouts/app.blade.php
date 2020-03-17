@@ -72,23 +72,23 @@
         /**** Scroller ****/
 
         if (isWindows) {
-            if ($('.main-panel').length != 0) {
-                var ps = new PerfectScrollbar('.main-panel', {
-                    wheelSpeed: 2,
-                    wheelPropagation: true,
-                    minScrollbarLength: 20,
-                    suppressScrollX: true
-                });
-            }
+            // if ($('.main-panel').length != 0) {
+            //     var ps = new PerfectScrollbar('.main-panel', {
+            //         wheelSpeed: 2,
+            //         wheelPropagation: true,
+            //         minScrollbarLength: 20,
+            //         suppressScrollX: true
+            //     });
+            // }
 
-            if ($('.table-responsive').length != 0) {
-                var ps = new PerfectScrollbar('.table-responsive', {
-                    wheelSpeed: 2,
-                    wheelPropagation: true,
-                    minScrollbarLength: 20,
-                    suppressScrollX: true
-                });
-            }
+            // if ($('.table-responsive').length != 0) {
+            //     var ps = new PerfectScrollbar('.table-responsive', {
+            //         wheelSpeed: 2,
+            //         wheelPropagation: true,
+            //         minScrollbarLength: 20,
+            //         suppressScrollX: true
+            //     });
+            // }
         }
 
 

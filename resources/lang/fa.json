@@ -498,6 +498,9 @@
   "Send New Product":"ثبت محصول جدید",
   "Send Modify":"ویرایش محصول ثبت شده",
   "Modify List of Material":"ویرایش لیست محصولات",
-  "Insert List of Material":"اضافه کردن به لیست محصولات"
+  "Insert List of Material":"اضافه کردن به لیست محصولات",
+  "Color":"رنگ",
+  "Property":"مشخصه ظاهری",
+  "Image":"تصویر"
 
 }

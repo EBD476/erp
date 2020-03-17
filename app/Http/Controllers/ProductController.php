@@ -7,10 +7,12 @@ use App\ProductColor;
 use App\ProductProperty;
 use App\ProductPropertyItems;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -21,20 +23,19 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $user=User::all();
-        $type=HDtype::all();
+        $user = User::all();
+        $type = HDtype::all();
         $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $products = Product::all();
-        return view('products.index',compact('products','type','priority','help_desk','user'));
+        return view('products.index', compact('products', 'type', 'priority', 'help_desk', 'user'));
     }
 
 
-
-    public function checkbox(Request $request , $id)
+    public function checkbox(Request $request, $id)
     {
-        $checkbox=Product::find($id);
-        $checkbox->hp_statuse=$request->checkbox;
+        $checkbox = Product::find($id);
+        $checkbox->hp_statuse = $request->checkbox;
         $checkbox->save();
     }
 
@@ -46,13 +47,13 @@ class ProductController extends Controller
     public function create()
     {
         $items = ProductPropertyItems::all();
-        $user=User::all();
+        $user = User::all();
         $properties = ProductProperty::all();
         $color = ProductColor::all();
-        $type=HDtype::all();
+        $type = HDtype::all();
         $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('products.create',compact('type','help_desk','priority','color','items','properties','user'));
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        return view('products.create', compact('type', 'help_desk', 'priority', 'color', 'items', 'properties', 'user'));
     }
 
     public function store(Request $request)
@@ -73,15 +74,16 @@ class ProductController extends Controller
         $product->hp_product_color_id = $request->hp_product_color_id;
         $product->hp_description = $request->hp_description;
         $product->hp_product_size = $request->hp_product_size;
+        $product->hp_product_image = $request->product_image;
         $product->save();
 
-        return json_encode(["response"=>"OK"]);
+        return json_encode(["response" => "OK"]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Product $product
      * @return \Illuminate\Http\Response
      */
     public function show(Product $product)
@@ -92,7 +94,7 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Product $product
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -100,12 +102,12 @@ class ProductController extends Controller
         $properties = ProductProperty::all();
         $color = ProductColor::all();
         $items = ProductPropertyItems::all();
-        $user=User::all();
-        $type=HDtype::all();
+        $user = User::all();
+        $type = HDtype::all();
         $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $product=Product::find($id);
-        return view('products.edit',compact('product','type','priority','help_desk','user','items','color','properties'));
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $product = Product::find($id);
+        return view('products.edit', compact('product', 'type', 'priority', 'help_desk', 'user', 'items', 'color', 'properties'));
 
 
     }
@@ -113,11 +115,11 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Product $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $this->validate($request, [
             'product_name' => 'required',
@@ -125,7 +127,7 @@ class ProductController extends Controller
             'product_price' => 'required',
             'hp_description' => 'required',
         ]);
-        $product =Product::find($id);
+        $product = Product::find($id);
         $product->hp_product_name = $request->product_name;
         $product->hp_product_model = $request->product_model;
         $product->hp_product_price = $request->product_price;
@@ -133,15 +135,15 @@ class ProductController extends Controller
         $product->hp_product_property = $request->hp_product_property;
         $product->hp_product_color_id = $request->hp_product_color_id;
         $product->hp_product_size = $request->hp_product_size;
+        $product->hp_product_image = $request->product_image;
         $product->save();
-        return redirect()->back();
-
+        return json_encode(["response" => "OK"]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Product $product
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -168,10 +170,57 @@ class ProductController extends Controller
 
         $data = '';
         foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '"],';
         }
         $data = substr($data, 0, -1);
         $orders_count = Order::all()->count();
         return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+    }
+
+    public function upload(Request $request)
+    {
+        $image = $request->file('file');
+        $filename = $_FILES['file']['name'];
+
+        if (isset($image)) {
+            $current_date = Carbon::now()->todatestring();
+//          $image_name = $current_date . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+            if (!file_exists('img/products')) {
+                mkdir('img/products', 0777, true);
+            }
+            $image->move('img/products', $filename);
+        } else {
+            $image_name = 'default.png';
+        }
+
+        return response()->json([
+            'link' => '/img/news/' . $filename
+        ]);
+    }
+
+    public function fill_data_product_color(Request $request)
+    {
+        $search = $request->search;
+        if ($search != "") {
+
+            $product_color = ProductColor::select('hn_color_name as text', 'id')->where('hn_color_name', 'LIKE', "%$search%")->get();
+        }
+        return json_encode(["results" => $product_color]);
+    }
+
+    public function fill_data_product_property(Request $request)
+    {
+        $search = $request->search;
+        if ($search != "") {
+
+
+            $product_property = DB::table('hnt_product_property')
+                ->join('hnt_product_property_items', 'hnt_product_property.hpp_property_items', 'hnt_product_property_items.id')
+                ->select('hnt_product_property.id','hnt_product_property.hpp_property_name as text','hnt_product_property_items.hppi_items_name')
+                ->where('hnt_products_property.hpp_property_name', 'LIKE', "%$search%")
+                ->get();
+        }
+//        dd($product_property);
+        return json_encode(["results" => $product_property]);
     }
 }

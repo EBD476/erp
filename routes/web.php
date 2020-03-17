@@ -79,7 +79,6 @@ Route::group(['middleware' => ['auth']], function () {
     route::get('locale/{lan}', 'LanguageController@locale');
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('home', 'HomeController@index')->name('home');
-    route::post('createpdf', 'OrderProductController@createpdf')->name('order_product.createpdf');
     route::get('preview', 'OrderController@preview')->name('order.preview');
 
 
@@ -91,6 +90,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('receive_verify/{id}', 'HelpDeskController@receive_verify')->name('help_desk.receive_verify');
     Route::post('support_request', 'ProjectController@support_request')->name('projects.support_request');
     route::post('checkbox', 'ProductController@checkbox')->name('product.checkbox');
+    route::post('createpdf', 'OrderProductController@createpdf')->name('order_product.createpdf');
+
+
+//    uploaded image route
+    Route::post('/product-image-save', 'ProductController@upload')->name('product.upload');
 
 
 //  Mapping route
@@ -139,6 +143,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/json-data-product-color', 'ProductColorController@destroy')->name('product-color.json-data-product-color');
     Route::get('/json-data-product-property', 'ProductPropertyController@destroy')->name('product-property.json-data-product-property');
     Route::get('/json-data-product-property-items', 'ProductPropertyItemsController@destroy')->name('product-property-items.json-data-product-property-items');
+    Route::get('/json-data-fill_data', 'OrderController@fill_data')->name('order.json-data-fill_data');
+
+//fill select to data
+    Route::get('/json-data-fill_data_product', 'OrderController@fill_data_product')->name('order.json-data-fill_data_product');
+    Route::get('/json-data-fill_data_product_item', 'ProductController@fill_data_product_color')->name('product.json-data-fill_data_product_item');
+    Route::get('/json-data-fill_data_product_property', 'ProductController@fill_data_product_property')->name('product.json-data-fill_data_product_property');
 
 //  deleted route
     Route::delete('/order-destroy/{id}', 'OrderController@destroy')->name('order.order-destroy');

@@ -233,7 +233,7 @@
                             <div role="tabpanel" class="tab-pane" id="tab2" data-lang="{{app()->getLocale()}}">
                                 <form id="form2"
                                       class="tab-content setting-tab" enctype="multipart/form-data">
-                                    <table class="table invoice-table product-table" style="direction: ltr" id="table2">
+                                    <table class="table invoice-table product-table" style="direction: rtl" id="table2">
                                         <thead>
                                         <tr>
                                             <th style="min-width:32px;" class="hide-border"></th>
@@ -697,7 +697,6 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        alert(data.response);
                         setTimeout($.unblockUI, 2000);
                     },
                     cache: false,
@@ -983,7 +982,6 @@
                     cache: false,
                 });
 
-
             })
 
             $("#discount").on('change', function (event) {
@@ -1062,7 +1060,7 @@
 
                     }
                     var data = {
-                        id: $(".name").data('id')
+                        id: $(this).parent().parent().find('.name').data('id'),
                     }
                     $.ajaxSetup({
                         headers: {

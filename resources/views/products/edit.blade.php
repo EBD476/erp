@@ -18,13 +18,12 @@
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
-                            <form method="post" action="{{route('products.update',$product->id)}}">
-                                @csrf
-                                @method('PUT')
+                            <form id="form1">
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Product Name')}}</label>
+                                            <input type="hidden" id="product_id" value="{{$product->id}}">
                                             <input name="product_name" type="text" class="form-control" required=""
                                                    aria-invalid="false" value="{{$product->hp_product_name}}">
                                         </div>
@@ -95,10 +94,36 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                <input type="hidden" name="product_image" id="product_image">
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{url('/product-image-save')}}" class="dropzone"
+                                  id="dropzone"
+                                  enctype="multipart/form-data">
+                                @csrf
+                                @method('POST')
+                                <div class="row">
+                                    <div class="col-md-4 pr-md-1">
+                                        <div class="form-group">
+                                            <label for="exampleInputFile">{{__('Image')}}</label>
+                                            <input type="file" class="form-control"
+                                                   name="file">
+                                        </div>
+                                        <div class="dz-preview dz-processing dz-image-preview dz-complete">
+                                            <div class="dz-image" id="img-remove">
+                                                <img src={{asset('img/products/'.$product->hp_product_image)}}>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="card-footer">
+                            <button id="sub_form1" type="submit"
+                                    class="btn btn-fill btn-primary">{{__('Save')}}</button>
                         </div>
                     </div>
                 </div>
@@ -145,5 +170,68 @@
 @endsection
 
 @push('scripts')
+    <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/plugins/dropzone.js')}}"></script>
+    <script>
+        $(document).ready(function () {
+            $("#sub_form1").on('click', function (event) {
+                var data = $("#form1").serialize();
+                var product_id = $('#product_id').val();
+                event.preventDefault();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
+                $.ajax({
+                    url: '/product/' + product_id,
+                    type: 'POST',
+                    method: 'put',
+                    data: data,
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        setTimeout($.unblockUI, 2000);
+                        window.location.href = "/product";
+                    },
+                    cache: false,
+                });
+            });
+        });
+        Dropzone.options.dropzone =
+            {
+                maxFilesize: 12,
+                // فایل نوع آبجکت است
+                renameFile: function (file) {
+                    var dt = new Date();
+                    var time = dt.getTime();
+                    return time + '-' + file.name;
+                },
+                acceptedFiles: ".jpeg,.jpg,.png,.gif",
+                addRemoveLinks: true,
+                timeout: 5000,
+                success: function (file, response) {
+                    // اسم اینپوت و مقداری که باید به آن ارسال شود
+                    $('#product_image').val(file.upload.filename);
+                },
+                error: function (file, response) {
+                    return false;
+                }
+            };
+        $("#img-remove").on('click', function () {
+            $("#img-remove").remove();
+        });
+    </script>
 @endpush

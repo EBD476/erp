@@ -20,6 +20,9 @@ use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use Illuminate\Support\Facades\DB;
+use Intervention\Image\Gd\Color;
+use PhpParser\Builder\Property;
 
 class OrderController extends Controller
 {
@@ -44,12 +47,11 @@ class OrderController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $invoice_statuses = InvoiceStatuses::ALL();
-        $client = Client::all();
         $project_type = Project_Type::all();
         $address = address::all();
         $state = State::all();
         $product = Product::all();
-        return view('order.create', compact('address', 'state', 'project_type', 'product', 'client', 'invoice_statuses', 'type', 'help_desk', 'priority', 'product', 'user', 'items', 'properties', 'color'));
+        return view('order.create', compact('address', 'state', 'project_type', 'product', 'invoice_statuses', 'type', 'help_desk', 'priority', 'product', 'user', 'items', 'properties', 'color'));
     }
 
     public function store(Request $request)
@@ -114,7 +116,7 @@ class OrderController extends Controller
         return view('order.edit', compact('invoices_items', 'color', 'properties', 'items_all', 'invoice_statuses', 'client', 'project_type', 'address', 'state', 'product', 'project', 'items', 'type', 'help_desk', 'priority', 'user'));
     }
 
-    public function edit_pre(Request $request,$id)
+    public function edit_pre(Request $request, $id)
     {
         $items = ProductPropertyItems::all();
         $properties = ProductProperty::all();
@@ -130,12 +132,16 @@ class OrderController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $project = Order::find($id);
-        $invoices_items = $request;
+        $invoices_item = $request;
+
+
+//        $returnHTML = view('order.editpre', compact('color', 'properties', 'invoice_statuses', 'client', 'project_type', 'address', 'state', 'product', 'project', 'items', 'type', 'help_desk', 'priority', 'user'))->with('invoices_items', $invoices_items)->renderSections()['content'];
+        return view('order.editpre', ['invoices_item' => $invoices_item], compact('color', 'properties', 'invoice_statuses', 'client', 'project_type', 'address', 'state', 'product', 'project', 'items', 'type', 'help_desk', 'priority', 'user'));
 
 //        $view = view("order.editpre",['invoices_items' => $invoices_items],compact('color', 'properties', 'invoice_statuses', 'client', 'project_type', 'address', 'state', 'product', 'project', 'items', 'type', 'help_desk', 'priority', 'user'))->render();
-//        return response()->json(['html'=>$view]);
+//        return response($returnHTML);
 
-        return json_encode(["response" => ['invoices_items' => $invoices_items], compact('color', 'properties', 'invoice_statuses', 'client', 'project_type', 'address', 'state', 'product', 'project', 'items', 'type', 'help_desk', 'priority', 'user')]);
+//        return json_encode(["response" =>  $returnHTML]);
     }
 
     public function update(Request $request, $id)
@@ -224,5 +230,33 @@ class OrderController extends Controller
         $data = substr($data, 0, -1);
         $orders_count = Order::all()->count();
         return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+    }
+
+    public function fill_data(Request $request)
+    {
+        $search = $request->search;
+        if ($search != "") {
+            $client = Client::select('id', 'hc_name as text')->where('id', 'LIKE', "%$search%")
+                ->orwhere('hc_name', 'LIKE', "%$search%")
+                ->get();
+        }
+        return json_encode(["results" => $client]);
+    }
+
+    public function fill_data_product(Request $request)
+    {
+        $search = $request->search;
+        if ($search != "") {
+
+            $product = DB::table('hnt_products')
+                ->join('hnt_product_color', 'hnt_products.hp_product_color_id', '=', 'hnt_product_color.id')
+                ->join('hnt_product_property', 'hnt_products.hp_product_property', '=', 'hnt_product_property.id')
+                ->join('hnt_product_property_items', 'hnt_product_property.hpp_property_items', 'hnt_product_property_items.id')
+                ->select('hnt_products.id','hnt_products.hp_product_image', 'hnt_products.hp_product_name as text', 'hnt_products.hp_product_price', 'hnt_product_color.hn_color_name', 'hnt_product_property.hpp_property_name', 'hnt_product_property_items.hppi_items_name')
+                ->where('hnt_products.id', 'LIKE', "%$search%")
+                ->orwhere('hnt_products.hp_product_name', 'LIKE', "%$search%")
+                ->get();
+        }
+        return json_encode(["results" => $product]);
     }
 }
