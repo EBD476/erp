@@ -123,7 +123,7 @@
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
-                        window.location.href = "/product_property";
+                        window.location.href = "/product-property";
                     },
                     cache: false,
                 });

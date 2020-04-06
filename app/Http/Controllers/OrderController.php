@@ -156,12 +156,10 @@ class OrderController extends Controller
             'hp_owner_user' => 'required',
             'hp_project_area' => 'required',
             'hp_number_of_units' => 'required',
-            'hp_State' => 'required',
-            'hp_city' => 'required',
+            'hp_address_state_id' => 'required',
+            'hp_address_city_id' => 'required',
             'hp_address' => 'required',
-            'hp_project_location' => 'required',
             'hp_contract_type' => 'required',
-            'hp_registrant' => 'required',
         ]);
         $current_user = auth()->user()->id;
         $order = Order::find($id);
@@ -243,6 +241,28 @@ class OrderController extends Controller
         return json_encode(["results" => $client]);
     }
 
+    public function fill_data_city(Request $request)
+    {
+        $search = $request->search;
+        if ($search != "") {
+            $city = address::select('id', 'hp_city as text')->where('id', 'LIKE', "%$search%")
+                ->orwhere('hp_city', 'LIKE', "%$search%")
+                ->get();
+        }
+        return json_encode(["results" => $city]);
+    }
+
+    public function fill_data_state(Request $request)
+    {
+        $search = $request->search;
+        if ($search != "") {
+            $state = State::select('id', 'hp_project_state as text')->where('id', 'LIKE', "%$search%")
+                ->orwhere('hp_project_state', 'LIKE', "%$search%")
+                ->get();
+        }
+        return json_encode(["results" => $state]);
+    }
+
     public function fill_data_product(Request $request)
     {
         $search = $request->search;
@@ -252,7 +272,7 @@ class OrderController extends Controller
                 ->join('hnt_product_color', 'hnt_products.hp_product_color_id', '=', 'hnt_product_color.id')
                 ->join('hnt_product_property', 'hnt_products.hp_product_property', '=', 'hnt_product_property.id')
                 ->join('hnt_product_property_items', 'hnt_product_property.hpp_property_items', 'hnt_product_property_items.id')
-                ->select('hnt_products.id','hnt_products.hp_product_image', 'hnt_products.hp_product_name as text', 'hnt_products.hp_product_price', 'hnt_product_color.hn_color_name', 'hnt_product_property.hpp_property_name', 'hnt_product_property_items.hppi_items_name')
+                ->select('hnt_products.id', 'hnt_products.hp_product_image', 'hnt_products.hp_product_name as text', 'hnt_products.hp_product_price', 'hnt_product_color.hn_color_name', 'hnt_product_property.hpp_property_name', 'hnt_product_property_items.hppi_items_name')
                 ->where('hnt_products.id', 'LIKE', "%$search%")
                 ->orwhere('hnt_products.hp_product_name', 'LIKE', "%$search%")
                 ->get();

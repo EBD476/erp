@@ -23,12 +23,13 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $items = ProductPropertyItems::all();
         $user = User::all();
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $products = Product::all();
-        return view('products.index', compact('products', 'type', 'priority', 'help_desk', 'user'));
+        return view('products.index', compact('products', 'type', 'priority', 'help_desk', 'user','items'));
     }
 
 
@@ -183,7 +184,7 @@ class ProductController extends Controller
         $filename = $_FILES['file']['name'];
 
         if (isset($image)) {
-            $current_date = Carbon::now()->todatestring();
+//            $current_date = Carbon::now()->todatestring();
 //          $image_name = $current_date . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
             if (!file_exists('img/products')) {
                 mkdir('img/products', 0777, true);
@@ -194,7 +195,7 @@ class ProductController extends Controller
         }
 
         return response()->json([
-            'link' => '/img/news/' . $filename
+            'link' => '/img/products/' . $filename
         ]);
     }
 
@@ -207,20 +208,26 @@ class ProductController extends Controller
         }
         return json_encode(["results" => $product_color]);
     }
+    public function fill_data_product_item(Request $request)
+    {
+        $search = $request->search;
+        if ($search != "") {
+
+            $product_item = ProductPropertyItems::select('hppi_items_name as text', 'id')->where('hppi_items_name', 'LIKE', "%$search%")->get();
+        }
+        return json_encode(["results" => $product_item]);
+    }
 
     public function fill_data_product_property(Request $request)
     {
         $search = $request->search;
         if ($search != "") {
-
-
             $product_property = DB::table('hnt_product_property')
                 ->join('hnt_product_property_items', 'hnt_product_property.hpp_property_items', 'hnt_product_property_items.id')
                 ->select('hnt_product_property.id','hnt_product_property.hpp_property_name as text','hnt_product_property_items.hppi_items_name')
-                ->where('hnt_products_property.hpp_property_name', 'LIKE', "%$search%")
+                ->where('hnt_product_property.hpp_property_name', 'LIKE', "%$search%")
                 ->get();
         }
-//        dd($product_property);
         return json_encode(["results" => $product_property]);
     }
 }

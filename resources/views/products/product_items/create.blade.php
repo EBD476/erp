@@ -109,7 +109,7 @@
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
-                        window.location.href = "/product_items";
+                        window.location.href = "/product-property-items";
                     },
                     cache: false,
                 });

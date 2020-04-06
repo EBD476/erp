@@ -59,12 +59,14 @@
                                     <div class="form-group   ">
                                         <label>{{__('Password')}}</label>
                                         <input type="password" class="form-control" name="password">
+                                        <p class="card-category" style="margin-top: -20px">{{__('Min 6 Character')}}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group   ">
                                         <label>{{__('Confirm Password')}}</label>
                                         <input type="password" class="form-control" name="password_confirmation">
+                                        <p class="card-category" style="margin-top: -20px">{{__('Min 6 Character')}}</p>
                                     </div>
                                 </div>
                                 {{--<div class="form-group">--}}

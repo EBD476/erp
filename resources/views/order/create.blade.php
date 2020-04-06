@@ -35,7 +35,7 @@
                         <ul class="nav nav-pills" style="float: none">
                             <li class="nav-item" style="width: 33.3333%;">
                                 <a class="nav-link active" href="#tab1" data-toggle="tab" role="tab">
-                                    {{__('Order')}}
+                                    {{__('Project Information')}}
                                 </a>
                             </li>
                             <li class="nav-item" style="width: 33.3333%;">
@@ -157,27 +157,17 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="bmd-label-floating">{{__('State')}}</label>
-                                                <select class="form-control" type="text"
+                                                <label style="margin-top: -20px" class="bmd-label-floating">{{__('State')}}</label>
+                                                <select class="select-state form-control" type="text"
                                                         name="hp_address_state_id">
-                                                    @foreach($state as $code)
-                                                        <option value="{{$code->id}}">
-                                                            {{$code->hp_project_state}}
-                                                        </option>
-                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="bmd-label-floating">{{__('City')}}</label>
-                                                <select class="form-control" type="text"
+                                                <label class="bmd-label-floating" style="margin-top: -20px">{{__('City')}}</label>
+                                                <select class="select-city form-control" type="text"
                                                         name="hp_address_city_id">
-                                                    @foreach($address as $city)
-                                                        <option value="{{$city->id}}">
-                                                            {{$city->hp_city}}
-                                                        </option>
-                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -261,8 +251,408 @@
                                                 <div class="line-total" id="sub-total" name="total[]"></div>
                                                 <input name="total[]" id="sub-total" type="hidden">
                                             </td>
-                                            <td style="cursor:pointer" class="hide-border td-icon">
-                                                <i class="tim-icons icon-simple-remove" id="rmv1" title="Remove item"/>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                    {{--Box2--}}
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <label class="bmd-label-floating">{{__('Discount')}}
+                                                        :</label>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="col-lg-6 col-sm-6">
+                                                                <div class="input-group"><input class="form-control"
+                                                                                                id="discount"
+                                                                                                type="number"
+                                                                                                name="hpo_discount">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="bmd-label-floating">{{__('Paid to Date:')}}</label>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="col-lg-6 col-sm-6">
+                                                                <input class="form-control"
+                                                                       id="test-date-id"
+                                                                       type="text"
+                                                                       name="hop_due_date">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="bmd-label-floating">{{__('Total:')}}</label>
+                                                    <div class="col-md-12 ">
+                                                        <div class="form-group">
+                                                            <div class="form-group">
+                                                                <div class="col-lg-6 col-sm-6">
+                                                                    <input disabled class="form-control"
+                                                                           id="all_total"
+                                                                           type="text"
+                                                                           name="all_total"
+                                                                    >
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="bmd-label-floating">{{__('Total including discount')}}
+                                                        :</label>
+                                                    <div class="col-md-12 ">
+                                                        <div class="form-group">
+                                                            <div class="form-group">
+                                                                <div class="col-lg-6 col-sm-6">
+                                                                    <input disabled class="form-control"
+                                                                           id="total_discount"
+                                                                           type="text"
+                                                                           name="total_discount"
+                                                                    >
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @role('admin')
+                                                <div class="row">
+                                                    <label class="bmd-label-floating">{{__('Statuses:')}}</label>
+                                                    <div class="col-md-12 ">
+                                                        <div class="col-lg-6 col-sm-6">
+                                                            <div class="form-group">
+
+                                                                <select name="hpo_status" class="form-control">
+                                                                    @foreach($invoice_statuses as $invoice_status)
+                                                                        <option>
+                                                                            {{$invoice_status->name}}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @endrole
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{--End Box2--}}
+
+                                    {{--Hidden Object--}}
+                                    <input type="hidden" id="client_id" name="hpo_client_id">
+                                    <input type="hidden" id="order_id" name="hpo_order_id">
+                                    <input id="all_dis" name="all_dis" type="hidden">
+                                    <input id="all_tot" name="all_tot" type="hidden">
+                                    {{--End Hidden Object--}}
+
+                                    <a href="{{route('order.index')}}"
+                                       class="btn badge-danger">{{__('Back')}}</a>
+                                    <button type="submit" class="btn btn-primary"
+                                            id="btn-submit2">{{__('Send')}}</button>
+                                    <button id="preview" class="btn btn-primary">{{__('Preview Factor')}}</button>
+                                </form>
+                            </div>
+                        </div>
+                        {{--//client modal//--}}
+                        <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header text-center">
+                                        <h4 class="modal-title w-100 font-weight-bold">{{__('Add New Client')}}</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="post" id="modal_form" enctype="multipart/form-data">
+                                        <div class="modal-body mx-3">
+                                            <div class="md-form mb-5">
+                                                {{--<i class="fas fa-user prefix grey-text"></i>--}}
+                                                <label class="bmd-label-floating" data-error="wrong"
+                                                       data-success="right"
+                                                       for="orangeForm-name">{{__('Name')}}</label>
+                                                <input type="text" id="orangeForm-name" class="form-control validate"
+                                                       name="hc_name">
+                                            </div>
+                                            <div class="md-form mb-5">
+                                                {{--<i class="fas fa-envelope prefix grey-text"></i>--}}
+                                                <label class="bmd-label-floating" data-error="wrong"
+                                                       data-success="right">{{__('Phone')}}</label>
+                                                <input type="number" required class="form-control validate"
+                                                       name="hc_phone">
+                                            </div>
+
+                                            <div class="md-form mb-4">
+                                                {{--<i class="fas fa-lock prefix grey-text"></i>--}}
+                                                <label class="bmd-label-floating" data-error="wrong"
+                                                       data-success="right">{{__('Address')}}</label>
+                                                <input type="text" class="form-control validate" name="hc_address">
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-center">
+                                            <button type="submit" class="btn btn-deep-orange">{{__('Send')}}</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {{--//End client modal//--}}
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @endrole
+    @role('order')
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    @include('layouts.partial.Msg')
+                </div>
+
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title ">{{__('Add New Order')}}</h4>
+                        <p class="card-category"></p>
+                        <div class="row pull-left">
+                            <div class="col-md-12 pull-left">
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">{{__('Order ID:')}}</label>
+                                    <label class="bmd-label-floating" id="order_id_show"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-pills" style="float: none">
+                            <li class="nav-item" style="width: 33.3333%;">
+                                <a class="nav-link active" href="#tab1" data-toggle="tab" role="tab">
+                                    {{__('Project Information')}}
+                                </a>
+                            </li>
+                            <li class="nav-item" style="width: 33.3333%;">
+                                <a class="nav-link" href="#tab2" data-toggle="tab" role="tab">
+                                    {{__('List of Material')}}
+                                </a>
+                            </li>
+                        </ul>
+                        <br>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="tab1">
+                                <form id="form1"
+                                      class="tab-content setting-tab" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Project Name')}}</label>
+                                                <input type="text" class="form-control" required=""
+                                                       aria-invalid="false" name="hp_project_name">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Employer Name')}}</label>
+                                                <input type="text" class="form-control" required="" aria-invalid="false"
+                                                       name="hp_employer_name">
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating"
+                                                       style="margin-top: -20px">{{__('Client Name')}}</label>
+                                                <select id="client_name" name="ho_client"
+                                                        class="select-client form-control">
+                                                </select>
+                                                <div class="text-light">
+                                                    <a class="pointer" href="#" data-toggle="modal"
+                                                       data-target="#modalRegisterForm">
+                                                        {{__('Add New Client')}}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Connector')}}</label>
+                                                <input type="text" class="form-control" required=""
+                                                       aria-invalid="false"
+                                                       name="hp_connector">
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Owner User')}}</label>
+                                                <select type="text" class="form-control" name="hp_owner_user">
+                                                    <option>{{__('Residential')}}</option>
+                                                    <option>{{__('Commercial')}}</option>
+                                                    <option>{{__('edari')}}</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Phone Number')}}</label>
+                                                <input type="number" class="form-control persian" required=""
+                                                       aria-invalid="false"
+                                                       name="hp_phone_number">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Project Area')}}</label>
+                                                <input type="number" class="form-control" required=""
+                                                       aria-invalid="false"
+                                                       name="hp_project_area">
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Number Of Units')}}</label>
+                                                <input type="number" class="form-control" required=""
+                                                       aria-invalid="false"
+                                                       name="hp_number_of_units">
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Type Project')}}</label>
+                                                <select class="form-control" name="hp_type_project">
+                                                    @foreach($project_type as $type_project)
+                                                        <option>{{$type_project->hp_name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Contract Type')}}</label>
+                                                <select class="form-control" type="text"
+                                                        name="hp_contract_type">
+                                                    <option>
+                                                        {{__('Delivery')}}
+                                                    </option>
+                                                    <option>
+                                                        {{__('Install In Place')}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label style="margin-top: -20px" class="bmd-label-floating">{{__('State')}}</label>
+                                                <select class="select-state form-control" type="text"
+                                                        name="hp_address_state_id">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating" style="margin-top: -20px">{{__('City')}}</label>
+                                                <select class="select-city form-control" type="text"
+                                                        name="hp_address_city_id">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Project Location')}}</label>
+                                                <div id="map"
+                                                     style="width: 100%; height: 300px;direction: ltr;z-index:0"></div>
+                                                <input name="hp_project_location" type="hidden"
+                                                       id="location" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="bmd-label-floating">{{__('Address')}}</label>
+                                                <textarea type="text" class="form-control" name="hp_address" required=""
+                                                          aria-invalid="false"
+                                                ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
+                                </form>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane" id="tab2" data-lang="{{app()->getLocale()}}">
+                                <form id="form2"
+                                      class="tab-content setting-tab" enctype="multipart/form-data">
+                                    <table class="table invoice-table product-table" style="direction: rtl" id="table2">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th style="min-width:32px;" class="hide-border"></th>
+                                            <th style="min-width:120px;width:25%">{{__('Item')}}</th>
+                                            <th style="width:100%">{{__('Description')}}</th>
+                                            <th style="min-width:120px">{{__('Unit Cost')}}</th>
+                                            <th style="min-width:120px;display:table-cell">{{__('Quantity')}}</th>
+                                            <th style="min-width:120px;">{{__('Line Total')}}</th>
+                                            <th style="min-width:32px;" class="hide-border"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody data-bind="sortable: { data: invoice_items_without_tasks, allowDrop: false, afterMove: onDragged} "
+                                               class="ui-sortable">
+                                        <tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"
+                                            class="sortable-row ui-sortable-handle" style="">
+                                            <td class="hide-border td-icon">
+                                                <i style="display:none" data-bind="visible: actionsVisible() &amp;&amp;
+                $parent.invoice_items_without_tasks().length > 1" class="fa fa-sort"></i>
+                                            </td>
+                                            <td><i class="tim-icons icon-simple-add" id="add-row" title="Add item"/>
+                                            </td>
+                                            <td>
+                                                <select name="name[]" class="select-item combobox-container">
+                                                    <option value=""></option>
+                                                </select>
+
+                                            </td>
+                                            <td>
+                                                <textarea
+                                                        data-bind="value: notes, valueUpdate: 'afterkeydown', attr: {name: 'invoice_items[]'}"
+                                                        rows="1" cols="60" style="resize: vertical; height: 42px;"
+                                                        class="form-control word-wrap"
+                                                        name="invoice_items[]"></textarea>
+                                            </td>
+                                            <td>
+                                                <input disabled type="text" id="unit" class="form-control"
+                                                       name="hp_product_price[]">
+                                                <input name="price" id="price" type="hidden">
+                                            </td>
+                                            <td style="display:table-cell">
+                                                <input
+                                                        style="text-align: right" class="form-control invoice-item"
+                                                        id="qty"
+                                                        name="invoice_items_qty[]">
+                                            </td>
+                                            <td style="text-align:right;padding-top:9px !important" nowrap="">
+                                                <div class="line-total" id="sub-total" name="total[]"></div>
+                                                <input name="total[]" id="sub-total" type="hidden">
                                             </td>
                                         </tr>
                                         </tbody>
@@ -580,7 +970,50 @@
                 theme: "bootstrap",
                 placeholder: (locale == 'fa' ? 'انتخاب مشتری' : 'Select Client'),
             });
+            $(".select-city").select2({
+                dir: "rtl",
+                language: "fa",
+                ajax: {
+                    url: '/json-data-fill_data_city',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: (locale == 'fa' ? 'انتخاب شهر' : 'Select City'),
+            });
+            $(".select-state").select2({
+                dir: "rtl",
+                language: "fa",
+                ajax: {
+                    url: '/json-data-fill_data_state',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: (locale == 'fa' ? 'انتخاب استان' : 'Select State'),
+            });
 
+            // operation first row on table 2
             $(".select-item").select2({
                 ajax: {
                     url: '/json-data-fill_data_product',
@@ -598,7 +1031,9 @@
                     }
                 },
                 theme: "bootstrap",
-                dir: 'rtl',
+                dir:'rtl',
+                left:'1142px',
+                width:'340.667px',
                 placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
                 templateResult: formatRepo,
                 templateSelection: formatRepoSelection
@@ -616,35 +1051,7 @@
 
                 $("#sub-total").text(unit_count * unit_qty);
                 $("#sub-total").val(unit_count * unit_qty);
-
-                $("#rmv1").click(function (event) {
-                    var rowCount = $('#table2 tr').length;
-                    if (rowCount > 2) {
-                        if ($('#sub-total').text() != "") {
-                            all = $("#all_total").val();
-                            var total_each = all - parseInt($('#sub-total').val());
-                            $('#all_total').val(total_each);
-                            $('#all_tot').val(total_each);
-                            if ($('#discount').val() != "") {
-                                total1 = $('#all_total').val();
-                                discount = $('#discount').val();
-                                total_discount = parseInt(discount) * parseInt(total1) / 100;
-                                $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
-                                $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
-                                $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
-                            }
-                        }
-
-                        if (remove == 0) {
-                            total = all - parseInt($('#sub-total').val());
-                            $("#all_tot").val(total);
-                            $("#all_total").val(total);
-                        }
-
-                        $(this).parent().parent().remove();
-                        remove = 0;
-                    }
-                })
+                $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
 
                 $('#sub-total').each(function () {
                     total = $('#sub-total').text();
@@ -652,6 +1059,7 @@
                         $("#all_total").val(total);
                         $("#all_total").text(total);
                         $("#all_tot").val(total);
+
                     }
 
                 });
@@ -661,7 +1069,47 @@
                     unit_qty = $("#qty").val();
                     $('#sub-total').text(unit_count * unit_qty);
                     $('#sub-total').val(unit_count * unit_qty);
+                    $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
+
                     discount = $("#discount").val();
+                    total = $("#sub-total").val();
+
+                    if (discount != "") {
+                        total_discount = parseInt(discount) * parseInt(total) / 100;
+                        $("#all_dis").val(parseInt(total) - parseInt(total_discount));
+                        $("#total_discount").val(parseInt(total) - parseInt(total_discount));
+                        $("#total_discount").text(parseInt(total) - parseInt(total_discount));
+                    }
+
+                    total = 0;
+                    var rowCount = $('#table2 tr').length;
+                    if (rowCount == 2) {
+                        $('#sub-total').each(function () {
+                            current = $('#sub-total').val();
+                            if (current != "") {
+                                total = parseInt(current);
+                                $("#all_total").val(total);
+                                $("#all_total").text(total);
+                            }
+                        });
+                    }
+                    else {
+                        total = 0;
+                        $('.line-total').each(function () {
+                            current = $(this).text();
+                            subtotal = $('#sub-total').val();
+                            if (current != "") {
+                                if (current != "") {
+                                    total = parseInt(total) + parseInt(current);
+                                    $("#all_tot").val(total);
+                                    $("#all_total").val(total);
+                                    $("#all_total").text(total);
+                                }
+
+                            }
+                        });
+                    }
+
                     total = $("#all_total").val();
                     if (discount != "") {
                         total_discount = parseInt(discount) * parseInt(total) / 100;
@@ -669,15 +1117,6 @@
                         $("#total_discount").val(parseInt(total) - parseInt(total_discount))
                         $("#total_discount").text(parseInt(total) - parseInt(total_discount))
                     }
-                    total = 0;
-                    $('#sub-total').each(function () {
-                        current = $('#sub-total').val();
-                        if (current != "") {
-                            total = total + parseInt(current);
-                            $("#all_total").val(total);
-                            $("#all_total").text(total);
-                        }
-                    });
 
                 });
 
@@ -688,9 +1127,49 @@
                     $('#all_dis').val(parseInt(total) - parseInt(total_discount));
                     $('#total_discount').val(parseInt(total) - parseInt(total_discount));
                     $('#total_discount').text(parseInt(total) - parseInt(total_discount));
-                })
+                });
 
             });
+            // first row on table 2
+            $("#add-row").on('click', function (event) {
+                if ($(this).hasClass('icon-simple-add')) {
+                    append_item();
+                    $(this).removeClass('icon-simple-add');
+                }
+                $(this).addClass('icon-simple-remove');
+                if ($(this).hasClass('icon-simple-remove')) {
+                    //remove item operations
+                    $("#add-row").click(function (event) {
+                        var rowCount = $('#table2 tr').length;
+                        if (rowCount > 2) {
+                            if ($('#sub-total').text() != "") {
+                                var all = $("#all_total").val();
+                                var total_each = all - parseInt($('#sub-total').val());
+                                $('#all_total').val(total_each);
+                                $('#all_tot').val(total_each);
+                                if ($('#discount').val() != "") {
+                                    var total1 = $('#all_total').val();
+                                    discount = $('#discount').val();
+                                    total_discount = parseInt(discount) * parseInt(total1) / 100;
+                                    $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
+                                    $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
+                                    $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
+                                }
+                            }
+
+                            if (remove == 0) {
+                                total = all - parseInt($('#sub-total').val());
+                                $("#all_tot").val(total);
+                                $("#all_total").val(total);
+                            }
+
+                            $(this).parent().parent().remove();
+                            remove = 0;
+                        }
+                    })
+                }
+            });
+            // end
 
             function formatRepo(repo) {
 
@@ -726,20 +1205,10 @@
             }
 
             function formatRepoSelection(repo) {
-                return repo.id || repo.text;
+                return repo.text;
             }
 
-            // add new row to table 2
-            $("#add-row").on('click', function (event) {
-                $(this).removeClass('icon-simple-add');
-                $(this).addClass('icon-simple-remove');
-
-                if ($(this).hasClass('icon-simple-remove')) {
-                    //remove item operations
-                    append_item();
-                }
-            });
-
+            // append item to table2
             function append_item() {
                 $('.table').append('<tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"\n' +
                     '                                       class="sortable-row ui-sortable-handle" style="">\n' +
@@ -770,18 +1239,13 @@
                     '                                        </td>\n' +
                     '                                        <td style="display:table-cell">\n' +
                     '                                            <input \n' +
-                    '                                                   style="text-align: right" class="form-control invoice-item "\n' +
+                    '                                                   style="text-align: right" class="form-control invoice-item qty"\n' +
                     '                                                 id= "qty' + $("#table2 tr").length + '"   name="invoice_items_qty[]">\n' +
                     '                                        </td>\n' +
                     '                                        <td style="text-align:right;padding-top:9px !important" nowrap="">\n' +
                     '                                            <div name="total[]" class="line-total" id="sub-total' + $("#table2 tr").length + '"></div>\n' +
                     '                                            <input name="total[]" id="sub-total' + $("#table2 tr").length + '" type="hidden">\n' +
                     '                                        </td>\n' +
-                    '                                        <td style="cursor:pointer" class="hide-border td-icon">\n' +
-                    '                                            <i \n' +
-                    '                                               \n' +
-                    '                                               class="tim-icons icon-simple-remove" id=rmv' + $("#table2 tr").length + '  title="Remove item">\n' +
-                    '                                            </i></td>\n' +
                     '                                    </tr>'
                 );
 
@@ -805,6 +1269,8 @@
                     },
                     theme: "bootstrap",
                     dir: 'rtl',
+                    left:'1142px',
+                    width:'340.667px',
                     placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
                     templateResult: formatRepo,
                     templateSelection: formatRepoSelection
@@ -820,49 +1286,20 @@
 
                     unit_count = $("#unit" + parseInt($("#table2 tr").length - 1)).val();
 
-                    unit_qty = $("#qty" + parseInt($("#table2 tr").length - 1)).val();
+                    unit_qty = 1;
 
-                    $("#sub-total" + parseInt($("#table2 tr").length - 1)).text(unit_count * unit_qty);
+                    $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
 
-                    $("#sub-total" + parseInt($("#table2 tr").length - 1)).val(unit_count * unit_qty);
+                    $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
 
-                    $("#rmv1").click(function (event) {
-                        var rowCount = $('#table2 tr').length;
-                        if (rowCount > 2) {
-                            if ($('#sub-total').text() != "") {
-                                all = $("#all_total").val();
-                                var total_each = all - parseInt($('#sub-total').val());
-                                $('#all_total').val(total_each);
-                                $('#all_tot').val(total_each);
-                                if ($('#discount').val() != "") {
-                                    total1 = $('#all_total').val();
-                                    discount = $('#discount').val();
-                                    total_discount = parseInt(discount) * parseInt(total1) / 100;
-                                    $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
-                                    $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
-                                    $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
-                                }
-                            }
+                    $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
 
-                            if (remove == 0) {
-                                total = all - parseInt($('#sub-total').val());
-                                $("#all_tot").val(total);
-                                $("#all_total").val(total);
-                            }
-
-                            $(this).parent().parent().remove();
-                            remove = 0;
-                        }
-                    })
-
+                    total = 0;
                     $('.line-total').each(function () {
-
                         current = $(this).text();
-                        subtotal = $('#sub-total').val();
                         if (current != "") {
-                            total = 0;
                             if (current != "") {
-                                total = parseInt(subtotal) + parseInt(current);
+                                total = parseInt(total) + parseInt(current);
                                 $("#all_tot").val(total);
                                 $("#all_total").val(total);
                                 $("#all_total").text(total);
@@ -871,12 +1308,27 @@
                         }
                     });
 
-                    $("#qty" + parseInt($("#table2 tr").length - 1)).on('change', function (event) {
-                        unit_count = $("#unit" + parseInt($("#table2 tr").length - 1)).val();
-                        unit_qty = $("#qty" + parseInt($("#table2 tr").length - 1)).val();
-                        $('#sub-total' + parseInt($("#table2 tr").length - 1)).text(unit_count * unit_qty);
-                        $('#sub-total' + parseInt($("#table2 tr").length - 1)).val(unit_count * unit_qty);
+                    $(".qty").on('change', function (event) {
+                        unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
+                        unit_qty = $(this).val();
+                        $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
+                        $(this).parent().parent().find("div[name='total[]']").val(unit_count * unit_qty);
+                        $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
+
                         discount = $("#discount").val();
+                        total = 0;
+                        $('.line-total').each(function () {
+                            var current = $(this).text();
+                            if (current != "") {
+                                if (current != "") {
+                                    total = total + parseInt(current);
+                                    $("#all_tot").val(total);
+                                    $("#all_total").val(total);
+                                    $("#all_total").text(total);
+                                }
+
+                            }
+                        });
                         total = $("#all_total").val();
                         if (discount != "") {
                             total_discount = parseInt(discount) * parseInt(total) / 100;
@@ -884,28 +1336,6 @@
                             $("#total_discount").val(parseInt(total) - parseInt(total_discount))
                             $("#total_discount").text(parseInt(total) - parseInt(total_discount))
                         }
-                        total = 0;
-                        $('#sub-total' + parseInt($("#table2 tr").length - 1)).each(function () {
-                            current = $('#sub-total' + parseInt($("#table2 tr").length - 1)).val();
-                            total = $('#sub-total').text();
-                            if (total != "") {
-                                total = 0;
-                                // current = $(this).text();
-                                if (current != "") {
-                                    total = total + parseInt(current);
-                                    $("#all_tot").val(total);
-                                    $("#all_total").val(total);
-                                    $("#all_total").text(total);
-
-
-                                    $("#all_total").val(total);
-                                    $("#all_total").text(total);
-                                    $("#all_tot").val(total);
-                                }
-
-                            }
-                        });
-
                     });
 
                     $("#discount").on('change', function (event) {
@@ -916,71 +1346,33 @@
                         $('#total_discount').val(parseInt(total) - parseInt(total_discount));
                         $('#total_discount').text(parseInt(total) - parseInt(total_discount));
                     })
+
                 });
 
                 // add new row len _1 to table 2
                 $("#add-row" + parseInt($("#table2 tr").length - 1)).on('click', function (event) {
 
-                    append_item();
-
-                    $(this).removeClass('icon-simple-add');
-                    $(this).addClass('icon-simple-remove');
+                    if ($(this).hasClass('icon-simple-add')) {
+                        append_item();
+                        $(this).removeClass('icon-simple-add');
+                        $(this).addClass('icon-simple-remove');
+                    }
 
                     if ($(this).hasClass('icon-simple-remove')) {
                         //remove item operations
-                    }
+                        $(this).click(function (event) {
 
-                    var locale = $("#tab2").data('lang');
-
-                    $(".select-item").select2({
-                        ajax: {
-                            url: '/json-data-fill_data_product',
-                            dataType: 'json',
-                            data: function (params) {
-                                return {
-                                    search: params.term, // search term
-                                    page: params.page
-                                };
-                            },
-                            processResults: function (data) {
-                                return {
-                                    results: data.results
-                                }
-                            }
-                        },
-                        theme: "bootstrap",
-                        dir: 'rtl',
-                        placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
-                        templateResult: formatRepo,
-                        templateSelection: formatRepoSelection
-                        // allowClear: true
-
-                    }).on('select2:select', function (event) {
-
-                        var result = event.params.data;
-
-                        $("#unit" + parseInt($("#table2 tr").length - 1)).val(result.hp_product_price);
-
-                        $('#qty' + parseInt($("#table2 tr").length - 1)).val('1');
-
-                        unit_count = $("#unit" + parseInt($("#table2 tr").length - 1)).val();
-
-                        unit_qty = $("#qty" + parseInt($("#table2 tr").length - 1)).val();
-
-                        $("#sub-total" + parseInt($("#table2 tr").length - 1)).text(unit_count * unit_qty);
-
-                        $("#sub-total" + parseInt($("#table2 tr").length - 1)).val(unit_count * unit_qty);
-
-                        $("#rmv1").click(function (event) {
                             var rowCount = $('#table2 tr').length;
+
                             if (rowCount > 2) {
-                                if ($('#sub-total').text() != "") {
-                                    all = $("#all_total").val();
-                                    var total_each = all - parseInt($('#sub-total').val());
-                                    $('#all_total').val(total_each);
-                                    $('#all_tot').val(total_each);
+
+                                if ($(this).parent().parent().find('.line-total').text() != "") {
+                                    var all = $("#all_total").val();
+                                    total = parseInt(all) - parseInt($(this).parent().parent().find("input[name='total[]']").val());
+                                    $('#all_total').val(total);
+                                    $('#all_tot').val(total);
                                     if ($('#discount').val() != "") {
-                                        total1 = $('#all_total').val();
+                                        var total1 = $('#all_total').val();
                                         discount = $('#discount').val();
                                         total_discount = parseInt(discount) * parseInt(total1) / 100;
                                         $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
@@ -989,10 +1381,14 @@
                                     }
                                 }
 
+
                                 if (remove == 0) {
-                                    total = all - parseInt($('#sub-total').val());
+
+                                    total = all - parseInt($(this).parent().parent().find('.line-total').text());
                                     $("#all_tot").val(total);
                                     $("#all_total").val(total);
+                                    remove += 1;
+
                                 }
 
                                 $(this).parent().parent().remove();
@@ -1000,60 +1396,12 @@
                             }
                         })
 
-                        // alert('#sub-total'+parseInt($('#table2 tr').length - 1));
-
-                        //    $('#sub-total'+parseInt($('#table2 tr').length - 1)).on('change',function () {
-
-                        //sum totals
-                        //alert(current);
-                        current = parseInt($('#sub-total' + parseInt($('#table2 tr').length - 1)).text());
-                        subtotal = $("#all_total").text()
-                        if (current != "") {
-                            //total = 0;
-                            if (current != "") {
-                                if ($('#table2 tr').length - 1 == 3) {
-                                    total = parseInt(current) + parseInt(subtotal);
-                                } else {
-                                    total = parseInt(current) + parseInt(last_total);
-                                }
-                                $("#all_tot").val(total);
-                                $("#all_total").val(total);
-                                $("#all_total").text(total);
-                                last_total = parseInt($("#all_total").text());
-                            }
-
-                        }
-                        //   });
-
-                        $("#qty" + parseInt($("#table2 tr").length - 1)).on('change', function (event) {
-                            unit_count = $("#unit" + parseInt($("#table2 tr").length - 1)).val();
-                            unit_qty = $("#qty" + parseInt($("#table2 tr").length - 1)).val();
-                            $('#sub-total' + parseInt($("#table2 tr").length - 1)).text(unit_count * unit_qty);
-                            $('#sub-total' + parseInt($("#table2 tr").length - 1)).val(unit_count * unit_qty);
-                            discount = $("#discount").val();
-                            total = $("#all_total").val();
-                            if (discount != "") {
-                                total_discount = parseInt(discount) * parseInt(total) / 100;
-                                $("#all_dis").val(parseInt(total) - parseInt(total_discount))
-                                $("#total_discount").val(parseInt(total) - parseInt(total_discount))
-                                $("#total_discount").text(parseInt(total) - parseInt(total_discount))
-                            }
-
-                        });
-
-                        $("#discount").on('change', function (event) {
-                            total = $('#all_total').val();
-                            discount = $('#discount').val();
-                            total_discount = parseInt(discount) * parseInt(total) / 100;
-                            $('#all_dis').val(parseInt(total) - parseInt(total_discount));
-                            $('#total_discount').val(parseInt(total) - parseInt(total_discount));
-                            $('#total_discount').text(parseInt(total) - parseInt(total_discount));
-                        })
-                    });
-
+                    }
                 });
 
+
             }
+
         });
 
         //edit preview factor

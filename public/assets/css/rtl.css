@@ -1,50 +1,155 @@
 @font-face {
     font-family: 'IranSans';
     src: url("../fonts/IRANSansWeb/IRANSansWeb.woff") format("woff");
-    font-weight: normal; }
+    font-weight: normal;
+}
+
 @font-face {
     font-family: 'IranSans';
     src: url("../fonts/IRANSansWeb/IRANSansWeb_UltraLight.woff") format("woff");
-    font-weight: 100; }
+    font-weight: 100;
+}
+
 @font-face {
     font-family: 'IranSans';
     src: url("../fonts/IRANSansWeb/IRANSansWeb_Light.woff") format("woff");
-    font-weight: 300; }
+    font-weight: 300;
+}
+
 @font-face {
     font-family: 'IranSans';
     src: url("../fonts/IRANSansWeb/IRANSansWeb_Medium.woff") format("woff");
-    font-weight: 500; }
+    font-weight: 500;
+}
+
 @font-face {
     font-family: 'IranSans';
     src: url("../fonts/IRANSansWeb/IRANSansWeb_Bold.woff") format("woff");
-    font-weight: bold; }
+    font-weight: bold;
+}
 
-.ltr{direction: ltr}
-.rtl{direction: rtl}
-.sidebar p{font-size: 1rem;font-family: 'IRANSans',sans-serif}
-.btn {font-size: 0.8rem;font-family: 'IRANSans',sans-serif;font-weight: lighter}
-.off-canvas-sidebar .nav p, .sidebar .nav p{line-height: 20px}
-.off-canvas-sidebar .nav i, .sidebar .nav i{line-height: 20px}
-.off-canvas-sidebar .logo .simple-text, .sidebar .logo .simple-text{line-height: 15px}
-.sidebar .logo .simple-text small {text-transform: none;font-size: 0.9rem}
-.rtl .sidebar .logo .simple-text{text-align: center}
-.rtl .card label{float:right}
-.dataTables_wrapper .row{width: 100%}
-div.dataTables_wrapper div.dataTables_filter{float: left}
-.rtl .main-panel .content{padding-top: 80px}
-.navbar .navbar-wrapper {padding-right: 30px}
-.rtl .main-panel .content {padding-right: 270px;padding-left: 10px}
-.white-content .table>tbody>tr>td{text-align: right;font-family: 'IRANSans',sans-serif}
+.ltr {
+    direction: ltr
+}
+
+.rtl {
+    direction: rtl
+}
+
+.sidebar p {
+    font-size: 1rem;
+    font-family: 'IRANSans', sans-serif
+}
+
+.btn {
+    font-size: 0.8rem;
+    font-family: 'IRANSans', sans-serif;
+    font-weight: lighter
+}
+
+.off-canvas-sidebar .nav p, .sidebar .nav p {
+    line-height: 20px
+}
+
+.off-canvas-sidebar .nav i, .sidebar .nav i {
+    line-height: 20px
+}
+
+.off-canvas-sidebar .logo .simple-text, .sidebar .logo .simple-text {
+    line-height: 15px
+}
+
+.sidebar .logo .simple-text small {
+    text-transform: none;
+    font-size: 0.9rem
+}
+
+.rtl .sidebar .logo .simple-text {
+    text-align: center
+}
+
+.rtl .card label {
+    float: right
+}
+
+.dataTables_wrapper .row {
+    width: 100%
+}
+
+div.dataTables_wrapper div.dataTables_filter {
+    float: left
+}
+
+.rtl .main-panel .content {
+    padding-top: 80px
+}
+
+.navbar .navbar-wrapper {
+    padding-right: 30px
+}
+
+.rtl .main-panel .content {
+    padding-right: 270px;
+    padding-left: 10px
+}
+
+.white-content .table > tbody > tr > td {
+    text-align: right;
+    font-family: 'IRANSans', sans-serif
+}
+
 .white-content .card:not(.card-white) .card-header .card-title,
-.white-content .table>thead>tr>th{font-family: 'IRANSans',sans-serif}
-.card-title{display: flex;}
-.form-group .select2-container{width: 88%;border:1px  solid  rgba(29,37,59,.5); border-radius: 8px; text-align: right ;padding-top: 8px; margin-top: 20px!important;}
-.select2-search__field{text-align: right!important;}
-.select2-results__option{text-align: right!important;}
+.white-content .table > thead > tr > th {
+    font-family: 'IRANSans', sans-serif
+}
+
+.card-title {
+    display: flex;
+}
+
+.form-group .select2-container {
+    width: 88%;
+    border: 1px solid rgba(29, 37, 59, .5);
+    border-radius: 8px;
+    text-align: right;
+    padding-top: 8px;
+    margin-top: 20px !important;
+}
+
+.select2-search__field {
+    text-align: right !important;
+}
+
+.select2-results__option {
+    text-align: right !important;
+}
+
 .select2-result-repository__avatar {
     float: right;
     width: 100px;
     margin-left: 10px;
 }
-.select2-dropdown.select2-dropdown--above{width:450px!important;}
-.dz-default.dz-message{display: flex!important;}
+
+.dz-default.dz-message {
+    display: flex !important;
+}
+
+.select-to-input {
+    margin-top: -30px !important;
+}
+
+.select2-selection__placeholder {
+    display: flex !important;
+}
+
+.select2-selection__rendered {
+    padding-right: 18px !important;
+    padding-left: 200px !important;
+}
+
+
+/*.select2-container.select2-container--bootstrap.select2-container--open{*/
+    /*left: 1142px !important;*/
+    /*width: 340.667px !important;*/
+/*}*/
+

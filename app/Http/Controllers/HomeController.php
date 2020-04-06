@@ -11,6 +11,7 @@ use App\Order;
 use App\Project;
 use App\Support;
 use App\User;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -50,7 +51,8 @@ class HomeController extends Controller
             ->where('hp_Invoice_number', Null)->get();
         $projects =  Project::all();
         $orders =  Order::all()->count();
-        return view('home',compact('user','order','projects','order_req','agreement','client','orders','support_response','help_desk','priority','type'));
+        $Repositories_Requirement = DB::select("SELECT sum(Product_Count) as sum_hpo FROM hnt_repository__requirements");
+        return view('home',['Repositories_Requirement'=>$Repositories_Requirement],compact('user','order','projects','order_req','agreement','client','orders','support_response','help_desk','priority','type'));
 
 
     }

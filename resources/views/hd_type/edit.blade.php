@@ -107,7 +107,7 @@
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
-                        location.reload();
+                        window.location.href = "/type";
                     },
                     cache: false,
                 });

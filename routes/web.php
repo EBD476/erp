@@ -143,11 +143,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/json-data-product-color', 'ProductColorController@destroy')->name('product-color.json-data-product-color');
     Route::get('/json-data-product-property', 'ProductPropertyController@destroy')->name('product-property.json-data-product-property');
     Route::get('/json-data-product-property-items', 'ProductPropertyItemsController@destroy')->name('product-property-items.json-data-product-property-items');
-    Route::get('/json-data-fill_data', 'OrderController@fill_data')->name('order.json-data-fill_data');
 
 //fill select to data
+    Route::get('/json-data-fill_data', 'OrderController@fill_data')->name('order.json-data-fill_data');
+    Route::get('/json-data-fill_data_city', 'OrderController@fill_data_city')->name('order.json-data-fill_data_city');
+    Route::get('/json-data-fill_data_state', 'OrderController@fill_data_state')->name('order.json-data-fill_data_state');
     Route::get('/json-data-fill_data_product', 'OrderController@fill_data_product')->name('order.json-data-fill_data_product');
-    Route::get('/json-data-fill_data_product_item', 'ProductController@fill_data_product_color')->name('product.json-data-fill_data_product_item');
+    Route::get('/json-data-fill_data_product_color', 'ProductController@fill_data_product_color')->name('product.json-data-fill_data_product_color');
+    Route::get('/json-data-fill_data_product_item', 'ProductController@fill_data_product_item')->name('product.json-data-fill_data_product_item');
     Route::get('/json-data-fill_data_product_property', 'ProductController@fill_data_product_property')->name('product.json-data-fill_data_product_property');
 
 //  deleted route

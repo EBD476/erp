@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\HDpriority;
-use App\HDtype;
-use App\HelpDesk;
+
 use App\Order;
 use App\OrderProduct;
-use App\OrderState;
-use App\User;
 use Illuminate\Http\Request;
-use phpDocumentor\Reflection\DocBlock\Tags\Link;
 use Spatie\Browsershot\Browsershot;
 use VerumConsilium\Browsershot\Facades\PDF;
 
@@ -20,28 +15,27 @@ class OrderProductController extends Controller
 //    store invoices item
     public function store(Request $request)
     {
+        $client_id = OrderProduct::select('hpo_client_id')->where('hpo_order_id', $request->hpo_order_id)->first();
         $size_name = count(collect($request)->get('total'));
         if ($size_name == 1) {
-            $product = new OrderProduct();
-            $product->hpo_product_id = $request->name;
-            $product->hpo_count = $request->invoice_items_qty;
-            $product->hpo_order_id = $request->hpo_order_id;
-            $product->hpo_client_id = $request->hpo_client_id;
-            $product->hop_due_date = $request->hop_due_date;
-            $product->hpo_discount = $request->hpo_discount;
-            $product->hpo_description = $request->invoice_items;
-            $product->hpo_total = $request->total;
-            $product->hpo_total_all = $request->all_tot;
-            $product->hpo_total_discount = $request->all_dis;
-            $product->hpo_status = '1';
-            $product->save();
+            if ($request->name != "") {
+                $product = new OrderProduct();
+                $product->hpo_product_id = $request->name;
+                $product->hpo_count = 1;
+                $product->hpo_order_id = $request->hpo_order_id;
+                $product->hpo_client_id = $client_id;
+                $product->hop_due_date = $request->hop_due_date;
+                $product->hpo_discount = $request->hpo_discount;
+                $product->hpo_description = $request->invoice_items;
+                $product->hpo_total = $request->total;
+                $product->hpo_total_all = $request->all_tot;
+                $product->hpo_total_discount = $request->all_dis;
+                $product->hpo_status = '1';
+                $product->save();
+                return json_encode(["response" => "OK"]);
+
+            }
         } else {
-            $user = User::all();
-            $type = HDtype::all();
-            $priority = HDpriority::ALL();
-            $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-            $order = Order::ALL();
-            $progress = OrderState::all();
             $items = $request->name;
             $index = 0;
             foreach ($items as $item) {
@@ -61,8 +55,9 @@ class OrderProductController extends Controller
                     $product->save();
                     $index++;
                 }
+
             }
-        return json_encode(["response" => "OK"]);
+            return json_encode(["response" => "OK"]);
         }
     }
 
@@ -71,9 +66,6 @@ class OrderProductController extends Controller
     {
         $items = $request->name;
         $index = 0;
-//        $size_name = count(collect($request)->get('total')) - 1;
-//        $size_pid = count(collect($request)->get('pid'));
-//        if ($size_pid == $size_name) {
         foreach ($items as $item) {
             if ($item != "") {
                 $product = OrderProduct::where('hpo_order_id', $id)->where('id', $request->pid[$index])->first();
@@ -92,10 +84,8 @@ class OrderProductController extends Controller
                 $index++;
             }
         }
-//        }
 
-            return json_encode(["response" => "OK"]);
-//        return redirect()->back();
+        return json_encode(["response" => "OK"]);
     }
 
 //    delete invoice items
@@ -109,7 +99,8 @@ class OrderProductController extends Controller
 
     }
 
-    public function createpdf(){
+    public function createpdf()
+    {
 //
 //        $client = Client::all();
 //        $product = Product::all();
@@ -142,7 +133,7 @@ class OrderProductController extends Controller
         return PDF::loadView('view.name', $data)
             ->margins(20, 0, 0, 20)
             ->download();
-        Browsershot ::url('https://example.com')->save($pathToImage);
+        Browsershot::url('https://example.com')->save($pathToImage);
     }
 
     public function fill(Request $request)
@@ -162,7 +153,7 @@ class OrderProductController extends Controller
 
         $data = '';
         foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '"],';
         }
         $data = substr($data, 0, -1);
         $orders_count = Order::all()->count();
