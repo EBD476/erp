@@ -23,10 +23,11 @@ class SupportController extends Controller
      */
     public function index()
     {
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $user=User::all();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $support_response =Support::where('hs_show','0')->get();
         $request = Support::where('hs_status', '1')->get();
         $project = Project::all();
@@ -36,10 +37,11 @@ class SupportController extends Controller
 
     public function show()
     {
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $user=User::all();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $support_response =Support::where('hs_show','0')->get();
         $support_state = SupportStatus::ALL();
         $request = Support::all();
@@ -50,11 +52,12 @@ class SupportController extends Controller
 
     public function edit($id)
     {
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $support_response =Support::where('hs_show','0')->get();
-        $user=User::all();
         $request = Support::where('id', $id)->first();
         $project = Project::where('id', $request->hs_project_id)->first();
         $project_type = Project_Type::where('id', $project->hp_project_type)->first();
@@ -63,10 +66,11 @@ class SupportController extends Controller
 
     public function show_data($id)
     {
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $user=User::all();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $request = Support::where('id', $id)->first();
         $project = Project::where('id', $request->hs_project_id)->first();
         $project_type = Project_Type::where('id', $project->hp_project_type)->first();

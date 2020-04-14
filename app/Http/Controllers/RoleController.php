@@ -22,10 +22,11 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $roles = Role::all();//Get all roles
 
         return view('roles.index',compact('help_desk','priority','type','user'))->with('roles', $roles);
@@ -37,10 +38,11 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $permissions = Permission::all();//Get all permissions
 
         return view('roles.create', ['permissions'=>$permissions],compact('help_desk','priority','type','user'));
@@ -97,10 +99,11 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $role = Role::findOrFail($id);
         $permissions = Permission::all();
 

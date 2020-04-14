@@ -18,10 +18,11 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $provider = Provider::all();
         return view('provider.index',compact('provider','type','priority','help_desk','user'));
     }
@@ -42,10 +43,11 @@ class ProviderController extends Controller
      */
     public function create()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         return view('provider.create',compact('provider','type','priority','help_desk','user'));
     }
 
@@ -64,7 +66,7 @@ class ProviderController extends Controller
         $provider->hp_account_number = $request->hp_account_number;
         $provider->save();
 
-        return json_encode(["response"=>"OK"]);
+        return json_encode(["response"=>"OK","provider"=>$provider->hp_name]);
     }
 
     /**
@@ -82,10 +84,11 @@ class ProviderController extends Controller
      */
     public function edit($id)
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $provider=Provider::find($id);
         return view('provider.edit',compact('provider','type','priority','help_desk','user'));
 
@@ -118,7 +121,7 @@ class ProviderController extends Controller
         $provider->hp_address = $request->hp_address;
         $provider->hp_account_number = $request->hp_account_number;
         $provider->save();
-        return redirect()->back();
+        return json_encode(["response" => "Done"]);
 
 
     }

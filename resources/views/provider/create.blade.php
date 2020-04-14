@@ -4,7 +4,7 @@
 
 
 @section('content')
-    @role('Admin')
+    @role('Admin|product')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -20,7 +20,6 @@
                         </div>
                         <div class="card-body">
                             <form id="form1">
-                                @csrf
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">

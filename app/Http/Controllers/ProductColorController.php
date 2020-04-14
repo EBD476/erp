@@ -19,10 +19,11 @@ class ProductColorController extends Controller
      */
     public function index()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $color = ProductColor::all();
         return view('products.product_color.index',compact('color','user','type','priority','help_desk'));
     }
@@ -34,10 +35,11 @@ class ProductColorController extends Controller
      */
     public function create()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         return view('products.product_color.create',compact('user','type','priority','help_desk'));
 
     }
@@ -56,7 +58,7 @@ class ProductColorController extends Controller
         $color = New ProductColor();
         $color->hn_color_name = $request->hn_color_name;
         $color->save();
-        return json_encode(["response" => "Done"]);
+        return json_encode(["response" => "Done","name"=>$color->hn_color_name,"id"=>$color->id]);
     }
 
     /**
@@ -78,10 +80,11 @@ class ProductColorController extends Controller
      */
     public function edit($id)
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $color = ProductColor::find($id);
         return view('products.product_color.edit',compact('color','user','type','priority','help_desk'));
     }

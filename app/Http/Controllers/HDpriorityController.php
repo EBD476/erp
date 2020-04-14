@@ -17,10 +17,11 @@ class HDpriorityController extends Controller
      */
     public function index()
     {
-        $user=User::all();
-        $type = HDtype::all();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $priority = HDpriority::all();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         return view('priority.index', compact('priority', 'help_desk', 'type','user'));
     }
 
@@ -70,10 +71,11 @@ class HDpriorityController extends Controller
      */
     public function edit(HDpriority $hDpriority)
     {
-        $user=User::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $priorities = HDpriority::find($hDpriority);
         return view('priority.index', compact('priority', 'help_desk', 'priority', 'type', 'priorities','user'));
     }

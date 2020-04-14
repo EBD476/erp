@@ -20,10 +20,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $users = User::all();
         $role_user = User::where('id', auth()->user()->id)->get()->first();
         return view('users.index', compact('role_user', 'help_desk', 'type', 'priority', 'user'))->with('users', $users);
@@ -36,10 +38,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        $user = User::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         //Get all roles and pass it to the view
         $roles = Role::get();
         return view('users.create', ['roles' => $roles], compact('help_desk', 'priority', 'type', 'user'));
@@ -84,10 +87,11 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         return redirect('users', 'help_desk', 'priority', 'type');
     }
 
@@ -100,10 +104,11 @@ class UserController extends Controller
     public function edit($id)
     {
 
-        $user = User::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $user = User::findOrFail($id); //Get user with specified id
         $roles = Role::get(); //Get all roles
 
@@ -123,35 +128,28 @@ class UserController extends Controller
 
 
         $user = User::findOrFail($id); //Get role specified by id
-
         //Validate name, email and password fields
         $this->validate($request, [
 //            'name'=>'required|max:120',
 //            'password'=>'required|min:6|confirmed'
         ]);
-      //  $current_password =
-//        dd(Hash::make("1234"));
-//        dd($user->password ."  -  " .$current_password) ;
+        $result = Hash::check($request->password, $user->password);
+        if ($result == true){
+        $input = $request->only(['name', 'newPassword']); //Retreive the name, email and password fields
+        $roles = $request['roles']; //Retreive all roles
+        $user->name = $request->name;
+        $user->password = $request->newPassword;
+        $user->save();
 
-       // if ($current_password == $user->password) {
-            $new_password = Hash::make($request->newPassword);
-         //   dd($new_password);
-
-            $input = $request->only(['name', 'newPassword']); //Retreive the name, email and password fields
-            $roles = $request['roles']; //Retreive all roles
-            $user->name = $request->name;
-            $user->password = $new_password;
-            $user->save();
-
-            if (isset($roles)) {
-                $user->roles()->sync($roles);  //If one or more role is selected associate user to roles
-            } else {
-                $user->roles()->detach(); //If no role is selected remove exisiting role associated to a user
-            }
-            return redirect()->route('users.index')
-                ->with('flash_message',
-                    'User successfully edited.');
-      //  }
+        if (isset($roles)) {
+            $user->roles()->sync($roles);  //If one or more role is selected associate user to roles
+        } else {
+            $user->roles()->detach(); //If no role is selected remove exisiting role associated to a user
+        }
+        return redirect()->route('users.index')
+            ->with('flash_message',
+                'User successfully edited.');
+          }
     }
 
     /**

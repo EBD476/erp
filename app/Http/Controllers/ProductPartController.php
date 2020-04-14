@@ -14,10 +14,11 @@ class ProductPartController extends Controller
 {
     public function index()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $product=Product::ALL();
         $part=Part::ALL();
         $product_part = ProductPart::all();
@@ -40,10 +41,11 @@ class ProductPartController extends Controller
      */
     public function create()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $part_id=Part::all();
         $product_id=Product::all();
         return view('product_part.create',compact('part_id','product_id','type','priority','help_desk','user'));
@@ -74,10 +76,11 @@ class ProductPartController extends Controller
      */
     public function edit($id)
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $part_id=Part::all();
         $product_id=Product::all();
         $product_part=ProductPart::find($id);

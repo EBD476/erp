@@ -15,10 +15,11 @@ class RepositoryPartController extends Controller
 {
     public function index()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $repository=RepositoryPart::ALL();
         $part = Part::all();
         return view('repository_part.index',compact('part','repository','help_desk','priority','type','user'));
@@ -31,10 +32,11 @@ class RepositoryPartController extends Controller
      */
     public function create()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $part_name=Part::all();
         $repository_name=RepositoryCreate::all();
         return view('repository_part.create',compact('part_name','repository_name','help_desk','priority','type','user'));
@@ -75,10 +77,11 @@ class RepositoryPartController extends Controller
      */
     public function edit($id)
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $repository=RepositoryPart::find($id);
         return view('repository_part.edit',compact('repository','help_desk','priority','type','user'));
 

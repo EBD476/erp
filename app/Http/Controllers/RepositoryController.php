@@ -10,7 +10,7 @@ use App\OrderState;
 use App\Product;
 use App\Provider;
 use App\Repository;
-use App\Repository_Requirement;
+use App\Product_Requirement;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,10 +28,9 @@ class RepositoryController extends Controller
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $Repositories = Repository:: all();
         $repository_product_count = DB::select("SELECT sum(hr_product_stock) as sum_hpo FROM hnt_repositories");
-        $orders = OrderProduct::where('hpo_status','3')->get();
-        $product = Product::ALL();
-        $client = Client::all();
-
+        $orders = OrderProduct::select('hpo_status','hpo_product_id','hpo_client_id','hpo_count','hpo_order_id')->where('hpo_status','3')->get();
+        $product = Product::select('id','hp_product_name')->get();
+        $client =Client::select('id','hc_name')->get();
         $query_order_product = DB::select("SELECT sum(hpo_count) as sum_hpo , hpo_status , hpo_product_id FROM hnt_products,hnt_invoice_items WHERE hnt_products.id =hnt_invoice_items.hpo_product_id group by hnt_invoice_items.hpo_product_id , hpo_status ");
         $query_order_product_all = DB::select("SELECT sum(hpo_count) as sum_hpo FROM hnt_invoice_items where hpo_status = '3'");
 
@@ -49,12 +48,12 @@ class RepositoryController extends Controller
     public function create()
     {
         $product=Product::all();
-        $provider=Provider::all();
         $user=User::all();
         $type=HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('Repository.create',compact('type','priority','help_desk','user','provider','product'));
+        $provider= Provider::select('id','hp_name')->get();
+        return view('Repository.create',compact('type','priority','help_desk','user','product','provider'));
     }
 
 

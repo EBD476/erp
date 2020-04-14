@@ -16,15 +16,15 @@ class PartController extends Controller
 {
     public function index()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $product=Product::all();
         $product_part=ProductPart::all();
         $part = Part::all();
         return view('part.index',compact('part','product','product_part','type','help_desk','priority','user'));
-//        $select_product_part = DB::select('select count')
     }
 
 
@@ -43,11 +43,12 @@ class PartController extends Controller
      */
     public function create()
     {
-        $provider=Provider::all();
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        $provider= Provider::select('id','hp_name')->get();
         return view('part.create',compact('type','help_desk','priority','user','provider'));
     }
 
@@ -64,7 +65,8 @@ class PartController extends Controller
         $code = "hnt_prt_" . $current_date ;
         $part = new Part();
         $part->hp_name = $request->hp_name;
-        $part->hp_code = $code;
+        $part->hp_part_image = $request->part_image;
+        $part->hp_serial_number	 = $code;
         $part->hp_part_model = $request->hp_part_model;
         $part->hp_provider = $request->hp_provider;
         $part->hp_category_id = $request->hp_category_id;
@@ -89,10 +91,11 @@ class PartController extends Controller
      */
     public function edit($id)
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $part=Part::find($id);
         return view('part.edit',compact('part','user','type','priority','help_desk'));
 
@@ -118,18 +121,19 @@ class PartController extends Controller
             'hp_code' => 'required',
             'hp_part_model' => 'required',
             'hp_provider' => 'required',
-            'hp_category_id' => 'required',
+//            'hp_category_id' => 'required',
             'hp_produce_date' => 'required',
         ]);
         $part =Part::find($id);
         $part->hp_name = $request->hp_name;
-        $part->hp_code = $request->hp_code;
+        $part->hp_serial_number	 = $request->hp_code;
         $part->hp_part_model = $request->hp_part_model;
+        $part->hp_part_image = $request->part_image;
         $part->hp_provider = $request->hp_provider;
         $part->hp_category_id = $request->hp_category_id;
         $part->hp_produce_date = $request->hp_produce_date;
         $part->save();
-        return view('part.index',compact('part'));
+        return json_encode(["response"=>"OK"]);
 
 
     }
@@ -170,4 +174,26 @@ class PartController extends Controller
         $orders_count = Order::all()->count();
         return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
     }
+
+    public function upload(Request $request)
+    {
+        $image = $request->file('file');
+        $filename = $_FILES['file']['name'];
+
+        if (isset($image)) {
+//            $current_date = Carbon::now()->todatestring();
+//          $image_name = $current_date . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+            if (!file_exists('img/parts')) {
+                mkdir('img/parts', 0777, true);
+            }
+            $image->move('img/parts', $filename);
+        } else {
+            $image_name = 'default.png';
+        }
+
+        return response()->json([
+            'link' => '/img/parts/' . $filename
+        ]);
+    }
+
 }

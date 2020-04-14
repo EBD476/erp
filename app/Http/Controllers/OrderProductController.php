@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use App\OrderProduct;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Spatie\Browsershot\Browsershot;
 use VerumConsilium\Browsershot\Facades\PDF;
@@ -15,24 +16,28 @@ class OrderProductController extends Controller
 //    store invoices item
     public function store(Request $request)
     {
+        $date = Carbon::now();
+        $create_due_date = date('Y-m-d', strtotime($date . ' + 7 days'));
         $client_id = OrderProduct::select('hpo_client_id')->where('hpo_order_id', $request->hpo_order_id)->first();
         $size_name = count(collect($request)->get('total'));
+
         if ($size_name == 1) {
             if ($request->name != "") {
                 $product = new OrderProduct();
-                $product->hpo_product_id = $request->name;
+                $product->hpo_product_id = $request->name[0];
                 $product->hpo_count = 1;
                 $product->hpo_order_id = $request->hpo_order_id;
-                $product->hpo_client_id = $client_id;
-                $product->hop_due_date = $request->hop_due_date;
-                $product->hpo_discount = $request->hpo_discount;
-                $product->hpo_description = $request->invoice_items;
-                $product->hpo_total = $request->total;
-                $product->hpo_total_all = $request->all_tot;
-                $product->hpo_total_discount = $request->all_dis;
+                if ($request->hpo_client_id == "") {
+                    $product->hpo_client_id = $client_id->hpo_client_id;
+                }
+                if ($request->hpo_client_id != "") {
+                    $product->hpo_client_id = $request->hpo_client_id;
+                }
+                $product->hop_due_date = $create_due_date;
+                $product->hpo_description = $request->invoice_items[0];
+                $product->hpo_total = $request->total[0];
                 $product->hpo_status = '1';
                 $product->save();
-                return json_encode(["response" => "OK"]);
 
             }
         } else {
@@ -45,26 +50,32 @@ class OrderProductController extends Controller
                     $product->hpo_count = $request->invoice_items_qty[$index];
                     $product->hpo_order_id = $request->hpo_order_id;
                     $product->hpo_client_id = $request->hpo_client_id;
-                    $product->hop_due_date = $request->hop_due_date;
-                    $product->hpo_discount = $request->hpo_discount;
+                    $product->hop_due_date = $create_due_date;
                     $product->hpo_description = $request->invoice_items[$index];
                     $product->hpo_total = $request->total[$index];
-                    $product->hpo_total_all = $request->all_tot;
-                    $product->hpo_total_discount = $request->all_dis;
                     $product->hpo_status = '1';
                     $product->save();
                     $index++;
                 }
 
+
             }
-            return json_encode(["response" => "OK"]);
         }
+
+//              update invoice tb
+        $product_order = Order::find($request->hpo_order_id);
+        $product_order->hp_total_all = $request->all_tot;
+        $product_order->hp_total_discount = $request->all_dis;
+        $product_order->hp_discount = $request->hpo_discount;
+        $product_order->save();
+
+        return json_encode(["response" => "OK"]);
     }
 
 //    update invoices item
     public function update(Request $request, $id)
     {
-        $items = $request->name;
+        $items = $request->pid;
         $index = 0;
         foreach ($items as $item) {
             if ($item != "") {
@@ -74,16 +85,20 @@ class OrderProductController extends Controller
                 $product->hpo_order_id = $request->hpo_order_id;
                 $product->hpo_client_id = $request->hpo_client_id;
                 $product->hop_due_date = $request->hop_due_date;
-                $product->hpo_discount = $request->hpo_discount;
                 $product->hpo_total = $request->total[$index];
                 $product->hpo_description = $request->invoice_items[$index];
-                $product->hpo_total_all = $request->all_tot;
-                $product->hpo_total_discount = $request->all_dis;
                 $product->hpo_status = '1';
                 $product->save();
                 $index++;
             }
         }
+
+//      update invoice tb
+        $product_order = Order::find($id);
+        $product_order->hp_total_all = $request->all_tot;
+        $product_order->hp_total_discount = $request->all_dis;
+        $product_order->hp_discount = $request->hpo_discount;
+        $product_order->save();
 
         return json_encode(["response" => "OK"]);
     }
@@ -158,5 +173,34 @@ class OrderProductController extends Controller
         $data = substr($data, 0, -1);
         $orders_count = Order::all()->count();
         return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+    }
+
+    public function add(Request $request)
+    {
+        $date = Carbon::now();
+//        deu date time for exit from product level
+        $create_due_date = date('Y-m-d', strtotime($date . ' + 60 days'));
+        $client_id = OrderProduct::select('hpo_client_id')->where('hpo_order_id', $request->hpo_order_id)->first();
+        $size_name = count(collect($request)->get('total'));
+
+        if ($size_name == 1) {
+            if ($request->name != "") {
+                $product = new OrderProduct();
+                $product->hpo_product_id = $request->name;
+                $product->hpo_count = 1;
+                $product->hpo_order_id = $request->hpo_order_id;
+                if ($request->hpo_client_id == "") {
+                    $product->hpo_client_id = $client_id->hpo_client_id;
+                }
+                if ($request->hpo_client_id != "") {
+                    $product->hpo_client_id = $request->hpo_client_id;
+                }
+                $product->hop_due_date = $create_due_date;
+                $product->hpo_description = $request->invoice_items;
+                $product->hpo_total = $request->total;
+                $product->hpo_status = '1';
+                $product->save();
+            }
+        }
     }
 }

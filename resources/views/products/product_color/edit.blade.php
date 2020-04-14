@@ -4,7 +4,7 @@
 
 
 @section('content')
-    @role('Admin')
+    @role('Admin|product')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">

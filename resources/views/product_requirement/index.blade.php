@@ -7,18 +7,18 @@
 @endpush
 
 @section('content')
-    @role('Admin')
+    @role('Admin|product')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <a href="{{route('repository_requirement.create')}}" class="btn btn-primary float-left mb-lg-2"><i
-                                class="tim-icons icon-simple-add"></i>{{__('Add New Repository')}}</a>
+                    <a href="{{route('product_requirement.create')}}" class="btn btn-primary float-left mb-lg-2"><i
+                                class="tim-icons icon-simple-add"></i>{{__('New Requirement')}}</a>
                 </div>
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header card-header-primary">
-                            <h4 class="card-title ">{{__('Repository Requirement')}}</h4>
+                            <h4 class="card-title ">{{__('Product Requirement Management')}}</h4>
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
@@ -49,25 +49,25 @@
                                     </thead>
                                     <tbody>
 
-                                    @foreach($Repositories_Requirement as $key => $Repositories_Requirement)
+                                    @foreach($product_requirement as $key => $product_requirements)
                                         <tr>
                                             <td>
                                                 {{$key + 1}}
                                             </td>
                                             <td>
-                                                {{$Repositories_Requirement -> Product_Id}}
+                                                {{$product_requirements -> Product_Id}}
                                             </td>
                                             <td>
-                                                {{$Repositories_Requirement ->Product_Count}}
+                                                {{$product_requirements ->Product_Count}}
                                             </td>
                                             <td>
-                                                {{$Repositories_Requirement -> Comment}}
+                                                {{$product_requirements -> Comment}}
                                             </td>
                                             <td>
-                                                {{$Repositories_Requirement -> created_at}}
+                                                {{$product_requirements -> created_at}}
                                             </td>
                                             <td>
-                                                {{$Repositories_Requirement -> updated_at}}
+                                                {{$product_requirements -> updated_at}}
                                             </td>
                                             <td>
                                                 <div class="dropdown">
@@ -79,18 +79,18 @@
                                                     <div class="dropdown-menu dropdown-menu-right"
                                                          aria-labelledby="dropdownMenuLink">
                                                         <a class="dropdown-item"
-                                                           href="{{route('repository_requirement.edit',$Repositories_Requirement->id)}}"
+                                                           href="{{route('product_requirement.edit',$product_requirements->id)}}"
                                                         >{{__('Edit')}}</a>
-                                                        <form id="-form-delete{{$Repositories_Requirement->id}}"
+                                                        <form id="-form-delete{{$product_requirements->id}}"
                                                               style="display: none;" method="POST"
-                                                              action="{{route('repository_requirement.destroy',$Repositories_Requirement->id)}}">
+                                                              action="{{route('product_requirement.destroy',$product_requirements->id)}}">
                                                             @csrf
                                                             @method('DELETE')
                                                         </form>
                                                         <a class="dropdown-item"
-                                                           onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
+                                                           onclick="if(confirm('آیا از حذف این محصول اطمینان دارید؟')){
                                                                    event.preventDefault();
-                                                                   document.getElementById('-form-delete{{$Repositories_Requirement->id}}').submit();
+                                                                   document.getElementById('-form-delete{{$product_requirements->id}}').submit();
                                                                    }else {
                                                                    event.preventDefault();}">{{__('Delete')}}</a>
                                                     </div>

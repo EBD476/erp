@@ -29,10 +29,11 @@ class VerifyController extends Controller
      */
     public function index()
     {
-        $user=User::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $order = Order::select('id', 'hp_project_name', 'created_at')
             ->where('hp_Invoice_number', Null)->get();
 //        dd($order);
@@ -101,10 +102,11 @@ class VerifyController extends Controller
 
         }
 
-        $user = User::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $order = Order::find($id);
         $product = Product::all();
         $data = OrderProduct::where('hpo_order_id',$id)->get();

@@ -6,18 +6,20 @@ use App\BankAccountType;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use App\User;
 use Illuminate\Http\Request;
 
 class BankAccountTypeController extends Controller
 {
     public function index()
     {
-        $user=User::all();
-        $bank_account_type=BankAccountType::all();
-        $type = HDtype::all();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $priority = HDpriority::all();
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.bank_account_type.index', compact('priority', 'help_desk', 'type','bank_account_type','user'));
+        $bank_account_type = BankAccountType::all();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.bank_account_type.index', compact('priority', 'help_desk', 'type', 'bank_account_type', 'user'));
     }
 
     /**
@@ -27,11 +29,11 @@ class BankAccountTypeController extends Controller
      */
     public function create()
     {
-        $user=User::all();
-        $type = HDtype::all();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $priority = HDpriority::all();
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.bank_account_type.create',compact('priority', 'help_desk', 'type','user'));
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.bank_account_type.create', compact('priority', 'help_desk', 'type', 'user'));
     }
 
     /**
@@ -70,12 +72,13 @@ class BankAccountTypeController extends Controller
      */
     public function edit($id)
     {
-        $user=User::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $bank_account_type = BankAccountType::find($id);
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.bank_account_type.edit', compact('priority', 'help_desk', 'priority', 'type','bank_account_type','user'));
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.bank_account_type.edit', compact('priority', 'help_desk', 'priority', 'type', 'bank_account_type', 'user'));
     }
 
     /**
@@ -108,6 +111,7 @@ class BankAccountTypeController extends Controller
         $bank_account_type->delete();
         return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
     }
+
     public function fill(Request $request)
     {
         $start = $request->start;
@@ -125,7 +129,7 @@ class BankAccountTypeController extends Controller
 
         $data = '';
         foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '"],';
         }
         $data = substr($data, 0, -1);
         $orders_count = Order::all()->count();

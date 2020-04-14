@@ -4,7 +4,7 @@
 
 
 @section('content')
-    @role('Admin')
+    @role('Admin||repository')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -19,14 +19,12 @@
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
-                            <form method="post" action="{{route('repository_create',$repository->id)}}">
-                                @csrf
-                                @method('PUT')
+                            <form id="form1">
                                 <div class="row">
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Name')}}</label>
-                                            <input name="product_name" type="text" class="form-control" required=""
+                                            <input data-id="{{$repository->id}}" id="rid" name="hr_name" type="text" class="form-control" required=""
                                                    aria-invalid="false" value="{{$repository->hr_name}}">
                                         </div>
                                     </div>
@@ -62,9 +60,6 @@
                                         {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
                                         <h5 class="title">Hanta IBMS</h5>
                                     </a>
-                            <p class="description">
-                                Product
-                            </p>
                         </div>
                         </p>
                         <div class="card-description">
@@ -92,5 +87,44 @@
 @endsection
 
 @push('scripts')
+    <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            $("#form1").submit(function (event) {
+                var data = $("#form1").serialize();
+                var rid = $('#rid').data('id');
+                event.preventDefault();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
+                $.ajax({
+                    url: '/repository_create/' + rid,
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    method:'put',
+                    async: false,
+                    success: function (data) {
+                        setTimeout($.unblockUI, 2000);
+                        window.location.href = "/repository_create";
+                    },
+                    cache: false,
+                });
+            });
+        });
+    </script>
 @endpush

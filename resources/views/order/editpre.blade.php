@@ -10,7 +10,7 @@
 @endpush
 
 @section('content')
-    @role('Admin')
+    @role('Admin|order')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">

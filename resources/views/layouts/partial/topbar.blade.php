@@ -34,9 +34,7 @@
                 <li class="dropdown nav-item">
                     <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         @foreach($help_desk as $check_status)
-                            @if($check_status->hhd_receiver_user_id == auth()->user()->id and $check_status->hhd_ticket_status == 1)
                                 <div class="notification d-none d-lg-block d-xl-block"></div>
-                            @endif
                         @endforeach
                         <i class="tim-icons icon-sound-wave"></i>
                         <p class="d-lg-none">
@@ -67,7 +65,6 @@
                         {{--@endforeach--}}
 
                         @foreach($help_desk as $help_desks_top_bar)
-                            @if($help_desks_top_bar->hhd_receiver_user_id == auth()->user()->id)
                                 <li class="nav-link">
                                     <a href="{{route('help_desk.receive_show',$help_desks_top_bar->id)}}"
                                        class="nav-item dropdown-item">
@@ -91,7 +88,6 @@
                                         {{__('H')}}
                                     </a>
                                 </li>
-                            @endif
                         @endforeach
                         {{--<li class="nav-link"><a href="javascript:void(0)" class="nav-item --}}
                         {{--dropdown-item">Another notification</a></li>--}}

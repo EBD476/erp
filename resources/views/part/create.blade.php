@@ -7,14 +7,13 @@
 @endpush
 
 @section('content')
-    @role('Admin')
+    @role('Admin|product')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     @include('layouts.partial.Msg')
                 </div>
-
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header card-header-primary">
@@ -45,7 +44,7 @@
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Provider')}}</label>
-                                            <select name="hp_provider" type="text" class="form-control">
+                                            <select id="provider" name="hp_provider" type="text" class="form-control">
                                                 @foreach($provider as $providers)
                                                     <option value="{{$providers->id}}">
                                                         {{$providers->hp_name}}
@@ -64,7 +63,7 @@
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Category Id')}}</label>
-                                            <input name="hp_category_id" type="text" class="form-control" required=""
+                                            <input name="hp_category_id" type="number" class="form-control"
                                                    aria-invalid="false">
                                         </div>
                                     </div>
@@ -73,15 +72,32 @@
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Produce Date')}}</label>
-                                            <input name="hp_produce_date" type="text" class="form-control" required=""
+                                            <input name="hp_produce_date" type="number" class="form-control" required=""
                                                    aria-invalid="false" id="test-date-id">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                                </div>
+                                <input type="hidden" name="part_image" id="part_image">
                             </form>
+                            <br>
+                            <label style="margin-top: -20px;">{{__('Image')}}</label>
+                            <div class="card-body col-md-6 pr-md-1 row"
+                                 style="display: flex ; border: 1px dashed;     margin-right: -35px;}">
+                                <form action="{{url('/part-image-save')}}" class="dropzone" id="dropzone"
+                                      enctype="multipart/form-data">
+                                    @csrf
+                                    @method('POST')
+                                    <div class="form-group">
+                                        <input type="file" class="form-control"
+                                               name="file" multiple>
+                                    </div>
+                                </form>
+                            </div>
+                            <br>
+                            <div class="card-footer">
+                                <button id="sub_form1" type="submit"
+                                        class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -130,7 +146,7 @@
                         </div>
                         <div class="md-form mb-5">
                             <label class="bmd-label-floating" style="float: right">{{__('Phone')}}</label>
-                            <input name="hp_phone" type="text" class="form-control" required=""
+                            <input name="hp_phone" type="number" class="form-control" required=""
                                    aria-invalid="false">
                         </div>
                         <div class="md-form mb-5">
@@ -138,28 +154,29 @@
                             <input name="hp_address" type="text" class="form-control" required=""
                                    aria-invalid="false">
                         </div>
-                        <div class="col-md-12">
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                            </div>
-                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="submit" id="modal_form"
+                                class="btn btn-deep-orange">{{__('Send')}}</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    {{--end modal--}}
     @endrole
 @endsection
 
 @push('scripts')
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/plugins/dropzone.js')}}"></script>
+    <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
+
     <script>
         $(document).ready(function () {
-            $("#form1").submit(function (event) {
+            $("#sub_form1").on('click',function (event) {
                 var data = $("#form1").serialize();
                 event.preventDefault();
-                $.blockUI();
-
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -183,9 +200,8 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        alert(data.response);
                         setTimeout($.unblockUI, 2000);
-                        location.reload();
+                        window.location.href = "/part";
                     },
                     cache: false,
                 });
@@ -193,18 +209,6 @@
             $("#modal_form").submit(function (event) {
                 var data = $("#modal_form").serialize();
                 event.preventDefault();
-                $.blockUI({
-                    message: '{{__('please wait...')}}', css: {
-                        border: 'none',
-                        padding: '15px',
-                        backgroundColor: '#000',
-                        '-webkit-border-radius': '10px',
-                        '-moz-border-radius': '10px',
-                        opacity: .5,
-                        color: '#fff'
-                    }
-                });
-
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -220,20 +224,46 @@
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
                         $("#modalRegisterForm").modal('hide');
-                        window.location.href = "/part";
+                        $("#provider").append('<option selected>' + data.provider + '</option>');
+
                     },
                     cache: false,
                 });
             });
         });
-    </script>
-    <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
-    <script>
+
+        // drop zone
+        Dropzone.options.dropzone =
+            {
+                maxFilesize: 12,
+                // فایل نوع آبجکت است
+                renameFile: function (file) {
+                    var dt = new Date();
+                    var time = dt.getTime();
+                    return time + '-' + file.name;
+                },
+                acceptedFiles: ".jpeg,.jpg,.png,.gif",
+                addRemoveLinks: true,
+                timeout: 5000,
+                success: function (file, response) {
+                    // اسم اینپوت و مقداری که باید به آن ارسال شود
+                    $('#part_image').val(file.upload.filename);
+                },
+                error: function (file, response) {
+                    return false;
+                }
+            };
+        // enddropzone
+
+        // calendr
         kamaDatepicker('test-date-id', {
             buttonsColor: "blue",
             forceFarsiDigits: true,
             nextButtonIcon: "fa fa-arrow-circle-right",
             previousButtonIcon: "fa fa-arrow-circle-left"
         });
+        // end calender
     </script>
+
+
 @endpush

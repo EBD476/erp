@@ -7,7 +7,7 @@
 
 @section('content')
     <!------ Include the above in your HEAD tag ---------->
-    @role('Admin')
+    @role('Admin|order')
     <div class="content persian">
         <div class="container-fluid">
             <div class="card">

@@ -21,17 +21,17 @@ use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\Gd\Color;
-use PhpParser\Builder\Property;
+
 
 class OrderController extends Controller
 {
     public function index()
     {
-        $user = User::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $order = Order::ALL();
         $progress = OrderState::all();
         return view('order.index', compact('order', 'progress', 'type', 'help_desk', 'priority', 'user'));
@@ -42,10 +42,11 @@ class OrderController extends Controller
         $items = ProductPropertyItems::all();
         $properties = ProductProperty::all();
         $color = ProductColor::all();
-        $user = User::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $invoice_statuses = InvoiceStatuses::ALL();
         $project_type = Project_Type::all();
         $address = address::all();
@@ -89,6 +90,7 @@ class OrderController extends Controller
         $order->hp_project_location = $request->hp_project_location;
         $order->hp_contract_type = $request->hp_contract_type;
         $order->hp_registrant = $current_user;
+        $order->hp_status = 1;
         $order->ho_client = $request->ho_client;
         $order->save();
         return json_encode(["response" => "OK", "client_id" => $order->ho_client, "order_id" => $order->id]);
@@ -100,19 +102,20 @@ class OrderController extends Controller
         $items = ProductPropertyItems::all();
         $properties = ProductProperty::all();
         $color = ProductColor::all();
-        $user = User::all();
         $invoice_statuses = InvoiceStatuses::ALL();
         $client = Client::all();
         $project_type = Project_Type::all();
         $address = address::all();
         $state = State::all();
         $product = Product::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $project = Order::find($id);
         $invoices_items = OrderProduct::where('hpo_order_id', $id)->get();
-        $items_all = OrderProduct::select('hpo_total_all', 'hpo_discount', 'hpo_total', 'hpo_status', 'hpo_total_discount', 'hop_due_date', 'hpo_order_id')->where('hpo_order_id', $id)->get()->last();
+        $items_all = OrderProduct::select('hpo_total', 'hpo_status', 'hop_due_date', 'hpo_order_id')->where('hpo_order_id', $id)->get()->last();
         return view('order.edit', compact('invoices_items', 'color', 'properties', 'items_all', 'invoice_statuses', 'client', 'project_type', 'address', 'state', 'product', 'project', 'items', 'type', 'help_desk', 'priority', 'user'));
     }
 
@@ -121,16 +124,17 @@ class OrderController extends Controller
         $items = ProductPropertyItems::all();
         $properties = ProductProperty::all();
         $color = ProductColor::all();
-        $user = User::all();
         $invoice_statuses = InvoiceStatuses::ALL();
         $client = Client::all();
         $project_type = Project_Type::all();
         $address = address::all();
         $state = State::all();
         $product = Product::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $project = Order::find($id);
         $invoices_item = $request;
 
@@ -178,6 +182,7 @@ class OrderController extends Controller
         $order->hp_contract_type = $request->hp_contract_type;
         $order->hp_registrant = $current_user;
         $order->ho_client = $request->ho_client;
+        $order->hp_status =1;
         $order->save();
         return json_encode(["response" => "OK", "client_id" => $order->ho_client, "order_id" => $order->id]);
 
@@ -193,12 +198,11 @@ class OrderController extends Controller
 
     public function preview(Request $request)
     {
-        $client = Client::all();
-        $product = Product::all();
-        $user = User::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $data = $request;
         $order = Order:: where('id', $request->hpo_order_id)->get()->last();
         $city = address:: where('id', $order->hp_address_city_id)->get()->last();
@@ -233,9 +237,10 @@ class OrderController extends Controller
     public function fill_data(Request $request)
     {
         $search = $request->search;
+        $current_user=auth()->user()->id;
         if ($search != "") {
-            $client = Client::select('id', 'hc_name as text')->where('id', 'LIKE', "%$search%")
-                ->orwhere('hc_name', 'LIKE', "%$search%")
+            $client = Client::select('id', 'hc_name as text')->where('hc_dealership_number',$current_user)
+                ->where('hc_name', 'LIKE', "%$search%")
                 ->get();
         }
         return json_encode(["results" => $client]);

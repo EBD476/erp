@@ -44,7 +44,7 @@
                                             </thead>
                                             <tbody>
 
-                                            @foreach($client as $key => $client)
+                                            @foreach($admin_client as $key => $client)
                                                 <tr>
                                                     <td>
                                                         {{$key + 1}}

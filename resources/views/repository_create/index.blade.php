@@ -61,7 +61,7 @@
                                                     <td>
                                                         {{$repository ->hr_name}}
                                                     </td>
-                                                    <td class="text-left">
+                                                    <td>
                                                         {{$repository -> hr_description}}
                                                     </td>
                                                     <td>
@@ -83,7 +83,7 @@
                                                                     @method('DELETE')
                                                                 </form>
                                                                 <a class="dropdown-item"
-                                                                   onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
+                                                                   onclick="if(confirm('آیا از حذف این انبار اطمینان دارید؟')){
                                                                            event.preventDefault();
                                                                            document.getElementById('-form-delete{{$repository->id}}').submit();
                                                                            }else {
@@ -115,9 +115,6 @@
                                         </a>
                                     </div>
                                     </p>
-                                    <div class="card-description">
-
-                                    </div>
                                 </div>
                             </div>
                         </div>

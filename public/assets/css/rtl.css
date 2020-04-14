@@ -147,9 +147,16 @@ div.dataTables_wrapper div.dataTables_filter {
     padding-left: 200px !important;
 }
 
+.table-responsive.ps {
+    height: 100vmin !important;
+}
+
+.rtl .dropdown-menu.dropdown-menu-right.dropdown-navbar {
+    right: -120px !important;
+}
 
 /*.select2-container.select2-container--bootstrap.select2-container--open{*/
-    /*left: 1142px !important;*/
-    /*width: 340.667px !important;*/
+/*left: 1142px !important;*/
+/*width: 340.667px !important;*/
 /*}*/
 

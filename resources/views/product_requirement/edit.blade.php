@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    @role('Admin')
+    @role('Admin|product')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -21,17 +21,14 @@
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
-                            <form method="POST"
-                                  action="{{route('repository_requirement.update',$Repositories_Requirement->id)}}"
-                                  ENCTYPE="multipart/form-data">
-                                @csrf
-                                @method('PUT')
+                            <form id="form1">
+
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="bmd-label-floating">{{__('Product Id')}}</label>
-                                            <input type="text" class="form-control" name="Product_Id"
-                                                   value="{{$Repositories_Requirement->Product_Id}}">
+                                            <input id="rid" type="text" class="form-control" name="Product_Id"
+                                                   value="{{$product_requirement->Product_Id}}" data-id="{{$product_requirement->id}}">
                                         </div>
 
                                     </div>
@@ -41,7 +38,7 @@
                                         <div class="form-group">
                                             <label class="bmd-label-floating">{{__('Product Count')}}</label>
                                             <input type="text" class="form-control" name="Product_Count"
-                                                   value="{{$Repositories_Requirement-> Product_Count}}">
+                                                   value="{{$product_requirement-> Product_Count}}">
                                         </div>
                                     </div>
                                 </div>
@@ -50,11 +47,11 @@
                                         <div class="form-group">
                                             <label class="bmd-label-floating">{{__('Comment')}}</label>
                                             <input type="text" class="form-control" name="Comment"
-                                                   value="{{$Repositories_Requirement-> Comment}}">
+                                                   value="{{$product_requirement-> Comment}}">
                                         </div>
                                     </div>
                                 </div>
-                                <a href="{{route('repository_requirement.index')}}"
+                                <a href="{{route('product_requirement.index')}}"
                                    class="btn badge-danger">{{__('Back')}}</a>
 
                                 <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
@@ -76,9 +73,6 @@
                                         {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
                                         <h5 class="title">Hanta IBMS</h5>
                                     </a>
-                            <p class="description">
-                                Project Implementors
-                            </p>
                         </div>
                         </p>
                         <div class="card-description">
@@ -106,5 +100,45 @@
 @endsection
 
 @push('scripts')
+    <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            $("#form1").submit(function (event) {
+                var data = $("#form1").serialize();
+                var rid = $("#rid").data('id');
+                event.preventDefault();
+                $.blockUI({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
 
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url: '/product_requirement/' + rid,
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    method:'put',
+                    async: false,
+                    success: function (data) {
+                        setTimeout($.unblockUI, 2000);
+                        window.location.href = "/product_requirement";
+                    },
+                    cache: false,
+                });
+            });
+        });
+    </script>
 @endpush

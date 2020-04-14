@@ -4,7 +4,7 @@
 
 
 @section('content')
-    @role('Admin')
+    @role('Admin|product')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -25,11 +25,6 @@
                                         <div class="form-group">
                                             <label>{{__('Product Part Name')}}</label>
                                             <select id="part_id" class="form-control" name="hpp_part_id">
-                                                @foreach($part_id as $parts_id)
-                                                    <option value={{$parts_id->id}}>
-                                                        {{$parts_id->hp_name}}
-                                                    </option>
-                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -39,11 +34,6 @@
                                         <div class="form-group">
                                             <label>{{__('Part Model')}}</label>
                                             <select class="form-control" name="hp_part_model">
-                                                @foreach($part_id as $parts_id)
-                                                    <option>
-                                                        {{$parts_id->hp_part_model}}
-                                                    </option>
-                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -53,11 +43,6 @@
                                         <div class="form-group">
                                             <label>{{__('Product Name')}}</label>
                                             <select class="form-control" name="hpp_product_id">
-                                                @foreach($product_id as $products_id)
-                                                    <option value={{$products_id->id}}>
-                                                        {{$products_id->hp_product_name}}
-                                                    </option>
-                                                @endforeach
                                             </select>
                                         </div>
                                     </div>

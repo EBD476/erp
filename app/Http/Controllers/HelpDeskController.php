@@ -19,14 +19,14 @@ class HelpDeskController extends Controller
      */
     public function index()
     {
-        $user=User::all();
-        $type=HDtype::all();
+        $user = User::all();
+        $type = HDtype::all();
         $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $ticket_status = TicketStatus::all();
         $help_desks = HelpDesk::all();
-        $help_desks_user = HelpDesk::where('hhd_receiver_user_id',auth()->user()->id)->orwhere('hhd_request_user_id',auth()->user()->id)->get();
-        return view('help_desk.index', compact('help_desks_user','help_desk', 'ticket_status','help_desks','type','priority','help_desks','user'));
+        $help_desks_user = HelpDesk::where('hhd_receiver_user_id', auth()->user()->id)->orwhere('hhd_request_user_id', auth()->user()->id)->get();
+        return view('help_desk.index', compact('help_desks_user', 'help_desk', 'ticket_status', 'help_desks', 'type', 'priority', 'help_desks', 'user'));
     }
 
     /**
@@ -36,12 +36,12 @@ class HelpDeskController extends Controller
      */
     public function create()
     {
-        $type=HDtype::all();
+        $type = HDtype::all();
         $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $user = User::all();
         $ticket = TicketStatus::ALL();
-        return view('help_desk.create', compact('priority', 'type', 'ticket', 'user','priorities','types','help_desk','user'));
+        return view('help_desk.create', compact('priority', 'type', 'ticket', 'user', 'priorities', 'types', 'help_desk', 'user'));
     }
 
 
@@ -78,25 +78,28 @@ class HelpDeskController extends Controller
         ]);
 
 
-        $help_desk = new HelpDesk();
-//        $id = HelpDesk::select('id')->get()->last()->id + 1;
-
-
 //        Tokenize
 //---------------------------
         $current_date = Carbon::now();
         $current_date = $current_date->year . $current_date->month . $current_date->day;
-        $last_date = HelpDesk::select('hhd_ticket_id')->get()->last()->hhd_ticket_id;
-        $last_date = (explode("_", $last_date));
-        $last_date = $last_date[2];
-        $id = 0;
-        if ($current_date == $last_date) {
-            $id = $id + 1;
+        $help_desk_check=HelpDesk::all();
+        if ($help_desk_check->isEmpty()) {
+            $sub_total = "TK_" . $current_date . "_" . $current_date . "_" . $request->hhd_priority;
+
         } else {
-            $id = 1;
+            $last_date = HelpDesk::select('hhd_ticket_id')->get()->last()->hhd_ticket_id;
+            $last_date = (explode("_", $last_date));
+            $last_date = $last_date[2];
+            $id = 0;
+            if ($current_date == $last_date) {
+                $id = $id + 1;
+            } else {
+                $id = 1;
+            }
+            $sub_total = "TK_" . sprintf("%04d", $id) . "_" . $current_date . "_" . $request->hhd_priority;
         }
-        $sub_total = "TK_" . sprintf("%04d", $id) . "_" . $current_date . "_" . $request->hhd_priority;
-//        dd($sub_total);
+
+        $help_desk = new HelpDesk();
         $help_desk->hhd_ticket_id = $sub_total;
         $help_desk->hhd_title = $request->hhd_title;
         $help_desk->hhd_type = $request->hhd_type;
@@ -109,7 +112,7 @@ class HelpDeskController extends Controller
         }
         $help_desk->hhd_request_user_id = auth()->user()->id;
         $help_desk->hhd_receiver_user_id = $request->hhd_receiver_user_id;
-        $help_desk->hhd_file_atach = $request->hhd_file_atach;
+//        $help_desk->hhd_file_atach = $request->hhd_file_atach;
         $help_desk->save();
         return json_encode(["response" => "OK"]);
 
@@ -136,13 +139,13 @@ class HelpDeskController extends Controller
      */
     public function edit($id)
     {
-        $type=HDtype::all();
+        $type = HDtype::all();
         $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $user = User::all();
         $ticket = TicketStatus::ALL();
         $help_desks = HelpDesk::find($id);
-        return view('help_desk.edit', compact('help_desk','priority', 'type', 'ticket', 'user','help_desks','priority'));
+        return view('help_desk.edit', compact('help_desk', 'priority', 'type', 'ticket', 'user', 'help_desks', 'priority'));
     }
 
 
@@ -173,31 +176,27 @@ class HelpDeskController extends Controller
     public function receive_show($id)
     {
         $ticket = TicketStatus::ALL();
-        $type=HDtype::all();
+        $type = HDtype::all();
         $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_verify','0')->get();
+        $help_desk = HelpDesk::where('hhd_verify', '0')->get();
         $user = User::all();
         $help_desks = HelpDesk::find($id);
-        $help_desks->hhd_ticket_status =2;
+        $help_desks->hhd_ticket_status = 2;
         $help_desks->save();
-        return view('help_desk.receiver', compact('help_desk','priority','user','type','priority','help_desks','ticket'));
+        return view('help_desk.receiver', compact('help_desk', 'priority', 'user', 'type', 'priority', 'help_desks', 'ticket'));
     }
 
 
-
-    public function receive_verify(Request $request,$id)
+    public function receive_verify(Request $request, $id)
     {
         $help_desk = HelpDesk::find($id);
-        if($request->state == 3)
-        {
+        if ($request->state == 3) {
             $help_desk->hhd_verify = 1;
         }
-        $help_desk->hhd_ticket_status =$request->state;
+        $help_desk->hhd_ticket_status = $request->state;
         $help_desk->save();
         return json_encode(["response" => "OK"]);
     }
-
-
 
 
     /**
@@ -230,7 +229,7 @@ class HelpDeskController extends Controller
 
         $data = '';
         foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '"],';
         }
         $data = substr($data, 0, -1);
         $orders_count = Order::all()->count();

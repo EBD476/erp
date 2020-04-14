@@ -3,23 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Product;
-use App\Repository_Requirement;
+use App\ProductRequirement;
 use App\User;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
 
-class Repository_RequirementController extends Controller
+class ProductRequirementController extends Controller
 {
     public function index()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $Repositories_Requirement = Repository_Requirement:: all();
-        return view('Repository_Requirement.index',compact('Repositories_Requirement','type','priority','help_desk','user'));
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        $product_requirement = ProductRequirement:: all();
+        return view('product_requirement.index',compact('product_requirement','type','priority','help_desk','user'));
     }
 
     /**
@@ -29,12 +30,13 @@ class Repository_RequirementController extends Controller
      */
     public function create()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $product = Product::all();
-        return view('Repository_Requirement.create',compact('product','type','priority','help_desk','user'));
+        return view('product_requirement.create',compact('product','type','priority','help_desk','user'));
     }
 
     /**
@@ -51,12 +53,12 @@ class Repository_RequirementController extends Controller
 ////            'Comment' => 'required' ,
         ]);
 
-        $Repositories_Requirement = new Repository_Requirement();
-        $Repositories_Requirement->Product_Id= $request->Product_Id;
-        $Repositories_Requirement->Product_Count= $request->Product_Count;
-        $Repositories_Requirement->Inventory_deficit= $request->Inventory_deficit;
-        $Repositories_Requirement->Comment= $request->Comment;
-        $Repositories_Requirement->save();
+        $product_requirement = new ProductRequirement();
+        $product_requirement->Product_Id= $request->Product_Id;
+        $product_requirement->Product_Count= $request->Product_Count;
+        $product_requirement->Inventory_deficit= $request->Inventory_deficit;
+        $product_requirement->Comment= $request->Comment;
+        $product_requirement->save();
         return json_encode(["response" => "Done"]);
 
     }
@@ -82,12 +84,13 @@ class Repository_RequirementController extends Controller
      */
     public function edit($id)
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $Repositories_Requirement = Repository_Requirement::find($id);
-        return view('Repository_Requirement.edit',compact('Repositories_Requirement','type','priority','help_desk','user'));
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        $product_requirement = ProductRequirement::find($id);
+        return view('product_requirement.edit',compact('product_requirement','type','priority','help_desk','user'));
     }
 
     /**
@@ -104,12 +107,12 @@ class Repository_RequirementController extends Controller
             'Product_Count' => 'required' ,
             'Comment' => 'required' ,
         ]);
-        $Repositories_Requirement=Repository_Requirement::find($id);
-        $Repositories_Requirement->Product_Id= $request->Product_Id;
-        $Repositories_Requirement->Product_Count= $request->Product_Count;
-        $Repositories_Requirement->Comment= $request->Comment;
-        $Repositories_Requirement->save();
-        return redirect()->route('repository_requirement.index')->with('successMSG','عملیات ویرایش اطلاعات با موفقیت انجام شد.');
+        $product_requirement=ProductRequirement::find($id);
+        $product_requirement->Product_Id= $request->Product_Id;
+        $product_requirement->Product_Count= $request->Product_Count;
+        $product_requirement->Comment= $request->Comment;
+        $product_requirement->save();
+        return json_encode(["response" => "Done"]);
 
     }
 
@@ -121,9 +124,9 @@ class Repository_RequirementController extends Controller
      */
     public function destroy($id)
     {
-        $Repositories_Requirement = Repository_Requirement::find($id);
-        $Repositories_Requirement->delete();
-        return redirect()->back()->with('successMSG','Repository_Requirement Successfully Delete');
+        $product_requirement = ProductRequirement::find($id);
+        $product_requirement->delete();
+        return redirect()->back()->with('successMSG','product_requirement Successfully Delete');
     }
 
     public function fill(Request $request)

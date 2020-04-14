@@ -1,18 +1,16 @@
 @extends('layouts.app')
 
-@section('title',__('Repository'))
+@section('title',__('Invoices List'))
 
 @push('css')
     <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
 @endpush
 
 @section('content')
-    @role('Admin')
+    @role('Admin||product||repository')
     <div class="content persian">
         <div class="container-fluid">
             <div class="col-md-12">
-                <a href="{{route('repository.create')}}"
-                   class="btn btn-primary">{{__('Add New Repository')}}</a>
                 <div class="row">
                     {{--Repository Data List--}}
                     <div class="col-md-6">
@@ -106,7 +104,7 @@
                                                         {{$orders_show -> hpo_order_id}}
                                                     </td>
                                                     @foreach($client as $clients)
-                                                        @if($clients->hc_user_id == $orders_show ->hpo_client_id)
+                                                        @if($clients->id == $orders_show ->hpo_client_id)
                                                             <td>
                                                                 {{$clients->hc_name}}
                                                             </td>

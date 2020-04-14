@@ -4,7 +4,7 @@
 
 
 @section('content')
-    @role('Admin')
+    @role('Admin|product')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -97,28 +97,26 @@
                                 <input type="hidden" name="product_image" id="product_image">
                             </form>
                         </div>
-                        <div class="card-body">
-                            <form action="{{url('/product-image-save')}}" class="dropzone"
-                                  id="dropzone"
-                                  enctype="multipart/form-data">
-                                @csrf
-                                @method('POST')
-                                <div class="row">
-                                    <div class="col-md-4 pr-md-1">
-                                        <div class="form-group">
-                                            <label for="exampleInputFile">{{__('Image')}}</label>
-                                            <input type="file" class="form-control"
-                                                   name="file">
-                                        </div>
-                                        <div class="dz-preview dz-processing dz-image-preview dz-complete">
-                                            <div class="dz-image" id="img-remove">
-                                                <img src={{asset('img/products/'.$product->hp_product_image)}}>
-                                            </div>
+                        <div class="card-body"><label style="margin-top: -20px;">{{__('Image')}}</label>
+                            <div class="card-body col-md-6 pr-md-1 row"
+                                 style="display: flex ; border: 1px dashed; margin-right: -35px;}">
+                                <form action="{{url('/product-image-save')}}" class="dropzone"
+                                      id="dropzone"
+                                      enctype="multipart/form-data">
+                                    @csrf
+                                    @method('POST')
+                                    <div class="form-group">
+                                        <input type="file" class="form-control"
+                                               name="file">
+                                    </div>
+                                    <div class="dz-preview dz-processing dz-image-preview dz-complete">
+                                        <div class="dz-image" id="img-remove" style="margin-right: 20px">
+                                            <img src={{asset('img/products/'.$product->hp_product_image)}}>
                                         </div>
                                     </div>
-                                </div>
-                            </form>
-                        </div>
+                                </form>
+                            </div></div>
+
                         <br>
                         <br>
                         <div class="card-footer">

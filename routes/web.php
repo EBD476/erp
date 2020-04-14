@@ -29,7 +29,7 @@ Route::group(['middleware' => ['auth']], function () {
     route::resource('product', 'ProductController');
     route::resource('order_product', 'OrderProductController');
     route::resource('repository', 'RepositoryController');
-    route::resource('repository_requirement', 'Repository_RequirementController');
+    route::resource('product_requirement', 'ProductRequirementController');
     route::resource('request', 'RequestController');
     route::resource('verifier', 'VerifierController');
     route::resource('permission', 'PermissionController');
@@ -68,6 +68,10 @@ Route::group(['middleware' => ['auth']], function () {
     route::resource('product-color', 'ProductColorController');
     route::resource('product-property', 'ProductPropertyController');
     route::resource('product-property-items', 'ProductPropertyItemsController');
+    route::resource('product-tax', 'TaxController');
+    route::resource('middle-part', 'MiddlePartController');
+    route::resource('product-middle-part', 'ProductMiddlePartController');
+    route::resource('middle-section-part', 'MiddleSectionPartController');
 
 //  Getting data
     Route::get('send_request/{id}', 'ProjectController@send_request')->name('projects.send_request');
@@ -87,6 +91,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 //  Posting data
     Route::post('order-state/{id}', 'RepositoryController@order_state')->name('repository.order_state');
+    Route::post('add-product', 'OrderProductController@add')->name('product.add');
     Route::post('receive_verify/{id}', 'HelpDeskController@receive_verify')->name('help_desk.receive_verify');
     Route::post('support_request', 'ProjectController@support_request')->name('projects.support_request');
     route::post('checkbox', 'ProductController@checkbox')->name('product.checkbox');
@@ -95,6 +100,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 //    uploaded image route
     Route::post('/product-image-save', 'ProductController@upload')->name('product.upload');
+    Route::post('/part-image-save', 'PartController@upload')->name('part.upload');
 
 
 //  Mapping route
@@ -151,7 +157,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/json-data-fill_data_product', 'OrderController@fill_data_product')->name('order.json-data-fill_data_product');
     Route::get('/json-data-fill_data_product_color', 'ProductController@fill_data_product_color')->name('product.json-data-fill_data_product_color');
     Route::get('/json-data-fill_data_product_item', 'ProductController@fill_data_product_item')->name('product.json-data-fill_data_product_item');
-    Route::get('/json-data-fill_data_product_property', 'ProductController@fill_data_product_property')->name('product.json-data-fill_data_product_property');
+    Route::get('/json-data-fill_data_product_property', 'ProductController@fill_data_product_property')->name('product-middle-part.json-data-fill_data_product_property');
+    Route::get('/json-data-fill_data_middle_part', 'ProductMiddlePartController@fill_data_middle_part')->name('product-middle-part.json-data-fill_data_middle_part');
+    Route::get('/json-data-fill_data_part', 'ProductMiddlePartController@fill_data_part')->name('product.json-data-fill_data_part');
+    Route::get('/json-data-fill_data_product', 'ProductMiddlePartController@fill_data_product')->name('product-middle-part.json-data-fill_data_product');
+    Route::get('/json-data-fill_data_middle_part', 'ProductMiddlePartController@fill_data_middle_part')->name('product-middle-part.json-data-fill_data_middle_part');
+
 
 //  deleted route
     Route::delete('/order-destroy/{id}', 'OrderController@destroy')->name('order.order-destroy');

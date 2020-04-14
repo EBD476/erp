@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    @role('Admin')
+    @role('Admin|product')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -22,7 +22,7 @@
                     <div class="card-body">
                         <form id="form1">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Part Name')}}</label>
                                         <select class="form-control" name="hrp_part_id">
@@ -33,9 +33,10 @@
                                             @endforeach
                                         </select>
                                     </div>
-
                                 </div>
-                                <div class="col-md-4">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Repository Name')}}</label>
                                         <select class="form-control" name="hrp_repository_id">
@@ -47,7 +48,9 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Count')}}</label>
                                         <input class="form-control" required=""

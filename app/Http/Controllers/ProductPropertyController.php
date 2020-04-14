@@ -20,12 +20,13 @@ class ProductPropertyController extends Controller
     public function index()
     {
         $items = ProductPropertyItems::all();
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $properties = ProductProperty::all();
-        return view('products.product_property.index',compact('properties','user','type','priority','help_desk','items'));
+        return view('products.product_property.index', compact('properties', 'user', 'type', 'priority', 'help_desk', 'items'));
     }
 
     /**
@@ -36,11 +37,12 @@ class ProductPropertyController extends Controller
     public function create()
     {
         $items = ProductPropertyItems::all();
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('products.product_property.create',compact('user','type','priority','help_desk','items'));
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        return view('products.product_property.create', compact('user', 'type', 'priority', 'help_desk', 'items'));
 
     }
 
@@ -59,7 +61,9 @@ class ProductPropertyController extends Controller
         $properties->hpp_property_name = $request->hpp_property_name;
         $properties->hpp_property_items = $request->hpp_property_items;
         $properties->save();
-        return json_encode(["response" => "Done"]);
+        $property_item = ProductPropertyItems::select('id', 'hppi_items_name')->where('id', $properties->hpp_property_items)->get()->first();
+        dd($property_item->hppi_items_name);
+        return json_encode(["response" => "Done", "item" => $property_item->hppi_items_name, "name" => $properties->hpp_property_name, "id" => $properties->id]);
 
     }
 
@@ -83,12 +87,13 @@ class ProductPropertyController extends Controller
     public function edit($id)
     {
         $items = ProductPropertyItems::all();
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $properties = ProductProperty::find($id);
-        return view('products.product_property.edit',compact('properties','user','type','priority','help_desk','items'));
+        return view('products.product_property.edit', compact('properties', 'user', 'type', 'priority', 'help_desk', 'items'));
     }
 
     /**
@@ -98,12 +103,12 @@ class ProductPropertyController extends Controller
      * @param  \App\ProductColor $productColor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $this->validate($request, [
             'hpp_property_name' => 'required',
         ]);
-        $properties =ProductProperty::find($id);
+        $properties = ProductProperty::find($id);
         $properties->hpp_property_name = $request->hpp_property_name;
         $properties->hpp_property_items = $request->hpp_property_items;
         $properties->save();
@@ -119,7 +124,7 @@ class ProductPropertyController extends Controller
      */
     public function destroy($id)
     {
-        $properties = ProductProperty :: find($id);
+        $properties = ProductProperty:: find($id);
         $properties->delete();
         return redirect()->back();
 
@@ -142,7 +147,7 @@ class ProductPropertyController extends Controller
 
         $data = '';
         foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '"],';
         }
         $data = substr($data, 0, -1);
         $orders_count = Order::all()->count();

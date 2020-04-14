@@ -24,9 +24,11 @@ class PermissionController extends Controller
     public function index() {
         $user=User::all();
         $permissions = Permission::all(); //Get all permissions
-        $type = HDtype::all();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $priority = HDpriority::all();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+//        $user = User::select('id', 'name')->get();
         return view('permissions.index',compact('help_desk','priority','type','user'))->with('permissions', $permissions);
     }
 
@@ -93,9 +95,11 @@ class PermissionController extends Controller
      */
     public function edit($id) {
         $user=User::all();
-        $type = HDtype::all();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $priority = HDpriority::all();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+//        $user = User::select('id', 'name')->get();
         $permission = Permission::findOrFail($id);
 
         return view('permissions.edit', compact('permission','user','type','help_desk','priority'));
