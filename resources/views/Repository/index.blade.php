@@ -12,11 +12,11 @@
         <div class="container-fluid">
             <div class="col-md-12">
                 <div class="row">
-                    {{--Repository Data List--}}
+                    {{--Repository Product Data List--}}
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-header card-header-primary">
-                                <h4 class="card-title ">{{__('Repository')}}</h4>
+                                <h4 class="card-title ">{{__('inventory Repository Product')}}</h4>
                                 <p class="card-category"></p>
                             </div>
                             <div class="card-body">
@@ -35,26 +35,56 @@
                                         <th>
                                             {{__('Comment')}}
                                         </th>
+                                        <th>
+                                            {{__('Action')}}
+                                        </th>
                                         </thead>
                                         <tbody>
 
-                                        @foreach($Repositories as $key => $Repositories_show)
+                                        @foreach($repository_product as $key => $repository_products)
                                             <tr>
                                                 <td>
                                                     {{$key + 1}}
                                                 </td>
                                                 @foreach($product as $products)
-                                                    @if($products->id == $Repositories_show ->hr_product_id)
+                                                    @if($products->id == $repository_products ->hr_product_id)
                                                         <td>
                                                             {{$products->hp_product_name}}
                                                         </td>
                                                     @endif
                                                 @endforeach
                                                 <td>
-                                                    {{$Repositories_show ->hr_product_stock}}
+                                                    {{$repository_products ->hr_product_stock}}
                                                 </td>
                                                 <td>
-                                                    {{$Repositories_show ->hr_comment}}
+                                                    {{$repository_products ->hr_comment}}
+                                                </td>
+                                                <td>
+                                                    <div class="dropdown">
+                                                        <button type="button"
+                                                                class="btn btn-link dropdown-toggle btn-icon"
+                                                                data-toggle="dropdown">
+                                                            <i class="tim-icons icon-settings-gear-63"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-right"
+                                                             aria-labelledby="dropdownMenuLink">
+                                                            <a class="dropdown-item"
+                                                               href="{{route('repository.edit',$repository_products->id)}}"
+                                                            >{{__('Edit')}}</a>
+                                                            <form id="-form-delete{{$repository_products->id}}"
+                                                                  style="display: none;" method="POST"
+                                                                  action="{{route('repository.destroy',$repository_products->id)}}">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                            </form>
+                                                            <a class="dropdown-item"
+                                                               onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
+                                                                       event.preventDefault();
+                                                                       document.getElementById('-form-delete{{$repository_products->id}}').submit();
+                                                                       }else {
+                                                                       event.preventDefault();}">{{__('Delete')}}</a>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -64,7 +94,7 @@
                             </div>
                         </div>
                     </div>
-                    {{--End Repository Data List--}}
+                    {{--End Repository Product Data List--}}
 
                     {{--Order Data List--}}
                     <div class="col-md-6">
@@ -84,7 +114,7 @@
                                             {{__('Order ID')}}
                                         </th>
                                         <th>
-                                            {{__('Client Name')}}
+                                            {{__('Registrant Name')}}
                                         </th>
                                         <th>
                                             {{__('Product Name')}}
@@ -103,13 +133,12 @@
                                                     <td>
                                                         {{$orders_show -> hpo_order_id}}
                                                     </td>
-                                                    @foreach($client as $clients)
-                                                        @if($clients->id == $orders_show ->hpo_client_id)
+
+{{--                                                        @if(auth()->user()->id == $orders_show ->hp_registrant)--}}
                                                             <td>
-                                                                {{$clients->hc_name}}
+                                                                {{auth()->user()->name}}
                                                             </td>
-                                                        @endif
-                                                    @endforeach
+                                                        {{--@endif--}}
 
                                                     @foreach($product as $products)
                                                         @if($products->id == $orders_show ->hpo_product_id)
@@ -132,6 +161,7 @@
                     </div>
                     {{--End Order Data List--}}
                 </div>
+                @role('Admin||product')
                 {{--Requirement Product List--}}
                 <div class="row">
                     <div class="col-lg-12">
@@ -178,7 +208,7 @@
                                         @foreach($orders as $item)
                                             @if($item->hpo_status == "3")
                                                 @foreach($product as $goods)
-                                                    @foreach($Repositories as $repository_selected)
+                                                    @foreach($repository_product as $repository_selected)
                                                         <tr>
                                                             @if($repository_selected->hr_product_id == $goods->id)
                                                                 @if($item->hpo_product_id == $repository_selected->hr_product_id)
@@ -255,9 +285,191 @@
                     </div>
                 </div>
                 {{--End Requirement Product List--}}
+                @endrole
+
+                <div class="col-md-12">
+                    <div class="row">
+                        {{--Repository Middle Part List--}}
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header card-header-primary">
+                                    <h4 class="card-title ">{{__('Repository Middle Part List')}}</h4>
+                                    <p class="card-category"></p>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table" cellspacing="0" width="100%">
+                                            <thead class=" text-primary">
+                                            <th>
+                                                {{__('ID')}}
+                                            </th>
+                                            <th>
+                                                {{__('Name')}}
+                                            </th>
+                                            <th>
+                                                {{__('Count')}}
+                                            </th>
+                                            <th>
+                                                {{__('Description')}}
+                                            </th>
+                                            <th>
+                                                {{__('Action')}}
+                                            </th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($repository_middle_part as $key => $repository_middle_parts)
+                                                <tr>
+                                                    <td>
+                                                        {{$key + 1}}
+                                                    </td>
+                                                    @foreach($middle_part as $middle_parts)
+                                                        @if($middle_parts->id == $repository_middle_parts ->hrm_middle_part_id)
+                                                            <td>
+                                                                {{$middle_parts->hmp_name}}
+                                                            </td>
+                                                        @endif
+                                                    @endforeach
+                                                    <td>
+                                                        {{$repository_middle_parts ->hrm_count}}
+                                                    </td>
+                                                    <td>
+                                                        {{$repository_middle_parts ->hrm_comment}}
+                                                    </td>
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <button type="button"
+                                                                    class="btn btn-link dropdown-toggle btn-icon"
+                                                                    data-toggle="dropdown">
+                                                                <i class="tim-icons icon-settings-gear-63"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-right"
+                                                                 aria-labelledby="dropdownMenuLink">
+                                                                <a class="dropdown-item"
+                                                                   href="{{route('repository-middle-part.edit',$repository_middle_parts->id)}}"
+                                                                >{{__('Edit')}}</a>
+                                                                <form id="-form-delete{{$repository_middle_parts->id}}"
+                                                                      style="display: none;" method="POST"
+                                                                      action="{{route('repository-middle-part.destroy',$repository_middle_parts->id)}}">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                </form>
+                                                                <a class="dropdown-item"
+                                                                   onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
+                                                                           event.preventDefault();
+                                                                           document.getElementById('-form-delete{{$repository_middle_parts->id}}').submit();
+                                                                           }else {
+                                                                           event.preventDefault();}">{{__('Delete')}}</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{--End Repository Middle Part List--}}
+
+                        {{--Repository Part List--}}
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header card-header-primary">
+                                    <h4 class="card-title ">{{__('Repository Part List')}}</h4>
+                                    <p class="card-category"></p>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive table-hover">
+                                        <table id="table" class="table" cellspacing="0" width="100%">
+                                            <thead class=" text-primary">
+                                            <th>
+                                                {{__('ID')}}
+                                            </th>
+                                            <th>
+                                                {{__('Name')}}
+                                            </th>
+                                            <th>
+                                                {{__('Count')}}
+                                            </th>
+                                            <th>
+                                                {{__('Repository')}}
+                                            </th>
+                                            <th>
+                                                {{__('Action')}}
+                                            </th>
+                                            </thead>
+                                            <tbody>
+
+                                            @foreach($repository as $key => $repositories)
+                                                <tr>
+
+                                                    <td>
+                                                        {{$key+1}}
+                                                    </td>
+
+                                                    @foreach($part as $parts)
+                                                        @if( $repositories ->hrp_part_id == $parts->id)
+                                                            <td>
+                                                                {{$parts->hp_name}}
+                                                            </td>
+                                                        @endif
+                                                    @endforeach
+
+                                                    @foreach($repository_name as $repository_names)
+                                                        @if( $repositories ->hrp_repository_id == $repository_names->id)
+                                                            <td>
+                                                                {{$repository_names -> hr_name}}
+                                                            </td>
+                                                        @endif
+                                                    @endforeach
+
+                                                    <td>
+                                                        {{$repositories -> hrp_part_count}}
+                                                    </td>
+                                                    <td>
+                                                        <div class="dropdown">
+                                                            <button type="button"
+                                                                    class="btn btn-link dropdown-toggle btn-icon"
+                                                                    data-toggle="dropdown">
+                                                                <i class="tim-icons icon-settings-gear-63"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-right"
+                                                                 aria-labelledby="dropdownMenuLink">
+                                                                <a class="dropdown-item"
+                                                                   href="{{route('repository-part.edit',$repositories->id)}}"
+                                                                >{{__('Edit')}}</a>
+                                                                <form id="-form-delete{{$repositories->id}}"
+                                                                      style="display: none;" method="POST"
+                                                                      action="{{route('repository-part.destroy',$repositories->id)}}">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                </form>
+                                                                <a class="dropdown-item"
+                                                                   onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
+                                                                           event.preventDefault();
+                                                                           document.getElementById('-form-delete{{$repositories->id}}').submit();
+                                                                           }else {
+                                                                           event.preventDefault();}">{{__('Delete')}}</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{--end--}}
+                    </div>
+                </div>
             </div>
+            {{--End Repository Part List--}}
         </div>
     </div>
+
     {{--//Product Details Modal//--}}
     <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel"
@@ -287,7 +499,7 @@
                                     {{__('Inventory Deficit')}}
                                 </th>
                                 </thead> @foreach($query as $item)
-                                    @foreach($Repositories as $repository_stock)
+                                    @foreach($repository_product as $repository_stock)
                                         @if($item->hpo_product_id == $repository_stock->hr_product_id and $item->hpo_status == '3')
                                             <input type="hidden" class="product-id"
                                                    data-id[]="{{$item->hpo_product_id}}">
@@ -298,9 +510,9 @@
                                             <tr>
                                                 @foreach($product as $products)
                                                     @if($item->hpo_product_id == $products->id)
-                                                <td>
-                                                    {{$products->hp_product_name}}
-                                                </td>
+                                                        <td>
+                                                            {{$products->hp_product_name}}
+                                                        </td>
                                                     @endif
                                                 @endforeach
                                                 <td>
@@ -329,6 +541,7 @@
         </div>
     </div>
     @endrole
+
 @endsection
 @push('scripts')
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
@@ -434,158 +647,158 @@
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
     <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
     {{--<script>--}}
-        {{--$(document).ready(function () {--}}
+    {{--$(document).ready(function () {--}}
 
-            {{--var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));--}}
+    {{--var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));--}}
 
-            {{--$('#table').on('click', 'button', function (event) {--}}
+    {{--$('#table').on('click', 'button', function (event) {--}}
 
-                {{--var data = table.row($(this).parents('tr')).data();--}}
-                {{--$.ajaxSetup({--}}
-                    {{--headers: {--}}
-                        {{--'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
-                    {{--}--}}
-                {{--});--}}
-                {{--swal({--}}
-                    {{--// title: "",--}}
-                    {{--text: "{{__('Are you sure?')}}",--}}
-                    {{--buttons: ["{{__('cancel')}}", "{{__('Done')}}"],--}}
-                    {{--icon: "warning",--}}
-                    {{--// buttons: true,--}}
-                    {{--dangerMode: true,--}}
-                {{--})--}}
-                    {{--.then((willDelete) => {--}}
-                        {{--if (willDelete) {--}}
-                            {{--$.ajax({--}}
-                                {{--url: '/order-destroy/' + data[0],--}}
-                                {{--type: 'delete',--}}
-                                {{--data: data,--}}
-                                {{--dataType: 'json',--}}
-                                {{--async: false,--}}
-                                {{--success: function (data) {--}}
-                                    {{--swal("{{__("Poof! Your imaginary file has been deleted!")}}", {--}}
-                                        {{--icon: "success",--}}
-                                        {{--button: "{{__('Done')}}",--}}
-                                    {{--});--}}
-                                {{--},--}}
-                                {{--cache: false,--}}
-                            {{--});--}}
-                            {{--location.reload();--}}
-                        {{--} else {--}}
-                            {{--swal(--}}
-                                {{--"{{__("Your imaginary file is safe!")}}",--}}
-                                {{--{button: "{{__('Done')}}"}--}}
-                            {{--);--}}
+    {{--var data = table.row($(this).parents('tr')).data();--}}
+    {{--$.ajaxSetup({--}}
+    {{--headers: {--}}
+    {{--'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
+    {{--}--}}
+    {{--});--}}
+    {{--swal({--}}
+    {{--// title: "",--}}
+    {{--text: "{{__('Are you sure?')}}",--}}
+    {{--buttons: ["{{__('cancel')}}", "{{__('Done')}}"],--}}
+    {{--icon: "warning",--}}
+    {{--// buttons: true,--}}
+    {{--dangerMode: true,--}}
+    {{--})--}}
+    {{--.then((willDelete) => {--}}
+    {{--if (willDelete) {--}}
+    {{--$.ajax({--}}
+    {{--url: '/order-destroy/' + data[0],--}}
+    {{--type: 'delete',--}}
+    {{--data: data,--}}
+    {{--dataType: 'json',--}}
+    {{--async: false,--}}
+    {{--success: function (data) {--}}
+    {{--swal("{{__("Poof! Your imaginary file has been deleted!")}}", {--}}
+    {{--icon: "success",--}}
+    {{--button: "{{__('Done')}}",--}}
+    {{--});--}}
+    {{--},--}}
+    {{--cache: false,--}}
+    {{--});--}}
+    {{--location.reload();--}}
+    {{--} else {--}}
+    {{--swal(--}}
+    {{--"{{__("Your imaginary file is safe!")}}",--}}
+    {{--{button: "{{__('Done')}}"}--}}
+    {{--);--}}
 
-                        {{--}--}}
-                    {{--});--}}
-            {{--});--}}
-            {{--var table = $('#table').on('draw.dt', function (e, settings, json, xhr) {--}}
-                {{--}).DataTable({--}}
+    {{--}--}}
+    {{--});--}}
+    {{--});--}}
+    {{--var table = $('#table').on('draw.dt', function (e, settings, json, xhr) {--}}
+    {{--}).DataTable({--}}
 
-                    {{--"processing":--}}
-                        {{--true,--}}
-                    {{--"serverSide":--}}
-                        {{--true,--}}
-                    {{--"ajax":--}}
-                        {{--'/json-data-order',--}}
-                    {{--"columnDefs":--}}
-                        {{--[{--}}
-                            {{--"targets": -1,--}}
-                            {{--"data": null,--}}
-                            {{--"defaultContent": "  <div class=\"dropdown\">\n" +--}}
-                                {{--"                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +--}}
-                                {{--"                                                                    data-toggle=\"dropdown\">\n" +--}}
-                                {{--"                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +--}}
-                                {{--"                                                            </a>\n" +--}}
-                                {{--"                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +--}}
-                                {{--"                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +--}}
-                                {{--"                                                                <a href=\"{{route('order.edit',113)}}\" class=\"dropdown-item\"\n" +--}}
-                                {{--"                                                                >{{__('Edit')}}</a>\n" +--}}
-                                {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
-                                {{--"                                                            </div>\n" +--}}
-                                {{--"                                                        </div>"--}}
-                        {{--}, {--}}
-                            {{--"targets": -2,--}}
-                            {{--"data": null,--}}
-                            {{--"defaultContent": '  <div class="progress">\n' +--}}
-                                {{--'                                                            @foreach($order as $orders)\n' +--}}
-                                {{--'                                                            @foreach($progress as $progresses)\n' +--}}
-                                {{--// '                                                                <span class="progress-value">25%</span>\n' +--}}
-                                {{--'                                                                @if($progresses->ho_process_id == 1 and $orders->id == $progresses->order_id )\n' +--}}
-                                {{--'                                                                    <div class="progress-bar" role="progressbar"\n' +--}}
-                                {{--'                                                                         aria-valuenow="60" aria-valuemin="0"\n' +--}}
-                                {{--'                                                                         aria-valuemax="100"\n' +--}}
-                                {{--'                                                                         style="width: 25%;"></div>\n' +--}}
-                                {{--'                                                                @endif\n' +--}}
-                                {{--'                                                                @if($progresses->ho_process_id == 2 and $orders->id == $progresses->order_id)\n' +--}}
-                                {{--'                                                                    <div class="progress-bar" role="progressbar"\n' +--}}
-                                {{--'                                                                         aria-valuenow="60" aria-valuemin="0"\n' +--}}
-                                {{--'                                                                         aria-valuemax="100"\n' +--}}
-                                {{--'                                                                         style="width: 50%;"></div>\n' +--}}
-                                {{--'                                                                @endif\n' +--}}
-                                {{--'                                                                @if($progresses->ho_process_id == 3 and $orders->id == $progresses->order_id)\n' +--}}
-                                {{--'                                                                    <div class="progress-bar" role="progressbar"\n' +--}}
-                                {{--'                                                                         aria-valuenow="60" aria-valuemin="0"\n' +--}}
-                                {{--'                                                                         aria-valuemax="100"\n' +--}}
-                                {{--'                                                                         style="width: 75%;"></div>\n' +--}}
-                                {{--'                                                                @endif\n' +--}}
-                                {{--'                                                                @if($progresses->ho_process_id == 4 and $orders->id == $progresses->order_id )\n' +--}}
-                                {{--'                                                                    <div class="progress-bar" role="progressbar"\n' +--}}
-                                {{--'                                                                         aria-valuenow="60" aria-valuemin="0"\n' +--}}
-                                {{--'                                                                         aria-valuemax="100"\n' +--}}
-                                {{--'                                                                         style="width:100%; direction: ltr"></div>\n' +--}}
-                                {{--'                                                                @endif\n' +--}}
-                                {{--'                                                            @endforeach\n' +--}}
-                                {{--'                                                            @endforeach\n' +--}}
-                                {{--'                                                        </div>'--}}
-                        {{--}],--}}
-                    {{--"language":--}}
-                        {{--{--}}
-                            {{--"sEmptyTable":--}}
-                                {{--"هیچ داده ای در جدول وجود ندارد",--}}
-                            {{--"sInfo":--}}
-                                {{--"نمایش _START_ تا _END_ از _TOTAL_ رکورد",--}}
-                            {{--"sInfoEmpty":--}}
-                                {{--"نمایش 0 تا 0 از 0 رکورد",--}}
-                            {{--"sInfoFiltered":--}}
-                                {{--"(فیلتر شده از _MAX_ رکورد)",--}}
-                            {{--"sInfoPostFix":--}}
-                                {{--"",--}}
-                            {{--"sInfoThousands":--}}
-                                {{--",",--}}
-                            {{--"sLengthMenu":--}}
-                                {{--"نمایش _MENU_ رکورد",--}}
-                            {{--"sLoadingRecords":--}}
-                                {{--"در حال بارگزاری...",--}}
-                            {{--"sProcessing":--}}
-                                {{--"در حال پردازش...",--}}
-                            {{--"sSearch":--}}
-                                {{--"جستجو:",--}}
-                            {{--"sZeroRecords":--}}
-                                {{--"رکوردی با این مشخصات پیدا نشد",--}}
-                            {{--"oPaginate":--}}
-                                {{--{--}}
-                                    {{--"sFirst":--}}
-                                        {{--"ابتدا",--}}
-                                    {{--"sLast":--}}
-                                        {{--"انتها",--}}
-                                    {{--"sNext":--}}
-                                        {{--"بعدی",--}}
-                                    {{--"sPrevious":--}}
-                                        {{--"قبلی"--}}
-                                {{--}--}}
-                            {{--,--}}
-                            {{--"oAria":--}}
-                                {{--{--}}
-                                    {{--"sSortAscending":--}}
-                                        {{--": فعال سازی نمایش به صورت صعودی",--}}
-                                    {{--"sSortDescending":--}}
-                                        {{--": فعال سازی نمایش به صورت نزولی"--}}
-                                {{--}--}}
-                        {{--}--}}
-                {{--})--}}
-            {{--;--}}
-        {{--});--}}
+    {{--"processing":--}}
+    {{--true,--}}
+    {{--"serverSide":--}}
+    {{--true,--}}
+    {{--"ajax":--}}
+    {{--'/json-data-order',--}}
+    {{--"columnDefs":--}}
+    {{--[{--}}
+    {{--"targets": -1,--}}
+    {{--"data": null,--}}
+    {{--"defaultContent": "  <div class=\"dropdown\">\n" +--}}
+    {{--"                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +--}}
+    {{--"                                                                    data-toggle=\"dropdown\">\n" +--}}
+    {{--"                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +--}}
+    {{--"                                                            </a>\n" +--}}
+    {{--"                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +--}}
+    {{--"                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +--}}
+    {{--"                                                                <a href=\"{{route('order.edit',113)}}\" class=\"dropdown-item\"\n" +--}}
+    {{--"                                                                >{{__('Edit')}}</a>\n" +--}}
+    {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
+    {{--"                                                            </div>\n" +--}}
+    {{--"                                                        </div>"--}}
+    {{--}, {--}}
+    {{--"targets": -2,--}}
+    {{--"data": null,--}}
+    {{--"defaultContent": '  <div class="progress">\n' +--}}
+    {{--'                                                            @foreach($order as $orders)\n' +--}}
+    {{--'                                                            @foreach($progress as $progresses)\n' +--}}
+    {{--// '                                                                <span class="progress-value">25%</span>\n' +--}}
+    {{--'                                                                @if($progresses->ho_process_id == 1 and $orders->id == $progresses->order_id )\n' +--}}
+    {{--'                                                                    <div class="progress-bar" role="progressbar"\n' +--}}
+    {{--'                                                                         aria-valuenow="60" aria-valuemin="0"\n' +--}}
+    {{--'                                                                         aria-valuemax="100"\n' +--}}
+    {{--'                                                                         style="width: 25%;"></div>\n' +--}}
+    {{--'                                                                @endif\n' +--}}
+    {{--'                                                                @if($progresses->ho_process_id == 2 and $orders->id == $progresses->order_id)\n' +--}}
+    {{--'                                                                    <div class="progress-bar" role="progressbar"\n' +--}}
+    {{--'                                                                         aria-valuenow="60" aria-valuemin="0"\n' +--}}
+    {{--'                                                                         aria-valuemax="100"\n' +--}}
+    {{--'                                                                         style="width: 50%;"></div>\n' +--}}
+    {{--'                                                                @endif\n' +--}}
+    {{--'                                                                @if($progresses->ho_process_id == 3 and $orders->id == $progresses->order_id)\n' +--}}
+    {{--'                                                                    <div class="progress-bar" role="progressbar"\n' +--}}
+    {{--'                                                                         aria-valuenow="60" aria-valuemin="0"\n' +--}}
+    {{--'                                                                         aria-valuemax="100"\n' +--}}
+    {{--'                                                                         style="width: 75%;"></div>\n' +--}}
+    {{--'                                                                @endif\n' +--}}
+    {{--'                                                                @if($progresses->ho_process_id == 4 and $orders->id == $progresses->order_id )\n' +--}}
+    {{--'                                                                    <div class="progress-bar" role="progressbar"\n' +--}}
+    {{--'                                                                         aria-valuenow="60" aria-valuemin="0"\n' +--}}
+    {{--'                                                                         aria-valuemax="100"\n' +--}}
+    {{--'                                                                         style="width:100%; direction: ltr"></div>\n' +--}}
+    {{--'                                                                @endif\n' +--}}
+    {{--'                                                            @endforeach\n' +--}}
+    {{--'                                                            @endforeach\n' +--}}
+    {{--'                                                        </div>'--}}
+    {{--}],--}}
+    {{--"language":--}}
+    {{--{--}}
+    {{--"sEmptyTable":--}}
+    {{--"هیچ داده ای در جدول وجود ندارد",--}}
+    {{--"sInfo":--}}
+    {{--"نمایش _START_ تا _END_ از _TOTAL_ رکورد",--}}
+    {{--"sInfoEmpty":--}}
+    {{--"نمایش 0 تا 0 از 0 رکورد",--}}
+    {{--"sInfoFiltered":--}}
+    {{--"(فیلتر شده از _MAX_ رکورد)",--}}
+    {{--"sInfoPostFix":--}}
+    {{--"",--}}
+    {{--"sInfoThousands":--}}
+    {{--",",--}}
+    {{--"sLengthMenu":--}}
+    {{--"نمایش _MENU_ رکورد",--}}
+    {{--"sLoadingRecords":--}}
+    {{--"در حال بارگزاری...",--}}
+    {{--"sProcessing":--}}
+    {{--"در حال پردازش...",--}}
+    {{--"sSearch":--}}
+    {{--"جستجو:",--}}
+    {{--"sZeroRecords":--}}
+    {{--"رکوردی با این مشخصات پیدا نشد",--}}
+    {{--"oPaginate":--}}
+    {{--{--}}
+    {{--"sFirst":--}}
+    {{--"ابتدا",--}}
+    {{--"sLast":--}}
+    {{--"انتها",--}}
+    {{--"sNext":--}}
+    {{--"بعدی",--}}
+    {{--"sPrevious":--}}
+    {{--"قبلی"--}}
+    {{--}--}}
+    {{--,--}}
+    {{--"oAria":--}}
+    {{--{--}}
+    {{--"sSortAscending":--}}
+    {{--": فعال سازی نمایش به صورت صعودی",--}}
+    {{--"sSortDescending":--}}
+    {{--": فعال سازی نمایش به صورت نزولی"--}}
+    {{--}--}}
+    {{--}--}}
+    {{--})--}}
+    {{--;--}}
+    {{--});--}}
     {{--</script>--}}
 @endpush

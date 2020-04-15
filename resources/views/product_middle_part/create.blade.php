@@ -262,7 +262,6 @@
                     function formatRepoSelection1(repo) {
                         return repo.text || repo.id;
                     }
-
                     // end fill data in select middle part
                 });
             </script>

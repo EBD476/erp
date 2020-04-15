@@ -40,7 +40,7 @@
                                                 <table class="table table-condensed">
                                                     <thead>
                                                     <th class="text-center"><strong>{{__('Owner profile')}}
-                                                            &nbsp;{{$order->ho_client}}
+                                                            &nbsp;{{$client->hc_name}}
                                                             &nbsp;{{$order->hp_phone_number}}</strong></th>
                                                     <th class="text-center">{{__('Employer Name:')}}
                                                         &nbsp;{{$order->hp_employer_name}}</th>
@@ -60,10 +60,10 @@
                                                     <thead>
                                                     <th class="text-center"><strong>{{__('Row')}}</strong></th>
                                                     <th class="text-center"><strong>{{__('Product Name')}}</strong></th>
+                                                    <th class="text-center"><strong>{{__('Quantity')}}</strong></th>
+                                                    <th class="text-center"><strong>{{__('Price')}}</strong></th>
                                                     <th class="text-center">
                                                         <strong>{{__('Description of Product')}}</strong></th>
-                                                    <th class="text-center"><strong>{{__('Price')}}</strong></th>
-                                                    <th class="text-center"><strong>{{__('Quantity')}}</strong></th>
                                                     <th class="text-center"><strong>{{__('Sub Total')}}</strong></th>
                                                     </thead>
                                                     <tbody>
@@ -90,16 +90,17 @@
                                                             <th class="no-line"></th>
                                                             <th class="no-line"></th>
                                                             <th class="no-line">
-                                                                <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Totals')}}</strong>&nbsp;{{$data_dis->hpo_total}}
+                                                                <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Totals')}}</strong>&nbsp;{{$order->hp_total_all}}
                                                             </th>
 
                                                         </tr>
+                                                        @if($order->hp_discount != "")
                                                         <tr>
                                                             <th class="no-line"></th>
                                                             <th class="no-line"></th>
                                                             <th class="no-line">
                                                                 <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Discount')}}
-                                                                    %&nbsp;</strong>{{$data_dis->hpo_discount}}&nbsp;&nbsp;
+                                                                    %&nbsp;</strong>{{$order->hp_discount}}&nbsp;&nbsp;
                                                             </th>
                                                         </tr>
                                                         <tr>
@@ -107,18 +108,19 @@
                                                             <th class="no-line"></th>
                                                             <th class="no-line">
                                                                 <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Total including discount:')}}
-                                                                    &nbsp;</strong>{{$data_dis->hpo_total_discount}}
+                                                                    &nbsp;</strong>{{$order->hp_total_discount}}
                                                             </th>
                                                         </tr>
+                                                            @endif
                                                     </table>
                                                 </table>
                                             </div>
-                                            @if ($current_verified_order === null)
+                                            @if ($current_verified_order === null and $order->hp_status == 1)
                                                 <form method="POST" action="{{route('verify_pre.update',$order->id)}}"
                                                       ENCTYPE="multipart/form-data">
                                                     @CSRF
                                                     @method('PUT')
-                                                    <button class="btn btn-primary">{{__('send')}}</button>
+                                                    <button class="btn btn-primary">{{__('Verify')}}</button>
                                                 </form>
                                             @endif
                                         </div>

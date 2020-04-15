@@ -36,7 +36,6 @@ class VerifyController extends Controller
         $user = User::select('id', 'name')->get();
         $order = Order::select('id', 'hp_project_name', 'created_at')
             ->where('hp_Invoice_number', Null)->get();
-//        dd($order);
         return view('verify_level.index', compact('order', 'help_desk', 'priority', 'type','user'));
     }
 
@@ -108,12 +107,12 @@ class VerifyController extends Controller
         $priority = HDpriority::select('id','hdp_name')->get();
         $user = User::select('id', 'name')->get();
         $order = Order::find($id);
-        $product = Product::all();
+        $product = Product::select('id','hp_product_model','hp_product_color_id','hp_product_size','hp_product_property','hp_product_code_number','hp_product_name','hp_product_price')->get();
         $data = OrderProduct::where('hpo_order_id',$id)->get();
-        $data_dis = OrderProduct::where('hpo_order_id',$id)->get()->last();
+        $data_dis = OrderProduct::select('hop_due_date')->where('hpo_order_id',$id)->get()->last();
         $city = address:: where('id', $order->hp_address_city_id)->get()->last();
         $state = Project_State:: where('id', $order->hp_address_state_id)->get()->last();
-        $client =Client::all();
+        $client =Client::select('id','hc_name')->where('id',$order->ho_client)->get()->last();
         return view('verify_level.preview', compact('client','order', 'first_verifier', 'verifyID', 'selected_priority', 'current_verified_order', 'help_desk', 'priority', 'type','user','product','data','state','city','data_dis'));
 
     }

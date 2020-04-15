@@ -25,12 +25,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">{{__('Part Name')}}</label>
-                                        <select class="form-control" name="hrp_part_id">
-                                            @foreach($part_name as $name)
-                                                <option value="{{$name->id}}">
-                                                    {{$name->hp_name}}
-                                                </option>
-                                            @endforeach
+                                        <select class="form-control select-part" name="hrp_part_id">
                                         </select>
                                     </div>
                                 </div>
@@ -108,6 +103,63 @@
                     cache: false,
                 });
             });
+            // fill data in select part
+            $(".select-part").select2({
+                dir: "rtl",
+                language: "fa",
+                ajax: {
+                    url: '/json-data-fill_data_repository_part',
+                    dataType: 'json',
+                    method: 'put',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب قطعه'),
+                templateResult: formatRepo,
+                templateSelection: formatRepoSelection
+            });
+
+            function formatRepo(repo) {
+
+                if (repo.loading) {
+                    return repo.text;
+                }
+
+                var $container = $(
+                    "<div class='select2-result-repository clearfix'>" +
+                    "<div class='select2-result-repository__avatar'><img src='/img/parts/" + repo.hp_part_image + "' /></div>" +
+                    "<div class='select2-result-repository__meta'>" +
+                    "<div class='select2-result-repository__title'></div>" +
+                    "<div class='select2-result-repository__description'></div>" +
+                    "<div class='select2-result-repository__color'></div>" +
+                    "<div class='select2-result-repository__statistics'>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>"
+                );
+
+                $container.find(".select2-result-repository__title").text("{{__('Name')}}" + " : " + repo.text);
+                $container.find(".select2-result-repository__description").text("{{__('Model')}}" + " : " + repo.hp_part_model);
+                $container.find(".select2-result-repository__color").text("{{__('Code')}}" + " : " + repo.hp_serial_number);
+
+                return $container;
+            }
+
+            function formatRepoSelection(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end fill data in select middle part
         });
     </script>
 @endpush

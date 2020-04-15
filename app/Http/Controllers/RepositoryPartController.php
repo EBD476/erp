@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Part;
+use App\Provider;
 use App\RepositoryCreate;
 use App\RepositoryPart;
 use App\User;
@@ -20,16 +21,12 @@ class RepositoryPartController extends Controller
         $type = HDtype::select('th_name','id')->get();
         $priority = HDpriority::select('id','hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $repository=RepositoryPart::ALL();
-        $part = Part::all();
-        return view('repository_part.index',compact('part','repository','help_desk','priority','type','user'));
+        $repository=RepositoryPart::select('id','hrp_part_id','hrp_repository_id','hrp_part_count')->get();
+        $repository_name=RepositoryCreate::select('id','hr_name')->get();
+        $part = Part::select('id','hp_name')->get();
+        return view('repository_part.index',compact('repository_name','part','repository','help_desk','priority','type','user'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $current_user=auth()->user()->id;
@@ -37,9 +34,8 @@ class RepositoryPartController extends Controller
         $type = HDtype::select('th_name','id')->get();
         $priority = HDpriority::select('id','hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $part_name=Part::all();
         $repository_name=RepositoryCreate::all();
-        return view('repository_part.create',compact('part_name','repository_name','help_desk','priority','type','user'));
+        return view('repository_part.create',compact('repository_name','help_desk','priority','type','user'));
     }
 
     public function store(Request $request)
@@ -58,23 +54,6 @@ class RepositoryPartController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $current_user=auth()->user()->id;
@@ -82,19 +61,16 @@ class RepositoryPartController extends Controller
         $type = HDtype::select('th_name','id')->get();
         $priority = HDpriority::select('id','hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $repository=RepositoryPart::find($id);
-        return view('repository_part.edit',compact('repository','help_desk','priority','type','user'));
+        $repository_part=RepositoryPart::find($id);
+        $part_name=Part::select('id','hp_name')->where('id',$repository_part->hrp_part_id)->get()->last();
+        $repository_name=RepositoryCreate::select('id','hr_name')->where('id',$repository_part->hrp_repository_id)->get()->last();
+        $repository_all_name=RepositoryCreate::select('id','hr_name')->get();
+        $provider = Provider::select('id', 'hp_name')->get();
+        return view('repository_part.edit',compact('provider','repository_name','repository_all_name','part_name','repository_part','help_desk','priority','type','user'));
 
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request,$id)
     {
         $this->validate($request, [
@@ -107,16 +83,10 @@ class RepositoryPartController extends Controller
         $repository->hrp_repository_id = $request->hrp_repository_id;
         $repository->hrp_part_count = $request->hrp_part_count;
         $repository->save();
-        return redirect()->back();
+        return json_encode(["response"=>"OK"]);
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $repository = RepositoryPart::find($id);
@@ -147,5 +117,16 @@ class RepositoryPartController extends Controller
         $orders_count = Order::all()->count();
         return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
     }
+
+    public function fill_data_repository_part(Request $request)
+    {
+        $search = $request->search;
+        if ($search != "") {
+
+            $part = Part::select('hp_name as text', 'id', 'hp_serial_number', 'hp_part_model', 'hp_part_image')->where('hp_name', 'LIKE', "%$search%")->orwhere('hp_part_model', 'LIKE', "%$search%")->get();
+        }
+        return json_encode(["results" => $part]);
+    }
+
 
 }

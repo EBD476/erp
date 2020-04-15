@@ -33,9 +33,9 @@
 
                                     <div class="col-md-6 pr-md-1">
                                         <div class="form-group">
-                                            <label>{{__('Repository Description')}}</label>
-                                            <input name="hr_description" type="text" class="form-control" required=""
-                                                   aria-invalid="false">
+                                            <label>{{__('Description')}}</label>
+                                            <textarea name="hr_description" type="text" class="form-control" required=""
+                                                      aria-invalid="false"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -60,9 +60,6 @@
                                         {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
                                         <h5 class="title">Hanta IBMS</h5>
                                     </a>
-                            <p class="description">
-                                Product
-                            </p>
                         </div>
                         </p>
                         <div class="card-description">

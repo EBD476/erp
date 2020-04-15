@@ -114,9 +114,6 @@
                                         {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
                                         <h5 class="title">Hanta IBMS</h5>
                                     </a>
-                            <p class="description">
-                                Product
-                            </p>
                         </div>
                         </p>
                     </div>

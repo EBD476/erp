@@ -378,7 +378,6 @@
   "Conversation View": "تالار گفتگو",
   "Type your message here...": "پیام خود را وارد کنید...",
   "debit": "بدهی",
-  "Fund": "دارایی ها",
   "revenue": "درآمد ها",
   "Costs": "هزینه ها",
   "Organizational Administration": "اداری تشکیلاتی",
@@ -531,6 +530,12 @@
   "Edit Repository":"ویرایش انبار",
   "Increase inventory":"افزایش موجودی انبار",
   "Increase inventory Middle Part":"افزایش موجودی قطعات میانی انبار",
-  "Increase inventory Product":"افزایش موجودی محصولات انبار"
+  "Increase inventory Product":"افزایش موجودی محصولات انبار",
+  "inventory Repository Product":"موجودی محصولات انبار",
+  "Repository Middle Part List":"لیست موجودی قطعات میانی انبار",
+  "Repositories List":"لیست موجودی های انبار",
+  "Preview factor":"نمایش فاکتور",
+  "% VAT rate is calculated":"% نرخ مالیات بر ارزش افزوده محاسبه شده است",
+  "Registrant Name":"نام نماینده"
 
 }

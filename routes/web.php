@@ -28,7 +28,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('products', 'ProductController');
     route::resource('product', 'ProductController');
     route::resource('order_product', 'OrderProductController');
-    route::resource('repository', 'RepositoryController');
+    route::resource('repository', 'RepositoryProductController');
     route::resource('product_requirement', 'ProductRequirementController');
     route::resource('request', 'RequestController');
     route::resource('verifier', 'VerifierController');
@@ -72,6 +72,7 @@ Route::group(['middleware' => ['auth']], function () {
     route::resource('middle-part', 'MiddlePartController');
     route::resource('product-middle-part', 'ProductMiddlePartController');
     route::resource('middle-section-part', 'MiddleSectionPartController');
+    route::resource('repository-middle-part', 'RepositoryMiddlePartController');
 
 //  Getting data
     Route::get('send_request/{id}', 'ProjectController@send_request')->name('projects.send_request');
@@ -90,7 +91,7 @@ Route::group(['middleware' => ['auth']], function () {
     route::put('edit_pre/{id}', 'OrderController@edit_pre')->name('order.edit_pre');
 
 //  Posting data
-    Route::post('order-state/{id}', 'RepositoryController@order_state')->name('repository.order_state');
+    Route::post('order-state/{id}', 'RepositoryProductController@order_state')->name('repository.order_state');
     Route::post('add-product', 'OrderProductController@add')->name('product.add');
     Route::post('receive_verify/{id}', 'HelpDeskController@receive_verify')->name('help_desk.receive_verify');
     Route::post('support_request', 'ProjectController@support_request')->name('projects.support_request');
@@ -117,7 +118,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/json-data-permissions', 'PermissionsController@destroy')->name('permission.json-data-permissions');
     Route::get('/json-data-projects', 'ProjectController@destroy')->name('projects.json-data-projects');
     Route::get('/json-data-product', 'ProductController@destroy')->name('product.json-data-product');
-    Route::get('/json-data-repository', 'RepositoryController@destroy')->name('repository.json-data-repository');
+    Route::get('/json-data-repository', 'RepositoryProductController@destroy')->name('repository.json-data-repository');
     Route::get('/json-data-repository_requirement', 'RepositoryRequirementController@destroy')->name('repository_requirement.json-data-repository_requirement');
     Route::get('/json-data-verifier', 'VerifierController@destroy')->name('verifier.json-data-verifier');
     Route::get('/json-data-permission', 'PermissionController@destroy')->name('permission.json-data-permission');
@@ -162,6 +163,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/json-data-fill_data_part', 'ProductMiddlePartController@fill_data_part')->name('product.json-data-fill_data_part');
     Route::get('/json-data-fill_data_product', 'ProductMiddlePartController@fill_data_product')->name('product-middle-part.json-data-fill_data_product');
     Route::get('/json-data-fill_data_middle_part', 'ProductMiddlePartController@fill_data_middle_part')->name('product-middle-part.json-data-fill_data_middle_part');
+    Route::get('/json-data-fill_data_repository_part', 'RepositoryPartController@fill_data_repository_part')->name('repository-part.json-data-fill_data_repository_part');
+    Route::get('/json-data-fill_data_repository_middle_part', 'RepositoryProductController@fill_data_repository_middle_part')->name('repository-product.json-data-fill_data_repository_middle_part');
+    Route::get('/json-data-fill_data_repository_product', 'RepositoryProductController@fill_data_repository_product')->name('repository-product.json-data-fill_data_repository_product');
 
 
 //  deleted route
@@ -171,7 +175,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/permissions-destroy/{id}', 'PermissionsController@destroy')->name('permission.permissions-destroy');
     Route::delete('/projects-destroy/{id}', 'ProjectController@destroy')->name('projects.projects-destroy');
     Route::delete('/product-destroy/{id}', 'ProductController@destroy')->name('product.product-destroy');
-    Route::delete('/repository-destroy/{id}', 'RepositoryController@destroy')->name('repository.repository-destroy');
+    Route::delete('/repository-destroy/{id}', 'RepositoryProductController@destroy')->name('repository.repository-destroy');
     Route::delete('/repository_requirement-destroy/{id}', 'RepositoryRequirementController@destroy')->name('repository_requirement.repository_requirement-destroy');
     Route::delete('/verifier-destroy/{id}', 'VerifierController@destroy')->name('verifier.verifier-destroy');
     Route::delete('/permission-destroy/{id}', 'PermissionController@destroy')->name('permission.permission-destroy');

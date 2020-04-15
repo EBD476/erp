@@ -253,9 +253,9 @@
                             </a>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{route('repository-part.index')}}">
+                            <a class="nav-link" href="{{route('repository.index')}}">
                                 <i class="tim-icons icon-bank"></i>
-                                <span class="sidebar-normal">{{__('Part Repository')}}</span>
+                                <span class="sidebar-normal">{{__('Repositories List')}}</span>
                             </a>
                         </li>
                     </ul>
@@ -843,9 +843,9 @@
                             </a>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{route('repository-part.index')}}">
+                            <a class="nav-link" href="{{route('repository.index')}}">
                                 <i class="tim-icons icon-bank"></i>
-                                <span class="sidebar-normal">{{__('Part Repository')}}</span>
+                                <span class="sidebar-normal">{{__('Repositories List')}}</span>
                             </a>
                         </li>
                     </ul>

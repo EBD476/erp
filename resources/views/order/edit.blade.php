@@ -74,6 +74,9 @@
                                                        class="bmd-label-floating">{{__('Client Name')}}</label>
                                                 <select class="select-client form-control" name="ho_client"
                                                         id="ho_client">
+                                                    <option>
+                                                        {{$client->hc_name}}
+                                                    </option>
                                                 </select>
                                                 <div class="text-light">
                                                     <a class="pointer" href="#" data-toggle="modal"
@@ -175,6 +178,9 @@
                                                        style="margin-top: -20px">{{__('State')}}</label>
                                                 <select class="select-state form-control" type="text"
                                                         name="hp_address_state_id" id="hp_address_state_id">
+                                                    <option>
+                                                        {{$invoice_state->hp_project_state}}
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -184,6 +190,9 @@
                                                        style="margin-top: -20px">{{__('City')}}</label>
                                                 <select class="select-city form-control" type="text"
                                                         name="hp_address_city_id" id="hp_address_city_id">
+                                                    <option>
+                                                        {{$invoice_city->hp_city}}
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -350,113 +359,296 @@
                                         </tr>
                                         </tbody>
                                     </table>
-
-                                    {{--Box2--}}
-                                    <div class="col-md-6">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <label class="bmd-label-floating">{{__('Discount')}}
-                                                        :</label>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <div class="col-lg-6 col-sm-6">
-                                                                <div class="input-group"><input class="form-control"
-                                                                                                id="discount"
-                                                                                                type="number"
-                                                                                                name="hpo_discount"
-                                                                                                value="{{$project->hp_discount}}">
-                                                                    &nbsp
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <label class="bmd-label-floating">{{__('Paid to Date:')}}</label>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <div class="col-lg-6 col-sm-6">
-                                                                <input class="form-control"
-                                                                       id="test-date-id"
-                                                                       type="text"
-                                                                       name="hop_due_date"
-                                                                       value="{{$items_all->hop_due_date}}"
-                                                                >
-                                                                &nbsp
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <label class="bmd-label-floating">{{__('Total:')}}</label>
-                                                    <div class="col-md-12 ">
-                                                        <div class="form-group">
+                                    @if($project->hp_total_all != "")
+                                        {{--Box2--}}
+                                        <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    @role('Admin')
+                                                    <div class="row">
+                                                        <label class="bmd-label-floating">{{__('Paid to Date:')}}</label>
+                                                        <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <div class="col-lg-6 col-sm-6">
-                                                                    <input disabled class="form-control"
-                                                                           id="all_total"
+                                                                    <input class="form-control"
+                                                                           id="test-date-id"
                                                                            type="text"
-                                                                           name="all_total"
-                                                                           value="{{$project->hp_total_all}}"
+                                                                           name="hop_due_date"
+                                                                           value="{{$items_all->hop_due_date}}"
                                                                     >
                                                                     &nbsp
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <label class="bmd-label-floating">{{__('Total Including Discount:')}}</label>
-                                                    <div class="col-md-12 ">
-                                                        <div class="form-group">
+                                                    @endrole
+
+                                                    <div class="row">
+                                                        <label class="bmd-label-floating">{{__('Total:')}}</label>
+                                                        <div class="col-md-12 ">
                                                             <div class="form-group">
-                                                                <div class="col-lg-6 col-sm-6">
-                                                                    <input disabled class="form-control"
-                                                                           id="total_discount"
-                                                                           type="text"
-                                                                           name="total_discount"
-                                                                           value="{{$project->hp_total_discount}}"
-                                                                    >
-                                                                    &nbsp
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-6 col-sm-6">
+                                                                        <input disabled class="form-control"
+                                                                               id="all_total"
+                                                                               type="text"
+                                                                               name="all_total"
+                                                                               value="{{$project->hp_total_all}}"
+                                                                        >
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                @role('admin')
-                                                <div class="row">
-                                                    <label class="bmd-label-floating">{{__('Statuses:')}}</label>
-                                                    <div class="col-md-12 ">
-                                                        <div class="col-lg-6 col-sm-6">
-                                                            <div class="form-group">
 
-                                                                <select name="hpo_status" class="form-control">
-                                                                    @foreach($invoice_statuses as $invoice_status)
-                                                                        <option>
-                                                                            {{$invoice_status->name}}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
+                                                    @if($project->hp_discount != "")
+                                                        <div class="row">
+                                                            <label class="bmd-label-floating">{{__('Discount')}}
+                                                                :</label>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-6 col-sm-6">
+                                                                        <div class="input-group"><input
+                                                                                    class="form-control"
+                                                                                    id="discount"
+                                                                                    type="number"
+                                                                                    name="hpo_discount"
+                                                                                    value="{{$project->hp_discount}}">
+                                                                            &nbsp
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                        <div class="row">
+                                                            <label class="bmd-label-floating">{{__('Total Including Discount:')}}</label>
+                                                            <div class="col-md-12 ">
+                                                                <div class="form-group">
+                                                                    <div class="form-group">
+                                                                        <div class="col-lg-6 col-sm-6">
+                                                                            <input disabled class="form-control"
+                                                                                   id="total_discount"
+                                                                                   type="text"
+                                                                                   name="total_discount"
+                                                                                   value="{{$project->hp_total_discount}}"
+                                                                            >
+                                                                            <div class="small">
+                                                                                <h20>{{$tax->hpx_tax}}.{{__('% VAT rate is calculated')}}</h20>
+                                                                            </div>                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @else
+                                                        <div class="row">
+                                                            <label class="bmd-label-floating">{{__('Discount')}}
+                                                                :</label>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-6 col-sm-6">
+                                                                        <div class="input-group"><input
+                                                                                    class="form-control"
+                                                                                    id="discount"
+                                                                                    type="number"
+                                                                                    name="hpo_discount">
+                                                                            &nbsp
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <label class="bmd-label-floating">{{__('Total Including Discount:')}}</label>
+                                                            <div class="col-md-12 ">
+                                                                <div class="form-group">
+                                                                    <div class="form-group">
+                                                                        <div class="col-lg-6 col-sm-6">
+                                                                            <input disabled class="form-control"
+                                                                                   id="total_discount"
+                                                                                   type="text"
+                                                                                   name="total_discount">
+                                                                            &nbsp
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                    {{--@role('admin')--}}
+                                                    {{--<div class="row">--}}
+                                                    {{--<label class="bmd-label-floating">{{__('Statuses:')}}</label>--}}
+                                                    {{--<div class="col-md-12 ">--}}
+                                                    {{--<div class="col-lg-6 col-sm-6">--}}
+                                                    {{--<div class="form-group">--}}
+
+                                                    {{--<select name="hpo_status" class="form-control">--}}
+                                                    {{--@foreach($invoice_statuses as $invoice_status)--}}
+                                                    {{--<option>--}}
+                                                    {{--{{$invoice_status->name}}--}}
+                                                    {{--</option>--}}
+                                                    {{--@endforeach--}}
+                                                    {{--</select>--}}
+                                                    {{--</div>--}}
+                                                    {{--</div>--}}
+                                                    {{--</div>--}}
+                                                    {{--</div>--}}
+                                                    {{--@endrole--}}
                                                 </div>
-                                                @endrole
                                             </div>
                                         </div>
-                                    </div>
-                                    {{--End Box2--}}
+                                        {{--End Box2--}}
 
-                                    {{--Hidden Object--}}
-                                    <input type="hidden" id="client_id" name="hpo_client_id"
-                                           value="{{$project->ho_client}}">
-                                    <input type="hidden" id="order_id" name="hpo_order_id" value="{{$project->id}}">
-                                    <input id="all_dis" name="all_dis" type="hidden"
-                                           value="{{$project->hp_total_discount}}">
-                                    <input id="all_tot" name="all_tot" type="hidden"
-                                           value="{{$project->hp_total_all}}">
-                                    {{--End Hidden Object--}}
+                                        {{--Hidden Object--}}
+                                        <input type="hidden" id="client_id" name="hpo_client_id"
+                                               value="{{$project->ho_client}}">
+                                        <input type="hidden" id="order_id" name="hpo_order_id" value="{{$project->id}}">
+                                        <input id="all_dis" name="all_dis" type="hidden"
+                                               value="{{$project->hp_total_discount}}">
+                                        <input id="all_tot" name="all_tot" type="hidden"
+                                               value="{{$project->hp_total_all}}">
+                                        {{--End Hidden Object--}}
+                                    @else
+                                        {{--Box2--}}
+                                        <div class="col-md-6">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    @role('Admin')
+                                                    <div class="row">
+                                                        <label class="bmd-label-floating">{{__('Paid to Date:')}}</label>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <div class="col-lg-6 col-sm-6">
+                                                                    <input class="form-control"
+                                                                           id="test-date-id"
+                                                                           type="text"
+                                                                           name="hop_due_date">
+                                                                    &nbsp
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        @endrole
+                                                    </div>
+                                                    <div class="row">
+                                                        <label class="bmd-label-floating">{{__('Total:')}}</label>
+                                                        <div class="col-md-12 ">
+                                                            <div class="form-group">
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-6 col-sm-6">
+                                                                        <input disabled class="form-control"
+                                                                               id="all_total"
+                                                                               type="text"
+                                                                               name="all_total">
+                                                                        &nbsp
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @if($project->hp_discount != "")
+                                                        <div class="row">
+                                                            <label class="bmd-label-floating">{{__('Discount')}}
+                                                                :</label>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-6 col-sm-6">
+                                                                        <div class="input-group"><input
+                                                                                    class="form-control"
+                                                                                    id="discount"
+                                                                                    type="number"
+                                                                                    name="hpo_discount"
+                                                                                    value="{{$project->hp_discount}}">
+                                                                            &nbsp
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <label class="bmd-label-floating">{{__('Total Including Discount:')}}</label>
+                                                            <div class="col-md-12 ">
+                                                                <div class="form-group">
+                                                                    <div class="form-group">
+                                                                        <div class="col-lg-6 col-sm-6">
+                                                                            <input disabled class="form-control"
+                                                                                   id="total_discount"
+                                                                                   type="text"
+                                                                                   name="total_discount"
+                                                                                   value="{{$project->hp_total_discount}}"
+                                                                            >
+                                                                            <div class="small">
+                                                                                <h20>{{$tax->hpx_tax}}.{{__('% VAT rate is calculated')}}</h20>
+                                                                            </div>                                                                         </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @else
+                                                        <div class="row">
+                                                            <label class="bmd-label-floating">{{__('Discount')}}
+                                                                :</label>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <div class="col-lg-6 col-sm-6">
+                                                                        <div class="input-group"><input
+                                                                                    class="form-control"
+                                                                                    id="discount"
+                                                                                    type="number"
+                                                                                    name="hpo_discount">
+                                                                            &nbsp
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <label class="bmd-label-floating">{{__('Total Including Discount:')}}</label>
+                                                            <div class="col-md-12 ">
+                                                                <div class="form-group">
+                                                                    <div class="form-group">
+                                                                        <div class="col-lg-6 col-sm-6">
+                                                                            <input disabled class="form-control"
+                                                                                   id="total_discount"
+                                                                                   type="text"
+                                                                                   name="total_discount">
+                                                                            <div class="small">
+                                                                                <h20>{{$tax->hpx_tax}}.{{__('% VAT rate is calculated')}}</h20>
+                                                                            </div>                                                                         </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                    {{--@role('admin')--}}
+                                                    {{--<div class="row">--}}
+                                                    {{--<label class="bmd-label-floating">{{__('Statuses:')}}</label>--}}
+                                                    {{--<div class="col-md-12 ">--}}
+                                                    {{--<div class="col-lg-6 col-sm-6">--}}
+                                                    {{--<div class="form-group">--}}
+
+                                                    {{--<select name="hpo_status" class="form-control">--}}
+                                                    {{--@foreach($invoice_statuses as $invoice_status)--}}
+                                                    {{--<option>--}}
+                                                    {{--{{$invoice_status->name}}--}}
+                                                    {{--</option>--}}
+                                                    {{--@endforeach--}}
+                                                    {{--</select>--}}
+                                                    {{--</div>--}}
+                                                    {{--</div>--}}
+                                                    {{--</div>--}}
+                                                    {{--</div>--}}
+                                                    {{--@endrole--}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{--End Box2--}}
+
+                                        {{--Hidden Object--}}
+                                        <input type="hidden" id="client_id" name="hpo_client_id">
+                                        <input type="hidden" id="order_id" name="hpo_order_id" value="{{$project->id}}">
+                                        <input id="all_dis" name="all_dis" type="hidden">
+                                        <input id="all_tot" name="all_tot" type="hidden">
+                                        {{--End Hidden Object--}}
+                                    @endif
                                     <div class="col-md-12">
                                         <a href="{{route('order.index')}}"
                                            class="btn btn-primary">{{__('Back')}}</a>
@@ -522,519 +714,6 @@
         </div>
     </div>
     @endrole
-    {{--@role('order')--}}
-    {{--<div class="content">--}}
-        {{--<div class="container-fluid">--}}
-            {{--<div class="row">--}}
-                {{--<div class="col-md-12">--}}
-                    {{--@include('layouts.partial.Msg')--}}
-                {{--</div>--}}
-
-                {{--<div class="card">--}}
-                    {{--<div class="card-header card-header-primary">--}}
-                        {{--<h4 class="card-title ">{{__('Edit Order')}}&nbsp;{{$project->hp_employer_name}}</h4>--}}
-                        {{--<p class="card-category"></p>--}}
-                        {{--<div class="row pull-left">--}}
-                            {{--<div class="col-md-12 pull-left">--}}
-                                {{--<div class="form-group">--}}
-                                    {{--<input id="hpo_order_id" value="{{$project->id}}" type="hidden">--}}
-                                    {{--<label class="bmd-label-floating">{{__('Order ID:')}}</label>--}}
-                                    {{--<label class="bmd-label-floating" id="order_id_show" data-id="{{$project->id}}"--}}
-                                           {{--data-client="{{$project->ho_client}}">{{$project->id}}</label>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                    {{--<div class="card-body">--}}
-                        {{--<ul class="nav nav-pills" style="float: none">--}}
-                            {{--<li class="nav-item" style="width: 33.3333%;">--}}
-                                {{--<a class="nav-link active" href="#tab1" data-toggle="tab" role="tab">--}}
-                                    {{--{{__('Order')}}--}}
-                                {{--</a>--}}
-                            {{--</li>--}}
-                            {{--<li class="nav-item" style="width: 33.3333%;">--}}
-                                {{--<a class="nav-link" href="#tab2" data-toggle="tab" role="tab">--}}
-                                    {{--{{__('List of Material')}}--}}
-                                {{--</a>--}}
-                            {{--</li>--}}
-                        {{--</ul>--}}
-                        {{--<br>--}}
-                        {{--<div class="tab-content">--}}
-                            {{--<div role="tabpanel" class="tab-pane active" id="tab1">--}}
-                                {{--<form id="form1">--}}
-                                    {{--<div class="row">--}}
-                                        {{--<div class="col-md-4">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<label class="bmd-label-floating">{{__('Project Name')}}</label>--}}
-                                                {{--<input type="text" class="form-control" required=""--}}
-                                                       {{--aria-invalid="false" name="hp_project_name" id="hp_project_name"--}}
-                                                       {{--data-id="{{$project->id}}" value="{{$project->hp_project_name}}">--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                        {{--<div class="col-md-4">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<label class="bmd-label-floating">{{__('Employer Name')}}</label>--}}
-                                                {{--<input type="text" class="form-control" required="" aria-invalid="false"--}}
-                                                       {{--name="hp_employer_name" id="hp_employer_name"--}}
-                                                       {{--value="{{$project->hp_employer_name}}">--}}
-                                            {{--</div>--}}
-
-                                        {{--</div>--}}
-                                        {{--<div class="col-md-4">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<label style="margin-top: -20px"--}}
-                                                       {{--class="bmd-label-floating">{{__('Client Name')}}</label>--}}
-                                                {{--<select class="select-client form-control" name="ho_client"--}}
-                                                        {{--id="ho_client">--}}
-                                                {{--</select>--}}
-                                                {{--<div class="text-light">--}}
-                                                    {{--<a class="pointer" href="#" data-toggle="modal"--}}
-                                                       {{--data-target="#modalRegisterForm">--}}
-                                                        {{--{{__('Add New Client')}}</a>--}}
-                                                {{--</div>--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-
-                                    {{--</div>--}}
-                                    {{--<div class="row">--}}
-                                        {{--<div class="col-md-4">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<label class="bmd-label-floating">{{__('Connector')}}</label>--}}
-                                                {{--<input type="text" class="form-control" required=""--}}
-                                                       {{--aria-invalid="false"--}}
-                                                       {{--name="hp_connector" id="hp_connector"--}}
-                                                       {{--value="{{$project->hp_connector}}">--}}
-                                            {{--</div>--}}
-
-                                        {{--</div>--}}
-                                        {{--<div class="col-md-4">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<label class="bmd-label-floating">{{__('Owner User')}}</label>--}}
-                                                {{--<select type="text" class="form-control" name="hp_owner_user"--}}
-                                                        {{--id="hp_owner_user">--}}
-                                                    {{--<option>{{$project->hp_owner_user}}</option>--}}
-                                                    {{--<option>{{__('Residential')}}</option>--}}
-                                                    {{--<option>{{__('Commercial')}}</option>--}}
-                                                    {{--<option>{{__('edari')}}</option>--}}
-                                                {{--</select>--}}
-
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                        {{--<div class="col-md-4">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<label class="bmd-label-floating">{{__('Phone Number')}}</label>--}}
-                                                {{--<input type="number" class="form-control" required=""--}}
-                                                       {{--aria-invalid="false"--}}
-                                                       {{--name="hp_phone_number" id="hp_phone_number"--}}
-                                                       {{--value="{{$project->hp_phone_number}}">--}}
-                                            {{--</div>--}}
-
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                    {{--<div class="row">--}}
-                                        {{--<div class="col-md-4">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<label class="bmd-label-floating">{{__('Project Area')}}</label>--}}
-                                                {{--<input type="number" class="form-control" required=""--}}
-                                                       {{--aria-invalid="false"--}}
-                                                       {{--name="hp_project_area" id="hp_project_area"--}}
-                                                       {{--value="{{$project->hp_project_area}}">--}}
-                                            {{--</div>--}}
-
-                                        {{--</div>--}}
-                                        {{--<div class="col-md-4">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<label class="bmd-label-floating">{{__('Number Of Units')}}</label>--}}
-                                                {{--<input type="number" class="form-control" required=""--}}
-                                                       {{--aria-invalid="false"--}}
-                                                       {{--name="hp_number_of_units" id="hp_number_of_units"--}}
-                                                       {{--value="{{$project->hp_number_of_units}}">--}}
-                                            {{--</div>--}}
-
-                                        {{--</div>--}}
-                                        {{--<div class="col-md-4">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<label class="bmd-label-floating">{{__('Type Project')}}</label>--}}
-                                                {{--<select class="form-control" name="hp_type_project"--}}
-                                                        {{--id="hp_type_project">--}}
-                                                    {{--<option>{{$project->hp_type_project}}</option>--}}
-                                                    {{--@foreach($project_type as $type_project)--}}
-                                                        {{--<option>{{$type_project->hp_name}}</option>--}}
-                                                    {{--@endforeach--}}
-                                                {{--</select>--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                        {{--<div class="col-md-4">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<label class="bmd-label-floating">{{__('Contract Type')}}</label>--}}
-                                                {{--<select class="form-control" type="text"--}}
-                                                        {{--name="hp_contract_type" id="hp_contract_type">--}}
-                                                    {{--<option>--}}
-                                                        {{--{{$project->hp_contract_type}}--}}
-                                                    {{--</option>--}}
-                                                    {{--<option>--}}
-                                                        {{--{{__('Delivery')}}--}}
-                                                    {{--</option>--}}
-                                                    {{--<option>--}}
-                                                        {{--{{__('Install In Place')}}--}}
-                                                    {{--</option>--}}
-                                                {{--</select>--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                        {{--<div class="col-md-4">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<label class="bmd-label-floating"--}}
-                                                       {{--style="margin-top: -20px">{{__('State')}}</label>--}}
-                                                {{--<select class="select-state form-control" type="text"--}}
-                                                        {{--name="hp_address_state_id" id="hp_address_state_id">--}}
-                                                {{--</select>--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                        {{--<div class="col-md-4">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<label class="bmd-label-floating"--}}
-                                                       {{--style="margin-top: -20px">{{__('City')}}</label>--}}
-                                                {{--<select class="select-city form-control" type="text"--}}
-                                                        {{--name="hp_address_city_id" id="hp_address_city_id">--}}
-                                                {{--</select>--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                    {{--<div class="row">--}}
-                                        {{--<div class="col-md-12">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<label class="bmd-label-floating">{{__('Project Location')}}</label>--}}
-                                                {{--<div id="map"--}}
-                                                     {{--style="width: 100%; height: 300px;direction: ltr;z-index:0"></div>--}}
-                                                {{--<input name="hp_project_location" type="hidden"--}}
-                                                       {{--id="location" class="form-control">--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                    {{--<div class="row">--}}
-                                        {{--<div class="col-md-12">--}}
-                                            {{--<div class="form-group">--}}
-                                                {{--<label class="bmd-label-floating">{{__('Address')}}</label>--}}
-                                                {{--<textarea type="text" class="form-control" id="hp_address"--}}
-                                                          {{--name="hp_address" required=""--}}
-                                                          {{--aria-invalid="false"--}}
-                                                {{-->{{$project->hp_address}}</textarea>--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                    {{--<button type="submit" class="btn badge-primary">{{__('Send')}}</button>--}}
-                                {{--</form>--}}
-                            {{--</div>--}}
-
-                            {{--<div role="tabpanel" class="tab-pane" id="tab2" data-lang="{{app()->getLocale()}}">--}}
-                                {{--<form id="form2"--}}
-                                      {{--class="tab-content setting-tab" enctype="multipart/form-data">--}}
-                                    {{--<table class="table invoice-table product-table" style="direction: rtl" id="table2">--}}
-                                        {{--<thead>--}}
-                                        {{--<tr>--}}
-                                            {{--<th style="min-width:32px;" class="hide-border"></th>--}}
-                                            {{--<th></th>--}}
-                                            {{--<th style="min-width:120px;width:25%">{{__('Item')}}</th>--}}
-                                            {{--<th style="width:100%">{{__('Description')}}</th>--}}
-                                            {{--<th style="min-width:120px">{{__('Unit Cost')}}</th>--}}
-                                            {{--<th style="min-width:120px;display:table-cell">{{__('Quantity')}}</th>--}}
-                                            {{--<th style="min-width:120px;display:none">{{__('Discount')}}</th>--}}
-                                            {{--<th style="min-width:120px;">{{__('Line Total')}}</th>--}}
-                                            {{--<th style="min-width:32px;" class="hide-border"></th>--}}
-                                        {{--</tr>--}}
-                                        {{--</thead>--}}
-                                        {{--<tbody data-bind="sortable: { data: invoice_items_without_tasks, allowDrop: false, afterMove: onDragged} "--}}
-                                               {{--class="ui-sortable">--}}
-                                        {{--@foreach($invoices_items as $invoices_item)--}}
-                                            {{--<input name="pid[]" value="{{$invoices_item->id}}" type="hidden">--}}
-                                            {{--<tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"--}}
-                                                {{--class="sortable-row ui-sortable-handle" style="">--}}
-                                                {{--<td class="hide-border td-icon">--}}
-                                                    {{--<i style="display:none" class="fa fa-sort"></i>--}}
-                                                {{--</td>--}}
-                                                {{--<td style="cursor:pointer" class="hide-border td-icon">--}}
-                                                    {{--<i class="tim-icons icon-simple-remove remove"--}}
-                                                       {{--title="Remove item"/>--}}
-                                                {{--</td>--}}
-                                                {{--<td>--}}
-                                                    {{--<select name="name[]"--}}
-                                                            {{--class="select-item combobox-container name"--}}
-                                                            {{--data-id="{{$invoices_item->id}}">--}}
-                                                        {{--@foreach($product as $product_selected)--}}
-                                                            {{--@if($product_selected->id == $invoices_item->hpo_product_id)--}}
-                                                                {{--<option value="{{$product_selected->id}}">{{$product_selected->hp_product_name}}</option>--}}
-                                                            {{--@endif--}}
-                                                        {{--@endforeach--}}
-                                                        {{--@foreach($product as $product_item)--}}
-                                                            {{--<option value="{{$product_item->id}}"--}}
-                                                                    {{--data-price="{{$product_item->hp_product_price}}">--}}
-                                                                {{--{{$product_item->hp_product_name . $product_item->hp_product_model . $product_item->hp_product_size}}--}}
-                                                                {{--@foreach($color as $colors)--}}
-                                                                    {{--@if($colors->id == $product_item->hp_product_color_id)--}}
-                                                                        {{--{{$colors->hn_color_name}}--}}
-                                                                    {{--@endif--}}
-                                                                {{--@endforeach--}}
-                                                                {{--@foreach($properties as $property)--}}
-                                                                    {{--@if($property->id== $product_item->hp_product_property)--}}
-                                                                        {{--{{$property->hpp_property_name}}--}}
-                                                                        {{--@foreach ($items as $item)--}}
-                                                                            {{--@if($item->id == $property->hpp_property_items)--}}
-                                                                                {{--{{$item->hppi_items_name}}--}}
-                                                                            {{--@endif--}}
-                                                                        {{--@endforeach--}}
-                                                                    {{--@endif--}}
-                                                                {{--@endforeach--}}
-                                                            {{--</option>--}}
-                                                        {{--@endforeach--}}
-                                                    {{--</select>--}}
-                                                {{--</td>--}}
-                                                {{--<td>--}}
-                                                {{--<textarea--}}
-                                                        {{--data-bind="value: notes, valueUpdate: 'afterkeydown', attr: {name: 'invoice_items[]'}"--}}
-                                                        {{--rows="1" cols="60" style="resize: vertical; height: 42px;"--}}
-                                                        {{--class="form-control word-wrap invoice_items"--}}
-                                                        {{--name="invoice_items[]">{{$invoices_item->hpo_description}}</textarea>--}}
-                                                {{--</td>--}}
-                                                {{--<td>--}}
-                                                    {{--@foreach($product as $product_item_price)--}}
-                                                        {{--@if($invoices_item->hpo_product_id == $product_item_price->id)--}}
-                                                            {{--<input disabled type="text"--}}
-                                                                   {{--class="form-control unit"--}}
-                                                                   {{--name="hp_product_price[]"--}}
-                                                                   {{--value="{{$product_item_price->hp_product_price}}">--}}
-                                                        {{--@endif--}}
-                                                    {{--@endforeach--}}
-                                                {{--</td>--}}
-                                                {{--<td style="display:table-cell">--}}
-                                                    {{--<input--}}
-                                                            {{--style="text-align: right"--}}
-                                                            {{--class="form-control invoice_items qty"--}}
-                                                            {{--name="invoice_items_qty[]"--}}
-                                                            {{--value="{{$invoices_item->hpo_count}}">--}}
-                                                {{--</td>--}}
-                                                {{--<td style="text-align:right;padding-top:9px !important" nowrap="">--}}
-                                                    {{--<div class="line-total sub-total"--}}
-                                                         {{--name="total[]">{{$invoices_item->hpo_total}}</div>--}}
-                                                    {{--<input name="total[]" class="sub-total" type="hidden"--}}
-                                                           {{--value="{{$invoices_item->hpo_total}}">--}}
-                                                {{--</td>--}}
-                                            {{--</tr>--}}
-                                        {{--@endforeach--}}
-                                        {{--</tbody>--}}
-                                        {{--<tbody data-bind="sortable: { data: invoice_items_without_tasks, allowDrop: false, afterMove: onDragged} "--}}
-                                               {{--class="ui-sortable">--}}
-
-                                        {{--<tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"--}}
-                                            {{--class="sortable-row ui-sortable-handle" style="">--}}
-                                            {{--<td class="hide-border td-icon">--}}
-                                                {{--<i style="display:none" data-bind="visible: actionsVisible() &amp;&amp;--}}
-                {{--$parent.invoice_items_without_tasks().length > 1" class="fa fa-sort"></i>--}}
-                                            {{--</td>--}}
-                                            {{--<td><i class="tim-icons icon-simple-add" id="add-row"--}}
-                                                   {{--title="Add item"></i></td>--}}
-                                            {{--<td>--}}
-                                                {{--<input  name="pid[]">--}}
-                                                {{--<select name="name[]" class="select-item combobox-container">--}}
-                                                {{--</select>--}}
-
-                                            {{--</td>--}}
-                                            {{--<td>--}}
-                                                {{--<textarea--}}
-                                                        {{--data-bind="value: notes, valueUpdate: 'afterkeydown', attr: {name: 'invoice_items[]'}"--}}
-                                                        {{--rows="1" cols="60" style="resize: vertical; height: 42px;"--}}
-                                                        {{--class="form-control word-wrap"--}}
-                                                        {{--name="invoice_items[]"></textarea>--}}
-                                            {{--</td>--}}
-                                            {{--<td>--}}
-                                                {{--<input id="unit" disabled type="text" class="form-control unit"--}}
-                                                       {{--name="hp_product_price[]">--}}
-                                                {{--<input name="price" id="price" type="hidden">--}}
-                                            {{--</td>--}}
-                                            {{--<td style="display:table-cell">--}}
-                                                {{--<input--}}
-                                                        {{--style="text-align: right" class="form-control invoice-item qty"--}}
-                                                        {{--id="qty"--}}
-                                                        {{--name="invoice_items_qty[]">--}}
-                                            {{--</td>--}}
-                                            {{--<td style="text-align:right;padding-top:9px !important" nowrap="">--}}
-                                                {{--<div class="line-total sub-total" name="total[]"></div>--}}
-                                                {{--<input name="total[]" class="sub-total" type="hidden">--}}
-                                            {{--</td>--}}
-                                        {{--</tr>--}}
-                                        {{--</tbody>--}}
-                                    {{--</table>--}}
-
-                                    {{--Box2--}}
-                                    {{--<div class="col-md-6">--}}
-                                        {{--<div class="card">--}}
-                                            {{--<div class="card-body">--}}
-                                                {{--<div class="row">--}}
-                                                    {{--<label class="bmd-label-floating">{{__('Discount')}}--}}
-                                                        {{--:</label>--}}
-                                                    {{--<div class="col-md-12">--}}
-                                                        {{--<div class="form-group">--}}
-                                                            {{--<div class="col-lg-6 col-sm-6">--}}
-                                                                {{--<div class="input-group"><input class="form-control"--}}
-                                                                                                {{--id="discount"--}}
-                                                                                                {{--type="number"--}}
-                                                                                                {{--name="hpo_discount"--}}
-                                                                                                {{--value="{{$items_all->hpo_discount}}">--}}
-                                                                    {{--&nbsp--}}
-                                                                {{--</div>--}}
-                                                            {{--</div>--}}
-                                                        {{--</div>--}}
-                                                    {{--</div>--}}
-                                                {{--</div>--}}
-                                                {{--<div class="row">--}}
-                                                    {{--<label class="bmd-label-floating">{{__('Paid to Date:')}}</label>--}}
-                                                    {{--<div class="col-md-12">--}}
-                                                        {{--<div class="form-group">--}}
-                                                            {{--<div class="col-lg-6 col-sm-6">--}}
-                                                                {{--<input class="form-control"--}}
-                                                                       {{--id="test-date-id"--}}
-                                                                       {{--type="text"--}}
-                                                                       {{--name="hop_due_date"--}}
-                                                                       {{--value="{{$items_all->hop_due_date}}"--}}
-                                                                {{-->--}}
-                                                                {{--&nbsp--}}
-                                                            {{--</div>--}}
-                                                        {{--</div>--}}
-                                                    {{--</div>--}}
-                                                {{--</div>--}}
-                                                {{--<div class="row">--}}
-                                                    {{--<label class="bmd-label-floating">{{__('Total:')}}</label>--}}
-                                                    {{--<div class="col-md-12 ">--}}
-                                                        {{--<div class="form-group">--}}
-                                                            {{--<div class="form-group">--}}
-                                                                {{--<div class="col-lg-6 col-sm-6">--}}
-                                                                    {{--<input disabled class="form-control"--}}
-                                                                           {{--id="all_total"--}}
-                                                                           {{--type="text"--}}
-                                                                           {{--name="all_total"--}}
-                                                                           {{--value="{{$items_all->hpo_total_all}}"--}}
-                                                                    {{-->--}}
-                                                                    {{--&nbsp--}}
-                                                                {{--</div>--}}
-                                                            {{--</div>--}}
-                                                        {{--</div>--}}
-                                                    {{--</div>--}}
-                                                {{--</div>--}}
-                                                {{--<div class="row">--}}
-                                                    {{--<label class="bmd-label-floating">{{__('Total Including Discount:')}}</label>--}}
-                                                    {{--<div class="col-md-12 ">--}}
-                                                        {{--<div class="form-group">--}}
-                                                            {{--<div class="form-group">--}}
-                                                                {{--<div class="col-lg-6 col-sm-6">--}}
-                                                                    {{--<input disabled class="form-control"--}}
-                                                                           {{--id="total_discount"--}}
-                                                                           {{--type="text"--}}
-                                                                           {{--name="total_discount"--}}
-                                                                           {{--value="{{$items_all->hpo_total_discount}}"--}}
-                                                                    {{-->--}}
-                                                                    {{--&nbsp--}}
-                                                                {{--</div>--}}
-                                                            {{--</div>--}}
-                                                        {{--</div>--}}
-                                                    {{--</div>--}}
-                                                {{--</div>--}}
-                                                {{--@role('admin')--}}
-                                                {{--<div class="row">--}}
-                                                    {{--<label class="bmd-label-floating">{{__('Statuses:')}}</label>--}}
-                                                    {{--<div class="col-md-12 ">--}}
-                                                        {{--<div class="col-lg-6 col-sm-6">--}}
-                                                            {{--<div class="form-group">--}}
-
-                                                                {{--<select name="hpo_status" class="form-control">--}}
-                                                                    {{--@foreach($invoice_statuses as $invoice_status)--}}
-                                                                        {{--<option>--}}
-                                                                            {{--{{$invoice_status->name}}--}}
-                                                                        {{--</option>--}}
-                                                                    {{--@endforeach--}}
-                                                                {{--</select>--}}
-                                                            {{--</div>--}}
-                                                        {{--</div>--}}
-                                                    {{--</div>--}}
-                                                {{--</div>--}}
-                                                {{--@endrole--}}
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                    {{--End Box2--}}
-
-                                    {{--Hidden Object--}}
-                                    {{--<input type="hidden" id="client_id" name="hpo_client_id"--}}
-                                           {{--value="{{$project->ho_client}}">--}}
-                                    {{--<input type="hidden" id="order_id" name="hpo_order_id" value="{{$project->id}}">--}}
-                                    {{--<input id="all_dis" name="all_dis" type="hidden"--}}
-                                           {{--value="{{$items_all->hpo_total_discount}}">--}}
-                                    {{--<input id="all_tot" name="all_tot" type="hidden"--}}
-                                           {{--value="{{$items_all->hpo_total_all}}">--}}
-                                    {{--End Hidden Object--}}
-                                    {{--<div class="col-md-12">--}}
-                                        {{--<a href="{{route('order.index')}}"--}}
-                                           {{--class="btn btn-primary">{{__('Back')}}</a>--}}
-                                        {{--<button id="btn_submit" type="submit"--}}
-                                                {{--class="btn btn-primary">{{__('Send Modify')}}</button>--}}
-                                        {{--<button type="submit" class="btn btn-primary"--}}
-                                        {{--id="preview">{{__('Preview Factor')}}</button>--}}
-                                    {{--</div>--}}
-                                {{--</form>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                        {{--//client modal//--}}
-                        {{--<div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"--}}
-                             {{--aria-labelledby="myModalLabel"--}}
-                             {{--aria-hidden="true">--}}
-                            {{--<div class="modal-dialog" role="document">--}}
-                                {{--<div class="modal-content">--}}
-                                    {{--<div class="modal-header text-center">--}}
-                                        {{--<h4 class="modal-title w-100 font-weight-bold">{{__('Add New Client')}}</h4>--}}
-                                        {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-                                            {{--<span aria-hidden="true">&times;</span>--}}
-                                        {{--</button>--}}
-                                    {{--</div>--}}
-                                    {{--<form method="post" id="modal_form" enctype="multipart/form-data">--}}
-                                        {{--<div class="modal-body mx-3">--}}
-                                            {{--<div class="md-form mb-5">--}}
-                                                {{--<i class="fas fa-user prefix grey-text"></i>--}}
-                                                {{--<label class="bmd-label-floating" data-error="wrong"--}}
-                                                       {{--data-success="right"--}}
-                                                       {{--for="orangeForm-name">{{__('Name')}}</label>--}}
-                                                {{--<input type="text" id="orangeForm-name" class="form-control validate"--}}
-                                                       {{--name="hc_name">--}}
-                                            {{--</div>--}}
-                                            {{--<div class="md-form mb-5">--}}
-                                                {{--<i class="fas fa-envelope prefix grey-text"></i>--}}
-                                                {{--<label class="bmd-label-floating" data-error="wrong"--}}
-                                                       {{--data-success="right">{{__('Phone')}}</label>--}}
-                                                {{--<input type="number" required class="form-control validate"--}}
-                                                       {{--name="hc_phone">--}}
-                                            {{--</div>--}}
-
-                                            {{--<div class="md-form mb-4">--}}
-                                                {{--<i class="fas fa-lock prefix grey-text"></i>--}}
-                                                {{--<label class="bmd-label-floating" data-error="wrong"--}}
-                                                       {{--data-success="right">{{__('Address')}}</label>--}}
-                                                {{--<input type="text" class="form-control validate" name="hc_address">--}}
-                                            {{--</div>--}}
-
-                                        {{--</div>--}}
-                                        {{--<div class="modal-footer d-flex justify-content-center">--}}
-                                            {{--<button type="submit" class="btn btn-deep-orange">{{__('Send')}}</button>--}}
-                                        {{--</div>--}}
-                                    {{--</form>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                        {{--//End client modal//--}}
-                    {{--</div>--}}
-
-                {{--</div>--}}
-
-            {{--</div>--}}
-        {{--</div>--}}
-    {{--</div>--}}
-    {{--@endrole--}}
 @endsection
 
 @push('scripts')
@@ -1417,7 +1096,6 @@
                         '                                        </td>\n' +
                         '                      <td> <i class="tim-icons icon-simple-add" id="add-row' + $("#table2 tr").length + '" title="Add item"/></td>\n' +
                         '                                        <td>\n' +
-                        '                                            <input name="pid[]">\n' +
                         '                                                       <select name="name[]" class="select-item combobox-container">\n' +
                         '                                                        </select>\n' +
                         '\n' +
@@ -1668,7 +1346,38 @@
 
                             }
                         });
+
+                        // store new row
+                        var data = {
+                            name: $(this).parent().parent().find("select[name='name[]']").val(),
+                            total: $(this).parent().parent().find('.sub-total').text(),
+                            hpo_order_id: $("#order_id").val(),
+                            // hpo_client_id: $("#order_id_show").data('client'),
+                            hop_due_date: $("#test-date-id").val(),
+                            hpo_discount: $("#discount").val(),
+                            all_tot: $("#all_total").val(),
+                            all_dis: $("#total_discount").val(),
+                        }
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            url: '/add-product',
+                            type: 'Post',
+                            data: data,
+                            dataType: 'json',
+                            async: false,
+                            success: function (data) {
+                                $(this).parent().parent().find("input[name='pid[]']").val(data.pid);
+                                alert($(this).parent().parent().find("input[name='name[]']").val());
+                            },
+                            cache: false,
+                        });
+                        // end
                     });
+
 
                 }
 
@@ -1696,7 +1405,7 @@
                     async: false,
                     success: function (data) {
                         $(this).parent().parent().find("input[name='pid[]']").val(data.pid);
-                      alert($(this).parent().parent().find("input[name='name[]']").val());
+                        alert($(this).parent().parent().find("input[name='name[]']").val());
                     },
                     cache: false,
                 });

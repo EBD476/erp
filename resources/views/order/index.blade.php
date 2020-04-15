@@ -79,6 +79,9 @@
                                                             <div class="dropdown-menu dropdown-menu-right"
                                                                  aria-labelledby="dropdownMenuLink">
                                                                 <a class="dropdown-item"
+                                                                   href="{{route('verify_pre.edit',$orders->id)}}"
+                                                                >{{__('Preview factor')}}</a>
+                                                                <a class="dropdown-item"
                                                                    href="{{route('order.edit',$orders->id)}}"
                                                                 >{{__('Edit')}}</a>
                                                                 <form id="-form-delete{{$orders->id}}"

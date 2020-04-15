@@ -8,6 +8,7 @@ use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
 use App\Order;
+use App\ProcessLevel;
 use App\Project;
 use App\Support;
 use App\User;
@@ -55,13 +56,13 @@ class HomeController extends Controller
         $order = Order::select('id', 'hp_project_name', 'created_at')
             ->where('hp_Invoice_number', Null)->get();
 //        $order_agent = Order::select('id', 'hp_project_name', 'created_at', 'hp_status')
-        $order_agent = Order::select('id', 'hp_project_name', 'created_at')
-            ->where('hp_registrant', auth()->user()->name)->get();
-        $status_order = DB::select("select hp_process_name,hp_process_id from hnt_process");
+        $order_agent = Order::select('id', 'hp_project_name', 'created_at','hp_status')
+            ->where('hp_registrant', $current_user)->get();
         $projects = Project::all();
         $orders = Order::all()->count();
-        $Repositories_Requirement = DB::select("SELECT sum(Product_Count) as sum_hpo FROM hnt_repository__requirements");
-        return view('home', ['Repositories_Requirement' => $Repositories_Requirement], compact('status_order', 'order_agent', 'order_order', 'agreement_order', 'client_order', 'user', 'order', 'projects', 'order_req', 'agreement', 'client', 'orders', 'support_response', 'help_desk', 'priority', 'type'));
+        $product_requirement = DB::select("SELECT sum(Product_Count) as sum_hpo FROM hnt_product_requirements");
+        $process_level = ProcessLevel::select('hp_process_id', 'hp_process_name')->get();
+        return view('home', ['product_requirement' => $product_requirement], compact('process_level', 'order_agent', 'order_order', 'agreement_order', 'client_order', 'user', 'order', 'projects', 'order_req', 'agreement', 'client', 'orders', 'support_response', 'help_desk', 'priority', 'type'));
 
 
     }
