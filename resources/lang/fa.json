@@ -536,6 +536,13 @@
   "Repositories List":"لیست موجودی های انبار",
   "Preview factor":"نمایش فاکتور",
   "% VAT rate is calculated":"% نرخ مالیات بر ارزش افزوده محاسبه شده است",
-  "Registrant Name":"نام نماینده"
+  "Registrant Name":"نام نماینده",
+  "Middle Part Requirement Management":"مدیریت نیازمندی قطعات میانی",
+  "Middle part Requirement":"نیازمندی قطعات میانی",
+  "part Requirement":"نیازمندی قطعات",
+  "New Middle Part Requirement":"نیازمندی جدید قطعات میانی",
+  "Part Requirement Management":"مدیریت نیازمندی قطعات",
+  "New Part Requirement":"نیازمندی جدید قطعات",
+  "Edit Requirement":"ویرایش نیازمندی"
 
 }

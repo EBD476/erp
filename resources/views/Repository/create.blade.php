@@ -266,7 +266,7 @@
                                         <div class="form-group">
                                             <label class="bmd-label-floating">{{__('Entry Date')}}</label>
                                             <input class="form-control" required=""
-                                                   aria-invalid="false" name="hrp_entry_date" id="test-date-id-1"
+                                                   aria-invalid="false" name="hrp_entry_date" id="test-date-id-2"
                                             >
                                         </div>
                                     </div>
@@ -345,7 +345,7 @@
             $("#form1").submit(function (event) {
                 var data = $("#form1").serialize();
                 event.preventDefault();
-                $.blockUI({
+                $("#form1").block({
                     message: '{{__('please wait...')}}', css: {
                         border: 'none',
                         padding: '15px',
@@ -369,8 +369,9 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        setTimeout($.unblockUI, 2000);
-                        location.reload();
+                        setTimeout($("#form1").unblock(), 2000);
+                        document.getElementById("form1").reset();
+
                     },
                     cache: false,
                 });
@@ -379,7 +380,7 @@
             $("#form2").submit(function (event) {
                 var data = $("#form2").serialize();
                 event.preventDefault();
-                $.blockUI({
+                $("#form2").block({
                     message: '{{__('please wait...')}}', css: {
                         border: 'none',
                         padding: '15px',
@@ -403,8 +404,9 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        setTimeout($.unblockUI, 2000);
-                        location.reload();
+                        setTimeout( $("#form2").unblock(), 2000);
+                        document.getElementById("form2").reset();
+
                     },
                     cache: false,
                 });
@@ -414,7 +416,7 @@
             $("#form3").submit(function (event) {
                 var data = $("#form3").serialize();
                 event.preventDefault();
-                $.blockUI({
+                $("#form3").block({
                     message: '{{__('please wait...')}}', css: {
                         border: 'none',
                         padding: '15px',
@@ -438,8 +440,8 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        setTimeout($.unblockUI, 2000);
-                        window.location.href = "/repository_part";
+                        setTimeout( $("#form3").unblock(), 2000);
+                        document.getElementById("form3").reset();
                     },
                     cache: false,
                 });
@@ -589,7 +591,6 @@
             function formatRepoSelection(repo) {
                 return repo.text
             }
-
             // end
 
             // fill data in select part
@@ -599,7 +600,6 @@
                 ajax: {
                     url: '/json-data-fill_data_repository_part',
                     dataType: 'json',
-                    method: 'put',
                     data: function (params) {
                         return {
                             search: params.term, // search term
@@ -661,6 +661,12 @@
             previousButtonIcon: "fa fa-arrow-circle-left"
         });
         kamaDatepicker('test-date-id-1', {
+            buttonsColor: "blue",
+            forceFarsiDigits: true,
+            nextButtonIcon: "fa fa-arrow-circle-right",
+            previousButtonIcon: "fa fa-arrow-circle-left"
+        });
+        kamaDatepicker('test-date-id-2', {
             buttonsColor: "blue",
             forceFarsiDigits: true,
             nextButtonIcon: "fa fa-arrow-circle-right",

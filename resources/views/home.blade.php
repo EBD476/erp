@@ -1453,8 +1453,8 @@
                             <div class="col-7">
                                 <div class="numbers">
                                     <p class="card-category">{{__('Product Requirement')}}</p>
-                                    @foreach($Repositories_Requirement as $Repositories_Requirement)
-                                        <h3 class="card-title">{{$Repositories_Requirement->sum_hpo}}</h3>
+                                    @foreach($product_requirement as $product_requirements)
+                                        <h3 class="card-title">{{$product_requirements->sum_hpo}}</h3>
                                     @endforeach
                                 </div>
                             </div>

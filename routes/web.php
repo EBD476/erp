@@ -73,6 +73,8 @@ Route::group(['middleware' => ['auth']], function () {
     route::resource('product-middle-part', 'ProductMiddlePartController');
     route::resource('middle-section-part', 'MiddleSectionPartController');
     route::resource('repository-middle-part', 'RepositoryMiddlePartController');
+    route::resource('middle-part-requirement', 'MiddlePartRequirementController');
+    route::resource('part-requirement', 'PartRequirementController');
 
 //  Getting data
     Route::get('send_request/{id}', 'ProjectController@send_request')->name('projects.send_request');
@@ -85,6 +87,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('home', 'HomeController@index')->name('home');
     route::get('preview', 'OrderController@preview')->name('order.preview');
+    route::get('invoices_list_product', 'OrderController@invoices_list_product')->name('order.invoices_list_product');
 
 
 //put data
@@ -113,43 +116,46 @@ Route::group(['middleware' => ['auth']], function () {
 
 //  fill data table
     Route::get('/json-data-order', 'OrderController@fill')->name('order.json-data-order');
-    Route::get('/json-data-users', 'UsersController@destroy')->name('users.json-data-users');
-    Route::get('/json-data-roles', 'RolesController@destroy')->name('roles.json-data-roles');
-    Route::get('/json-data-permissions', 'PermissionsController@destroy')->name('permission.json-data-permissions');
-    Route::get('/json-data-projects', 'ProjectController@destroy')->name('projects.json-data-projects');
-    Route::get('/json-data-product', 'ProductController@destroy')->name('product.json-data-product');
-    Route::get('/json-data-repository', 'RepositoryProductController@destroy')->name('repository.json-data-repository');
-    Route::get('/json-data-repository_requirement', 'RepositoryRequirementController@destroy')->name('repository_requirement.json-data-repository_requirement');
-    Route::get('/json-data-verifier', 'VerifierController@destroy')->name('verifier.json-data-verifier');
-    Route::get('/json-data-permission', 'PermissionController@destroy')->name('permission.json-data-permission');
-    Route::get('/json-data-verify_pre', 'VerifyPreController@destroy')->name('verify_pre.json-data-verify_pre');
-    Route::get('/json-data-help_desk', 'HelpDeskController@destroy')->name('help_desk.json-data-help_desk');
-    Route::get('/json-data-client', 'ClientController@destroy')->name('client.json-data-client');
-    Route::get('/json-data-part', 'PartController@destroy')->name('part.json-data-part');
-    Route::get('/json-data-product_part', 'ProductPartController@destroy')->name('product_part.json-data-product_part');
-    Route::get('/json-data-repository_create', 'RepositoryCreateController@destroy')->name('repository_create.json-data-repository_create');
-    Route::get('/json-data-provider', 'ProviderController@destroy')->name('provider.json-data-provider');
-    Route::get('/json-data-repository-part', 'RepositoryPartController@destroy')->name('repository-part.json-data-repository-part');
-    Route::get('/json-data-agreement', 'AgreementController@destroy')->name('agreement.json-data-agreement');
-    Route::get('/json-data-finance', 'FinanceDestroyController@destroy')->name('finance.json-data-finance');
-    Route::get('/json-data-support_status', 'SupportStatusController@destroy')->name('support_status.json-data-support_status');
-    Route::get('/json-data-support', 'SupportController@destroy')->name('support.json-data-support');
-    Route::get('/json-data-bank_account', 'BankAccountController@destroy')->name('bank_account.json-data-bank_account');
-    Route::get('/json-data-bank_account_type', 'BankAccountTypeController@destroy')->name('bank_account_type.json-data-bank_account_type');
-    Route::get('/json-data-finance_bank', 'FinanceBankController@destroy')->name('finance_bank.json-data-finance_bank');
-    Route::get('/json-data-procrastinations', 'ProcrastinationsController@destroy')->name('procrastinations.json-data-procrastinations');
-    Route::get('/json-data-procrastinations_type', 'ProcrastinationsTypeController@destroy')->name('procrastinations_type.json-data-procrastinations_type');
-    Route::get('/json-data-criticism', 'CriticismController@destroy')->name('criticism.json-data-criticism');
-    Route::get('/json-data-current_assets', 'CurrentAssetsController@destroy')->name('current_assets.json-data-current_assets');
-    Route::get('/json-data-fund_non_current', 'FundNonCurrentController@destroy')->name('fund_non_current.json-data-fund_non_current');
-    Route::get('/json-data-funds_intangible_assets', 'FundsIntangibleAssetsController@destroy')->name('funds_intangible_assets.json-data-funds_intangible_assets');
-    Route::get('/json-data-fund_tangible_fixed_assets', 'FundTangibleFixedAssetsController@destroy')->name('fund_tangible_fixed_assets.json-data-fund_tangible_fixed_assets');
-    Route::get('/json-data-funds_intangible_assets', 'FundsIntangibleAssetsController@destroy')->name('funds_intangible_assets.json-data-funds_intangible_assets');
-    Route::get('/json-data-fund', 'FundController@destroy')->name('fund.json-data-fund');
-    Route::get('/json-data-fund_accounts_document_payable', 'FundAccountsDocumentPayableController@destroy')->name('fund_accounts_document_payable.json-data-fund_accounts_document_payable');
-    Route::get('/json-data-product-color', 'ProductColorController@destroy')->name('product-color.json-data-product-color');
-    Route::get('/json-data-product-property', 'ProductPropertyController@destroy')->name('product-property.json-data-product-property');
-    Route::get('/json-data-product-property-items', 'ProductPropertyItemsController@destroy')->name('product-property-items.json-data-product-property-items');
+    Route::get('/json-data-users', 'UsersController@fill')->name('users.json-data-users');
+    Route::get('/json-data-roles', 'RolesController@fill')->name('roles.json-data-roles');
+    Route::get('/json-data-permissions', 'PermissionsController@fill')->name('permission.json-data-permissions');
+    Route::get('/json-data-projects', 'ProjectController@fill')->name('projects.json-data-projects');
+    Route::get('/json-data-product', 'ProductController@fill')->name('product.json-data-product');
+    Route::get('/json-data-repository', 'RepositoryProductController@fill')->name('repository.json-data-repository');
+    Route::get('/json-data-repository_requirement', 'RepositoryRequirementController@fill')->name('repository_requirement.json-data-repository_requirement');
+    Route::get('/json-data-verifier', 'VerifierController@fill')->name('verifier.json-data-verifier');
+    Route::get('/json-data-permission', 'PermissionController@fill')->name('permission.json-data-permission');
+    Route::get('/json-data-verify_pre', 'VerifyPreController@fill')->name('verify_pre.json-data-verify_pre');
+    Route::get('/json-data-help_desk', 'HelpDeskController@fill')->name('help_desk.json-data-help_desk');
+    Route::get('/json-data-client', 'ClientController@fill')->name('client.json-data-client');
+    Route::get('/json-data-part', 'PartController@fill')->name('part.json-data-part');
+    Route::get('/json-data-product_part', 'ProductPartController@fill')->name('product_part.json-data-product_part');
+    Route::get('/json-data-repository_create', 'RepositoryCreateController@fill')->name('repository_create.json-data-repository_create');
+    Route::get('/json-data-provider', 'ProviderController@fill')->name('provider.json-data-provider');
+    Route::get('/json-data-repository-part', 'RepositoryPartController@fill')->name('repository-part.json-data-repository-part');
+    Route::get('/json-data-agreement', 'AgreementController@fill')->name('agreement.json-data-agreement');
+    Route::get('/json-data-finance', 'FinanceDestroyController@fill')->name('finance.json-data-finance');
+    Route::get('/json-data-support_status', 'SupportStatusController@fill')->name('support_status.json-data-support_status');
+    Route::get('/json-data-support', 'SupportController@fill')->name('support.json-data-support');
+    Route::get('/json-data-bank_account', 'BankAccountController@fill')->name('bank_account.json-data-bank_account');
+    Route::get('/json-data-bank_account_type', 'BankAccountTypeController@fill')->name('bank_account_type.json-data-bank_account_type');
+    Route::get('/json-data-finance_bank', 'FinanceBankController@fill')->name('finance_bank.json-data-finance_bank');
+    Route::get('/json-data-procrastinations', 'ProcrastinationsController@fill')->name('procrastinations.json-data-procrastinations');
+    Route::get('/json-data-procrastinations_type', 'ProcrastinationsTypeController@fill')->name('procrastinations_type.json-data-procrastinations_type');
+    Route::get('/json-data-criticism', 'CriticismController@fill')->name('criticism.json-data-criticism');
+    Route::get('/json-data-current_assets', 'CurrentAssetsController@fill')->name('current_assets.json-data-current_assets');
+    Route::get('/json-data-fund_non_current', 'FundNonCurrentController@fill')->name('fund_non_current.json-data-fund_non_current');
+    Route::get('/json-data-funds_intangible_assets', 'FundsIntangibleAssetsController@fill')->name('funds_intangible_assets.json-data-funds_intangible_assets');
+    Route::get('/json-data-fund_tangible_fixed_assets', 'FundTangibleFixedAssetsController@fill')->name('fund_tangible_fixed_assets.json-data-fund_tangible_fixed_assets');
+    Route::get('/json-data-funds_intangible_assets', 'FundsIntangibleAssetsController@fill')->name('funds_intangible_assets.json-data-funds_intangible_assets');
+    Route::get('/json-data-fund', 'FundController@fill')->name('fund.json-data-fund');
+    Route::get('/json-data-fund_accounts_document_payable', 'FundAccountsDocumentPayableController@fill')->name('fund_accounts_document_payable.json-data-fund_accounts_document_payable');
+    Route::get('/json-data-product-color', 'ProductColorController@fill')->name('product-color.json-data-product-color');
+    Route::get('/json-data-product-property', 'ProductPropertyController@fill')->name('product-property.json-data-product-property');
+    Route::get('/json-data-product-property-items', 'ProductPropertyItemsController@fill')->name('product-property-items.json-data-product-property-items');
+    Route::get('/json-data-middle-part-requirement', 'MiddlePartRequirementController@fill')->name('middle-part-requirement.json-data-middle-part-requirement');
+    Route::get('/json-data-part-requirement', 'PartRequirementController@fill')->name('part-requirement.json-data-part-requirement');
+    Route::get('/json-data-product-requirement', 'ProductRequirementController@fill')->name('product-requirement.json-data-product-requirement');
 
 //fill select to data
     Route::get('/json-data-fill_data', 'OrderController@fill_data')->name('order.json-data-fill_data');
@@ -166,6 +172,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/json-data-fill_data_repository_part', 'RepositoryPartController@fill_data_repository_part')->name('repository-part.json-data-fill_data_repository_part');
     Route::get('/json-data-fill_data_repository_middle_part', 'RepositoryProductController@fill_data_repository_middle_part')->name('repository-product.json-data-fill_data_repository_middle_part');
     Route::get('/json-data-fill_data_repository_product', 'RepositoryProductController@fill_data_repository_product')->name('repository-product.json-data-fill_data_repository_product');
+    Route::get('/fill-data-repository-requirement-middle-part', 'MiddlePartRequirementController@fill_data_repository_requirement_middle_part')->name('middle-part-requirement.fill-data-repository-requirement-middle-part');
+
 
 
 //  deleted route
@@ -207,5 +215,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/product-color-destroy/{id}', 'ProductColorController@destroy')->name('product-color.product-color-destroy');
     Route::delete('/product-property-destroy/{id}', 'ProductPropertyController@destroy')->name('product-property.product-property-destroy');
     Route::delete('/product-property-items-destroy/{id}', 'ProductPropertyItemsController@destroy')->name('product-property-items.product-property-items-destroy');
+    Route::delete('/middle-part-requirement-destroy/{id}', 'MiddlePartRequirementController@destroy')->name('middle-part-requirement.middle-part-requirement-destroy');
+    Route::delete('/part-requirement-destroy/{id}', 'PartRequirementController@destroy')->name('part-requirement.part-requirement-destroy');
+    Route::delete('/product-requirement-destroy/{id}', 'ProductRequirementController@destroy')->name('product-requirement.product-requirement-destroy');
 
 });

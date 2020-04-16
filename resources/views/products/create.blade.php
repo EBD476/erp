@@ -454,7 +454,7 @@
                             dataType: 'json',
                             async: false,
                             success: function (data) {
-                                setTimeout($.unblockUI);
+                                setTimeout($.unblock);
                                 $("#modalRegisterForm1").find("input").val("");
                                 $("#modalRegisterForm1").modal('hide');
                                 $("#hp_product_property").append('<option selected  value="' + data.id + '">' + data.name + data.item + '</option>');

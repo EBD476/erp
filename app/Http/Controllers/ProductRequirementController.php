@@ -9,108 +9,50 @@ use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use Illuminate\Support\Facades\DB;
 
 class ProductRequirementController extends Controller
 {
     public function index()
     {
-        $current_user=auth()->user()->id;
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $product_requirement = ProductRequirement:: all();
-        return view('product_requirement.index',compact('product_requirement','type','priority','help_desk','user'));
+        return view('product_requirement.index', compact('type', 'priority', 'help_desk', 'user'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $current_user=auth()->user()->id;
-        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
-        $user = User::select('id', 'name')->get();
-        $product = Product::all();
-        return view('product_requirement.create',compact('product','type','priority','help_desk','user'));
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $this->validate($request,[
-//            'Product_Id' => 'required' ,
-//            'Product_Count' => 'required' ,
-////            'Comment' => 'required' ,
+        $this->validate($request, [
+            'Product_Id' => 'required',
+            'Product_Count' => 'required',
+            'Comment' => 'required',
         ]);
 
         $product_requirement = new ProductRequirement();
-        $product_requirement->Product_Id= $request->Product_Id;
-        $product_requirement->Product_Count= $request->Product_Count;
-        $product_requirement->Inventory_deficit= $request->Inventory_deficit;
-        $product_requirement->Comment= $request->Comment;
+        $product_requirement->Product_Id = $request->Product_Id;
+        $product_requirement->Product_Count = $request->Product_Count;
+        $product_requirement->Inventory_deficit = $request->Inventory_deficit;
+        $product_requirement->Comment = $request->Comment;
         $product_requirement->save();
         return json_encode(["response" => "Done"]);
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function update(Request $request, $id)
     {
-        /**
-         *
-         */
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $current_user=auth()->user()->id;
-        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
-        $user = User::select('id', 'name')->get();
-        $product_requirement = ProductRequirement::find($id);
-        return view('product_requirement.edit',compact('product_requirement','type','priority','help_desk','user'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request,$id)
-    {
-        $this->validate($request,[
-            'Product_Id' => 'required' ,
-            'Product_Count' => 'required' ,
-            'Comment' => 'required' ,
+        $this->validate($request, [
+            'Product_Id' => 'required',
+            'Product_Count' => 'required',
+//            'Comment' => 'required' ,
         ]);
-        $product_requirement=ProductRequirement::find($id);
-        $product_requirement->Product_Id= $request->Product_Id;
-        $product_requirement->Product_Count= $request->Product_Count;
-        $product_requirement->Comment= $request->Comment;
+        $product_requirement = ProductRequirement::find($id);
+        $product_requirement->Product_Id = $request->Product_Id;
+        $product_requirement->Product_Count = $request->Product_Count;
+        $product_requirement->Comment = $request->Comment;
         $product_requirement->save();
         return json_encode(["response" => "Done"]);
 
@@ -119,14 +61,14 @@ class ProductRequirementController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         $product_requirement = ProductRequirement::find($id);
         $product_requirement->delete();
-        return redirect()->back()->with('successMSG','product_requirement Successfully Delete');
+        return redirect()->back()->with('successMSG', 'product_requirement Successfully Delete');
     }
 
     public function fill(Request $request)
@@ -135,21 +77,27 @@ class ProductRequirementController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
+//            $product_requirement = ProductRequirement::skip($start)->take($length)->get();
+            $product_requirement = DB::table('hnt_product_requirements')->join('hnt_products', 'hnt_product_requirements.Product_Id', '=', 'hnt_products.id')
+                ->select('hnt_product_requirements.Product_Id','hnt_product_requirements.id', 'hnt_product_requirements.Product_Count','hnt_products.hp_product_name','hnt_product_requirements.Comment')
+                ->skip($start)->take($length)->get();
         } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-                ->orwhere('hp_connector', 'LIKE', "%$search%")
+
+            $product_requirement = DB::table('hnt_product_requirements')
+                ->join('hnt_products', 'hnt_product_requirements.Product_Id', '=', 'hnt_products.id')
+                ->select('hnt_product_requirements.id','hnt_product_requirements.Product_Id', 'hnt_product_requirements.Product_Count', 'hnt_product_requirements.Comment', 'hnt_products.hp_product_name')
+                ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
                 ->get();
         }
 
         $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+        foreach ($product_requirement as $product_requirements) {
+            $data .= '["' . $product_requirements->id . '",' . '"' . $product_requirements->hp_product_name . '",' . '"' . $product_requirements->Product_Count . '",' . '"' . $product_requirements->Comment . '",' . '"' . $product_requirements->Product_Id . '"],';
         }
         $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+        $product_requirements_count = ProductRequirement::all()->count();
+        return response('{ "recordsTotal":' . $product_requirements_count . ',"recordsFiltered":' . $product_requirements_count . ',"data": [' . $data . ']}');
     }
+
+
 }

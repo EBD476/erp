@@ -1,11 +1,12 @@
 @extends('layouts.app')
 
-@section('title',__('Product Requirement'))
+@section('title',__('Middle Part Requirement'))
 
 @push('css')
     <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('assets/css/select2.min.css')}}" rel="stylesheet"/>
-    <link href="{{asset('assets/css/select2-bootstrap4.min.css')}}" rel="stylesheet"/>@endpush
+    <link href="{{asset('assets/css/select2-bootstrap4.min.css')}}" rel="stylesheet"/>
+@endpush
 
 @section('content')
     @role('Admin|product')
@@ -15,7 +16,7 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header card-header-primary">
-                            <h4 class="card-title ">{{__('Product Requirement Management')}}</h4>
+                            <h4 class="card-title ">{{__('Middle Part Requirement Management')}}</h4>
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
@@ -26,10 +27,10 @@
                                         {{__('ID')}}
                                     </th>
                                     <th>
-                                        {{__('Product Name')}}
+                                        {{__('Name')}}
                                     </th>
                                     <th>
-                                        {{__('Product Count')}}
+                                        {{__('Count')}}
                                     </th>
                                     <th>
                                         {{__('Comment')}}
@@ -46,16 +47,16 @@
                 <div class="col-md-4">
                     <div class="card card-user">
                         <div class="card-header card-header-primary">
-                            <h4 class="card-title ">{{__('New Requirement')}}</h4>
+                            <h4 class="card-title ">{{__('New Middle Part Requirement')}}</h4>
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
                             <form id="form1">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <label class="bmd-label-floating">{{__('Product Name')}}</label>
+                                        <label class="bmd-label-floating">{{__('Name')}}</label>
                                         <div class="form-group">
-                                            <select name="Product_Id" class="form-control select-product">
+                                            <select name="hmpr_middle_part_id" class="form-control select-middle-part">
                                             </select>
                                         </div>
 
@@ -64,9 +65,9 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Product Count')}}</label>
+                                            <label class="bmd-label-floating">{{__('Count')}}</label>
                                             <input type="number" class="form-control" required=""
-                                                   aria-invalid="false" name="Product_Count">
+                                                   aria-invalid="false" name="hmpr_middle_part_count">
                                         </div>
                                     </div>
                                 </div>
@@ -74,7 +75,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="bmd-label-floating">{{__('Comment')}}</label>
-                                            <textarea class="form-control" name="Comment"></textarea>
+                                            <textarea class="form-control" name="hmpr_comment"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -91,12 +92,12 @@
                             <form id="form2">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <label class="bmd-label-floating">{{__('Product Name')}}</label>
+                                        <label class="bmd-label-floating">{{__('Name')}}</label>
                                         <div class="form-group">
-                                            <select type="text" class="form-control select-product" name="Product_Id">
-                                                <option id="Product_Id"></option>
+                                            <select name="hmpr_middle_part_id" class="form-control select-middle-part">
+                                                <option id="hmpr_middle_part_id"></option>
                                             </select>
-                                            <input id="pid" hidden>
+                                            <input hidden id="mpid" name="id">
                                         </div>
 
                                     </div>
@@ -104,8 +105,9 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Product Count')}}</label>
-                                            <input type="text" class="form-control" name="Product_Count" id="Product_Count">
+                                            <label class="bmd-label-floating">{{__('Count')}}</label>
+                                            <input type="number" class="form-control" required=""
+                                                   aria-invalid="false" name="hmpr_middle_part_count" id="hmpr_middle_part_count">
                                         </div>
                                     </div>
                                 </div>
@@ -113,7 +115,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="bmd-label-floating">{{__('Comment')}}</label>
-                                            <input type="text" class="form-control" name="Comment" id="Comment">
+                                            <textarea class="form-control" name="hmpr_comment" id="hmpr_comment"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -134,12 +136,12 @@
     <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+
     <script>
         $(document).ready(function () {
 
             $('#card-form2').hide();
 
-            // fill data table
             var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
 
             $('#table').on('click', 'button', function (event) {
@@ -161,7 +163,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: '/product-requirement-destroy/' + data[0],
+                                url: '/middle-part-requirement-destroy/' + data[0],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',
@@ -192,7 +194,7 @@
                 "serverSide":
                     true,
                 "ajax":
-                    '/json-data-product-requirement',
+                    '/json-data-middle-part-requirement',
                 "columnDefs":
                     [{
                         "targets": -1,
@@ -212,7 +214,7 @@
                                 "                                                            </div>\n" +
                                 "                                                        </div>"
                         }
-                    },],
+                    }],
                 "language":
                     {
                         "sEmptyTable":
@@ -258,14 +260,17 @@
                             }
                     }
             });
-            // end fiiling
-            // store product requirement
 
-            // store product requirement
+            // store new middle part requirement
             $("#form1").submit(function (event) {
                 var data = $("#form1").serialize();
                 event.preventDefault();
-                $('#form1').block({
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $("#form1").block({
                     message: '{{__('please wait...')}}', css: {
                         border: 'none',
                         padding: '15px',
@@ -276,15 +281,8 @@
                         color: '#fff'
                     }
                 });
-
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
                 $.ajax({
-                    url: '/product_requirement',
+                    url: '/middle-part-requirement',
                     type: 'POST',
                     data: data,
                     dataType: 'json',
@@ -297,13 +295,13 @@
                     cache: false,
                 });
             });
-            // end
+            // end store
 
             // update product requirement
             $("#form2").submit(function (event) {
 
                 var data = $("#form2").serialize();
-                var pid = $("#pid").val();
+                var mpid = $("#mpid").val();
                 event.preventDefault();
                 $('#form2').block({
                     message: '{{__('please wait...')}}', css: {
@@ -324,7 +322,7 @@
                 });
 
                 $.ajax({
-                    url: '/product_requirement/' + pid,
+                    url: '/middle-part-requirement/' + mpid,
                     type: 'POST',
                     data: data,
                     dataType: 'json',
@@ -340,10 +338,23 @@
             });
             // end updating
 
-            // fill data in select product
-            $(".select-product").select2({
+            // fill data in edit form
+            $('#table').on('click', '.edit', function (event) {
+                $('#card-form2').show();
+                var data = table.row($(this).parents('tr')).data();
+                $('#mpid').val(data[0]);
+                $('#hmpr_middle_part_id').val(data[4]);
+                $('#hmpr_middle_part_count').val(data[2]);
+                $('#hmpr_comment').val(data[3]);
+            })
+            // endfilling
+
+            // fill data in select middle part
+            $(".select-middle-part").select2({
+                dir: "rtl",
+                language: "fa",
                 ajax: {
-                    url: '/json-data-fill_data_repository_product',
+                    url: '/fill-data-repository-requirement-middle-part',
                     dataType: 'json',
                     data: function (params) {
                         return {
@@ -358,60 +369,43 @@
                     }
                 },
                 theme: "bootstrap",
-                dir: 'rtl',
-                placeholder: ('انتخاب محصول'),
-                templateResult: formatRepo,
-                templateSelection: formatRepoSelection
-                // allowClear: true
-
+                placeholder: ('انتخاب قطعه میانی'),
+                templateResult: formatRepo1,
+                templateSelection: formatRepoSelection1
             });
 
-            function formatRepo(repo) {
+            function formatRepo1(repo) {
 
                 if (repo.loading) {
                     return repo.text;
                 }
+
                 var $container = $(
                     "<div class='select2-result-repository clearfix'>" +
-                    "<div class='select2-result-repository__avatar'><img src='/img/products/" + repo.hp_product_image + "' /></div>" +
+                    "<div class='select2-result-repository__avatar'><img src='/img/middle_parts/" + repo.hmp_image + "' /></div>" +
                     "<div class='select2-result-repository__meta'>" +
                     "<div class='select2-result-repository__title'></div>" +
                     "<div class='select2-result-repository__description'></div>" +
                     "<div class='select2-result-repository__color'></div>" +
                     "<div class='select2-result-repository__statistics'>" +
-                    // "<div class='select2-result-repository__forks'><i class='fa fa-flash'></i> </div>" +
-                    // "<div class='select2-result-repository__stargazers'><i class='fa fa-star'></i> </div>" +
-                    // "<div class='select2-result-repository__watchers'><i class='fa fa-eye'></i> </div>" +
                     "</div>" +
                     "</div>" +
                     "</div>"
                 );
 
-                $container.find(".select2-result-repository__title").text(repo.text);
-                $container.find(".select2-result-repository__description").text("{{__('Price')}}" + " : " + repo.hp_product_price);
-                $container.find(".select2-result-repository__color").text("{{__('Color')}}" + " : " + repo.hn_color_name);
-                $container.find(".select2-result-repository__statistics").text("{{__('Property')}}" + " : " + repo.hpp_property_name + repo.hppi_items_name);
-                // $container.find(".select2-result-repository__forks").append(repo.forks_count + " Forks");
-                // $container.find(".select2-result-repository__stargazers").append(repo.stargazers_count + " Stars");
-                // $container.find(".select2-result-repository__watchers").append(repo.watchers_count + " Watchers");
+                $container.find(".select2-result-repository__title").text("{{__('Name')}}" + " : " + repo.text);
+                $container.find(".select2-result-repository__description").text("{{__('Model')}}" + " : " + repo.hmp_middle_part_model);
+                $container.find(".select2-result-repository__color").text("{{__('Code')}}" + " : " + repo.hmp_serial_number);
+
                 return $container;
-
             }
 
-            function formatRepoSelection(repo) {
-                return repo.text
+            function formatRepoSelection1(repo) {
+                return repo.text || repo.id;
             }
 
-            // end
+            // end fill data in select middle part
 
-            $('#table').on('click', '.edit', function (event) {
-                $('#card-form2').show();
-                var data = table.row($(this).parents('tr')).data();
-                $('#pid').val(data[0]);
-                $('#Product_Id').val(data[1]);
-                $('#Product_Count').val(data[2]);
-                $('#Comment').val(data[3]);
-            })
         });
     </script>
 @endpush

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\address;
 use App\Client;
 use App\InvoiceStatuses;
+use App\MiddlePart;
 use App\Order;
 use App\OrderProduct;
 use App\OrderState;
@@ -14,6 +15,8 @@ use App\ProductProperty;
 use App\ProductPropertyItems;
 use App\Project_State;
 use App\Project_Type;
+use App\RepositoryMiddlePart;
+use App\RepositoryProduct;
 use App\State;
 use App\Tax;
 use App\User;
@@ -22,7 +25,9 @@ use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
 use Illuminate\Support\Facades\DB;
-
+use App\Part;
+use App\RepositoryCreate;
+use App\RepositoryPart;
 
 class OrderController extends Controller
 {
@@ -143,16 +148,8 @@ class OrderController extends Controller
         $invoice_state = State::Select('id', 'hp_project_state')->where('id', $project->hp_address_state_id)->get()->last();
         $invoice_city = Address::Select('id', 'hp_city')->where('id', $project->hp_address_city_id)->get()->last();
         $client =Client::select('id','hc_name')->where('id',$project->ho_client)->get()->last();
-
-
-
-//        $returnHTML = view('order.editpre', compact('color', 'properties', 'invoice_statuses', 'client', 'project_type', 'address', 'state', 'product', 'project', 'items', 'type', 'help_desk', 'priority', 'user'))->with('invoices_items', $invoices_items)->renderSections()['content'];
         return view('order.editpre', ['invoices_item' => $invoices_item], compact('invoice_city', 'invoice_state', 'color', 'properties', 'invoice_statuses', 'client', 'project_type', 'address', 'state', 'product', 'project', 'items', 'type', 'help_desk', 'priority', 'user'));
 
-//        $view = view("order.editpre",['invoices_items' => $invoices_items],compact('color', 'properties', 'invoice_statuses', 'client', 'project_type', 'address', 'state', 'product', 'project', 'items', 'type', 'help_desk', 'priority', 'user'))->render();
-//        return response($returnHTML);
-
-//        return json_encode(["response" =>  $returnHTML]);
     }
 
     public function update(Request $request, $id)
@@ -218,6 +215,30 @@ class OrderController extends Controller
         $product = Product::select('id', 'hp_product_model', 'hp_product_color_id', 'hp_product_size', 'hp_product_property', 'hp_product_code_number', 'hp_product_name', 'hp_product_price')->get();
         return view('order.preview', ['data' => $data], compact('client', 'order_product', 'type', 'help_desk', 'priority', 'user', 'product', 'order', 'city', 'state'));
     }
+
+    public function invoices_list_product()
+    {
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        $repository_product = RepositoryProduct:: all();
+        $repository_product_count = DB::select("SELECT sum(hr_product_stock) as sum_hpo FROM hnt_repository_product");
+        $orders = OrderProduct::select('hpo_status', 'hpo_product_id', 'hpo_count', 'hpo_order_id')->where('hpo_status', '3')->get();
+        $product = Product::select('id', 'hp_product_name')->get();
+        $query_order_product = DB::select("SELECT sum(hpo_count) as sum_hpo , hpo_status , hpo_product_id FROM hnt_products,hnt_invoice_items WHERE hnt_products.id =hnt_invoice_items.hpo_product_id group by hnt_invoice_items.hpo_product_id , hpo_status ");
+        $query_order_product_all = DB::select("SELECT sum(hpo_count) as sum_hpo FROM hnt_invoice_items where hpo_status = '3'");
+        $repository=RepositoryPart::select('id','hrp_part_id','hrp_repository_id','hrp_part_count')->get();
+        $repository_name=RepositoryCreate::select('id','hr_name')->get();
+        $part = Part::select('id','hp_name')->get();
+        $repository_middle_part=RepositoryMiddlePart::select('id','hrm_count','hrm_comment','hrm_middle_part_id')->get();
+        $middle_part=MiddlePart::Select('id','hmp_name')->get();
+
+        return view('order.invoices_list_product.index', ['repository_product_count' => $repository_product_count, 'query' => $query_order_product,'order_all' => $query_order_product_all], compact('repository_middle_part','part','repository_name','repository','user', 'repository_product', 'product', 'orders', 'help_desk', 'priority', 'type','middle_part'));
+
+    }
+
 
     public function fill(Request $request)
     {

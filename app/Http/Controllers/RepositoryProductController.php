@@ -25,6 +25,7 @@ use App\RepositoryPart;
 
 class RepositoryProductController extends Controller
 {
+
     public function index()
     {
         $current_user=auth()->user()->id;
@@ -33,18 +34,14 @@ class RepositoryProductController extends Controller
         $priority = HDpriority::select('id','hdp_name')->get();
         $user = User::select('id', 'name')->get();
         $repository_product = RepositoryProduct:: all();
-        $repository_product_count = DB::select("SELECT sum(hr_product_stock) as sum_hpo FROM hnt_repository_product");
-        $orders = OrderProduct::select('hpo_status', 'hpo_product_id', 'hpo_count', 'hpo_order_id')->where('hpo_status', '3')->get();
         $product = Product::select('id', 'hp_product_name')->get();
-        $query_order_product = DB::select("SELECT sum(hpo_count) as sum_hpo , hpo_status , hpo_product_id FROM hnt_products,hnt_invoice_items WHERE hnt_products.id =hnt_invoice_items.hpo_product_id group by hnt_invoice_items.hpo_product_id , hpo_status ");
-        $query_order_product_all = DB::select("SELECT sum(hpo_count) as sum_hpo FROM hnt_invoice_items where hpo_status = '3'");
         $repository=RepositoryPart::select('id','hrp_part_id','hrp_repository_id','hrp_part_count')->get();
         $repository_name=RepositoryCreate::select('id','hr_name')->get();
         $part = Part::select('id','hp_name')->get();
         $repository_middle_part=RepositoryMiddlePart::select('id','hrm_count','hrm_comment','hrm_middle_part_id')->get();
         $middle_part=MiddlePart::Select('id','hmp_name')->get();
 
-        return view('Repository.index', ['repository_product_count' => $repository_product_count, 'query' => $query_order_product,'order_all' => $query_order_product_all], compact('repository_middle_part','part','repository_name','repository','user', 'repository_product', 'product', 'orders', 'help_desk', 'priority', 'type','middle_part'));
+        return view('Repository.index', compact('repository_middle_part','part','repository_name','repository','user', 'repository_product', 'product', 'help_desk', 'priority', 'type','middle_part'));
 
     }
 

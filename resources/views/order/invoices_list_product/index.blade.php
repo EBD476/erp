@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-    @role('Admin||repository')
+    @role('Admin||product||repository')
     <div class="content persian">
         <div class="container-fluid">
             <div class="col-md-12">
@@ -95,7 +95,198 @@
                         </div>
                     </div>
                     {{--End Repository Product Data List--}}
+
+                    {{--Order Data List--}}
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('Order List')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table" cellspacing="0" width="100%">
+                                        <thead class=" text-primary">
+                                        <th>
+                                            {{__('ID')}}
+                                        </th>
+                                        <th>
+                                            {{__('Order ID')}}
+                                        </th>
+                                        <th>
+                                            {{__('Registrant Name')}}
+                                        </th>
+                                        <th>
+                                            {{__('Product Name')}}
+                                        </th>
+                                        <th>
+                                            {{__('Count')}}
+                                        </th>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($orders as $key => $orders_show )
+                                            @if($orders_show->hpo_status == '3')
+                                                <tr>
+                                                    <td>
+                                                        {{$key + 1}}
+                                                    </td>
+                                                    <td>
+                                                        {{$orders_show -> hpo_order_id}}
+                                                    </td>
+
+                                                    {{--                                                        @if(auth()->user()->id == $orders_show ->hp_registrant)--}}
+                                                    <td>
+                                                        {{auth()->user()->name}}
+                                                    </td>
+                                                    {{--@endif--}}
+
+                                                    @foreach($product as $products)
+                                                        @if($products->id == $orders_show ->hpo_product_id)
+                                                            <td>
+                                                                {{$products->hp_product_name}}
+                                                            </td>
+                                                        @endif
+                                                    @endforeach
+                                                    <td>
+                                                        {{$orders_show ->hpo_count}}
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{--End Order Data List--}}
                 </div>
+                @role('Admin||product')
+                {{--Requirement Product List--}}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card card-tasks">
+                            {{--Drop Done Show Details Product List--}}
+                            <div class="card-header ">
+                                @foreach($order_all as $orders_all)
+                                    @foreach($repository_product_count as $repository_product_counts)
+                                        @if($orders_all->sum_hpo-$repository_product_counts->sum_hpo   <= 0)
+                                            <h6 class="title d-inline">{{__('Inventory Deficit')}}</h6>
+                                            {{  $repository_product_counts->sum_hpo - $orders_all->sum_hpo  }}
+                                        @endif
+                                    @endforeach
+                                @endforeach
+                                <p class="card-category d-inline">
+
+                                </p>
+                                <div class="dropdown">
+                                    <button type="button" class="btn btn-link dropdown-toggle btn-icon"
+                                            data-toggle="dropdown">
+                                        <i class="tim-icons icon-settings-gear-63"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right"
+                                         aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" href="#" data-toggle="modal"
+                                           data-target="#modalRegisterForm">{{__('Details')}}</a>
+                                        {{--<a class="dropdown-item" href="#pablo">Another action</a>--}}
+                                        {{--<a class="dropdown-item" href="#pablo">Something else</a>--}}
+                                    </div>
+                                </div>
+                            </div>
+                            {{--End Dropd Show Details Product List--}}
+
+                            <div class="card-body ">
+                                <div class="table-full-width table-responsive ps ps--active-y">
+                                    <table class="table">
+                                        <tbody>
+                                        <thead>
+                                        <th><p class="title">{{__('Order ID')}}</p></th>
+                                        <th><p class="title">{{__('Product Name')}}</p></th>
+                                        <th><p class="title">{{__('Inventory')}}</p></th>
+                                        <th><p class="title">{{__('Status Verify')}}</p></th>
+                                        </thead>
+                                        @foreach($orders as $item)
+                                            @if($item->hpo_status == "3")
+                                                @foreach($product as $goods)
+                                                    @foreach($repository_product as $repository_selected)
+                                                        <tr>
+                                                            @if($repository_selected->hr_product_id == $goods->id)
+                                                                @if($item->hpo_product_id == $repository_selected->hr_product_id)
+                                                                    @foreach($product as $p)
+                                                                        @if($p->id == $repository_selected->hr_product_id )
+
+
+                                                                            <td>
+                                                                                <p class="text-muted">{{$item->hpo_order_id}}</p>
+                                                                            </td>
+
+
+                                                                            <td>
+                                                                                <p class="text-muted">{{$p->hp_product_name}}</p>
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <p class="text-muted">{{$repository_selected ->hr_product_stock - $item->hpo_count}}</p>
+
+                                                                            </td>
+                                                                            {{--<td class="td-actions text-right">--}}
+                                                                            {{--<button type="button" rel="tooltip" title=""--}}
+                                                                            {{--class="btn btn-link"--}}
+                                                                            {{--data-original-title="Edit Task">--}}
+                                                                            {{--<i class="tim-icons icon-pencil"></i>--}}
+                                                                            {{--</button>--}}
+                                                                            {{--</td>--}}
+                                                                            @if($repository_selected ->hr_product_stock - $item->hpo_count >= 0 )
+                                                                                <td>
+                                                                                    <div class="form-check ">
+                                                                                        <label class="form-check-label">
+                                                                                            <input class="form-check-input checkbox"
+                                                                                                   type="checkbox"
+                                                                                                   data-id="{{$item->hpo_order_id}}"
+                                                                                                   data-pid="{{$item->hpo_product_id}}"
+                                                                                                   data-computing_repository_requirement="{{$repository_selected ->hr_product_stock - $item->hpo_count}}"
+                                                                                            >
+                                                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                                </span>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </td>
+                                                                            @else()
+                                                                                <td>
+                                                                                    <div class="form-check ">
+                                                                                        <label class="form-check-label">
+                                                                                            <input class="form-check-input checkbox"
+                                                                                                   type="checkbox"
+                                                                                                   disabled>
+                                                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                                </span>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </td>
+                                                                            @endif
+                                                                        @endif
+                                                                    @endforeach
+                                                                @endif
+                                                        </tr>
+                                                        @endif
+                                                        @endforeach
+                                                        @endforeach
+                                                        @endif
+
+                                                        @endforeach
+
+                                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{--End Requirement Product List--}}
+                @endrole
+
                 <div class="col-md-12">
                     <div class="row">
                         {{--Repository Middle Part List--}}
@@ -278,6 +469,78 @@
             {{--End Repository Part List--}}
         </div>
     </div>
+
+    {{--//Product Details Modal//--}}
+    <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">{{__('View Details Data')}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" id="modal_form" enctype="multipart/form-data">
+                    <div class="modal-body mx-3">
+                        <div class="md-form mb-5">
+                            {{--<i class="fas fa-user prefix grey-text"></i>--}}
+                            <table class="table" cellspacing="0" width="100%">
+                                <tbody>
+                                <thead class=" text-primary">
+                                <th>
+                                    {{__('Product Name')}}
+                                </th>
+                                <th>
+                                    {{__('Count')}}
+                                </th>
+                                <th>
+                                    {{__('Inventory Deficit')}}
+                                </th>
+                                </thead> @foreach($query as $item)
+                                    @foreach($repository_product as $repository_stock)
+                                        @if($item->hpo_product_id == $repository_stock->hr_product_id and $item->hpo_status == '3')
+                                            <input type="hidden" class="product-id"
+                                                   data-id[]="{{$item->hpo_product_id}}">
+                                            <input type="hidden" class="inventory-deficit"
+                                                   data-inventory-deficit=" {{$item->sum_hpo}}">
+                                            <input type="hidden" class="product-stock"
+                                                   data-product-stock=" {{$item->sum_hpo - $repository_stock->hr_product_stock}}">
+                                            <tr>
+                                                @foreach($product as $products)
+                                                    @if($item->hpo_product_id == $products->id)
+                                                        <td>
+                                                            {{$products->hp_product_name}}
+                                                        </td>
+                                                    @endif
+                                                @endforeach
+                                                <td>
+                                                    {{$item->sum_hpo}}
+                                                </td>
+                                                <td>
+                                                    {{$item->sum_hpo - $repository_stock->hr_product_stock}}
+                                                </td>
+                                                @endif
+                                                @endforeach
+                                                @endforeach
+                                            </tr>
+                                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit"
+                                    class="btn btn-deep-orange" form="modal_form"
+                                    value="Submit">{{__('Request Send')}}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{--//End Product Details Modal//--}}
 
     @endrole
 

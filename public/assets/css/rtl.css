@@ -155,6 +155,10 @@ div.dataTables_wrapper div.dataTables_filter {
     right: -120px !important;
 }
 
+.table-responsive.ps {
+    height: 112vmin !important;
+}
+
 /*.select2-container.select2-container--bootstrap.select2-container--open{*/
 /*left: 1142px !important;*/
 /*width: 340.667px !important;*/

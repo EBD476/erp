@@ -44,73 +44,73 @@
                                             <th>
                                                 {{__('Provider')}}
                                             </th>
-                                            <th>
-                                                {{__('Category Id')}}
-                                            </th>
-                                            <th>
-                                                {{__('Produce Date')}}
-                                            </th>
+                                            {{--<th>--}}
+                                                {{--{{__('Category Id')}}--}}
+                                            {{--</th>--}}
+                                            {{--<th>--}}
+                                                {{--{{__('Produce Date')}}--}}
+                                            {{--</th>--}}
                                             <th>
                                                 {{__('Action')}}
                                             </th>
                                             </thead>
-                                            <tbody>
+                                            {{--<tbody>--}}
 
-                                            @foreach($part as $key => $part)
-                                                <tr>
-                                                    <form id="form1" enctype="multipart/form-data">
-                                                    </form>
-                                                    <td>
-                                                        {{$part ->id}}
-                                                    </td>
-                                                    <td>
-                                                        {{$part ->hp_name}}
-                                                    </td>
-                                                    <td class="text-left">
-                                                        {{$part -> hp_code}}
-                                                    </td>
-                                                    <td class="text-left">
-                                                        {{$part -> hp_part_model}}
-                                                    </td>
-                                                    <td class="text-left">
-                                                        {{$part -> hp_provider}}
-                                                    </td>
-                                                    <td class="text-left">
-                                                        {{$part -> hp_category_id}}
-                                                    </td>
-                                                    <td class="text-left">
-                                                        {{$part -> hp_produce_date}}
-                                                    </td>
-                                                    <td>
-                                                        <div class="dropdown">
-                                                            <button type="button"
-                                                                    class="btn btn-link dropdown-toggle btn-icon"
-                                                                    data-toggle="dropdown">
-                                                                <i class="tim-icons icon-settings-gear-63"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu dropdown-menu-right"
-                                                                 aria-labelledby="dropdownMenuLink">
-                                                                <a class="dropdown-item"
-                                                                   href="{{route('part.edit',$part->id)}}"
-                                                                >{{__('Edit')}}</a>
-                                                                <form id="-form-delete{{$part->id}}"
-                                                                      style="display: none;" method="POST"
-                                                                      action="{{route('part.destroy',$part->id)}}">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                </form>
-                                                                <a class="dropdown-item"
-                                                                   onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
-                                                                           event.preventDefault();
-                                                                           document.getElementById('-form-delete{{$part->id}}').submit();
-                                                                           }else {
-                                                                           event.preventDefault();}">{{__('Delete')}}</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            </tbody>
+                                            {{--@foreach($part as $key => $part)--}}
+                                                {{--<tr>--}}
+                                                    {{--<form id="form1" enctype="multipart/form-data">--}}
+                                                    {{--</form>--}}
+                                                    {{--<td>--}}
+                                                        {{--{{$part ->id}}--}}
+                                                    {{--</td>--}}
+                                                    {{--<td>--}}
+                                                        {{--{{$part ->hp_name}}--}}
+                                                    {{--</td>--}}
+                                                    {{--<td class="text-left">--}}
+                                                        {{--{{$part -> hp_code}}--}}
+                                                    {{--</td>--}}
+                                                    {{--<td class="text-left">--}}
+                                                        {{--{{$part -> hp_part_model}}--}}
+                                                    {{--</td>--}}
+                                                    {{--<td class="text-left">--}}
+                                                        {{--{{$part -> hp_provider}}--}}
+                                                    {{--</td>--}}
+                                                    {{--<td class="text-left">--}}
+                                                        {{--{{$part -> hp_category_id}}--}}
+                                                    {{--</td>--}}
+                                                    {{--<td class="text-left">--}}
+                                                        {{--{{$part -> hp_produce_date}}--}}
+                                                    {{--</td>--}}
+                                                    {{--<td>--}}
+                                                        {{--<div class="dropdown">--}}
+                                                            {{--<button type="button"--}}
+                                                                    {{--class="btn btn-link dropdown-toggle btn-icon"--}}
+                                                                    {{--data-toggle="dropdown">--}}
+                                                                {{--<i class="tim-icons icon-settings-gear-63"></i>--}}
+                                                            {{--</button>--}}
+                                                            {{--<div class="dropdown-menu dropdown-menu-right"--}}
+                                                                 {{--aria-labelledby="dropdownMenuLink">--}}
+                                                                {{--<a class="dropdown-item"--}}
+                                                                   {{--href="{{route('part.edit',$part->id)}}"--}}
+                                                                {{-->{{__('Edit')}}</a>--}}
+                                                                {{--<form id="-form-delete{{$part->id}}"--}}
+                                                                      {{--style="display: none;" method="POST"--}}
+                                                                      {{--action="{{route('part.destroy',$part->id)}}">--}}
+                                                                    {{--@csrf--}}
+                                                                    {{--@method('DELETE')--}}
+                                                                {{--</form>--}}
+                                                                {{--<a class="dropdown-item"--}}
+                                                                   {{--onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){--}}
+                                                                           {{--event.preventDefault();--}}
+                                                                           {{--document.getElementById('-form-delete{{$part->id}}').submit();--}}
+                                                                           {{--}else {--}}
+                                                                           {{--event.preventDefault();}">{{__('Delete')}}</a>--}}
+                                                            {{--</div>--}}
+                                                        {{--</div>--}}
+                                                    {{--</td>--}}
+                                                {{--</tr>--}}
+                                            {{--@endforeach--}}
+                                            {{--</tbody>--}}
                                         </table>
                                     </div>
                                 </div>
@@ -130,9 +130,6 @@
                                                 {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
                                                 <h5 class="title">Hanta IBMS</h5>
                                             </a>
-                                    <p class="description">
-                                        {{__('Available Products')}}
-                                    </p>
                                 </div>
                                 </p>
                                 <div class="card-description">
@@ -152,128 +149,131 @@
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
     <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
-    {{--<script>--}}
-        {{--$(document).ready(function () {--}}
+    <script>
+        $(document).ready(function () {
 
-            {{--var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));--}}
+            var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
 
-            {{--$('#table').on('click', 'button', function (event) {--}}
+            $('#table').on('click', 'button', function (event) {
 
-                {{--var data = table.row($(this).parents('tr')).data();--}}
-                {{--$.ajaxSetup({--}}
-                    {{--headers: {--}}
-                        {{--'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
-                    {{--}--}}
-                {{--});--}}
-                {{--swal({--}}
-                    {{--// title: "",--}}
-                    {{--text: "{{__('Are you sure?')}}",--}}
-                    {{--buttons: ["{{__('cancel')}}", "{{__('Done')}}"],--}}
-                    {{--icon: "warning",--}}
-                    {{--// buttons: true,--}}
-                    {{--dangerMode: true,--}}
-                {{--})--}}
-                    {{--.then((willDelete) => {--}}
-                        {{--if (willDelete) {--}}
-                            {{--$.ajax({--}}
-                                {{--url: '/product-destroy/' + data[0],--}}
-                                {{--type: 'delete',--}}
-                                {{--data: data,--}}
-                                {{--dataType: 'json',--}}
-                                {{--async: false,--}}
-                                {{--success: function (data) {--}}
-                                    {{--swal("{{__("Poof! Your imaginary file has been deleted!")}}", {--}}
-                                        {{--icon: "success",--}}
-                                        {{--button: "{{__('Done')}}",--}}
-                                    {{--});--}}
-                                {{--},--}}
-                                {{--cache: false,--}}
-                            {{--});--}}
-                            {{--location.reload();--}}
-                        {{--} else {--}}
-                            {{--swal(--}}
-                                {{--"{{__("Your imaginary file is safe!")}}",--}}
-                                {{--{button: "{{__('Done')}}"}--}}
-                            {{--);--}}
+                var data = table.row($(this).parents('tr')).data();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                swal({
+                    // title: "",
+                    text: "{{__('Are you sure?')}}",
+                    buttons: ["{{__('cancel')}}", "{{__('Done')}}"],
+                    icon: "warning",
+                    // buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: '/part-destroy/' + data[0],
+                                type: 'delete',
+                                data: data,
+                                dataType: 'json',
+                                async: false,
+                                success: function (data) {
+                                    swal("{{__("Poof! Your imaginary file has been deleted!")}}", {
+                                        icon: "success",
+                                        button: "{{__('Done')}}",
+                                    });
+                                },
+                                cache: false,
+                            });
+                            location.reload();
+                        } else {
+                            swal(
+                                "{{__("Your imaginary file is safe!")}}",
+                                {button: "{{__('Done')}}"}
+                            );
 
-                        {{--}--}}
-                    {{--});--}}
-            {{--});--}}
-            {{--var table = $('#table').on('draw.dt', function (e, settings, json, xhr) {--}}
-                {{--}).DataTable({--}}
+                        }
+                    });
+            });
+            var table = $('#table').on('draw.dt', function (e, settings, json, xhr) {
 
-                    {{--"processing":--}}
-                        {{--true,--}}
-                    {{--"serverSide":--}}
-                        {{--true,--}}
-                    {{--"ajax":--}}
-                        {{--'/json-data-product',--}}
-                    {{--"columnDefs":--}}
-                        {{--[{--}}
-                            {{--"targets": -1,--}}
-                            {{--"data": null,--}}
-                            {{--"defaultContent": "  <div class=\"dropdown\">\n" +--}}
-                                {{--"                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +--}}
-                                {{--"                                                                    data-toggle=\"dropdown\">\n" +--}}
-                                {{--"                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +--}}
-                                {{--"                                                            </a>\n" +--}}
-                                {{--"                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +--}}
-                                {{--"                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +--}}
-                                {{--"                                                                <a href=\"{{route('order.edit',113)}}\" class=\"dropdown-item\"\n" +--}}
-                                {{--"                                                                >{{__('Edit')}}</a>\n" +--}}
-                                {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
-                                {{--"                                                            </div>\n" +--}}
-                                {{--"                                                        </div>"--}}
-                        {{--}, {--}}
-                            {{--"targets": -2,--}}
-                            {{--"data": null,--}}
-                        {{--}],--}}
-                    {{--"language":--}}
-                        {{--{--}}
-                            {{--"sEmptyTable":--}}
-                                {{--"هیچ داده ای در جدول وجود ندارد",--}}
-                            {{--"sInfo":--}}
-                                {{--"نمایش _START_ تا _END_ از _TOTAL_ رکورد",--}}
-                            {{--"sInfoEmpty":--}}
-                                {{--"نمایش 0 تا 0 از 0 رکورد",--}}
-                            {{--"sInfoFiltered":--}}
-                                {{--"(فیلتر شده از _MAX_ رکورد)",--}}
-                            {{--"sInfoPostFix":--}}
-                                {{--"",--}}
-                            {{--"sInfoThousands":--}}
-                                {{--",",--}}
-                            {{--"sLengthMenu":--}}
-                                {{--"نمایش _MENU_ رکورد",--}}
-                            {{--"sLoadingRecords":--}}
-                                {{--"در حال بارگزاری...",--}}
-                            {{--"sProcessing":--}}
-                                {{--"در حال پردازش...",--}}
-                            {{--"sSearch":--}}
-                                {{--"جستجو:",--}}
-                            {{--"sZeroRecords":--}}
-                                {{--"رکوردی با این مشخصات پیدا نشد",--}}
-                            {{--"oPaginate":--}}
-                                {{--{--}}
-                                    {{--"sFirst":--}}
-                                        {{--"ابتدا",--}}
-                                    {{--"sLast":--}}
-                                        {{--"انتها",--}}
-                                    {{--"sNext":--}}
-                                        {{--"بعدی",--}}
-                                    {{--"sPrevious":--}}
-                                        {{--"قبلی"--}}
-                                {{--}--}}
-                            {{--,--}}
-                            {{--"oAria":--}}
-                                {{--{--}}
-                                    {{--"sSortAscending":--}}
-                                        {{--": فعال سازی نمایش به صورت صعودی",--}}
-                                    {{--"sSortDescending":--}}
-                                        {{--": فعال سازی نمایش به صورت نزولی"--}}
-                                {{--}--}}
-                        {{--}--}}
-                {{--})--}}
-            {{--;--}}
-        {{--});--}}
-    {{--</script>--}}
+                }).DataTable({
+                    "processing":
+                        true,
+                    "serverSide":
+                        true,
+                    "ajax":
+                        '/json-data-part',
+                    "columnDefs":
+                        [{
+                            "targets": -1,
+                            "data": null,
+
+                            "render": function ( data, type, row, meta ) {
+                                return "  <div class=\"dropdown\">\n" +
+                                    "                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +
+                                    "                                                                    data-toggle=\"dropdown\">\n" +
+                                    "                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +
+                                    "                                                            </a>\n" +
+                                    "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
+                                    "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
+                                    "                                                                <a href=\"part/"+data[0]+"/edit\" class=\"dropdown-item\"\n" +
+                                    "                                                                >{{__('Edit')}}</a>\n" +
+                                    "                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +
+                                    "                                                            </div>\n" +
+                                    "                                                        </div>"
+                            }
+                        }, {
+                            "targets": -2,
+                            "data": null,
+                        }],
+                    "language":
+                        {
+                            "sEmptyTable":
+                                "هیچ داده ای در جدول وجود ندارد",
+                            "sInfo":
+                                "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                            "sInfoEmpty":
+                                "نمایش 0 تا 0 از 0 رکورد",
+                            "sInfoFiltered":
+                                "(فیلتر شده از _MAX_ رکورد)",
+                            "sInfoPostFix":
+                                "",
+                            "sInfoThousands":
+                                ",",
+                            "sLengthMenu":
+                                "نمایش _MENU_ رکورد",
+                            "sLoadingRecords":
+                                "در حال بارگزاری...",
+                            "sProcessing":
+                                "در حال پردازش...",
+                            "sSearch":
+                                "جستجو:",
+                            "sZeroRecords":
+                                "رکوردی با این مشخصات پیدا نشد",
+                            "oPaginate":
+                                {
+                                    "sFirst":
+                                        "ابتدا",
+                                    "sLast":
+                                        "انتها",
+                                    "sNext":
+                                        "بعدی",
+                                    "sPrevious":
+                                        "قبلی"
+                                }
+                            ,
+                            "oAria":
+                                {
+                                    "sSortAscending":
+                                        ": فعال سازی نمایش به صورت صعودی",
+                                    "sSortDescending":
+                                        ": فعال سازی نمایش به صورت نزولی"
+                                }
+                        }
+                })
+            ;
+        });
+    </script>
 @endpush

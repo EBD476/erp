@@ -157,22 +157,22 @@ class PartController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
+            $part = Part::skip($start)->take($length)->get();
         } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-                ->orwhere('hp_connector', 'LIKE', "%$search%")
+            $part = Part::where('id', 'LIKE', "%$search%")
+                ->orwhere('hp_name', 'LIKE', "%$search%")
+                ->orwhere('hp_serial_number', 'LIKE', "%$search%")
+                ->orwhere('hp_provider', 'LIKE', "%$search%")
                 ->get();
         }
 
         $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+        foreach ($part as $parts) {
+            $data .= '["' . $parts->id . '",' . '"' . $parts->hp_name . '",' . '"' . $parts->hp_serial_number . '",' . '"' . $parts->hp_part_model . '",' . '"' . $parts->hp_provider. '"],';
         }
         $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+        $parts_count = Part::all()->count();
+        return response('{ "recordsTotal":' . $parts_count . ',"recordsFiltered":' . $parts_count . ',"data": [' . $data . ']}');
     }
 
     public function upload(Request $request)
