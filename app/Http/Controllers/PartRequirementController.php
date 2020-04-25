@@ -40,7 +40,6 @@ class PartRequirementController extends Controller
 
     }
 
-
     public function edit($id)
     {
         $current_user = auth()->user()->id;
@@ -84,11 +83,13 @@ class PartRequirementController extends Controller
             $part_requirement =DB::table('hnt_part_requirements')
                 ->join('hnt_parts', 'hnt_part_requirements.hpr_part_id', '=', 'hnt_parts.id')
                 ->select('hnt_part_requirements.id', 'hnt_part_requirements.hpr_part_id', 'hnt_part_requirements.hpr_part_count', 'hnt_part_requirements.hpr_comment', 'hnt_parts.hp_name')
+                ->where('hnt_part_requirements.deleted_at','=', Null)
                 ->skip($start)->take($length)->get();
         } else {
             $part_requirement = DB::table('hnt_part_requirements')
                 ->join('hnt_parts', 'hnt_part_requirements.hpr_part_id', '=', 'hnt_parts.id')
                 ->select('hnt_part_requirements.id', 'hnt_part_requirements.hpr_part_id', 'hnt_part_requirements.hpr_part_count', 'hnt_part_requirements.hpr_comment', 'hnt_parts.hp_name')
+                ->where('hnt_part_requirements.deleted_at','=', Null)
                 ->where('hnt_parts.hp_name', 'LIKE', "%$search%")
                 ->get();
         }

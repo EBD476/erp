@@ -38,26 +38,20 @@ class OrderController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $order = Order::select('id', 'hp_project_name', 'hp_employer_name', 'hp_connector', 'hp_type_project')->where('hp_registrant', $current_user)->get();
-        $progress = OrderState::all();
+        $order = Order::select('id')->where('hp_registrant', $current_user)->get();
+        $progress = OrderState::select('order_id')->get();
         return view('order.index', compact('order', 'progress', 'type', 'help_desk', 'priority', 'user'));
     }
 
     public function create()
     {
-        $items = ProductPropertyItems::all();
-        $properties = ProductProperty::all();
-        $color = ProductColor::all();
         $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $invoice_statuses = InvoiceStatuses::ALL();
+//        $invoice_statuses = InvoiceStatuses::ALL();
         $project_type = Project_Type::all();
-        $address = address::all();
-        $state = State::all();
-        $product = Product::all();
         return view('order.create', compact('address', 'state', 'project_type', 'product', 'invoice_statuses', 'type', 'help_desk', 'priority', 'product', 'user', 'items', 'properties', 'color'));
     }
 
@@ -239,16 +233,16 @@ class OrderController extends Controller
 
     }
 
-
     public function fill(Request $request)
     {
+        $current_user = auth()->user()->id;
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
+            $order = Order::select('id','hp_project_name','hp_employer_name','hp_connector','hp_type_project')->where('hp_registrant', $current_user)->skip($start)->take($length)->get();
         } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
+            $order = Order::select('id','hp_project_name','hp_employer_name','hp_connector','hp_type_project')->where('id', 'LIKE', "%$search%")
                 ->orwhere('hp_project_name', 'LIKE', "%$search%")
                 ->orwhere('hp_employer_name', 'LIKE', "%$search%")
                 ->orwhere('hp_connector', 'LIKE', "%$search%")
@@ -264,7 +258,7 @@ class OrderController extends Controller
         return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
     }
 
-    public function fill_data(Request $request)
+    public function fill_data_client(Request $request)
     {
         $search = $request->search;
         $current_user = auth()->user()->id;
@@ -308,8 +302,9 @@ class OrderController extends Controller
                 ->join('hnt_product_property', 'hnt_products.hp_product_property', '=', 'hnt_product_property.id')
                 ->join('hnt_product_property_items', 'hnt_product_property.hpp_property_items', 'hnt_product_property_items.id')
                 ->select('hnt_products.id', 'hnt_products.hp_product_image', 'hnt_products.hp_product_name as text', 'hnt_products.hp_product_price', 'hnt_product_color.hn_color_name', 'hnt_product_property.hpp_property_name', 'hnt_product_property_items.hppi_items_name')
-                ->where('hnt_products.id', 'LIKE', "%$search%")
-                ->orwhere('hnt_products.hp_product_name', 'LIKE', "%$search%")
+                ->where('hnt_products.hp_status', '=', '1')
+//                ->where('hnt_products.id', 'LIKE', "%$search%")
+                ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
                 ->get();
         }
         return json_encode(["results" => $product]);

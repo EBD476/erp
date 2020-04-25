@@ -862,7 +862,7 @@
                 dir: "rtl",
                 language: "fa",
                 ajax: {
-                    url: '/json-data-fill_data',
+                    url: '/json-data-fill-client-data',
                     dataType: 'json',
                     data: function (params) {
                         return {
@@ -884,7 +884,7 @@
                 dir: "rtl",
                 language: "fa",
                 ajax: {
-                    url: '/json-data-fill_data_city',
+                    url: '/json-data-fill-data-city',
                     dataType: 'json',
                     data: function (params) {
                         return {
@@ -906,7 +906,7 @@
                 dir: "rtl",
                 language: "fa",
                 ajax: {
-                    url: '/json-data-fill_data_state',
+                    url: '/json-data-fill-data-state',
                     dataType: 'json',
                     data: function (params) {
                         return {
@@ -926,7 +926,7 @@
 
             $(".select-item").select2({
                 ajax: {
-                    url: '/json-data-fill_data_product',
+                    url: '/json-data-fill-data-product',
                     dataType: 'json',
                     data: function (params) {
                         return {
@@ -1130,7 +1130,7 @@
 
                     $(".select-item").select2({
                         ajax: {
-                            url: '/json-data-fill_data_product',
+                            url: '/json-data-fill-data-product',
                             dataType: 'json',
                             data: function (params) {
                                 return {

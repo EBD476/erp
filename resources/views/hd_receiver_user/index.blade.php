@@ -1,12 +1,10 @@
 @extends('layouts.app')
 
-@section('title',__('Product Requirement'))
+@section('title',__('Receiver User'))
 
-@push('css')
+@push('script')
     <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
-    <link href="{{asset('assets/css/select2.min.css')}}" rel="stylesheet"/>
-    <link href="{{asset('assets/css/select2-bootstrap4.min.css')}}" rel="stylesheet"/>@endpush
-
+@endpush
 @section('content')
     @role('Admin|product')
     <div class="content persian">
@@ -15,27 +13,24 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header card-header-primary">
-                            <h4 class="card-title ">{{__('Product Requirement Management')}}</h4>
+                            <h4 class="card-title text-right font-weight-400">{{__('Receiver List')}}</h4>
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
+                            <div class="table-responsive table-hover">
                                 <table id="table" class="table" cellspacing="0" width="100%">
                                     <thead class=" text-primary">
                                     <th>
                                         {{__('ID')}}
                                     </th>
                                     <th>
-                                        {{__('Product Name')}}
+                                        {{__('Name')}}
                                     </th>
                                     <th>
-                                        {{__('Product Count')}}
+                                        {{__('Receiver')}}
                                     </th>
                                     <th>
-                                        {{__('Comment')}}
-                                    </th>
-                                    <th>
-                                        {{__('action')}}
+                                        {{__('Action')}}
                                     </th>
                                     </thead>
                                 </table>
@@ -45,80 +40,67 @@
                 </div>
                 <div class="col-md-4">
                     <div class="card card-user">
-                        <div class="card-header card-header-primary">
-                            <h4 class="card-title ">{{__('New Requirement')}}</h4>
-                            <p class="card-category"></p>
-                        </div>
-                        <div class="card-body">
-                            <form id="form1">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label class="bmd-label-floating">{{__('Product Name')}}</label>
-                                        <div class="form-group">
-                                            <select name="Product_Id" class="form-control select-product">
-                                            </select>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Product Count')}}</label>
-                                            <input type="number" class="form-control" required=""
-                                                   aria-invalid="false" name="Product_Count">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('New Receiver')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <form id="form1">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>{{__('Name')}}</label>
+                                                <input class="form-control" name="hhru_name">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Comment')}}</label>
-                                            <textarea class="form-control" name="Comment"></textarea>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>{{__('Receiver User')}}</label>
+                                                <select name="hhru_receive_user"  class="form-control receiver-user" required=""></select>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
-                            </form>
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     <div class="card card-user" id="card-form2">
-                        <div class="card-header card-header-primary">
-                            <h4 class="card-title ">{{__('Edit Requirement')}}</h4>
-                            <p class="card-category"></p>
-                        </div>
-                        <div class="card-body">
-                            <form id="form2">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label class="bmd-label-floating">{{__('Product Name')}}</label>
-                                        <div class="form-group">
-                                            <select type="text" class="form-control select-product" name="Product_Id">
-                                                <option id="Product_Id"></option>
-                                            </select>
-                                            <input id="pid" hidden>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Product Count')}}</label>
-                                            <input type="text" class="form-control" name="Product_Count" id="Product_Count">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('Edit Receiver')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <form id="form2">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>{{__('Name')}}</label>
+                                                <input class="form-control" id="hhru_name" name="hhru_name">
+                                                <input id="id" hidden>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Comment')}}</label>
-                                            <input type="text" class="form-control" name="Comment" id="Comment">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>{{__('Receiver User')}}</label>
+                                                <select name="hhru_receive_user" id="hhru_receive_user"  class="form-control receiver-user" required=""></select>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
-                            </form>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -131,15 +113,13 @@
 @push('scripts')
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
-    <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
-    <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
     <script>
         $(document).ready(function () {
 
             $('#card-form2').hide();
 
-            // fill data table
             var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
 
             $('#table').on('click', 'button', function (event) {
@@ -161,7 +141,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: '/product-requirement-destroy/' + data[0],
+                                url: '/hd-receiver-user-destroy/' + data[0],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',
@@ -192,7 +172,7 @@
                 "serverSide":
                     true,
                 "ajax":
-                    '/json-data-product-requirement',
+                    '/json-data-hd-receiver-user',
                 "columnDefs":
                     [{
                         "targets": -1,
@@ -212,7 +192,7 @@
                                 "                                                            </div>\n" +
                                 "                                                        </div>"
                         }
-                    },],
+                    }],
                 "language":
                     {
                         "sEmptyTable":
@@ -258,14 +238,11 @@
                             }
                     }
             });
-            // end fiiling
-            // store product requirement
-
-            // store product requirement
+            // store receiver
             $("#form1").submit(function (event) {
                 var data = $("#form1").serialize();
                 event.preventDefault();
-                $('#form1').block({
+                $("#form1").block({
                     message: '{{__('please wait...')}}', css: {
                         border: 'none',
                         padding: '15px',
@@ -276,7 +253,6 @@
                         color: '#fff'
                     }
                 });
-
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -284,7 +260,7 @@
                 });
 
                 $.ajax({
-                    url: '/product_requirement',
+                    url: '/hd-receiver-user',
                     type: 'POST',
                     data: data,
                     dataType: 'json',
@@ -297,13 +273,10 @@
                     cache: false,
                 });
             });
-            // end
-
-            // update product requirement
+            // update receiver
             $("#form2").submit(function (event) {
-
                 var data = $("#form2").serialize();
-                var pid = $("#pid").val();
+                var id = $('#id').val();
                 event.preventDefault();
                 $('#form2').block({
                     message: '{{__('please wait...')}}', css: {
@@ -316,15 +289,14 @@
                         color: '#fff'
                     }
                 });
-
+                //token
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
-
                 $.ajax({
-                    url: '/product_requirement/' + pid,
+                    url: '/hd-receiver-user/' + id,
                     type: 'POST',
                     data: data,
                     dataType: 'json',
@@ -338,80 +310,15 @@
                     cache: false,
                 });
             });
-            // end updating
-
-            // fill data in select product
-            $(".select-product").select2({
-                ajax: {
-                    url: '/json-data-fill-data-product',
-                    dataType: 'json',
-                    data: function (params) {
-                        return {
-                            search: params.term, // search term
-                            page: params.page
-                        };
-                    },
-                    processResults: function (data) {
-                        return {
-                            results: data.results
-                        }
-                    }
-                },
-                theme: "bootstrap",
-                dir: 'rtl',
-                placeholder: ('انتخاب محصول'),
-                templateResult: formatRepo,
-                templateSelection: formatRepoSelection
-                // allowClear: true
-
-            });
-
-            function formatRepo(repo) {
-
-                if (repo.loading) {
-                    return repo.text;
-                }
-                var $container = $(
-                    "<div class='select2-result-repository clearfix'>" +
-                    "<div class='select2-result-repository__avatar'><img src='/img/products/" + repo.hp_product_image + "' /></div>" +
-                    "<div class='select2-result-repository__meta'>" +
-                    "<div class='select2-result-repository__title'></div>" +
-                    "<div class='select2-result-repository__description'></div>" +
-                    "<div class='select2-result-repository__color'></div>" +
-                    "<div class='select2-result-repository__statistics'>" +
-                    // "<div class='select2-result-repository__forks'><i class='fa fa-flash'></i> </div>" +
-                    // "<div class='select2-result-repository__stargazers'><i class='fa fa-star'></i> </div>" +
-                    // "<div class='select2-result-repository__watchers'><i class='fa fa-eye'></i> </div>" +
-                    "</div>" +
-                    "</div>" +
-                    "</div>"
-                );
-
-                $container.find(".select2-result-repository__title").text(repo.text);
-                $container.find(".select2-result-repository__description").text("{{__('Price')}}" + " : " + repo.hp_product_price);
-                $container.find(".select2-result-repository__color").text("{{__('Color')}}" + " : " + repo.hn_color_name);
-                $container.find(".select2-result-repository__statistics").text("{{__('Property')}}" + " : " + repo.hpp_property_name + repo.hppi_items_name);
-                // $container.find(".select2-result-repository__forks").append(repo.forks_count + " Forks");
-                // $container.find(".select2-result-repository__stargazers").append(repo.stargazers_count + " Stars");
-                // $container.find(".select2-result-repository__watchers").append(repo.watchers_count + " Watchers");
-                return $container;
-
-            }
-
-            function formatRepoSelection(repo) {
-                return repo.text
-            }
-
-            // end
-
+            // fill data in edit form
             $('#table').on('click', '.edit', function (event) {
                 $('#card-form2').show();
                 var data = table.row($(this).parents('tr')).data();
-                $('#pid').val(data[0]);
-                $('#Product_Id').val(data[1]);
-                $('#Product_Count').val(data[2]);
-                $('#Comment').val(data[3]);
+                $('#id').val(data[0]);
+                $('#hhru_name').val(data[1]);
+                $('#hhru_receive_user').val(data[2]);
             })
+            // end filling
         });
     </script>
 @endpush

@@ -9,6 +9,7 @@ use App\TicketStatus;
 use App\User;
 use Illuminate\Http\Request;
 use carbon\carbon;
+use Illuminate\Support\Facades\DB;
 
 class HelpDeskController extends Controller
 {
@@ -24,46 +25,11 @@ class HelpDeskController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
         $ticket_status = TicketStatus::all();
-        $help_desks = HelpDesk::all();
-        $help_desks_user = HelpDesk::where('hhd_receiver_user_id', auth()->user()->id)->orwhere('hhd_request_user_id', auth()->user()->id)->get();
-        return view('help_desk.index', compact('help_desks_user', 'help_desk', 'ticket_status', 'help_desks', 'type', 'priority', 'help_desks', 'user'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $user = User::all();
         $ticket = TicketStatus::ALL();
-        return view('help_desk.create', compact('priority', 'type', 'ticket', 'user', 'priorities', 'types', 'help_desk', 'user'));
+        return view('help_desk.index', compact('ticket','help_desks_user', 'help_desk', 'ticket_status', 'help_desks', 'type', 'priority', 'help_desks', 'user'));
     }
 
 
-//Tokenize
-//---------------------------
-//
-//$current_date = carbon::now();
-//$current = $current_date->day
-//$id = 0;
-//if($current_date->day == $current->day && $current_date->month == $current->month && $current_date->year == $current->year){
-//$id = $id+1
-//}
-//else
-//    $id = 0 ;
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -118,25 +84,7 @@ class HelpDeskController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        /**
-         *
-         */
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $type = HDtype::all();
@@ -175,15 +123,11 @@ class HelpDeskController extends Controller
 
     public function receive_show($id)
     {
-        $ticket = TicketStatus::ALL();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_verify', '0')->get();
-        $user = User::all();
         $help_desks = HelpDesk::find($id);
         $help_desks->hhd_ticket_status = 2;
         $help_desks->save();
-        return view('help_desk.receiver', compact('help_desk', 'priority', 'user', 'type', 'priority', 'help_desks', 'ticket'));
+        return json_encode(["response" => "OK"]);
+
     }
 
 
@@ -195,44 +139,97 @@ class HelpDeskController extends Controller
         }
         $help_desk->hhd_ticket_status = $request->state;
         $help_desk->save();
+
         return json_encode(["response" => "OK"]);
     }
 
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
         $help_desk = HelpDesk::find($id);
         $help_desk->delete();
-        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
+        return json_encode(["response" => "OK"]);
     }
 
-    public function fill(Request $request)
+    public function fill_sender(Request $request)
     {
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
+            $help_desk =DB::table('hnt_help_desk')
+                ->join('hnt_ticket_status','hnt_help_desk.hhd_ticket_status','=','hnt_ticket_status.id')
+                ->join('hnt_th_type','hnt_help_desk.hhd_type','=','hnt_th_type.id')
+                ->join('hnt_hd_priority','hnt_help_desk.hhd_priority','=','hnt_hd_priority.id')
+                ->join('users','hnt_help_desk.hhd_receiver_user_id','=','users.id')
+                ->where('hnt_help_desk.hhd_request_user_id', '=', auth()->user()->id)
+                ->where('hnt_help_desk.deleted_at', '=', Null)
+                ->select('hnt_help_desk.id','hnt_help_desk.hhd_ticket_id','hnt_help_desk.hhd_title','hnt_help_desk.hhd_type','hnt_hd_priority.hdp_name','hnt_th_type.th_name','hnt_help_desk.hhd_problem','hnt_help_desk.hhd_ticket_status','hnt_help_desk.hhd_priority','hnt_ticket_status.ts_name','hnt_help_desk.hhd_request_user_id','hnt_help_desk.hhd_receiver_user_id','hnt_help_desk.hhd_file_atach','hnt_help_desk.created_at','users.name as username')->skip($start)
+                ->take($length)
+                ->get();
         } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-                ->orwhere('hp_connector', 'LIKE', "%$search%")
+            $help_desk =DB::table('hnt_help_desk')
+                ->join('hnt_ticket_status','hnt_help_desk.hhd_ticket_status','=','hnt_ticket_status.id')
+                ->join('hnt_th_type','hnt_help_desk.hhd_type','=','hnt_th_type.id')
+                ->join('hnt_hd_priority','hnt_help_desk.hhd_priority','=','hnt_hd_priority.id')
+                ->join('users','hnt_help_desk.hhd_receiver_user_id','=','users.id')
+                ->where('hnt_help_desk.hhd_request_user_id', '=', auth()->user()->id)
+                ->select('hnt_help_desk.id','hnt_help_desk.hhd_ticket_id','hnt_help_desk.hhd_title','hnt_help_desk.hhd_type','hnt_hd_priority.hdp_name','hnt_th_type.th_name','hnt_help_desk.hhd_problem','hnt_help_desk.hhd_ticket_status','hnt_help_desk.hhd_priority','hnt_ticket_status.ts_name','hnt_help_desk.hhd_request_user_id','hnt_help_desk.hhd_receiver_user_id','hnt_help_desk.hhd_file_atach','hnt_help_desk.created_at','users.name as username')->skip($start)
+                ->where('users.name', 'LIKE', "%$search%")
+                ->where('hnt_help_desk.deleted_at', '=', Null)
+                ->orwhere('hnt_help_desk.hhd_title', 'LIKE', "%$search%")
+                ->orwhere('hnt_hd_priority.hdp_name', 'LIKE', "%$search%")
+                ->orwhere('hnt_ticket_status.ts_name', 'LIKE', "%$search%")
                 ->get();
         }
 
         $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '"],';
+        foreach ($help_desk as $help_desks) {
+            $data .= '["' . $help_desks->id . '",' . '"' . $help_desks->hhd_title . '",' . '"' . $help_desks->username . '",' . '"' . $help_desks->hhd_ticket_id . '",' . '"' . $help_desks->hdp_name . '",' . '"' . $help_desks->ts_name . '",' . '"' . $help_desks->th_name . '",' . '"' . $help_desks->created_at . '",' . '"' . $help_desks->hhd_problem . '",' . '"' . $help_desks->hhd_type . '",' . '"' . $help_desks->hhd_ticket_status . '",' . '"' . $help_desks->hhd_priority . '",' . '"' . $help_desks->hhd_request_user_id . '",' . '"' . $help_desks->hhd_receiver_user_id . '",' . '"' . $help_desks->hhd_file_atach . '"],';
         }
         $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+        $help_desks_count = HelpDesk::all()->count();
+        return response('{ "recordsTotal":' . $help_desks_count . ',"recordsFiltered":' . $help_desks_count . ',"data": [' . $data . ']}');
+    }
+
+    public function fill_receiver(Request $request)
+    {
+        $start = $request->start;
+        $length = $request->length;
+        $search = $request->search['value'];
+        if ($search == '') {
+            $help_desk =DB::table('hnt_help_desk')
+                ->join('hnt_ticket_status','hnt_help_desk.hhd_ticket_status','=','hnt_ticket_status.id')
+                ->join('hnt_th_type','hnt_help_desk.hhd_type','=','hnt_th_type.id')
+                ->join('hnt_hd_priority','hnt_help_desk.hhd_priority','=','hnt_hd_priority.id')
+                ->join('users','hnt_help_desk.hhd_request_user_id','=','users.id')
+                ->select('hnt_help_desk.id','hnt_help_desk.hhd_ticket_id','hnt_help_desk.hhd_title','hnt_help_desk.hhd_type','hnt_hd_priority.hdp_name','hnt_th_type.th_name','hnt_help_desk.hhd_problem','hnt_help_desk.hhd_ticket_status','hnt_help_desk.hhd_priority','hnt_ticket_status.ts_name','hnt_help_desk.hhd_request_user_id','hnt_help_desk.hhd_receiver_user_id','hnt_help_desk.hhd_file_atach','hnt_help_desk.created_at','users.name as username')->skip($start)
+                ->where('hnt_help_desk.deleted_at', '=', Null)
+                ->where('hnt_help_desk.hhd_receiver_user_id', '=', auth()->user()->id)
+                ->take($length)
+                ->get();
+        } else {
+            $help_desk =DB::table('hnt_help_desk')
+                ->join('hnt_ticket_status','hnt_help_desk.hhd_ticket_status','=','hnt_ticket_status.id')
+                ->join('hnt_th_type','hnt_help_desk.hhd_type','=','hnt_th_type.id')
+                ->join('hnt_hd_priority','hnt_help_desk.hhd_priority','=','hnt_hd_priority.id')
+                ->join('users','hnt_help_desk.hhd_request_user_id','=','users.id')
+                ->select('hnt_help_desk.id','hnt_help_desk.hhd_ticket_id','hnt_help_desk.hhd_title','hnt_help_desk.hhd_type','hnt_hd_priority.hdp_name','hnt_th_type.th_name','hnt_help_desk.hhd_problem','hnt_help_desk.hhd_ticket_status','hnt_help_desk.hhd_priority','hnt_ticket_status.ts_name','hnt_help_desk.hhd_request_user_id','hnt_help_desk.hhd_receiver_user_id','hnt_help_desk.hhd_file_atach','hnt_help_desk.created_at','users.name as username')->skip($start)
+                ->where('hnt_help_desk.deleted_at', '=', Null)
+                ->where('hnt_help_desk.hhd_receiver_user_id', '=', auth()->user()->id)
+                ->where('users.name', 'LIKE', "%$search%")
+                ->orwhere('hnt_help_desk.hhd_title', 'LIKE', "%$search%")
+                ->orwhere('hnt_hd_priority.hdp_name', 'LIKE', "%$search%")
+                ->orwhere('hnt_ticket_status.ts_name', 'LIKE', "%$search%")
+                ->get();
+        }
+
+        $data = '';
+        foreach ($help_desk as $help_desks) {
+            $data .= '["' . $help_desks->id . '",' . '"' . $help_desks->hhd_title . '",' . '"' . $help_desks->username . '",' . '"' . $help_desks->hhd_ticket_id . '",' . '"' . $help_desks->hdp_name . '",' . '"' . $help_desks->ts_name . '",' . '"' . $help_desks->th_name . '",' . '"' . $help_desks->created_at . '",' . '"' . $help_desks->hhd_problem . '",' . '"' . $help_desks->hhd_type . '",' . '"' . $help_desks->hhd_ticket_status . '",' . '"' . $help_desks->hhd_priority . '",' . '"' . $help_desks->hhd_request_user_id . '",' . '"' . $help_desks->hhd_receiver_user_id . '",' . '"' . $help_desks->hhd_file_atach . '"],';
+        }
+        $data = substr($data, 0, -1);
+        $help_desks_count = HelpDesk::all()->count();
+        return response('{ "recordsTotal":' . $help_desks_count . ',"recordsFiltered":' . $help_desks_count . ',"data": [' . $data . ']}');
     }
 }

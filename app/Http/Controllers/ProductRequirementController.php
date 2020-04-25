@@ -23,7 +23,6 @@ class ProductRequirementController extends Controller
         return view('product_requirement.index', compact('type', 'priority', 'help_desk', 'user'));
     }
 
-
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -58,17 +57,11 @@ class ProductRequirementController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $product_requirement = ProductRequirement::find($id);
         $product_requirement->delete();
-        return redirect()->back()->with('successMSG', 'product_requirement Successfully Delete');
+        return json_encode(["response" => "OK"]);
     }
 
     public function fill(Request $request)
@@ -77,15 +70,19 @@ class ProductRequirementController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-//            $product_requirement = ProductRequirement::skip($start)->take($length)->get();
-            $product_requirement = DB::table('hnt_product_requirements')->join('hnt_products', 'hnt_product_requirements.Product_Id', '=', 'hnt_products.id')
+            $product_requirement = DB::table('hnt_product_requirements')
+                ->join('hnt_products', 'hnt_product_requirements.Product_Id', '=', 'hnt_products.id')
                 ->select('hnt_product_requirements.Product_Id','hnt_product_requirements.id', 'hnt_product_requirements.Product_Count','hnt_products.hp_product_name','hnt_product_requirements.Comment')
-                ->skip($start)->take($length)->get();
+                ->where('hnt_product_requirements.deleted_at','=', Null)
+                ->skip($start)
+                ->take($length)
+                ->get();
         } else {
 
             $product_requirement = DB::table('hnt_product_requirements')
                 ->join('hnt_products', 'hnt_product_requirements.Product_Id', '=', 'hnt_products.id')
                 ->select('hnt_product_requirements.id','hnt_product_requirements.Product_Id', 'hnt_product_requirements.Product_Count', 'hnt_product_requirements.Comment', 'hnt_products.hp_product_name')
+                ->where('hnt_product_requirements.deleted_at','=', Null)
                 ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
                 ->get();
         }

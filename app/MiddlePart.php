@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MiddlePart extends Model
 {
-    use SoftDeletes;
+   use SoftDeletes;
    protected $table = 'hnt_middle_part';
+
+   protected $dates = ['deleted_at'];
 }

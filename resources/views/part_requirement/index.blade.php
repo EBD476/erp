@@ -354,7 +354,7 @@
                 dir: "rtl",
                 language: "fa",
                 ajax: {
-                    url: '/json-data-fill_data_repository_part',
+                    url: '/json-data-fill-data-part',
                     dataType: 'json',
                     data: function (params) {
                         return {

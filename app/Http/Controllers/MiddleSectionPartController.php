@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use Illuminate\Support\Facades\DB;
 
 class MiddleSectionPartController extends Controller
 {
@@ -21,37 +22,14 @@ class MiddleSectionPartController extends Controller
         $type = HDtype::all();
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $product_part = MiddleSectionPart::select('id','hpp_part_id','hpp_middle_part_id','hpp_middle_part_id','hpp_part_id')->get();
-        foreach ($product_part as $counter) {
-            $parts = Part::select('hp_name','id')->where('id', $counter->hpp_part_id)->get();
-        }
-        foreach ($product_part as $counter) {
-            $middle_part = MiddlePart::select('hmp_name','id')->where('id', $counter->hpp_middle_part_id)->get();
-        }
-        return view('middle_section_part.index', compact('middle_part','parts', 'product_part', 'product', 'part', 'type', 'priority', 'help_desk', 'user'));
+        return view('middle_section_part.index', compact('type', 'priority', 'help_desk', 'user'));
     }
-
 
     public function checkbox(Request $request, $id)
     {
         $checkbox = ProductPart::find($id);
         $checkbox->hp_statuse = $request->checkbox;
         $checkbox->save();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $current_user=auth()->user()->id;
-        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
-        $user = User::select('id', 'name')->get();
-        return view('middle_section_part.create', compact('part_id', 'product_id', 'type', 'priority', 'help_desk', 'user'));
     }
 
     public function store(Request $request)
@@ -70,21 +48,6 @@ class MiddleSectionPartController extends Controller
         return json_encode(["response" => "OK"]);
     }
 
-    public function edit($id)
-    {
-        $user = User::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $product_part = MiddleSectionPart::find($id);
-//        $part_id = Part::select('id', 'hp_name')->where('id', $product_part->hpp_part_id)->get();
-//        $product_id = Part::select('id', 'hmp_name')->where('id', $product_part->hpp_middle_part_id)->get();
-        return view('middle_section_part.edit', compact('product_id', 'product_part', 'part_id', 'type', 'priority', 'help_desk', 'user'));
-
-
-    }
-
-
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -102,12 +65,11 @@ class MiddleSectionPartController extends Controller
 
     }
 
-
     public function destroy($id)
     {
         $product_part = MiddleSectionPart::find($id);
         $product_part->delete();
-        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
+        return json_encode(["response" => "OK"]);
     }
 
     public function fill_data_middle_part(Request $request)
@@ -119,13 +81,36 @@ class MiddleSectionPartController extends Controller
         return json_encode(["results" => $middle_part]);
     }
 
-    public function fill_data_part(Request $request)
+    public function fill(Request $request)
     {
-        $search = $request->search;
-        if ($search != "") {
-
-            $part = Part::select('hp_name as text', 'id', 'hp_serial_number', 'hp_part_model', 'hp_part_image')->where('hp_name', 'LIKE', "%$search%")->orwhere('hp_part_model', 'LIKE', "%$search%")->get();
+        $start = $request->start;
+        $length = $request->length;
+        $search = $request->search['value'];
+        if ($search == '') {
+            $product_part = DB::table('hnt_middle_section_part')
+                ->join('hnt_parts', 'hnt_middle_section_part.hpp_part_id', '=', 'hnt_parts.id')
+                ->join('hnt_middle_part', 'hnt_middle_section_part.hpp_middle_part_id', '=', 'hnt_middle_part.id')
+                ->select('hnt_middle_section_part.id', 'hnt_middle_section_part.hpp_part_id', 'hnt_middle_section_part.hpp_middle_part_id', 'hnt_middle_section_part.hpp_part_count', 'hnt_parts.hp_name', 'hnt_middle_part.hmp_name')
+                ->where('hnt_middle_section_part.deleted_at','=', Null)
+                ->skip($start)->take($length)->get();
+        } else {
+            $product_part = DB::table('hnt_middle_section_part')
+                ->join('hnt_parts', 'hnt_middle_section_part.hpp_part_id', '=', 'hnt_parts.id')
+                ->join('hnt_middle_part', 'hnt_middle_section_part.hpp_middle_part_id', '=', 'hnt_middle_part.id')
+                ->select('hnt_middle_section_part.id', 'hnt_middle_section_part.hpp_part_id', 'hnt_middle_section_part.hpp_middle_part_id', 'hnt_middle_section_part.hpp_part_count', 'hnt_parts.hp_name', 'hnt_middle_part.hmp_name')
+                ->where('hnt_middle_section_part.deleted_at','=', Null)
+                ->where('hnt_middle_part.hmp_name', 'LIKE', "%$search%")
+                ->orwhere('hnt_parts.hp_name', 'LIKE', "%$search%")
+                ->get();
         }
-        return json_encode(["results" => $part]);
+
+        $data = '';
+        foreach ($product_part as $product_parts) {
+            $data .= '["' . $product_parts->id . '",' . '"' . $product_parts->hmp_name . '",' . '"' . $product_parts->hp_name . '",' . '"' . $product_parts->hpp_part_count . '",' . '"' . $product_parts->hpp_middle_part_id . '",' . '"' . $product_parts->hpp_part_id . '"],';
+        }
+        $data = substr($data, 0, -1);
+        $product_parts = MiddleSectionPart::all()->count();
+        return response('{ "recordsTotal":' . $product_parts . ',"recordsFiltered":' . $product_parts . ',"data": [' . $data . ']}');
     }
+
 }

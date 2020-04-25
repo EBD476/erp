@@ -12,44 +12,26 @@ use carbon\carbon;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use Illuminate\Support\Facades\DB;
+
 class PartController extends Controller
 {
     public function index()
     {
-        $current_user=auth()->user()->id;
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $product=Product::all();
-        $product_part=ProductPart::all();
-        $part = Part::all();
-        return view('part.index',compact('part','product','product_part','type','help_desk','priority','user'));
+        return view('part.index', compact('type', 'help_desk', 'priority', 'user'));
     }
 
 
-
-    public function checkbox(Request $request , $id)
+    public function checkbox(Request $request, $id)
     {
-        $checkbox=Part::find($id);
-        $checkbox->hp_statuse=$request->checkbox;
+        $checkbox = Part::find($id);
+        $checkbox->hp_statuse = $request->checkbox;
         $checkbox->save();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $current_user=auth()->user()->id;
-        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
-        $user = User::select('id', 'name')->get();
-        $provider= Provider::select('id','hp_name')->get();
-        return view('part.create',compact('type','help_desk','priority','user','provider'));
     }
 
     public function store(Request $request)
@@ -57,64 +39,26 @@ class PartController extends Controller
         $this->validate($request, [
             'hp_name' => 'required',
             'hp_part_model' => 'required',
-            'hp_category_id' => 'required',
-            'hp_produce_date' => 'required',
+//            'hp_category_id' => 'required',
+//            'hp_produce_date' => 'required',
         ]);
         $current_date = Carbon::now();
         $current_date = $current_date->year . $current_date->month . $current_date->day;
-        $code = "hnt_prt_" . $current_date ;
+        $code = "hnt_prt_" . $current_date;
         $part = new Part();
         $part->hp_name = $request->hp_name;
         $part->hp_part_image = $request->part_image;
-        $part->hp_serial_number	 = $code;
+        $part->hp_serial_number = $code;
         $part->hp_part_model = $request->hp_part_model;
         $part->hp_provider = $request->hp_provider;
         $part->hp_category_id = $request->hp_category_id;
 //        $part->hp_produce_date = new Date();
         $part->save();
 
-        return json_encode(["response"=>"OK"]);
+        return json_encode(["response" => "OK"]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $current_user=auth()->user()->id;
-        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
-        $user = User::select('id', 'name')->get();
-        $part=Part::find($id);
-        return view('part.edit',compact('part','user','type','priority','help_desk'));
-
-
-    }
-
-
-    public function show(){
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $this->validate($request, [
             'hp_name' => 'required',
@@ -122,33 +66,41 @@ class PartController extends Controller
             'hp_part_model' => 'required',
             'hp_provider' => 'required',
 //            'hp_category_id' => 'required',
-            'hp_produce_date' => 'required',
+//            'hp_produce_date' => 'required',
         ]);
-        $part =Part::find($id);
+        $part = Part::find($id);
         $part->hp_name = $request->hp_name;
-        $part->hp_serial_number	 = $request->hp_code;
+        $part->hp_serial_number = $request->hp_code;
         $part->hp_part_model = $request->hp_part_model;
         $part->hp_part_image = $request->part_image;
         $part->hp_provider = $request->hp_provider;
         $part->hp_category_id = $request->hp_category_id;
         $part->hp_produce_date = $request->hp_produce_date;
         $part->save();
-        return json_encode(["response"=>"OK"]);
+        return json_encode(["response" => "OK"]);
 
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $part = Part::find($id);
         $part->delete();
-        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
+        $filename = "img/parts/" . $part->hp_part_image;
+        if (file_exists($filename)) {
+            unlink($filename);
+            return json_encode(["response" => "OK"]);
+        }
+    }
+
+    public function destroy_image($id)
+    {
+        $part = Part::find($id);
+        $filename = "img/parts/" . $part->hp_part_image;
+        if (file_exists($filename)) {
+            unlink($filename);
+            return json_encode(["response" => "OK"]);
+        }
     }
 
     public function fill(Request $request)
@@ -157,18 +109,28 @@ class PartController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $part = Part::skip($start)->take($length)->get();
-        } else {
-            $part = Part::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_name', 'LIKE', "%$search%")
-                ->orwhere('hp_serial_number', 'LIKE', "%$search%")
-                ->orwhere('hp_provider', 'LIKE', "%$search%")
+            $part = DB::table('hnt_parts')
+                ->join('hnt_provider', 'hnt_parts.hp_provider', '=', 'hnt_provider.id')
+                ->select('hnt_provider.hp_name', 'hnt_parts.id', 'hnt_parts.hp_name as name', 'hnt_parts.hp_serial_number', 'hnt_parts.hp_provider', 'hnt_parts.hp_size', 'hnt_parts.hp_description', 'hnt_parts.hp_part_model', 'hnt_parts.hp_part_image')
+                ->where('hnt_parts.deleted_at', '=', Null)
+                ->skip($start)
+                ->take($length)
                 ->get();
+        } else {
+            $part = DB::table('hnt_parts')
+                ->join('hnt_provider', 'hnt_parts.hp_provider', '=', 'hnt_provider.id')
+                ->select('hnt_provider.hp_name', 'hnt_parts.id', 'hnt_parts.hp_name as name', 'hnt_parts.hp_serial_number', 'hnt_parts.hp_provider', 'hnt_parts.hp_size', 'hnt_parts.hp_description', 'hnt_parts.hp_part_model', 'hnt_parts.hp_part_image')
+                ->where('hnt_parts.deleted_at', '=', Null)
+                ->where('hnt_parts.hp_name', 'LIKE', "%$search%")
+                ->orwhere('hnt_parts.hp_serial_number', 'LIKE', "%$search%")
+                ->get();
+
+
         }
 
         $data = '';
         foreach ($part as $parts) {
-            $data .= '["' . $parts->id . '",' . '"' . $parts->hp_name . '",' . '"' . $parts->hp_serial_number . '",' . '"' . $parts->hp_part_model . '",' . '"' . $parts->hp_provider. '"],';
+            $data .= '["' . $parts->id . '",' . '"' . $parts->name . '",' . '"' . $parts->hp_serial_number . '",' . '"' . $parts->hp_part_model . '",' . '"' . $parts->hp_name . '",' . '"' . $parts->hp_size . '",' . '"' . $parts->hp_provider . '",' . '"' . $parts->hp_description . '",' . '"' . $parts->hp_part_image . '"],';
         }
         $data = substr($data, 0, -1);
         $parts_count = Part::all()->count();
@@ -196,4 +158,14 @@ class PartController extends Controller
         ]);
     }
 
+//    fill select to
+    public function fill_data_part(Request $request)
+    {
+        $search = $request->search;
+        if ($search != "") {
+
+            $part = Part::select('hp_name as text', 'id', 'hp_serial_number', 'hp_part_model', 'hp_part_image')->where('hp_name', 'LIKE', "%$search%")->orwhere('hp_part_model', 'LIKE', "%$search%")->get();
+        }
+        return json_encode(["results" => $part]);
+    }
 }

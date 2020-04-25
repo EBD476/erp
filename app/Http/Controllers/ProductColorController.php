@@ -8,15 +8,10 @@ use App\HelpDesk;
 use App\ProductColor;
 use App\User;
 use Illuminate\Http\Request;
-use PhpParser\Node\Expr\New_;
 
 class ProductColorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $current_user=auth()->user()->id;
@@ -24,32 +19,9 @@ class ProductColorController extends Controller
         $type = HDtype::select('th_name','id')->get();
         $priority = HDpriority::select('id','hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $color = ProductColor::all();
         return view('products.product_color.index',compact('color','user','type','priority','help_desk'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $current_user=auth()->user()->id;
-        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
-        $user = User::select('id', 'name')->get();
-        return view('products.product_color.create',compact('user','type','priority','help_desk'));
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -61,41 +33,7 @@ class ProductColorController extends Controller
         return json_encode(["response" => "Done","name"=>$color->hn_color_name,"id"=>$color->id]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\ProductColor $productColor
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ProductColor $productColor)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\ProductColor $productColor
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $current_user=auth()->user()->id;
-        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
-        $user = User::select('id', 'name')->get();
-        $color = ProductColor::find($id);
-        return view('products.product_color.edit',compact('color','user','type','priority','help_desk'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\ProductColor $productColor
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request,$id)
     {
         $this->validate($request, [
@@ -108,12 +46,6 @@ class ProductColorController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\ProductColor $productColor
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $color = ProductColor :: find($id);
@@ -127,21 +59,17 @@ class ProductColorController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
+            $color = ProductColor::select('id','hn_color_name')->skip($start)->take($length)->get();
         } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-                ->orwhere('hp_connector', 'LIKE', "%$search%")
-                ->get();
+            $color = ProductColor::select('id','hn_color_name')->where('hn_color_name', 'LIKE', "%$search%")->get();
         }
 
         $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+        foreach ($color as $colors) {
+            $data .= '["' . $colors->id . '",' . '"' . $colors->hn_color_name . '"],';
         }
         $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+        $color_count = ProductColor::all()->count();
+        return response('{ "recordsTotal":' . $color_count . ',"recordsFiltered":' . $color_count . ',"data": [' . $data . ']}');
     }
 }

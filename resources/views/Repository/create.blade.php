@@ -59,15 +59,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
+                                        <label>{{__('Provider')}}</label>
                                         <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Provider')}}</label>
-                                            <select class="form-control"
+                                            <select class="form-control select-provider"
                                                     aria-invalid="false" name="hr_provider_code">
-                                                @foreach($provider as $providers)
-                                                    <option value="{{$providers->id}}">
-                                                        {{$providers->hp_name}}
-                                                    </option>
-                                                @endforeach
                                             </select>
                                             <div class="text-light">
                                                 <a class="pointer" href="#" data-toggle="modal"
@@ -147,15 +142,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
+                                        <label>{{__('Provider')}}</label>
                                         <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Provider')}}</label>
-                                            <select class="form-control"
+                                            <select class="form-control select-provider"
                                                     aria-invalid="false" name="hrm_provider_code">
-                                                @foreach($provider as $providers)
-                                                    <option value="{{$providers->id}}">
-                                                        {{$providers->hp_name}}
-                                                    </option>
-                                                @endforeach
                                             </select>
                                             <div class="text-light">
                                                 <a class="pointer" href="#" data-toggle="modal"
@@ -243,15 +233,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
+                                        <label>{{__('Provider')}}</label>
                                         <div class="form-group">
-                                            <label class="bmd-label-floating">{{__('Provider')}}</label>
-                                            <select class="form-control"
+                                            <select class="form-control select-provider"
                                                     aria-invalid="false" name="hrp_provider_code">
-                                                @foreach($provider as $providers)
-                                                    <option value="{{$providers->id}}">
-                                                        {{$providers->hp_name}}
-                                                    </option>
-                                                @endforeach
                                             </select>
                                             <div class="text-light">
                                                 <a class="pointer" href="#" data-toggle="modal"
@@ -478,7 +463,7 @@
                 dir: "rtl",
                 language: "fa",
                 ajax: {
-                    url: '/json-data-fill_data_repository_middle_part',
+                    url: '/json-data-fill-data-middle-part',
                     dataType: 'json',
                     data: function (params) {
                         return {
@@ -533,7 +518,7 @@
             // fill data in select product
             $(".select-product").select2({
                 ajax: {
-                    url: '/json-data-fill_data_repository_product',
+                    url: '/json-data-fill-data-product',
                     dataType: 'json',
                     data: function (params) {
                         return {
@@ -598,7 +583,7 @@
                 dir: "rtl",
                 language: "fa",
                 ajax: {
-                    url: '/json-data-fill_data_repository_part',
+                    url: '/json-data-fill-data-part',
                     dataType: 'json',
                     data: function (params) {
                         return {
@@ -649,6 +634,37 @@
             }
 
             // end fill data in select middle part
+
+            // select-provider
+            $(".select-provider").select2({
+                ajax: {
+                    dir: "rtl",
+                    language: "fa",
+                    url: '/json-data-fill-data-provider',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب تامین کننده'),
+                dir: "rtl",
+                templateSelection: formatRepoSelection2
+            });
+
+            function formatRepoSelection2(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end
         });
     </script>
     {{--datapicker--}}

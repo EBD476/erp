@@ -20,7 +20,6 @@ class MiddlePartRequirementController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $middle_part_requirement = MiddlePartRequirement:: all();
         return view('middle_part_requirement.index', compact('middle_part_requirement', 'type', 'priority', 'help_desk', 'user'));
     }
 
@@ -73,11 +72,15 @@ class MiddlePartRequirementController extends Controller
             $middle_part_requirement = DB::table('hnt_middle_part_requirements')
                 ->join('hnt_middle_part', 'hnt_middle_part_requirements.hmpr_middle_part_id', '=', 'hnt_middle_part.id')
                 ->select('hnt_middle_part_requirements.id', 'hnt_middle_part_requirements.hmpr_middle_part_id', 'hnt_middle_part_requirements.hmpr_middle_part_count', 'hnt_middle_part_requirements.hmpr_comment', 'hnt_middle_part.hmp_name')
-                ->skip($start)->take($length)->get();
+                ->where('hnt_middle_part_requirements.deleted_at','=', Null)
+                ->skip($start)
+                ->take($length)
+                ->get();
         } else {
             $middle_part_requirement = DB::table('hnt_middle_part_requirements')
                 ->join('hnt_middle_part', 'hnt_middle_part_requirements.hmpr_middle_part_id', '=', 'hnt_middle_part.id')
                 ->select('hnt_middle_part_requirements.id', 'hnt_middle_part_requirements.hmpr_middle_part_id', 'hnt_middle_part_requirements.hmpr_middle_part_count', 'hnt_middle_part_requirements.hmpr_comment', 'hnt_middle_part.hmp_name')
+                ->where('hnt_middle_part_requirements.deleted_at','=', Null)
                 ->where('hnt_middle_part.hmp_name', 'LIKE', "%$search%")
                 ->get();
         }
@@ -89,14 +92,5 @@ class MiddlePartRequirementController extends Controller
         $data = substr($data, 0, -1);
         $middle_part_requirements_count = MiddlePartRequirement::all()->count();
         return response('{ "recordsTotal":' . $middle_part_requirements_count . ',"recordsFiltered":' . $middle_part_requirements_count . ',"data": [' . $data . ']}');
-    }
-
-    public function fill_data_repository_requirement_middle_part(Request $request)
-    {
-        $search = $request->search;
-        if ($search != "") {
-            $middle_part = MiddlePart::select('hmp_name as text', 'id', 'hmp_middle_part_model', 'hmp_serial_number', 'hmp_image')->where('hmp_name', 'LIKE', "%$search%")->orwhere('hmp_serial_number', 'LIKE', "%$search%")->get();
-        }
-        return json_encode(["results" => $middle_part]);
     }
 }

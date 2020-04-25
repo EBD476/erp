@@ -11,111 +11,44 @@ use App\HelpDesk;
 
 class TicketStatusController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        $current_user=auth()->user()->id;
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $ticket=TicketStatus::ALL();
-        return view('ticket_status.index',compact('ticket','help_desk','priority','type','user'));
+        return view('ticket_status.index', compact('ticket', 'help_desk', 'priority', 'type', 'user'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $current_user=auth()->user()->id;
-        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
-        $user = User::select('id', 'name')->get();
-        return view('ticket_status.create',compact('ticket','help_desk','priority','type','user'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'ts_name'=>'required'
+        $this->validate($request, [
+            'ts_name' => 'required'
         ]);
-       $ticket=new TicketStatus();
-       $ticket->ts_name=$request->ts_name;
-       $ticket->save();
-        return json_encode(["response"=>"ok"]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\TicketStatus  $ticketStatus
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TicketStatus $ticketStatus)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\TicketStatus  $ticketStatus
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(TicketStatus $ticketStatus)
-    {
-        $current_user=auth()->user()->id;
-        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
-        $user = User::select('id', 'name')->get();
-        $ticket=TicketStatus::find($ticketStatus);
-        return view('ticket_status.edit',compact('ticket','help_desk','priority','type','user'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\TicketStatus  $ticketStatus
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, TicketStatus $ticketStatus)
-    {
-        $this->validate($request,[
-            'ts_name'=>'required'
-        ]);
-        $ticket=TicketStatus::find($ticketStatus);
-        $ticket->ts_name=$request->ts_name;
+        $ticket = new TicketStatus();
+        $ticket->ts_name = $request->ts_name;
         $ticket->save();
-        return json_encode(["response"=>"ok"]);
+        return json_encode(["response" => "ok"]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\TicketStatus  $ticketStatus
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(TicketStatus $ticketStatus)
+    public function update(Request $request, $id)
     {
-        $ticket=TicketStatus::find($ticketStatus);
+        $this->validate($request, [
+            'ts_name' => 'required'
+        ]);
+        $ticket = TicketStatus::find($id);
+        $ticket->ts_name = $request->ts_name;
+        $ticket->save();
+        return json_encode(["response" => "ok"]);
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $ticket = TicketStatus::find($id);
         $ticket->delete();
-        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
+        return json_encode(["response" => "ok"]);
     }
 
     public function fill(Request $request)
@@ -124,21 +57,23 @@ class TicketStatusController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
+            $ticket = TicketStatus::select('id', 'ts_name')
+                ->skip($start)
+                ->take($length)
+                ->get();
         } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-                ->orwhere('hp_connector', 'LIKE', "%$search%")
+            $ticket = TicketStatus::select('id', 'ts_name')
+                ->where('id', 'LIKE', "%$search%")
+                ->where('ts_name', 'LIKE', "%$search%")
                 ->get();
         }
 
         $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+        foreach ($ticket as $tickets) {
+            $data .= '["' . $tickets->id . '",' . '"' . $tickets->ts_name . '"],';
         }
         $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+        $tickets_count = TicketStatus::all()->count();
+        return response('{ "recordsTotal":' . $tickets_count . ',"recordsFiltered":' . $tickets_count . ',"data": [' . $data . ']}');
     }
 }

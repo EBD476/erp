@@ -8,6 +8,7 @@ use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
 use App\Order;
+use App\OrderState;
 use App\ProcessLevel;
 use App\Project;
 use App\Support;
@@ -49,6 +50,7 @@ class HomeController extends Controller
         $client_order = Client::where('hc_dealership_number', $current_user)->count();
         $agreement = Agreement::all()->count();
         $agreement_order = Agreement::where('ha_dealership_number', $current_user)->count();
+        $un_seen_message = HelpDesk::where('hhd_receiver_user_id', $current_user)->where('hhd_ticket_status','1')->count();
         $order_order = Order::select('id')
             ->whereNotNull('hp_Invoice_number')->where('hp_residential', $current_user)->count();
         $order_req = Order::select('id')
@@ -62,7 +64,8 @@ class HomeController extends Controller
         $orders = Order::all()->count();
         $product_requirement = DB::select("SELECT sum(Product_Count) as sum_hpo FROM hnt_product_requirements");
         $process_level = ProcessLevel::select('hp_process_id', 'hp_process_name')->get();
-        return view('home', ['product_requirement' => $product_requirement], compact('process_level', 'order_agent', 'order_order', 'agreement_order', 'client_order', 'user', 'order', 'projects', 'order_req', 'agreement', 'client', 'orders', 'support_response', 'help_desk', 'priority', 'type'));
+        $progress = OrderState::select('order_id')->get();
+        return view('home', ['product_requirement' => $product_requirement], compact('progress','un_seen_message','process_level', 'order_agent', 'order_order', 'agreement_order', 'client_order', 'user', 'order', 'projects', 'order_req', 'agreement', 'client', 'orders', 'support_response', 'help_desk', 'priority', 'type'));
 
 
     }

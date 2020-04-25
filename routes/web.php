@@ -37,7 +37,7 @@ Route::group(['middleware' => ['auth']], function () {
     route::resource('help_desk', 'HelpDeskController');
     route::resource('client', 'ClientController');
     route::resource('part', 'PartController');
-    route::resource('product_part', 'ProductPartController');
+    route::resource('product-part', 'ProductPartController');
     route::resource('repository_create', 'RepositoryCreateController');
     route::resource('provider', 'ProviderController');
     route::resource('repository-part', 'RepositoryPartController');
@@ -75,13 +75,13 @@ Route::group(['middleware' => ['auth']], function () {
     route::resource('repository-middle-part', 'RepositoryMiddlePartController');
     route::resource('middle-part-requirement', 'MiddlePartRequirementController');
     route::resource('part-requirement', 'PartRequirementController');
+    route::resource('hd-receiver-user', 'HDReceiverUserController');
 
 //  Getting data
     Route::get('send_request/{id}', 'ProjectController@send_request')->name('projects.send_request');
     Route::get('show_data/{id}', 'SupportController@show_data')->name('support.show_data');
     Route::get('show', 'SupportController@show')->name('support.show');
     Route::get('show_response/{id}', 'ProjectController@show_response')->name('projects.show_response');
-    Route::get('receive_show/{id}', 'HelpDeskController@receive_show')->name('help_desk.receive_show');
     Route::get('show_all_response', 'ProjectController@show_all_response')->name('projects.show_all_response');
     route::get('locale/{lan}', 'LanguageController@locale');
     Route::get('/', 'HomeController@index')->name('home');
@@ -92,19 +92,23 @@ Route::group(['middleware' => ['auth']], function () {
 
 //put data
     route::put('edit_pre/{id}', 'OrderController@edit_pre')->name('order.edit_pre');
+    route::put('checkbox/{id}', 'ProductController@checkbox')->name('product.checkbox');
+    Route::put('receive_show/{id}', 'HelpDeskController@receive_show')->name('help_desk.receive_show');
+
+
 
 //  Posting data
     Route::post('order-state/{id}', 'RepositoryProductController@order_state')->name('repository.order_state');
     Route::post('add-product', 'OrderProductController@add')->name('product.add');
     Route::post('receive_verify/{id}', 'HelpDeskController@receive_verify')->name('help_desk.receive_verify');
     Route::post('support_request', 'ProjectController@support_request')->name('projects.support_request');
-    route::post('checkbox', 'ProductController@checkbox')->name('product.checkbox');
     route::post('createpdf', 'OrderProductController@createpdf')->name('order_product.createpdf');
 
 
 //    uploaded image route
     Route::post('/product-image-save', 'ProductController@upload')->name('product.upload');
     Route::post('/part-image-save', 'PartController@upload')->name('part.upload');
+    Route::post('/middle-part-image-save', 'MiddlePartController@upload')->name('middle-part.upload');
 
 
 //  Mapping route
@@ -126,10 +130,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/json-data-verifier', 'VerifierController@fill')->name('verifier.json-data-verifier');
     Route::get('/json-data-permission', 'PermissionController@fill')->name('permission.json-data-permission');
     Route::get('/json-data-verify_pre', 'VerifyPreController@fill')->name('verify_pre.json-data-verify_pre');
-    Route::get('/json-data-help_desk', 'HelpDeskController@fill')->name('help_desk.json-data-help_desk');
+    Route::get('/json-data-help-desk', 'HelpDeskController@fill_sender')->name('help_desk.json-data-help-desk');
+    Route::get('/json-data-help-desk-r', 'HelpDeskController@fill_receiver')->name('help_desk.json-data-help-desk-r');
     Route::get('/json-data-client', 'ClientController@fill')->name('client.json-data-client');
     Route::get('/json-data-part', 'PartController@fill')->name('part.json-data-part');
-    Route::get('/json-data-product_part', 'ProductPartController@fill')->name('product_part.json-data-product_part');
+    Route::get('/json-data-product-part', 'ProductPartController@fill')->name('product-part.json-data-product-part');
     Route::get('/json-data-repository_create', 'RepositoryCreateController@fill')->name('repository_create.json-data-repository_create');
     Route::get('/json-data-provider', 'ProviderController@fill')->name('provider.json-data-provider');
     Route::get('/json-data-repository-part', 'RepositoryPartController@fill')->name('repository-part.json-data-repository-part');
@@ -156,24 +161,33 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/json-data-middle-part-requirement', 'MiddlePartRequirementController@fill')->name('middle-part-requirement.json-data-middle-part-requirement');
     Route::get('/json-data-part-requirement', 'PartRequirementController@fill')->name('part-requirement.json-data-part-requirement');
     Route::get('/json-data-product-requirement', 'ProductRequirementController@fill')->name('product-requirement.json-data-product-requirement');
+    Route::get('/json-data-product-middle-part', 'ProductMiddlePartController@fill')->name('product-middle-part.json-data-product-middle-part');
+    Route::get('/json-data-middle-part', 'MiddlePartController@fill')->name('middle-part.json-data-middle-part');
+    Route::get('/json-data-middle-section-part', 'MiddleSectionPartController@fill')->name('middle-section-part.json-data-middle-section-part');
+    Route::get('/json-data-repository-part', 'RepositoryPartController@fill')->name('repository-part.json-data-repository-part');
+    Route::get('/json-data-repository-middle_part', 'RepositoryMiddlePartController@fill')->name('repository-middle-part.json-data-repository-middle-part');
+    Route::get('/json-data-repository-product', 'RepositoryProductController@fill')->name('repository-product.json-data-repository-product');
+    Route::get('/json-data-priority', 'HDpriorityController@fill')->name('priority.json-data-priority');
+    Route::get('/json-data-type', 'HDtypeController@fill')->name('type.json-data-type');
+    Route::get('/json-data-level', 'HNTLevelController@fill')->name('level.json-data-level');
+    Route::get('/json-data-ticket', 'TicketStatusController@fill')->name('ticket.json-data-ticket');
+    Route::get('/json-data-hd-receiver-user', 'HDReceiverUserController@fill')->name('hd-receiver-user.json-data-hd-receiver-user');
+
+
+
 
 //fill select to data
-    Route::get('/json-data-fill_data', 'OrderController@fill_data')->name('order.json-data-fill_data');
-    Route::get('/json-data-fill_data_city', 'OrderController@fill_data_city')->name('order.json-data-fill_data_city');
-    Route::get('/json-data-fill_data_state', 'OrderController@fill_data_state')->name('order.json-data-fill_data_state');
-    Route::get('/json-data-fill_data_product', 'OrderController@fill_data_product')->name('order.json-data-fill_data_product');
-    Route::get('/json-data-fill_data_product_color', 'ProductController@fill_data_product_color')->name('product.json-data-fill_data_product_color');
-    Route::get('/json-data-fill_data_product_item', 'ProductController@fill_data_product_item')->name('product.json-data-fill_data_product_item');
-    Route::get('/json-data-fill_data_product_property', 'ProductController@fill_data_product_property')->name('product-middle-part.json-data-fill_data_product_property');
-    Route::get('/json-data-fill_data_middle_part', 'ProductMiddlePartController@fill_data_middle_part')->name('product-middle-part.json-data-fill_data_middle_part');
-    Route::get('/json-data-fill_data_part', 'ProductMiddlePartController@fill_data_part')->name('product.json-data-fill_data_part');
-    Route::get('/json-data-fill_data_product', 'ProductMiddlePartController@fill_data_product')->name('product-middle-part.json-data-fill_data_product');
-    Route::get('/json-data-fill_data_middle_part', 'ProductMiddlePartController@fill_data_middle_part')->name('product-middle-part.json-data-fill_data_middle_part');
-    Route::get('/json-data-fill_data_repository_part', 'RepositoryPartController@fill_data_repository_part')->name('repository-part.json-data-fill_data_repository_part');
-    Route::get('/json-data-fill_data_repository_middle_part', 'RepositoryProductController@fill_data_repository_middle_part')->name('repository-product.json-data-fill_data_repository_middle_part');
-    Route::get('/json-data-fill_data_repository_product', 'RepositoryProductController@fill_data_repository_product')->name('repository-product.json-data-fill_data_repository_product');
-    Route::get('/fill-data-repository-requirement-middle-part', 'MiddlePartRequirementController@fill_data_repository_requirement_middle_part')->name('middle-part-requirement.fill-data-repository-requirement-middle-part');
-
+    Route::get('/json-data-fill-client-data', 'OrderController@fill_data_client')->name('order.json-data-fill-client-data');
+    Route::get('/json-data-fill-data-city', 'OrderController@fill_data_city')->name('order.json-data-fill-data-city');
+    Route::get('/json-data-fill-data-state', 'OrderController@fill_data_state')->name('order.json-data-fill-data-state');
+    Route::get('/json-data-fill-data-product', 'OrderController@fill_data_product')->name('order.json-data-fill-data-product');
+    Route::get('/json-data-fill-data-product-color', 'ProductController@fill_data_product_color')->name('product.json-data-fill-data-product-color');
+    Route::get('/json-data-fill-data-product-item', 'ProductController@fill_data_product_item')->name('product.json-data-fill-data-product-item');
+    Route::get('/json-data-fill-data-product-property', 'ProductController@fill_data_product_property')->name('product-middle-part.json-data-fill-data-product-property');
+    Route::get('/json-data-fill-data-middle-part','MiddlePartController@fill_data_middle_part')->name('middle-part.json-data-fill-data-middle-part');
+    Route::get('/json-data-fill-data-part', 'PartController@fill_data_part')->name('part.json-data-fill-data-part');
+    Route::get('/json-data-fill-data-provider', 'ProviderController@fill_data_provider')->name('provider.json-data-fill-data-provider');
+    Route::get('/json-data-fill-hd-receiver-user', 'HDReceiverUserController@fill_data_receiver')->name('hd-receiver-user.json-data-fill-hd-receiver-user');
 
 
 //  deleted route
@@ -191,8 +205,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/help_desk-destroy/{id}', 'HelpDeskController@destroy')->name('help_desk.help_desk-destroy');
     Route::delete('/client-destroy/{id}', 'ClientController@destroy')->name('client.client-destroy');
     Route::delete('/part-destroy/{id}', 'PartController@destroy')->name('part.part-destroy');
-    Route::delete('/product_part-destroy/{id}', 'ProductPartController@destroy')->name('product_part.product_part-destroy');
-    Route::delete('/repository_create-destroy/{id}', 'RepositoryCreateController@destroy')->name('repository_create.repository_create-destroy');
+    Route::delete('/product-part-destroy/{id}', 'ProductPartController@destroy')->name('product-part.product-part-destroy');
+    Route::delete('/repository-create-destroy/{id}', 'RepositoryCreateController@destroy')->name('repository_create.repository_create-destroy');
     Route::delete('/provider-destroy/{id}', 'ProviderController@destroy')->name('provider.provider-destroy');
     Route::delete('/repository-part-destroy/{id}', 'RepositoryPartController@destroy')->name('repository-part.repository-part-destroy');
     Route::delete('/agreement-destroy/{id}', 'AgreementController@destroy')->name('agreement.agreement-destroy');
@@ -218,5 +232,24 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/middle-part-requirement-destroy/{id}', 'MiddlePartRequirementController@destroy')->name('middle-part-requirement.middle-part-requirement-destroy');
     Route::delete('/part-requirement-destroy/{id}', 'PartRequirementController@destroy')->name('part-requirement.part-requirement-destroy');
     Route::delete('/product-requirement-destroy/{id}', 'ProductRequirementController@destroy')->name('product-requirement.product-requirement-destroy');
+    Route::delete('/product-middle-part-destroy/{id}', 'ProductMiddlePartController@destroy')->name('product-middle-part.product-middle-part-destroy');
+    Route::delete('/product-middle-part-destroy/{id}', 'ProductMiddlePartController@destroy')->name('product-middle-part.product-middle-part-destroy');
+    Route::delete('/middle-part-destroy/{id}', 'MiddlePartController@destroy')->name('middle-part.middle-part-destroy');
+    Route::delete('/middle-section-part-destroy/{id}', 'MiddleSectionPartController@destroy')->name('middle-section-part.middle-section-part-destroy');
+    Route::delete('/repository-product-destroy/{id}', 'RepositoryProductController@destroy')->name('repository-product.repository-product-destroy');
+    Route::delete('/repository-middle-part-destroy/{id}', 'RepositoryMiddlePartController@destroy')->name('repository-middle-part.repository-middle-part-destroy');
+    Route::delete('/priority-destroy/{id}', 'HDpriorityController@destroy')->name('priority.priority-destroy');
+    Route::delete('/type-destroy/{id}', 'HDtypeController@destroy')->name('type.type-destroy');
+    Route::delete('/level-destroy/{id}', 'HNTLevelController@destroy')->name('level.level-destroy');
+    Route::delete('/ticket-destroy/{id}', 'TicketStatusController@destroy')->name('ticket.ticket-destroy');
+    Route::delete('/hd-receiver-user-destroy/{id}', 'HDReceiverUserController@destroy')->name('hd-receiver-user.hd-receiver-user-destroy');
+
+
+
+//    un link image
+    Route::delete('/product-destroy-image/{id}', 'ProductController@destroy_image')->name('product.product-destroy-image');
+    Route::delete('/middle-part-destroy-image/{id}', 'MiddlePartController@destroy_image')->name('middle-part.middle-part-destroy-image');
+    Route::delete('/part-destroy-image/{id}', 'PartController@destroy_image')->name('part.part-destroy-image');
+
 
 });

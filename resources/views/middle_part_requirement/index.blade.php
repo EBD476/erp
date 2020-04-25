@@ -142,8 +142,6 @@
 
             $('#card-form2').hide();
 
-            var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
-
             $('#table').on('click', 'button', function (event) {
 
                 var data = table.row($(this).parents('tr')).data();
@@ -354,7 +352,7 @@
                 dir: "rtl",
                 language: "fa",
                 ajax: {
-                    url: '/fill-data-repository-requirement-middle-part',
+                    url: '/json-data-fill-data-middle-part',
                     dataType: 'json',
                     data: function (params) {
                         return {

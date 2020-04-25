@@ -13,37 +13,12 @@ class RepositoryCreateController extends Controller
 {
     public function index()
     {
-        $current_user=auth()->user()->id;
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $repository =RepositoryCreate::all();
-        return view('repository_create.index',compact('repository','type','priority','help_desk','user'));
-    }
-
-
-
-    public function checkbox(Request $request , $id)
-    {
-        $checkbox=Product::find($id);
-        $checkbox->hp_statuse=$request->checkbox;
-        $checkbox->save();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $current_user=auth()->user()->id;
-        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
-        $user = User::select('id', 'name')->get();
-        return view('repository_create.create',compact('type','priority','help_desk','user'));
+        return view('repository_create.index', compact('type', 'priority', 'help_desk', 'user'));
     }
 
     public function store(Request $request)
@@ -60,50 +35,13 @@ class RepositoryCreateController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $current_user=auth()->user()->id;
-        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
-        $user = User::select('id', 'name')->get();
-        $repository=RepositoryCreate::find($id);
-        return view('repository_create.edit',compact('repository','type','priority','help_desk','user'));
-
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $this->validate($request, [
             'hr_name' => 'required',
             'hr_description' => 'required',
         ]);
-        $repository =RepositoryCreate::find($id);
+        $repository = RepositoryCreate::find($id);
         $repository->hr_name = $request->hr_name;
         $repository->hr_description = $request->hr_description;
         $repository->save();
@@ -112,17 +50,11 @@ class RepositoryCreateController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $repository = RepositoryCreate::find($id);
         $repository->delete();
-        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
+        return json_encode(["response" => "Done"]);
     }
 
     public function fill(Request $request)
@@ -131,21 +63,23 @@ class RepositoryCreateController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
+            $repository = RepositoryCreate::select('id', 'hr_name', 'hr_description')
+                ->skip($start)
+                ->take($length)
+                ->get();
         } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-                ->orwhere('hp_connector', 'LIKE', "%$search%")
+            $repository = RepositoryCreate::select('id', 'hr_name', 'hr_description')
+                ->where('id', 'LIKE', "%$search%")
+                ->orwhere('hr_name', 'LIKE', "%$search%")
                 ->get();
         }
 
         $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+        foreach ($repository as $repositories) {
+            $data .= '["' . $repositories->id . '",' . '"' . $repositories->hr_name . '",' . '"' . $repositories->hr_description . '"],';
         }
         $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+        $repository_count = RepositoryCreate::all()->count();
+        return response('{ "recordsTotal":' . $repository_count . ',"recordsFiltered":' . $repository_count . ',"data": [' . $data . ']}');
     }
 }

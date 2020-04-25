@@ -543,6 +543,25 @@
   "New Middle Part Requirement":"نیازمندی جدید قطعات میانی",
   "Part Requirement Management":"مدیریت نیازمندی قطعات",
   "New Part Requirement":"نیازمندی جدید قطعات",
-  "Edit Requirement":"ویرایش نیازمندی"
+  "Edit Requirement":"ویرایش نیازمندی",
+  "Middle Part Requirement":"نیازمندی قطعات میانی",
+  "Are you sure?":"آیا از انجام این عملیات اطمینان دارید؟",
+  "Done":"تایید",
+  "cancel":"لغو",
+  "Poof! Your imaginary file has been deleted!":"اطلاعات با موفقیت حذف شد.",
+  "Your imaginary file is safe!":"اطلاعات شما ایمن است.",
+  "Middle Part Count":"تعداد قطعه میانی",
+  "Size":"اندازه",
+  "Part Size":"اندازه قطعه",
+  "Edit Product Part":"ویرایش قطعات محصول",
+  "Serial Number":"کد",
+  "Sender":"فرستنده",
+  "Help Desk Send Ticket":"لیست درخواست های ارسالی",
+  "Help Desk Receive Ticket":"لیست درخواست های دریافتی",
+  "Unseen messages":"پیام های دیده نشده",
+  "Response":"پاسخ",
+  "Receiver User":"کاربر گیرنده",
+  "New Receiver":"نقش گیرنده جدید",
+  "Receiver List":"لیست نقش دریافت کننده پیام"
 
 }

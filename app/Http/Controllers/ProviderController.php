@@ -11,44 +11,21 @@ use App\HelpDesk;
 
 class ProviderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $current_user=auth()->user()->id;
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $provider = Provider::all();
-        return view('provider.index',compact('provider','type','priority','help_desk','user'));
+        return view('provider.index', compact('type', 'priority', 'help_desk', 'user'));
     }
 
-
-
-    public function checkbox(Request $request , $id)
+    public function checkbox(Request $request, $id)
     {
-        $checkbox=Provider::find($id);
-        $checkbox->hp_statuse=$request->checkbox;
+        $checkbox = Provider::find($id);
+        $checkbox->hp_statuse = $request->checkbox;
         $checkbox->save();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $current_user=auth()->user()->id;
-        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
-        $user = User::select('id', 'name')->get();
-        return view('provider.create',compact('provider','type','priority','help_desk','user'));
     }
 
     public function store(Request $request)
@@ -66,77 +43,32 @@ class ProviderController extends Controller
         $provider->hp_account_number = $request->hp_account_number;
         $provider->save();
 
-        return json_encode(["response"=>"OK","provider"=>$provider->hp_name]);
+        return json_encode(["response" => "OK", "provider" => $provider->hp_name]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $current_user=auth()->user()->id;
-        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
-        $user = User::select('id', 'name')->get();
-        $provider=Provider::find($id);
-        return view('provider.edit',compact('provider','type','priority','help_desk','user'));
-
-
-    }
-
-
-    public function show(){
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'hp_name' => 'required',
-            'hp_phone' => 'required',
-            'hp_address' => 'required',
-//            'hp_account_number' => 'required',
+//            'hp_name' => 'required',
+//            'hp_phone' => 'required',
+//            'hp_address' => 'required',
         ]);
-        $provider =Provider::find($id);
+        $provider = Provider::find($id);
         $provider->hp_name = $request->hp_name;
         $provider->hp_phone = $request->hp_phone;
         $provider->hp_address = $request->hp_address;
-        $provider->hp_account_number = $request->hp_account_number;
+//        $provider->hp_account_number = $request->hp_account_number;
         $provider->save();
         return json_encode(["response" => "Done"]);
 
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $provider = Provider::find($id);
         $provider->delete();
-        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
+        return json_encode(["response" => "Done"]);
     }
 
     public function fill(Request $request)
@@ -145,21 +77,33 @@ class ProviderController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
+            $providers = Provider::select('id', 'hp_name', 'hp_phone', 'hp_address')
+                ->skip($start)
+                ->take($length)
+                ->get();
         } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-                ->orwhere('hp_connector', 'LIKE', "%$search%")
+            $providers = Provider::select('id', 'hp_name', 'hp_phone', 'hp_address')
+                ->where('hp_name', 'LIKE', "%$search%")
                 ->get();
         }
 
         $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+        foreach ($providers as $provider) {
+            $data .= '["' . $provider->id . '",' . '"' . $provider->hp_name . '",' . '"' . $provider->hp_phone . '",' . '"' . $provider->hp_address . '",' . '"' . $provider->hp_account_number . '"],';
         }
         $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+        $providers_count = Provider::all()->count();
+        return response('{ "recordsTotal":' . $providers_count . ',"recordsFiltered":' . $providers_count . ',"data": [' . $data . ']}');
+    }
+
+//fill select to
+    public function fill_data_provider(Request $request)
+    {
+        $search = $request->search;
+        if ($search != "") {
+
+            $provider = Provider::select('hp_name as text', 'id')->where('hp_name', 'LIKE', "%$search%")->get();
+        }
+        return json_encode(["results" => $provider]);
     }
 }

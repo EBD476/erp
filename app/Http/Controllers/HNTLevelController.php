@@ -13,92 +13,46 @@ class HNTLevelController extends Controller
 {
     public function index()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $level=HNTLevel::all();
-        return view('hnt-level.index',compact('level','help_desk','priority','type','user'));
+        $current_user = auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        return view('hnt-level.index', compact('level', 'help_desk', 'priority', 'type', 'user'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('hnt-level.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'hp_process_name'=>'required',
-            'hp_process_id'=>'required'
+        $this->validate($request, [
+            'hp_process_name' => 'required',
+            'hp_process_id' => 'required'
         ]);
-        $level=New HNTLevel();
+        $level = New HNTLevel();
         $level->hp_process_name = $request->hp_process_name;
         $level->hp_process_id = $request->hp_process_id;
         $level->save();
-        return json_encode(["response"=>"OK"]);
+        return json_encode(["response" => "OK"]);
     }
 
 
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\HDpriority  $hDpriority
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(Request $request, $id)
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $level=HNTLevel::find($id);
-        return view('hnt-level.edit',compact('level','type','priority','help_desk','user'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\HDpriority  $hDpriority
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request,$id)
-    {
-        $this->validate($request,[
-            'hp_process_name'=>'required',
-            'hp_process_id'=>'required'
+        $this->validate($request, [
+            'hp_process_name' => 'required',
+            'hp_process_id' => 'required'
         ]);
-        $level=HNTLevel :: find($id);
+        $level = HNTLevel:: find($id);
         $level->hp_process_name = $request->hp_process_name;
         $level->hp_process_id = $request->hp_process_id;
         $level->save();
-        return json_encode(["response"=>"ok"]);
+        return json_encode(["response" => "ok"]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\HDpriority  $hDpriority
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $level = HNTLevel::find($id);
         $level->delete();
-        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
+        return json_encode(["response" => "Done"]);
     }
 
     public function fill(Request $request)
@@ -107,21 +61,25 @@ class HNTLevelController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
+            $level = HNTLevel::select('id', 'hp_process_id', 'hp_process_name')
+                ->orderby('hp_process_id')
+                ->skip($start)
+                ->take($length)
+                ->get();
         } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-                ->orwhere('hp_connector', 'LIKE', "%$search%")
+            $level = HNTLevel::select('id', 'hp_process_id', 'hp_process_name')
+                ->where('id', 'LIKE', "%$search%")
+                ->orwhere('hp_process_id', 'LIKE', "%$search%")
+                ->orwhere('hp_process_name', 'LIKE', "%$search%")
                 ->get();
         }
 
         $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+        foreach ($level as $levels) {
+            $data .= '["' . $levels->hp_process_id . '",' . '"' . $levels->hp_process_name . '",' . '"' . $levels->id . '"],';
         }
         $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+        $levels_count = HNTLevel::all()->count();
+        return response('{ "recordsTotal":' . $levels_count . ',"recordsFiltered":' . $levels_count . ',"data": [' . $data . ']}');
     }
 }

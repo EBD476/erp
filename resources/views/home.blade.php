@@ -1531,8 +1531,8 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category"></p>
-                                    <h3 class="card-title"></h3>
+                                    <p class="card-category">{{__('Unseen messages')}}</p>
+                                    <h3 class="card-title">{{$un_seen_message}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -1627,7 +1627,7 @@
     @role('order')
     <div class="content persian">
         <div class="row">
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-2 col-md-6">
                 <div class="card card-stats">
                     <div class="card-body">
                         <div class="row">
@@ -1653,7 +1653,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-2 col-md-6">
                 <div class="card card-stats">
                     <div class="card-body">
                         <div class="row">
@@ -1679,7 +1679,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-2 col-md-6">
                 <div class="card card-stats">
                     <div class="card-body">
                         <div class="row">
@@ -1705,7 +1705,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-2 col-md-6">
                 <div class="card card-stats">
                     <div class="card-body">
                         <div class="row">
@@ -1726,6 +1726,32 @@
                     {{--<hr>--}}
                     {{--<div class="stats">--}}
                     {{--<i class="tim-icons icon-watch-time"></i> In the last hours--}}
+                    {{--</div>--}}
+                    {{--</div>--}}
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <div class="card card-stats">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-5">
+                                <div class="info-icon text-center icon-success">
+                                    <i class="tim-icons icon-world"></i>
+                                </div>
+                            </div>
+                            <div class="col-7">
+                                <div class="numbers">
+                                    <p class="card-category" style="font-size: .73rem;">{{__('Unseen messages')}}</p>
+                                    <h3 class="card-title">{{$un_seen_message}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{--<div class="card-footer">--}}
+                    {{--<hr>--}}
+                    {{--<div class="stats">--}}
+                    {{--<i class="tim-icons icon-trophy"></i> Customers feedback--}}
                     {{--</div>--}}
                     {{--</div>--}}
                 </div>
@@ -1777,7 +1803,44 @@
                                         @foreach($process_level as $status)
                                             @if($status->hp_process_id == $order_agents->hp_status)
                                                 <td>
-                                                    {{$status->hp_process_name}}
+                                                    <div class="row">
+                                                        <div class="col-md-10">
+                                                            <div class="col-md-4" style="margin-top: -10px">
+                                                                {{$status->hp_process_name}}
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="progress">
+                                                                    @foreach($progress as $progresses)
+                                                                        {{--<span class="progress-value">25%</span>--}}
+                                                                        @if($progresses->ho_process_id == 1 and $order_agents->id == $progresses->order_id )
+                                                                            <div class="progress-bar" role="progressbar"
+                                                                                 aria-valuenow="60" aria-valuemin="0"
+                                                                                 aria-valuemax="100"
+                                                                                 style="width: 25%;"></div>
+                                                                        @endif
+                                                                        @if($progresses->ho_process_id == 2 and $order_agents->id == $progresses->order_id)
+                                                                            <div class="progress-bar" role="progressbar"
+                                                                                 aria-valuenow="60" aria-valuemin="0"
+                                                                                 aria-valuemax="100"
+                                                                                 style="width: 50%;"></div>
+                                                                        @endif
+                                                                        @if($progresses->ho_process_id == 3 and $order_agents->id == $progresses->order_id)
+                                                                            <div class="progress-bar" role="progressbar"
+                                                                                 aria-valuenow="60" aria-valuemin="0"
+                                                                                 aria-valuemax="100"
+                                                                                 style="width: 75%;"></div>
+                                                                        @endif
+                                                                        @if($progresses->ho_process_id == 4 and $order_agents->id == $progresses->order_id )
+                                                                            <div class="progress-bar" role="progressbar"
+                                                                                 aria-valuenow="60" aria-valuemin="0"
+                                                                                 aria-valuemax="100"
+                                                                                 style="width:100%; direction: ltr"></div>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             @endif
                                         @endforeach

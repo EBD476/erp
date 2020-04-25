@@ -51,87 +51,6 @@
                                                 {{__('Accept State')}}
                                             </th>
                                             </thead>
-                                            <tbody>
-                                            @foreach($order as $key => $orders)
-                                                <tr>
-                                                    <td>
-                                                        {{$key + 1}}
-                                                    </td>
-                                                    <td>
-                                                        {{$orders->hp_project_name}}
-                                                    </td>
-                                                    <td>
-                                                        {{$orders->hp_employer_name}}
-                                                    </td>
-                                                    <td>
-                                                        {{$orders->hp_connector}}
-                                                    </td>
-                                                    <td>
-                                                        {{$orders->hp_type_project}}
-                                                    </td>
-                                                    <td>
-                                                        <div class="dropdown">
-                                                            <button type="button"
-                                                                    class="btn btn-link dropdown-toggle btn-icon"
-                                                                    data-toggle="dropdown">
-                                                                <i class="tim-icons icon-settings-gear-63"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu dropdown-menu-right"
-                                                                 aria-labelledby="dropdownMenuLink">
-                                                                <a class="dropdown-item"
-                                                                   href="{{route('verify_pre.edit',$orders->id)}}"
-                                                                >{{__('Preview factor')}}</a>
-                                                                <a class="dropdown-item"
-                                                                   href="{{route('order.edit',$orders->id)}}"
-                                                                >{{__('Edit')}}</a>
-                                                                <form id="-form-delete{{$orders->id}}"
-                                                                      style="display: none;" method="POST"
-                                                                      action="{{route('order.destroy',$orders->id)}}">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                </form>
-                                                                <a class="dropdown-item"
-                                                                   onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
-                                                                           event.preventDefault();
-                                                                           document.getElementById('-form-delete{{$orders->id}}').submit();
-                                                                           }else {
-                                                                           event.preventDefault();}">{{__('Delete')}}</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="progress">
-                                                            @foreach($progress as $progresses)
-                                                                {{--<span class="progress-value">25%</span>--}}
-                                                                @if($progresses->ho_process_id == 1 and $orders->id == $progresses->order_id )
-                                                                    <div class="progress-bar" role="progressbar"
-                                                                         aria-valuenow="60" aria-valuemin="0"
-                                                                         aria-valuemax="100"
-                                                                         style="width: 25%;"></div>
-                                                                @endif
-                                                                @if($progresses->ho_process_id == 2 and $orders->id == $progresses->order_id)
-                                                                    <div class="progress-bar" role="progressbar"
-                                                                         aria-valuenow="60" aria-valuemin="0"
-                                                                         aria-valuemax="100"
-                                                                         style="width: 50%;"></div>
-                                                                @endif
-                                                                @if($progresses->ho_process_id == 3 and $orders->id == $progresses->order_id)
-                                                                    <div class="progress-bar" role="progressbar"
-                                                                         aria-valuenow="60" aria-valuemin="0"
-                                                                         aria-valuemax="100"
-                                                                         style="width: 75%;"></div>
-                                                                @endif
-                                                                @if($progresses->ho_process_id == 4 and $orders->id == $progresses->order_id )
-                                                                    <div class="progress-bar" role="progressbar"
-                                                                         aria-valuenow="60" aria-valuemin="0"
-                                                                         aria-valuemax="100"
-                                                                         style="width:100%; direction: ltr"></div>
-                                                                @endif
-                                                            @endforeach
-                                                        </div>
-                                                    </td>
-                                            @endforeach
-                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -170,33 +89,164 @@
 @push('scripts')
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
     <script>
         $(document).ready(function () {
-            $('#table').DataTable({
-                "language": {
-                    "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
-                    "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
-                    "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
-                    "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
-                    "sInfoPostFix": "",
-                    "sInfoThousands": ",",
-                    "sLengthMenu": "نمایش _MENU_ رکورد",
-                    "sLoadingRecords": "در حال بارگزاری...",
-                    "sProcessing": "در حال پردازش...",
-                    "sSearch": "جستجو:",
-                    "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
-                    "oPaginate": {
-                        "sFirst": "ابتدا",
-                        "sLast": "انتها",
-                        "sNext": "بعدی",
-                        "sPrevious": "قبلی"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
-                        "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
+
+            var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+
+            $('#table').on('click', 'button', function (event) {
+
+                var data = table.row($(this).parents('tr')).data();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
-                }
+                });
+                swal({
+                    // title: "",
+                    text: "{{__('Are you sure?')}}",
+                    buttons: ["{{__('cancel')}}", "{{__('Done')}}"],
+                    icon: "warning",
+                    // buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: '/order-destroy/' + data[0],
+                                type: 'delete',
+                                data: data,
+                                dataType: 'json',
+                                async: false,
+                                success: function (data) {
+                                    swal("{{__("Poof! Your imaginary file has been deleted!")}}", {
+                                        icon: "success",
+                                        button: "{{__('Done')}}",
+                                    });
+                                },
+                                cache: false,
+                            });
+                            $('#table').DataTable().ajax.reload();
+                        } else {
+                            swal(
+                                "{{__("Your imaginary file is safe!")}}",
+                                {button: "{{__('Done')}}"}
+                            );
+
+                        }
+                    });
             });
+            var table = $('#table').on('draw.dt', function (e, settings, json, xhr) {
+                }).DataTable({
+
+                    "processing":
+                        true,
+                    "serverSide":
+                        true,
+                    "ajax":
+                        '/json-data-order',
+                    "columnDefs":
+                        [{
+                            "targets": -2,
+                            "data": null,
+                            "render": function (data, type, row, meta) {
+                                return "  <div class=\"dropdown\">\n" +
+                                    "                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +
+                                    "                                                                    data-toggle=\"dropdown\">\n" +
+                                    "                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +
+                                    "                                                            </a>\n" +
+                                    "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
+                                    "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
+                                    "                                                               <a  href=\"verify_pre/" + data[0] + "/edit\" class=\"dropdown-item\"\n" +
+                                    "                                                                >{{__('Preview Factor')}}</a>\n" +
+                                    "                                                               <a  href=\"order/" + data[0] + "/edit\" class=\"dropdown-item\"\n" +
+                                    "                                                                >{{__('Edit')}}</a>\n" +
+                                    "                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +
+                                    "                                                            </div>\n" +
+                                    "                                                        </div>"
+                            }
+                        }, {
+                            "targets": -1,
+                            "data": null,
+                            "defaultContent": '  <div class="progress">\n' +
+                                '                                                            @foreach($order as $orders)\n' +
+                                '                                                            @foreach($progress as $progresses)\n' +
+                                // '                                                                <span class="progress-value">25%</span>\n' +
+                                '                                                                @if($progresses->ho_process_id == 1 and $orders->id == $progresses->order_id )\n' +
+                                '                                                                    <div class="progress-bar" role="progressbar"\n' +
+                                '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
+                                '                                                                         aria-valuemax="100"\n' +
+                                '                                                                         style="width: 25%;"></div>\n' +
+                                '                                                                @endif\n' +
+                                '                                                                @if($progresses->ho_process_id == 2 and $orders->id == $progresses->order_id)\n' +
+                                '                                                                    <div class="progress-bar" role="progressbar"\n' +
+                                '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
+                                '                                                                         aria-valuemax="100"\n' +
+                                '                                                                         style="width: 50%;"></div>\n' +
+                                '                                                                @endif\n' +
+                                '                                                                @if($progresses->ho_process_id == 3 and $orders->id == $progresses->order_id)\n' +
+                                '                                                                    <div class="progress-bar" role="progressbar"\n' +
+                                '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
+                                '                                                                         aria-valuemax="100"\n' +
+                                '                                                                         style="width: 75%;"></div>\n' +
+                                '                                                                @endif\n' +
+                                '                                                                @if($progresses->ho_process_id == 4 and $orders->id == $progresses->order_id )\n' +
+                                '                                                                    <div class="progress-bar" role="progressbar"\n' +
+                                '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
+                                '                                                                         aria-valuemax="100"\n' +
+                                '                                                                         style="width:100%; direction: ltr"></div>\n' +
+                                '                                                                @endif\n' +
+                                '                                                            @endforeach\n' +
+                                '                                                            @endforeach\n' +
+                                '                                                        </div>'
+                        }],
+                    "language":
+                        {
+                            "sEmptyTable":
+                                "هیچ داده ای در جدول وجود ندارد",
+                            "sInfo":
+                                "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                            "sInfoEmpty":
+                                "نمایش 0 تا 0 از 0 رکورد",
+                            "sInfoFiltered":
+                                "(فیلتر شده از _MAX_ رکورد)",
+                            "sInfoPostFix":
+                                "",
+                            "sInfoThousands":
+                                ",",
+                            "sLengthMenu":
+                                "نمایش _MENU_ رکورد",
+                            "sLoadingRecords":
+                                "در حال بارگزاری...",
+                            "sProcessing":
+                                "در حال پردازش...",
+                            "sSearch":
+                                "جستجو:",
+                            "sZeroRecords":
+                                "رکوردی با این مشخصات پیدا نشد",
+                            "oPaginate":
+                                {
+                                    "sFirst":
+                                        "ابتدا",
+                                    "sLast":
+                                        "انتها",
+                                    "sNext":
+                                        "بعدی",
+                                    "sPrevious":
+                                        "قبلی"
+                                }
+                            ,
+                            "oAria":
+                                {
+                                    "sSortAscending":
+                                        ": فعال سازی نمایش به صورت صعودی",
+                                    "sSortDescending":
+                                        ": فعال سازی نمایش به صورت نزولی"
+                                }
+                        }
+                })
+            ;
         });
     </script>
 @endpush

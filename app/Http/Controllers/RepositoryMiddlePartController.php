@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use Illuminate\Support\Facades\DB;
 
 class RepositoryMiddlePartController extends Controller
 {
@@ -70,6 +71,44 @@ class RepositoryMiddlePartController extends Controller
     {
         $repository_products = RepositoryMiddlePart::find($id);
         $repository_products->delete();
-        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد . ');
+        return json_encode(["response" => "OK"]);
     }
+
+    public function fill(Request $request)
+    {
+        $start = $request->start;
+        $length = $request->length;
+        $search = $request->search['value'];
+        if ($search == '') {
+            $repository_product = DB::table('hnt_repository_middle_part')
+                ->join('hnt_middle_part', 'hnt_repository_middle_part.hrm_middle_part_id', '=', 'hnt_middle_part.id')
+                ->join('hnt_provider', 'hnt_repository_middle_part.hrm_provider_code', '=', 'hnt_provider.id')
+                ->join('hnt_repository', 'hnt_repository_middle_part.hrm_repository_id', '=', 'hnt_repository.id')
+                ->select('hnt_repository_middle_part.id', 'hnt_repository_middle_part.hrm_middle_part_id', 'hnt_repository_middle_part.hrm_count', 'hnt_repository_middle_part.hrm_entry_date', 'hnt_repository_middle_part.hrm_exit', 'hnt_repository_middle_part.hrm_provider_code', 'hnt_repository_middle_part.hrm_return_value', 'hnt_repository_middle_part.hrm_comment', 'hnt_repository_middle_part.hrm_repository_id', 'hnt_repository_middle_part.hrm_status_return_part', 'hnt_repository_middle_part.hrm_comment', 'hnt_repository_middle_part.hrm_contradiction', 'hnt_middle_part.hmp_name', 'hnt_provider.hp_name', 'hnt_repository.hr_name')
+                ->where('hnt_repository_middle_part.deleted_at','=', Null)
+                ->skip($start)
+                ->take($length)
+                ->get();
+        } else {
+            $repository_product =  DB::table('hnt_repository_middle_part')
+                ->join('hnt_middle_part', 'hnt_repository_middle_part.hrm_middle_part_id', '=', 'hnt_middle_part.id')
+                ->join('hnt_provider', 'hnt_repository_middle_part.hrm_provider_code', '=', 'hnt_provider.id')
+                ->join('hnt_repository', 'hnt_repository_middle_part.hrm_repository_id', '=', 'hnt_repository.id')
+                ->select('hnt_repository_middle_part.id', 'hnt_repository_middle_part.hrm_middle_part_id', 'hnt_repository_middle_part.hrm_count', 'hnt_repository_middle_part.hrm_entry_date', 'hnt_repository_middle_part.hrm_exit', 'hnt_repository_middle_part.hrm_provider_code', 'hnt_repository_middle_part.hrm_return_value', 'hnt_repository_middle_part.hrm_comment', 'hnt_repository_middle_part.hrm_repository_id', 'hnt_repository_middle_part.hrm_status_return_part', 'hnt_repository_middle_part.hrm_comment', 'hnt_repository_middle_part.hrm_contradiction', 'hnt_middle_part.hmp_name', 'hnt_provider.hp_name', 'hnt_repository.hr_name')
+                ->where('hnt_repository_middle_part.deleted_at','=', Null)
+                ->where('hnt_middle_part.hmp_name', 'LIKE', "%$search%")
+//                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
+//                ->orwhere('hp_connector', 'LIKE', "%$search%")
+                ->get();
+        }
+
+        $data = '';
+        foreach ($repository_product as $repository_products) {
+            $data .= '["' . $repository_products->id . '",' . '"' . $repository_products->hmp_name . '",' . '"' . $repository_products->hrm_count . '",' . '"' . $repository_products->hp_name . '",' . '"' . $repository_products->hr_name . '",' . '"' . $repository_products->hrm_entry_date . '",' . '"' . $repository_products->hrm_exit . '",' . '"' . $repository_products->hrm_return_value . '",' . '"' . $repository_products->hrm_contradiction . '",' . '"' . $repository_products->hrm_status_return_part . '",' . '"' . $repository_products->hrm_comment . '",' . '"' . $repository_products->hrm_provider_code . '",' . '"' . $repository_products->hrm_repository_id . '"],';
+        }
+        $data = substr($data, 0, -1);
+        $repository_products_count = RepositoryMiddlePart::all()->count();
+        return response('{ "recordsTotal":' . $repository_products_count . ',"recordsFiltered":' . $repository_products_count . ',"data": [' . $data . ']}');
+    }
+
 }

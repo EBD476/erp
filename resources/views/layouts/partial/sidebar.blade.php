@@ -36,14 +36,6 @@
                             </a>
                         </li>
                     </ul>
-                    <ul class="nav">
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('product-tax.index') }}">
-                                <i class="tim-icons icon-coins"></i>
-                                <span class="sidebar-normal"> {{__('Products Tax')}}</span>
-                            </a>
-                        </li>
-                    </ul>
                 </div>
             </li>
             <li class="nav-item">
@@ -119,7 +111,7 @@
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse show" id="ProductExamples" style="">
+                <div class="collapse" id="ProductExamples" style="">
                     <ul class="nav">
                         <li class="nav-item ">
                             <a class="nav-link" href="{{Route('order.invoices_list_product')}}">
@@ -146,7 +138,7 @@
                             </a>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('product_part.index')}}">
+                            <a class="nav-link" href="{{ route('product-part.index')}}">
                                 <i class="tim-icons icon-bullet-list-67"></i>
                                 <span class="sidebar-normal">{{__('Product Parts')}}</span>
                             </a>
@@ -342,6 +334,13 @@
                             </a>
                         </li>
                         <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('hd-receiver-user.index') }}">
+                                <i class="tim-icons icon-headphones"></i>
+                                <span class="sidebar-normal">
+                                    {{__('Receiver User')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
                             <a class="nav-link" href="{{ route('priority.index') }}">
                                 <i class="tim-icons icon-headphones"></i>
                                 <span class="sidebar-normal">
@@ -446,6 +445,14 @@
                             <a class="nav-link" href="{{ route('level.index') }}">
                                 <i class="tim-icons icon-single-02"></i>
                                 <span class="sidebar-normal"> {{__('HNT Level')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product-tax.index') }}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal"> {{__('TAX')}}</span>
                             </a>
                         </li>
                     </ul>
@@ -694,7 +701,7 @@
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse show" id="ProductExamples" style="">
+                <div class="collapse" id="ProductExamples" style="">
                     <ul class="nav">
                         <li class="nav-item ">
                             <a class="nav-link" href="{{route('product_requirement.index')}}">
@@ -716,7 +723,7 @@
                             </a>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('product_part.index')}}">
+                            <a class="nav-link" href="{{ route('product-part.index')}}">
                                 <i class="tim-icons icon-bullet-list-67"></i>
                                 <span class="sidebar-normal">{{__('Product Parts')}}</span>
                             </a>
@@ -835,7 +842,7 @@
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse show" id="ProductExamples" style="">
+                <div class="collapse" id="ProductExamples" style="">
                     <ul class="nav">
                         <li class="nav-item ">
                             <a class="nav-link" href="{{Route('order.invoices_list_product')}}">
@@ -862,7 +869,7 @@
                             </a>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('product_part.index')}}">
+                            <a class="nav-link" href="{{ route('product-part.index')}}">
                                 <i class="tim-icons icon-bullet-list-67"></i>
                                 <span class="sidebar-normal">{{__('Product Parts')}}</span>
                             </a>
