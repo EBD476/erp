@@ -17,7 +17,7 @@ class HDtypeController extends Controller
         $type = HDtype::select('th_name','id')->get();
         $priority = HDpriority::select('id','hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        return view('hd_type.index',compact('type','help_desk','priority','type','user'));
+        return view('help_desk.hd_type.index',compact('type','help_desk','priority','type','user'));
     }
 
     public function store(Request $request)

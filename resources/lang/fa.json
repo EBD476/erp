@@ -562,6 +562,14 @@
   "Response":"پاسخ",
   "Receiver User":"کاربر گیرنده",
   "New Receiver":"نقش گیرنده جدید",
-  "Receiver List":"لیست نقش دریافت کننده پیام"
-
+  "Receiver List":"لیست نقش دریافت کننده بسته",
+  "Edit inventory Product":"ویرایش موجودی انبار",
+  "Status Return Part":"وضعیت کالای بازگشتی",
+  "Product Zone":"بخش بندی تولید",
+  "New Zone":"معرفی بخش جدید",
+  "Edit Zone":"ویرایش بخش",
+  "Product Zone List":"لیست بخش های تولید",
+  "Zone":"بخش",
+  "Set Middle Part Zone":"اختصاص قطعه میانی به بخش",
+  "Set Product Zone":"اختصاص محصول به بخش"
 }

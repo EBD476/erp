@@ -8,6 +8,7 @@ use App\HDtype;
 use App\HelpDesk;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HDReceiverUserController extends Controller
 {
@@ -18,7 +19,7 @@ class HDReceiverUserController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        return view('hd_receiver_user.index', compact('type', 'priority', 'help_desk', 'user'));
+        return view('help_desk.hd_receiver_user.index', compact('type', 'priority', 'help_desk', 'user'));
     }
 
     public function store(Request $request)
@@ -27,11 +28,24 @@ class HDReceiverUserController extends Controller
             'hhru_name' => 'required',
             'hhru_receive_user' => 'required',
         ]);
-        $receiver = new HDReceiverUser();
-        $receiver->hhru_name = $request->hhru_name;
-        $receiver->hhru_receive_user = $request->hhru_receive_user;
-        $receiver->save();
-        return json_encode(["response" => "OK", "receiver" => $receiver->hhru_name , "receiver-id" =>$receiver->id]);
+        $size_name = count(collect($request)->get('hhru_receive_user'));
+        if ($size_name == 1) {
+            $receiver = new HDReceiverUser();
+            $receiver->hhru_name = $request->hhru_name;
+            $receiver->hhru_receive_user = $request->hhru_receive_user;
+            $receiver->save();
+        } else {
+            $item = $request->hhru_receive_user;
+            $index = 0;
+            foreach ($item as $items) {
+                $receiver = new HDReceiverUser();
+                $receiver->hhru_name = $request->hhru_name;
+                $receiver->hhru_receive_user = $request->hhru_receive_user[$index];
+                $receiver->save();
+                $index++;
+            }
+        }
+        return json_encode(["response" => "OK", "receiver" => $receiver->hhru_name, "receiver-id" => $receiver->id]);
     }
 
     public function update(Request $request, $id)
@@ -62,19 +76,27 @@ class HDReceiverUserController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $receiver = HDReceiverUser::select('id', 'hhru_name', 'hhru_receive_user')
+            $receiver = DB::Table('hnt_hd_receiver_user')
+                ->join('hnt_th_type', 'hnt_hd_receiver_user.hhru_name', 'hnt_th_type.id')
+                ->join('users', 'hnt_hd_receiver_user.hhru_receive_user', 'users.id')
+                ->select('hnt_hd_receiver_user.id', 'hnt_hd_receiver_user.hhru_name', 'hnt_hd_receiver_user.hhru_receive_user', 'hnt_th_type.th_name', 'users.name')
+                ->where('hnt_hd_receiver_user.deleted_at', '=', Null)
                 ->skip($start)
                 ->take($length)
                 ->get();
         } else {
-            $receiver = HDReceiverUser::select('id', 'hhru_name', 'hhru_receive_user')
+            $receiver = DB::Table('hnt_hd_receiver_user')
+                ->join('hnt_th_type', 'hnt_hd_receiver_user.hhru_name', 'hnt_th_type.id')
+                ->join('users', 'hnt_hd_receiver_user.hhru_receive_user', 'users.id')
+                ->select('hnt_hd_receiver_user.id', 'hnt_hd_receiver_user.hhru_name', 'hnt_hd_receiver_user.hhru_receive_user', 'hnt_th_type.th_name', 'users.name')
+                ->where('hnt_hd_receiver_user.deleted_at', '=', Null)
                 ->where('hhru_name', 'LIKE', "%$search%")
                 ->get();
         }
 
         $data = '';
         foreach ($receiver as $receivers) {
-            $data .= '["' . $receivers->id . '",' . '"' . $receivers->hhru_name . '",' . '"' . $receivers->hhru_receive_user . '"],';
+            $data .= '["' . $receivers->id . '",' . '"' . $receivers->name . '",' . '"' . $receivers->th_name . '",' . '"' . $receivers->hhru_name . '",' . '"' . $receivers->hhru_receive_user . '"],';
         }
         $data = substr($data, 0, -1);
         $receivers_count = HDReceiverUser::all()->count();
@@ -87,7 +109,18 @@ class HDReceiverUserController extends Controller
         $search = $request->search;
         if ($search != "") {
 
-            $receiver = HDReceiverUser::select('hhru_name as text', 'id')->where('hhru_name', 'LIKE', "%$search%")->get();
+            $receiver = User::select('name as text', 'id')->where('name', 'LIKE', "%$search%")->get();
+        }
+        return json_encode(["results" => $receiver]);
+    }
+
+    //fill select to
+    public function fill_type_ticket(Request $request)
+    {
+        $search = $request->search;
+        if ($search != "") {
+
+            $receiver = HDtype::select('th_name as text', 'id')->where('th_name', 'LIKE', "%$search%")->get();
         }
         return json_encode(["results" => $receiver]);
     }

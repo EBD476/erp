@@ -333,9 +333,9 @@
                         </div>
                         <div class="md-form mb-5">
                             {{--<i class="fas fa-envelope prefix grey-text"></i>--}}
+                            <label style="display: flex;margin-top: -40px;margin: -20px;margin-right: 4px;">{{__('Items')}}</label>
                             <div class="form-group">
-                                <label style="display: flex;margin-top: -40px;margin: -20px;margin-right: 4px;">{{__('Items')}}</label>
-                                <select name="hpp_property_items" class="select-item-item form-control"></select>
+                                <select name="hpp_property_items" class="select-product-property-items form-control"></select>
                             </div>
                         </div>
                     </div>
@@ -630,7 +630,6 @@
                 templateResult: formatRepo,
                 templateSelection: formatRepoSelection
             });
-
             function formatRepo(repo) {
 
                 if (repo.loading) {
@@ -653,12 +652,36 @@
 
                 return $container;
             }
-
             function formatRepoSelection(repo) {
                 return repo.text || repo.id;
             }
-
             // end
+
+            // fill data in select product property items
+            $(".select-product-property-items").select2({
+                dir: "rtl",
+                language: "fa",
+                ajax: {
+                    url: '/json-data-fill-data-product-item',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب آیتم مشخه ظاهری محصول'),
+                dropdownParent: $('#modalRegisterForm1'),
+            });
+            // end fill data in select product property items
+
 
             // select color
             $(".select-item-color").select2({
@@ -780,7 +803,7 @@
                 $('#hp_product_id').val(data[0]);
                 $('#hp_product_name').val(data[1]);
                 $('#hp_product_model').val(data[2]);
-                $('#hp_part_color_id').val(data[7]);
+                $('#hp_product_color_id').val(data[7]);
                 $('#hp_product_property').val(data[6]);
                 $('#hp_product_size').val(data[5]);
                 $('#hp_product_price').val(data[6]);

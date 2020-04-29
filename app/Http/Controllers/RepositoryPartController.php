@@ -22,6 +22,7 @@ class RepositoryPartController extends Controller
         $repository->hrp_part_count = $request->hrp_part_count;
         $repository->hrp_provider_code = $request->hrp_provider_code;
         $repository->hrp_entry_date = $request->hrp_entry_date;
+        $repository->hrp_comment = $request->hrp_comment;
         $repository->save();
         return json_encode(["response" => "OK"]);
 
@@ -38,6 +39,12 @@ class RepositoryPartController extends Controller
         $repository->hrp_part_id = $request->hrp_part_id;
         $repository->hrp_repository_id = $request->hrp_repository_id;
         $repository->hrp_part_count = $request->hrp_part_count;
+        $repository->hrp_part_count = $request->hrp_part_count;
+        $repository->hrp_comment = $request->hrp_comment;
+        $repository->hrp_exit = $request->hrp_exit;
+        $repository->hrp_contradiction = $request->hrp_contradiction;
+        $repository->hrp_return_value = $request->hrp_return_value;
+        $repository->hrp_status_return_part = $request->hrp_status_return_part;
         $repository->save();
         return json_encode(["response" => "OK"]);
 
@@ -60,7 +67,7 @@ class RepositoryPartController extends Controller
                 ->join('hnt_parts', 'hnt_repository_part.hrp_part_id', '=', 'hnt_parts.id')
                 ->join('hnt_provider', 'hnt_repository_part.hrp_provider_code', '=', 'hnt_provider.id')
                 ->join('hnt_repository', 'hnt_repository_part.hrp_repository_id', '=', 'hnt_repository.id')
-                ->select('hnt_repository_part.id', 'hnt_repository_part.id', 'hnt_repository_part.hrp_part_count', 'hnt_repository_part.hrp_entry_date', 'hnt_repository_part.hrp_exit', 'hnt_repository_part.hrp_provider_code', 'hnt_repository_part.hrp_return_value', 'hnt_repository_part.hrp_comment', 'hnt_repository_part.hrp_repository_id', 'hnt_repository_part.hr_status_return_part', 'hnt_repository_part.hrp_contradiction', 'hnt_parts.hp_name', 'hnt_provider.hp_name as name', 'hnt_repository.hr_name')
+                ->select('hnt_repository_part.id', 'hnt_repository_part.hrp_part_id', 'hnt_repository_part.hrp_part_count', 'hnt_repository_part.hrp_entry_date', 'hnt_repository_part.hrp_exit', 'hnt_repository_part.hrp_provider_code', 'hnt_repository_part.hrp_return_value', 'hnt_repository_part.hrp_comment', 'hnt_repository_part.hrp_repository_id', 'hnt_repository_part.hrp_status_return_part', 'hnt_repository_part.hrp_contradiction', 'hnt_parts.hp_name', 'hnt_provider.hp_name as name', 'hnt_repository.hr_name')
                 ->where('hnt_repository_part.deleted_at','=', Null)
                 ->skip($start)
                 ->take($length)
@@ -70,7 +77,7 @@ class RepositoryPartController extends Controller
                 ->join('hnt_parts', 'hnt_repository_part.hrp_part_id', '=', 'hnt_parts.id')
                 ->join('hnt_provider', 'hnt_repository_part.hrp_provider_code', '=', 'hnt_provider.id')
                 ->join('hnt_repository', 'hnt_repository_part.hrp_repository_id', '=', 'hnt_repository.id')
-                ->select('hnt_repository_part.id', 'hnt_repository_part.id', 'hnt_repository_part.hrp_part_count', 'hnt_repository_part.hrp_entry_date', 'hnt_repository_part.hrp_exit', 'hnt_repository_part.hrp_provider_code', 'hnt_repository_part.hrp_return_value', 'hnt_repository_part.hrp_comment', 'hnt_repository_part.hrp_repository_id', 'hnt_repository_part.hr_status_return_part', 'hnt_repository_part.hrp_contradiction', 'hnt_parts.hp_name', 'hnt_provider.hp_name as name', 'hnt_repository.hr_name')
+                ->select('hnt_repository_part.id','hnt_repository_part.hrp_part_id', 'hnt_repository_part.hrp_part_count', 'hnt_repository_part.hrp_entry_date', 'hnt_repository_part.hrp_exit', 'hnt_repository_part.hrp_provider_code', 'hnt_repository_part.hrp_return_value', 'hnt_repository_part.hrp_comment', 'hnt_repository_part.hrp_repository_id', 'hnt_repository_part.hrp_status_return_part', 'hnt_repository_part.hrp_contradiction', 'hnt_parts.hp_name', 'hnt_provider.hp_name as name', 'hnt_repository.hr_name')
                 ->where('hnt_repository_part.deleted_at','=', Null)
                 ->where('hnt_parts.hp_name', 'LIKE', "%$search%")
 //                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
@@ -80,7 +87,7 @@ class RepositoryPartController extends Controller
 
         $data = '';
         foreach ($repository as $repositories) {
-            $data .= '["' . $repositories->id . '",' . '"' . $repositories->hp_name . '",' . '"' . $repositories->hrp_part_count . '",' . '"' . $repositories->name . '",' . '"' . $repositories->hr_name . '",' . '"' . $repositories->hrp_entry_date . '",' . '"' . $repositories->hrp_exit . '",' . '"' . $repositories->hrp_return_value . '",' . '"' . $repositories->hrp_contradiction . '",' . '"' . $repositories->hr_status_return_part . '",' . '"' . $repositories->hrp_comment . '",' . '"' . $repositories->hrp_provider_code . '",' . '"' . $repositories->hrp_repository_id . '"],';
+            $data .= '["' . $repositories->id . '",' . '"' . $repositories->hp_name . '",' . '"' . $repositories->hrp_part_count . '",' . '"' . $repositories->name . '",' . '"' . $repositories->hr_name . '",' . '"' . $repositories->hrp_entry_date . '",' . '"' . $repositories->hrp_exit . '",' . '"' . $repositories->hrp_return_value . '",' . '"' . $repositories->hrp_contradiction . '",' . '"' . $repositories->hrp_status_return_part . '",' . '"' . $repositories->hrp_comment . '",' . '"' . $repositories->hrp_provider_code . '",' . '"' . $repositories->hrp_repository_id . '",' . '"' . $repositories->hrp_part_id . '"],';
         }
         $data = substr($data, 0, -1);
         $repository_count = RepositoryPart::all()->count();

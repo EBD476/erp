@@ -855,7 +855,7 @@
 
                 $(".select-item").select2({
                     ajax: {
-                        url: '/json-data-fill_data_product',
+                        url: '/json-data-fill-data-product',
                         dataType: 'json',
                         data: function (params) {
                             return {

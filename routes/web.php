@@ -76,6 +76,7 @@ Route::group(['middleware' => ['auth']], function () {
     route::resource('middle-part-requirement', 'MiddlePartRequirementController');
     route::resource('part-requirement', 'PartRequirementController');
     route::resource('hd-receiver-user', 'HDReceiverUserController');
+    route::resource('product-zone', 'ProductZoneController');
 
 //  Getting data
     Route::get('send_request/{id}', 'ProjectController@send_request')->name('projects.send_request');
@@ -109,6 +110,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/product-image-save', 'ProductController@upload')->name('product.upload');
     Route::post('/part-image-save', 'PartController@upload')->name('part.upload');
     Route::post('/middle-part-image-save', 'MiddlePartController@upload')->name('middle-part.upload');
+    Route::post('/user-image-save', 'UserController@upload')->name('users.upload');
 
 
 //  Mapping route
@@ -172,6 +174,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/json-data-level', 'HNTLevelController@fill')->name('level.json-data-level');
     Route::get('/json-data-ticket', 'TicketStatusController@fill')->name('ticket.json-data-ticket');
     Route::get('/json-data-hd-receiver-user', 'HDReceiverUserController@fill')->name('hd-receiver-user.json-data-hd-receiver-user');
+    Route::get('/json-data-product-zone', 'ProductZoneController@fill')->name('product-zone.json-data-product-zone');
 
 
 
@@ -188,6 +191,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/json-data-fill-data-part', 'PartController@fill_data_part')->name('part.json-data-fill-data-part');
     Route::get('/json-data-fill-data-provider', 'ProviderController@fill_data_provider')->name('provider.json-data-fill-data-provider');
     Route::get('/json-data-fill-hd-receiver-user', 'HDReceiverUserController@fill_data_receiver')->name('hd-receiver-user.json-data-fill-hd-receiver-user');
+    Route::get('/json-data-fill-type-ticket', 'HDReceiverUserController@fill_type_ticket')->name('hd-receiver-user.json-data-fill-type-ticket');
+    Route::get('/json-data-fill-data-zone', 'ProductZoneController@fill_data_zone')->name('product-zone.json-data-fill-data-zone');
 
 
 //  deleted route
@@ -243,6 +248,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/level-destroy/{id}', 'HNTLevelController@destroy')->name('level.level-destroy');
     Route::delete('/ticket-destroy/{id}', 'TicketStatusController@destroy')->name('ticket.ticket-destroy');
     Route::delete('/hd-receiver-user-destroy/{id}', 'HDReceiverUserController@destroy')->name('hd-receiver-user.hd-receiver-user-destroy');
+    Route::delete('/product-zone-destroy/{id}', 'ProductZoneController@destroy')->name('product-zone.product-zone-destroy');
 
 
 

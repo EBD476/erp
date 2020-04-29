@@ -44,7 +44,7 @@ class ProductPartController extends Controller
         $product_part->hpp_part_id = $request->hpp_part_id;
         $product_part->hpp_product_id = $request->hpp_product_id;
         $product_part->hpp_part_count = $request->hpp_part_count;
-        $product_part->hp_part_model = $request->hp_part_model;
+        $product_part->hpp_product_zone = $request->hpp_product_zone;
         $product_part->save();
 
         return json_encode(["response" => "OK"]);
@@ -62,7 +62,7 @@ class ProductPartController extends Controller
         $product_part->hpp_part_id = $request->hpp_part_id;
         $product_part->hpp_product_id = $request->hpp_product_id;
         $product_part->hpp_part_count = $request->hpp_part_count;
-        $product_part->hp_part_model = $request->hp_part_model;
+        $product_part->hpp_product_zone = $request->hpp_product_zone;
         $product_part->save();
         return json_encode(["response" => "OK"]);
 
@@ -84,9 +84,10 @@ class ProductPartController extends Controller
         $search = $request->search['value'];
         if ($search == '') {
             $product_part = DB::table('hnt_product_part')
+                ->join('hnt_product_zone', 'hnt_product_part.hpp_product_zone', '=', 'hnt_product_zone.id')
                 ->join('hnt_parts', 'hnt_product_part.hpp_part_id', '=', 'hnt_parts.id')
                 ->join('hnt_products', 'hnt_product_part.hpp_product_id', '=', 'hnt_products.id')
-                ->select('hnt_product_part.id', 'hnt_product_part.hpp_product_id', 'hnt_product_part.hpp_part_id', 'hnt_products.hp_product_name', 'hnt_product_part.hp_part_model', 'hnt_product_part.hpp_part_count', 'hnt_parts.hp_name')
+                ->select('hnt_product_part.id', 'hnt_product_part.hpp_product_id', 'hnt_product_part.hpp_part_id', 'hnt_products.hp_product_name', 'hnt_product_part.hpp_product_zone', 'hnt_product_part.hpp_part_count', 'hnt_parts.hp_name','hnt_product_zone.hpz_name')
                 ->where('hnt_product_part.deleted_at', '=', Null)
                 ->skip($start)
                 ->take($length)
@@ -94,8 +95,9 @@ class ProductPartController extends Controller
         } else {
             $product_part = DB::table('hnt_product_part')
                 ->join('hnt_parts', 'hnt_product_part.hpp_part_id', '=', 'hnt_parts.id')
+                ->join('hnt_product_zone', 'hnt_product_part.hpp_product_zone', '=', 'hnt_product_zone.id')
                 ->join('hnt_products', 'hnt_product_part.hpp_product_id', '=', 'hnt_products.id')
-                ->select('hnt_product_part.id', 'hnt_product_part.hpp_product_id', 'hnt_product_part.hpp_part_id', 'hnt_product_part.hpp_part_count', 'hnt_product_part.hp_part_model', 'hnt_products.hp_product_name', 'hnt_parts.hp_name')
+                ->select('hnt_product_part.id', 'hnt_product_part.hpp_product_id', 'hnt_product_part.hpp_part_id', 'hnt_product_part.hpp_part_count', 'hnt_product_part.hpp_product_zone', 'hnt_products.hp_product_name', 'hnt_parts.hp_name','hnt_product_zone.hpz_name')
                 ->where('hnt_product_part.deleted_at', '=', Null)
                 ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
                 ->orwhere('hnt_parts.hp_name', 'LIKE', "%$search%")
@@ -104,7 +106,7 @@ class ProductPartController extends Controller
 
         $data = '';
         foreach ($product_part as $product_parts) {
-            $data .= '["' . $product_parts->id . '",' . '"' . $product_parts->hp_product_name . '",' . '"' . $product_parts->hp_name . '",' . '"' . $product_parts->hp_part_model . '",' . '"' . $product_parts->hpp_part_count . '",' . '"' . $product_parts->hpp_product_id . '",' . '"' . $product_parts->hpp_part_id . '"],';
+            $data .= '["' . $product_parts->id . '",' . '"' . $product_parts->hp_product_name . '",' . '"' . $product_parts->hp_name . '",' . '"' . $product_parts->hpz_name . '",' . '"' . $product_parts->hpp_part_count . '",' . '"' . $product_parts->hpp_product_id . '",' . '"' . $product_parts->hpp_part_id . '",' . '"' . $product_parts->hpp_product_zone . '"],';
         }
         $data = substr($data, 0, -1);
         $product_parts_count = ProductPart::all()->count();

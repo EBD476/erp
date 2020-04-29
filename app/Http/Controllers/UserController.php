@@ -13,47 +13,32 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
 
-        $current_user=auth()->user()->id;
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
         $users = User::all();
         $role_user = User::where('id', auth()->user()->id)->get()->first();
         return view('users.index', compact('role_user', 'help_desk', 'type', 'priority', 'user'))->with('users', $users);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        $current_user=auth()->user()->id;
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
         //Get all roles and pass it to the view
         $roles = Role::get();
         return view('users.create', ['roles' => $roles], compact('help_desk', 'priority', 'type', 'user'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
 
@@ -79,35 +64,23 @@ class UserController extends Controller
                 'User successfully added.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $current_user=auth()->user()->id;
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
         return redirect('users', 'help_desk', 'priority', 'type');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
 
-        $current_user=auth()->user()->id;
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
         $user = User::findOrFail($id); //Get user with specified id
         $roles = Role::get(); //Get all roles
@@ -116,13 +89,6 @@ class UserController extends Controller
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
 
@@ -134,30 +100,24 @@ class UserController extends Controller
 //            'password'=>'required|min:6|confirmed'
         ]);
         $result = Hash::check($request->password, $user->password);
-        if ($result == true){
-        $input = $request->only(['name', 'newPassword']); //Retreive the name, email and password fields
-        $roles = $request['roles']; //Retreive all roles
-        $user->name = $request->name;
-        $user->password = $request->newPassword;
-        $user->save();
+        if ($result == true) {
+            $input = $request->only(['name', 'newPassword']); //Retreive the name, email and password fields
+            $roles = $request['roles']; //Retreive all roles
+            $user->name = $request->name;
+            $user->password = $request->newPassword;
+            $user->save();
 
-        if (isset($roles)) {
-            $user->roles()->sync($roles);  //If one or more role is selected associate user to roles
-        } else {
-            $user->roles()->detach(); //If no role is selected remove exisiting role associated to a user
+            if (isset($roles)) {
+                $user->roles()->sync($roles);  //If one or more role is selected associate user to roles
+            } else {
+                $user->roles()->detach(); //If no role is selected remove exisiting role associated to a user
+            }
+            return redirect()->route('users.index')
+                ->with('flash_message',
+                    'User successfully edited.');
         }
-        return redirect()->route('users.index')
-            ->with('flash_message',
-                'User successfully edited.');
-          }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $user = User::findOrFail($id);

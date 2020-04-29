@@ -91,28 +91,53 @@
                                                         </thead>
                                                         <tbody>
                                                         <!-- foreach ($order->lineItems as $line) or some such thing here -->
-                                                        @foreach($product as $key => $products)
-                                                            @if($products->id == $data->name[$loop->index])
-                                                                <tr>
-                                                                    <td class="text-center">{{$key + 1}}</td>
-                                                                    <input type="hidden"
-                                                                           value="{{$data->name[$loop->index]}}"
-                                                                           name="name[]">
-                                                                    <td class="text-center">{{$products->hp_product_name . $products->hp_product_model . $products->hp_product_color_id . $products->hp_product_size . $products->hp_product_property . $products->hp_product_code_number}}</td>
-                                                                    <td class="text-center">{{$data->invoice_items[$loop->index]}}</td>
-                                                                    <input value="{{$data->invoice_items[$loop->index]}}"
-                                                                           name="invoice_items[]" type="hidden">
-                                                                    <td class="text-center">{{$products->hp_product_price}}</td>
-                                                                    <td class="text-center">{{$data->invoice_items_qty[$loop->index]}}</td>
-                                                                    <input value="{{$data->invoice_items_qty[$loop->index]}}"
-                                                                           name="invoice_items_qty[]" type="hidden">
-                                                                    <td class="text-center">{{$data->total[$loop->index]}}</td>
-                                                                    <input value="{{$data->total[$loop->index]}}"
-                                                                           name="total[]"
-                                                                           type="hidden">
-                                                                </tr>
-                                                            @endif
-                                                        @endforeach
+                                                        @if($collect == 1)
+                                                            @foreach($product as $key => $products)
+                                                                @if($products->id == $data->name[0])
+                                                                    <tr>
+                                                                        <td class="text-center">{{$key + 1}}</td>
+                                                                        <input type="hidden"
+                                                                               value="{{$data->name[0]}}"
+                                                                               name="name[]">
+                                                                        <td class="text-center">{{$products->hp_product_name . $products->hp_product_model . $products->hp_product_color_id . $products->hp_product_size . $products->hp_product_property . $products->hp_product_code_number}}</td>
+                                                                        <td class="text-center">{{$data->invoice_items[0]}}</td>
+                                                                        <input value="{{$data->invoice_items[0]}}"
+                                                                               name="invoice_items[]" type="hidden">
+                                                                        <td class="text-center">{{$products->hp_product_price}}</td>
+                                                                        <td class="text-center">{{$data->invoice_items_qty[0]}}</td>
+                                                                        <input value="{{$data->invoice_items_qty[0]}}"
+                                                                               name="invoice_items_qty[]" type="hidden">
+                                                                        <td class="text-center">{{$data->total[0]}}</td>
+                                                                        <input value="{{$data->total[0]}}"
+                                                                               name="total[]"
+                                                                               type="hidden">
+                                                                    </tr>
+                                                                @endif
+                                                            @endforeach
+                                                        @else
+                                                            @foreach($product as $key => $products)
+                                                                @if($products->id == $data->name[$loop->index])
+                                                                    <tr>
+                                                                        <td class="text-center">{{$key + 1}}</td>
+                                                                        <input type="hidden"
+                                                                               value="{{$data->name[$loop->index]}}"
+                                                                               name="name[]">
+                                                                        <td class="text-center">{{$products->hp_product_name . $products->hp_product_model . $products->hp_product_color_id . $products->hp_product_size . $products->hp_product_property . $products->hp_product_code_number}}</td>
+                                                                        <td class="text-center">{{$data->invoice_items[$loop->index]}}</td>
+                                                                        <input value="{{$data->invoice_items[$loop->index]}}"
+                                                                               name="invoice_items[]" type="hidden">
+                                                                        <td class="text-center">{{$products->hp_product_price}}</td>
+                                                                        <td class="text-center">{{$data->invoice_items_qty[$loop->index]}}</td>
+                                                                        <input value="{{$data->invoice_items_qty[$loop->index]}}"
+                                                                               name="invoice_items_qty[]" type="hidden">
+                                                                        <td class="text-center">{{$data->total[$loop->index]}}</td>
+                                                                        <input value="{{$data->total[$loop->index]}}"
+                                                                               name="total[]"
+                                                                               type="hidden">
+                                                                    </tr>
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
                                                         <td class="thick-line"></td>
                                                         </tbody>
                                                         <table>
@@ -240,28 +265,53 @@
                                                         </thead>
                                                         <tbody>
                                                         <!-- foreach ($order->lineItems as $line) or some such thing here -->
-                                                        @foreach($product as $key => $products)
-                                                            @if($products->id == $data->name[$loop->index])
-                                                                <tr>
-                                                                    <td class="text-center">{{$key + 1}}</td>
-                                                                    <input type="hidden"
-                                                                           value="{{$data->name[$loop->index]}}"
-                                                                           name="name[]">
-                                                                    <td class="text-center">{{$products->hp_product_name . $products->hp_product_model . $products->hp_product_color_id . $products->hp_product_size . $products->hp_product_property . $products->hp_product_code_number}}</td>
-                                                                    <td class="text-center">{{$data->invoice_items[$loop->index]}}</td>
-                                                                    <input value="{{$data->invoice_items[$loop->index]}}"
-                                                                           name="invoice_items[]" type="hidden">
-                                                                    <td class="text-center">{{$products->hp_product_price}}</td>
-                                                                    <td class="text-center">{{$data->invoice_items_qty[$loop->index]}}</td>
-                                                                    <input value="{{$data->invoice_items_qty[$loop->index]}}"
-                                                                           name="invoice_items_qty[]" type="hidden">
-                                                                    <td class="text-center">{{$data->total[$loop->index]}}</td>
-                                                                    <input value="{{$data->total[$loop->index]}}"
-                                                                           name="total[]"
-                                                                           type="hidden">
-                                                                </tr>
-                                                            @endif
-                                                        @endforeach
+                                                        @if($collect == 1)
+                                                            @foreach($product as $key => $products)
+                                                                @if($products->id == $data->name[0])
+                                                                    <tr>
+                                                                        <td class="text-center">{{$key + 1}}</td>
+                                                                        <input type="hidden"
+                                                                               value="{{$data->name[0]}}"
+                                                                               name="name[]">
+                                                                        <td class="text-center">{{$products->hp_product_name . $products->hp_product_model . $products->hp_product_color_id . $products->hp_product_size . $products->hp_product_property . $products->hp_product_code_number}}</td>
+                                                                        <td class="text-center">{{$data->invoice_items[0]}}</td>
+                                                                        <input value="{{$data->invoice_items[0]}}"
+                                                                               name="invoice_items[]" type="hidden">
+                                                                        <td class="text-center">{{$products->hp_product_price}}</td>
+                                                                        <td class="text-center">{{$data->invoice_items_qty[0]}}</td>
+                                                                        <input value="{{$data->invoice_items_qty[0]}}"
+                                                                               name="invoice_items_qty[]" type="hidden">
+                                                                        <td class="text-center">{{$data->total[0]}}</td>
+                                                                        <input value="{{$data->total[0]}}"
+                                                                               name="total[]"
+                                                                               type="hidden">
+                                                                    </tr>
+                                                                @endif
+                                                            @endforeach
+                                                        @else
+                                                            @foreach($product as $key => $products)
+                                                                @if($products->id == $data->name[$loop->index])
+                                                                    <tr>
+                                                                        <td class="text-center">{{$key + 1}}</td>
+                                                                        <input type="hidden"
+                                                                               value="{{$data->name[$loop->index]}}"
+                                                                               name="name[]">
+                                                                        <td class="text-center">{{$products->hp_product_name . $products->hp_product_model . $products->hp_product_color_id . $products->hp_product_size . $products->hp_product_property . $products->hp_product_code_number}}</td>
+                                                                        <td class="text-center">{{$data->invoice_items[$loop->index]}}</td>
+                                                                        <input value="{{$data->invoice_items[$loop->index]}}"
+                                                                               name="invoice_items[]" type="hidden">
+                                                                        <td class="text-center">{{$products->hp_product_price}}</td>
+                                                                        <td class="text-center">{{$data->invoice_items_qty[$loop->index]}}</td>
+                                                                        <input value="{{$data->invoice_items_qty[$loop->index]}}"
+                                                                               name="invoice_items_qty[]" type="hidden">
+                                                                        <td class="text-center">{{$data->total[$loop->index]}}</td>
+                                                                        <input value="{{$data->total[$loop->index]}}"
+                                                                               name="total[]"
+                                                                               type="hidden">
+                                                                    </tr>
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
                                                         <td class="thick-line"></td>
                                                         </tbody>
                                                         <table>

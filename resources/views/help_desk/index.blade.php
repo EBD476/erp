@@ -27,9 +27,6 @@
                                         {{__('Title')}}
                                     </th>
                                     <th>
-                                        {{__('Receiver')}}
-                                    </th>
-                                    <th>
                                         {{__('Ticket Id')}}
                                     </th>
                                     <th>
@@ -160,21 +157,6 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label class="bmd-label-floating">{{__('Receiver')}}</label>
-                                                <select class="form-control" name="hhd_receiver_user_id">
-                                                    @foreach($user as $users)
-                                                        <option value="{{$users->id}}">
-                                                            {{$users->name}}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
                                                 <label class="bmd-label-floating">{{__('Description')}}</label>
                                                 <textarea type="text" required=""
                                                           aria-invalid="false" class="form-control"
@@ -182,25 +164,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    {{--<div class="row">--}}
-                                    {{--<div class="col-md-6">--}}
-                                    {{--<div class="form-group">--}}
-                                    {{--<label class="bmd-label-floating">{{__('File Atach')}}</label>--}}
-                                    {{--<input type="file" class="form-control" name="hhd_file_atach">--}}
-                                    {{--</div>--}}
-
-                                    {{--</div>--}}
-                                    {{--</div>--}}
-                                    {{--<div class="row">--}}
-                                    {{--<div class="col-md-6">--}}
-                                    {{--<div class="form-group">--}}
-                                    {{--<label class="bmd-label-floating">{{__('Verify')}}</label>--}}
-                                    {{--<input type="checkbox" class="form-control" name="hhd_verify">--}}
-                                    {{--</div>--}}
-
-                                    {{--</div>--}}
-                                    {{--</div>--}}
                                     <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
                                 </form>
                             </div>
@@ -244,14 +207,6 @@
                                                        id="hhd_ticket_status" disabled>
                                             </div>
 
-                                        </div>
-                                    </div>
-                                    <div class="row" id="receive">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="bmd-label-floating">{{__('Receiver')}}</label>
-                                                <input class="form-control" id="hhd_receiver" disabled>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="row" id="send">
@@ -452,6 +407,7 @@
 
                     // fill data in edit form send
                     $('#table2').on('click', '.show-send', function (event) {
+                        document.getElementById("hdp_response").disabled = true;
                         $('#card-form1').hide();
                         $('#card-form2').show();
                         $('#check').hide();
@@ -465,6 +421,8 @@
                         $('#hhd_type').val(data[6]);
                         $('#hhd_ticket_status').val(data[5]);
                         $('#hdp_description').val(data[3]);
+                        $("#hdp_response").val(data[15]);
+
                     })
                     // end filling
 
@@ -593,6 +551,7 @@
 
                     // fill data in edit form receive
                     $('#table1').on('click', '.show', function (event) {
+                        document.getElementById("hdp_response").disabled = false;
                         $('#card-form1').show();
                         $('#card-form2').show();
                         $('#check').show();
@@ -607,6 +566,8 @@
                         $('#hhd_type').val(data[6]);
                         $('#hhd_ticket_status').val(data[5]);
                         $('#hdp_description').val(data[3]);
+                        $("#hdp_response").val(data[15]);
+
 
                         // change ticket status
                         var data = {id: $("#ticket_id").val()};
@@ -663,7 +624,7 @@
                             success: function (data) {
                                 setTimeout($("#form1").unblock(), 2000);
                                 document.getElementById('form1').reset();
-                                $('#table').DataTable().ajax.reload();
+                                $('#table2').DataTable().ajax.reload();
                             },
                             cache: false,
                         });
@@ -672,39 +633,40 @@
                     // verify ticket
                     $('#checkbox').on('change', function (event) {
 
-                        if ($('#hdp_response').val() != "") {
-
-                            var data =
-                                {
-                                    hhd_problem: $("#hdp_response").val(),
-                                    hhd_type: $("#hhd_type").val(),
-                                    hhd_priority: $("#hdp_name").val(),
-                                    hhd_title: $("#hdp_response").val(),
-                                    hhd_receiver_user_id: $("#hhd_sender").val(),
-
-                                };
-                            $.ajaxSetup({
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                }
-                            });
-
-                            $.ajax({
-                                url: '/help_desk',
-                                type: 'POST',
-                                data: data,
-                                dataType: 'json',
-                                async: false,
-                                success: function (data) {
-                                },
-                                cache: false,
-                            });
-                        }
+                        // if ($('#hdp_response').val() != "") {
+                        //
+                        //     var data =
+                        //         {
+                        //             hhd_problem: $("#hdp_response").val(),
+                        //             hhd_type: $("#hhd_type").val(),
+                        //             hhd_priority: $("#hdp_name").val(),
+                        //             hhd_title: $("#hdp_response").val(),
+                        //             hhd_receiver_user_id: $("#hhd_sender").val(),
+                        //
+                        //         };
+                        //     $.ajaxSetup({
+                        //         headers: {
+                        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        //         }
+                        //     });
+                        //
+                        //     $.ajax({
+                        //         url: '/help_desk',
+                        //         type: 'POST',
+                        //         data: data,
+                        //         dataType: 'json',
+                        //         async: false,
+                        //         success: function (data) {
+                        //         },
+                        //         cache: false,
+                        //     });
+                        // }
 
                         if (event.target.checked) {
                             var data = {
                                 id: $("#ticket_id").val(),
                                 state: $(this)[0].checked == true ? 3 : 2,
+                                hhd_response:$("#hdp_response").val(),
                             };
                             $('#card-form2').block({
                                 message: '{{__('please wait...')}}', css: {

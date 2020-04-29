@@ -43,7 +43,7 @@
                                             {{__('Part Name')}}
                                         </th>
                                         <th>
-                                            {{__('Model')}}
+                                            {{__('Zone')}}
                                         </th>
                                         <th>
                                             {{__('Count')}}
@@ -86,10 +86,10 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
+                                                <label>{{__('Set Product Zone')}}</label>
                                                 <div class="form-group">
-                                                    <label>{{__('Part Model')}}</label>
-                                                    <input class="form-control" name="hp_part_model"
-                                                           id="hp_part_model">
+                                                    <select class="form-control select-product-zone"
+                                                            name="hpp_product_zone"></select>
                                                 </div>
                                             </div>
                                         </div>
@@ -142,10 +142,11 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
+                                                <label>{{__('Set Product Zone')}}</label>
                                                 <div class="form-group">
-                                                    <label>{{__('Part Model')}}</label>
-                                                    <input class="form-control" name="hp_part_model"
-                                                           id="hp_part_model">
+                                                    <select class="form-control select-product-zone"
+                                                            name="hpp_product_zone"
+                                                           ><option  id="hpp_product_zone"></option></select>
                                                 </div>
                                             </div>
                                         </div>
@@ -442,7 +443,7 @@
                 var data = table.row($(this).parents('tr')).data();
                 $('#pid').val(data[0]);
                 $('#hpp_part_id').val(data[6]);
-                $('#hp_part_model').val(data[3]);
+                $('#hpp_product_zone').val(data[3]);
                 $('#hpp_product_id').val(data[5]);
                 $('#hpp_part_count').val(data[4]);
             })
@@ -594,7 +595,37 @@
                 return repo.text || repo.id;
             }
 
-            // end fill data in select middle part
+            // end fill data in select part
+
+            // fill data in select part
+            $(".select-product-zone").select2({
+                dir: "rtl",
+                language: "fa",
+                ajax: {
+                    url: '/json-data-fill-data-zone',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب بخش'),
+                templateSelection: formatRepoSelection
+            });
+
+            function formatRepoSelection(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end fill data in select part
         });
     </script>
 @endpush

@@ -639,11 +639,9 @@
                 dir: "rtl",
                 templateSelection: formatRepoSelection2
             });
-
             function formatRepoSelection2(repo) {
                 return repo.text || repo.id;
             }
-
             // end
 
             // remove image

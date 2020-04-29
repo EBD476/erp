@@ -95,7 +95,6 @@ class RepositoryProductController extends Controller
             'hr_product_stock' => 'required',
             'hr_comment' => 'required',
         ]);
-
         $repository_product = new RepositoryProduct();
         $repository_product->hr_product_id = $request->hr_product_id;
         $repository_product->hr_product_stock = $request->hr_product_stock;
@@ -176,7 +175,7 @@ class RepositoryProductController extends Controller
 
         $data = '';
         foreach ($repository_product as $repository_products) {
-            $data .= '["' . $repository_products->id . '",' . '"' . $repository_products->hp_product_name . '",' . '"' . $repository_products->hr_product_stock . '",' . '"' . $repository_products->hp_name . '",' . '"' . $repository_products->hr_name . '",' . '"' . $repository_products->hr_entry_date . '",' . '"' . $repository_products->hr_exit . '",' . '"' . $repository_products->hr_return_value . '",' . '"' . $repository_products->hr_contradiction . '",' . '"' . $repository_products->hr_status_return_part . '",' . '"' . $repository_products->hr_comment . '",' . '"' . $repository_products->hr_provider_code . '",' . '"' . $repository_products->hr_repository_id . '"],';
+            $data .= '["' . $repository_products->id . '",' . '"' . $repository_products->hp_product_name . '",' . '"' . $repository_products->hr_product_stock . '",' . '"' . $repository_products->hp_name . '",' . '"' . $repository_products->hr_name . '",' . '"' . $repository_products->hr_entry_date . '",' . '"' . $repository_products->hr_exit . '",' . '"' . $repository_products->hr_return_value . '",' . '"' . $repository_products->hr_contradiction . '",' . '"' . $repository_products->hr_status_return_part . '",' . '"' . $repository_products->hr_comment . '",' . '"' . $repository_products->hr_provider_code . '",' . '"' . $repository_products->hr_repository_id . '",' . '"' . $repository_products->hr_product_id . '"],';
         }
         $data = substr($data, 0, -1);
         $repository_products_count = Order::all()->count();

@@ -44,6 +44,9 @@
                                                 {{__('Middle Part Name')}}
                                             </th>
                                             <th>
+                                                {{__('Zone')}}
+                                            </th>
+                                            <th>
                                                 {{__('Middle Part Count')}}
                                             </th>
                                             <th>
@@ -77,6 +80,16 @@
                                             <div class="form-group">
                                                 <select id="part_id" class="form-control select-middle-part"
                                                         name="hpp_middle_part_id">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>{{__('Set Middle Part Zone')}}</label>
+                                            <div class="form-group">
+                                                <select class="form-control select-product-zone"
+                                                        name="hpp_middle_part_zone">
                                                 </select>
                                             </div>
                                         </div>
@@ -122,6 +135,17 @@
                                                         <select class="form-control select-middle-part"
                                                                 name="hpp_middle_part_id">
                                                             <option id="hpp_middle_part_id"></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label>{{__('Set Middle Part Zone')}}</label>
+                                                    <div class="form-group">
+                                                        <select id="hpp_middle_part_zone"
+                                                                class="form-control select-product-zone"
+                                                                name="hpp_middle_part_zone">
                                                         </select>
                                                     </div>
                                                 </div>
@@ -414,6 +438,7 @@
                 $('#hpp_part_count').val(data[3]);
                 $('#hpp_middle_part_id').val(data[4]);
                 $('#hpp_product_id').val(data[5]);
+                $('#hpp_middle_part_zone').val(data[6]);
             })
             // end filling
 
@@ -539,7 +564,35 @@
 
             // end fill data in select middle part
 
+            // fill data in select part
+            $(".select-product-zone").select2({
+                dir: "rtl",
+                language: "fa",
+                ajax: {
+                    url: '/json-data-fill-data-zone',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب بخش'),
+                templateSelection: formatRepoSelection
+            });
 
+            function formatRepoSelection(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end fill data in select part
         });
     </script>
 @endpush

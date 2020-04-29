@@ -19,7 +19,7 @@ class TicketStatusController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        return view('ticket_status.index', compact('ticket', 'help_desk', 'priority', 'type', 'user'));
+        return view('help_desk.ticket_status.index', compact('ticket', 'help_desk', 'priority', 'type', 'user'));
     }
 
     public function store(Request $request)

@@ -177,6 +177,12 @@
                             </a>
                         </li>
                         <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product-zone.index')}}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal">{{__('Product Zone')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
                             <a class="nav-link" href="{{ route('provider.index')}}">
                                 <i class="tim-icons icon-single-02"></i>
                                 <span class="sidebar-normal">{{__('Provider')}}</span>
@@ -694,46 +700,6 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#ProductExamples" aria-expanded="true">
-                    <i class="tim-icons icon-app" style="float: right"></i>
-                    <p>
-                        {{__('Product')}}
-                        <b class="caret"></b>
-                    </p>
-                </a>
-                <div class="collapse" id="ProductExamples" style="">
-                    <ul class="nav">
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{route('product_requirement.index')}}">
-                                <i class="tim-icons icon-bank"></i>
-                                <span class="sidebar-normal"
-                                >{{__('Product Requirement')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{Route('product.index')}}">
-                                <i class="tim-icons icon-paper" style="size: 8px"></i>
-                                <span class="sidebar-normal">{{__('Products Management')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('part.index')}}">
-                                <i class="tim-icons icon-paper"></i>
-                                <span class="sidebar-normal">{{__('Parts')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('product-part.index')}}">
-                                <i class="tim-icons icon-bullet-list-67"></i>
-                                <span class="sidebar-normal">{{__('Product Parts')}}</span>
-                            </a>
-                        </li>
-
-
-                    </ul>
-                </div>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#RepositoryExamples">
                     <i class="tim-icons icon-bank" style="float: right"></i>
                     <p>
@@ -905,6 +871,12 @@
                                 <i class="tim-icons icon-paper"></i>
                                 <span class="sidebar-normal"
                                 >{{__('part Requirement')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product-zone.index')}}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal">{{__('Product Zone')}}</span>
                             </a>
                         </li>
                         <li class="nav-item ">

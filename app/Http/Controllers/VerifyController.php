@@ -213,16 +213,6 @@ class VerifyController extends Controller
         return redirect()->route('verify_pre.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 
     public function fill(Request $request)
     {

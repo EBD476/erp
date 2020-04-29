@@ -44,6 +44,7 @@ class ProductMiddlePartController extends Controller
         $product_part->hpp_product_id = $request->hpp_product_id;
         $product_part->hpp_middle_part_id = $request->hpp_middle_part_id;
         $product_part->hpp_part_count = $request->hpp_part_count;
+        $product_part->hpp_middle_part_zone = $request->hpp_middle_part_zone;
         $product_part->save();
 
         return json_encode(["response" => "OK"]);
@@ -60,6 +61,7 @@ class ProductMiddlePartController extends Controller
         $product_part->hpp_product_id = $request->hpp_product_id;
         $product_part->hpp_middle_part_id = $request->hpp_middle_part_id;
         $product_part->hpp_part_count = $request->hpp_part_count;
+        $product_part->hpp_middle_part_zone = $request->hpp_middle_part_zone;
         $product_part->save();
         return json_encode(["response" => "OK"]);
 
@@ -82,16 +84,18 @@ class ProductMiddlePartController extends Controller
             $middle_part = DB::table('hnt_product_middle_part')
                 ->join('hnt_middle_part', 'hnt_product_middle_part.hpp_middle_part_id', '=', 'hnt_middle_part.id')
                 ->join('hnt_products', 'hnt_product_middle_part.hpp_product_id', '=', 'hnt_products.id')
-                ->select('hnt_product_middle_part.id', 'hnt_product_middle_part.hpp_part_count', 'hnt_product_middle_part.hpp_middle_part_id', 'hnt_product_middle_part.hpp_product_id', 'hnt_products.hp_product_name', 'hnt_middle_part.hmp_name')
+                ->join('hnt_product_zone', 'hnt_product_middle_part.hpp_middle_part_zone', '=', 'hnt_product_zone.id')
+                ->select('hnt_product_middle_part.id', 'hnt_product_middle_part.hpp_part_count','hnt_product_zone.hpz_name', 'hnt_product_middle_part.hpp_middle_part_id', 'hnt_product_middle_part.hpp_product_id', 'hnt_product_middle_part.hpp_middle_part_zone', 'hnt_products.hp_product_name', 'hnt_middle_part.hmp_name')
                 ->where('hnt_product_middle_part.deleted_at', '=', Null)
                 ->skip($start)
                 ->take($length)
                 ->get();
         } else {
-            $middle_part = DB::table('hnt_product_middle_part')
+            $middle_part =  DB::table('hnt_product_middle_part')
                 ->join('hnt_middle_part', 'hnt_product_middle_part.hpp_middle_part_id', '=', 'hnt_middle_part.id')
                 ->join('hnt_products', 'hnt_product_middle_part.hpp_product_id', '=', 'hnt_products.id')
-                ->select('hnt_product_middle_part.id', 'hnt_product_middle_part.hpp_part_count', 'hnt_product_middle_part.hpp_middle_part_id', 'hnt_product_middle_part.hpp_product_id', 'hnt_products.hp_product_name', 'hnt_middle_part.hmp_name')
+                ->join('hnt_product_zone', 'hnt_product_middle_part.hpp_middle_part_zone', '=', 'hnt_product_zone.id')
+                ->select('hnt_product_middle_part.id', 'hnt_product_middle_part.hpp_part_count','hnt_product_zone.hpz_name', 'hnt_product_middle_part.hpp_middle_part_id', 'hnt_product_middle_part.hpp_product_id', 'hnt_product_middle_part.hpp_middle_part_zone', 'hnt_products.hp_product_name', 'hnt_middle_part.hmp_name')
                 ->where('hnt_product_middle_part.deleted_at', '=', Null)
                 ->where('hnt_middle_part.hmp_name', 'LIKE', "%$search%")
                 ->orwhere('hnt_products.hp_product_name', 'LIKE', "%$search%")
@@ -100,7 +104,7 @@ class ProductMiddlePartController extends Controller
 
         $data = '';
         foreach ($middle_part as $middle_parts) {
-            $data .= '["' . $middle_parts->id . '",' . '"' . $middle_parts->hp_product_name . '",' . '"' . $middle_parts->hmp_name . '",' . '"' . $middle_parts->hpp_part_count . '",' . '"' . $middle_parts->hpp_middle_part_id . '",' . '"' . $middle_parts->hpp_product_id . '"],';
+            $data .= '["' . $middle_parts->id . '",' . '"' . $middle_parts->hp_product_name . '",' . '"' . $middle_parts->hmp_name . '",' . '"' . $middle_parts->hpz_name . '",' . '"' . $middle_parts->hpp_part_count . '",' . '"' . $middle_parts->hpp_middle_part_id . '",' . '"' . $middle_parts->hpp_product_id . '",' . '"' . $middle_parts->hpp_middle_part_zone . '"],';
         }
         $data = substr($data, 0, -1);
         $middle_parts = ProductMiddlePart::all()->count();

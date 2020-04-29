@@ -2,8 +2,10 @@
 
 @section('title',__('Receiver User'))
 
-@push('script')
-    <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
+@push('css')
+    <link href="{{ asset('assets/css/datatables.min.css') }}" rel="stylesheet">
+    <link href="{{asset('assets/css/select2.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/select2-bootstrap4.min.css')}}" rel="stylesheet"/>
 @endpush
 @section('content')
     @role('Admin|product')
@@ -13,7 +15,7 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header card-header-primary">
-                            <h4 class="card-title text-right font-weight-400">{{__('Receiver List')}}</h4>
+                            <h4 class="card-title text-right font-weight-400">{{__('Product Zone List')}}</h4>
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
@@ -27,7 +29,10 @@
                                         {{__('Name')}}
                                     </th>
                                     <th>
-                                        {{__('Receiver')}}
+                                        {{__('User')}}
+                                    </th>
+                                    <th>
+                                        {{__('Priority')}}
                                     </th>
                                     <th>
                                         {{__('Action')}}
@@ -42,24 +47,36 @@
                     <div class="card card-user">
                         <div class="card">
                             <div class="card-header card-header-primary">
-                                <h4 class="card-title ">{{__('New Receiver')}}</h4>
+                                <h4 class="card-title ">{{__('New Zone')}}</h4>
                                 <p class="card-category"></p>
                             </div>
                             <div class="card-body">
                                 <form id="form1">
                                     <div class="row">
                                         <div class="col-md-12">
+                                            <label>{{__('Name')}}</label>
                                             <div class="form-group">
-                                                <label>{{__('Name')}}</label>
-                                                <input class="form-control" name="hhru_name">
+                                                <input name="hpz_name" class="form-control">
+                                                <input id="id" hidden>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
+                                            <label>{{__('User')}}</label>
                                             <div class="form-group">
-                                                <label>{{__('Receiver User')}}</label>
-                                                <select name="hhru_receive_user"  class="form-control receiver-user" required=""></select>
+                                                <select name="hpz_user_id[]"
+                                                        class="form-control select-receiver-user" required=""
+                                                        multiple="multiple"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>{{__('Priority')}}</label>
+                                            <div class="form-group">
+                                                <input name="hpz_priority"
+                                                       class="form-control" required="">
                                             </div>
                                         </div>
                                     </div>
@@ -73,25 +90,37 @@
                     <div class="card card-user" id="card-form2">
                         <div class="card">
                             <div class="card-header card-header-primary">
-                                <h4 class="card-title ">{{__('Edit Receiver')}}</h4>
+                                <h4 class="card-title ">{{__('Edit Zone')}}</h4>
                                 <p class="card-category"></p>
                             </div>
                             <div class="card-body">
                                 <form id="form2">
                                     <div class="row">
                                         <div class="col-md-12">
+                                            <label>{{__('Name')}}</label>
                                             <div class="form-group">
-                                                <label>{{__('Name')}}</label>
-                                                <input class="form-control" id="hhru_name" name="hhru_name">
+                                                <input class="form-control" id="hpz_name" name="hpz_name">
                                                 <input id="id" hidden>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
+                                            <label>{{__('User')}}</label>
                                             <div class="form-group">
-                                                <label>{{__('Receiver User')}}</label>
-                                                <select name="hhru_receive_user" id="hhru_receive_user"  class="form-control receiver-user" required=""></select>
+                                                <select name="hpz_user_id"
+                                                        class="form-control select-receiver-user" required="">
+                                                    <option id="hpz_user_id"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>{{__('Priority')}}</label>
+                                            <div class="form-group">
+                                                <input name="hpz_priority" id="hpz_priority"
+                                                       class="form-control" required="">
                                             </div>
                                         </div>
                                     </div>
@@ -115,12 +144,12 @@
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
+    <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
+
     <script>
         $(document).ready(function () {
 
             $('#card-form2').hide();
-
-            var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
 
             $('#table').on('click', 'button', function (event) {
 
@@ -141,7 +170,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: '/hd-receiver-user-destroy/' + data[0],
+                                url: '/product-zone-destroy/' + data[0],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',
@@ -164,6 +193,7 @@
                         }
                     });
             });
+
             var table = $('#table').on('draw.dt', function (e, settings, json, xhr) {
 
             }).DataTable({
@@ -172,7 +202,7 @@
                 "serverSide":
                     true,
                 "ajax":
-                    '/json-data-hd-receiver-user',
+                    '/json-data-product-zone',
                 "columnDefs":
                     [{
                         "targets": -1,
@@ -260,7 +290,7 @@
                 });
 
                 $.ajax({
-                    url: '/hd-receiver-user',
+                    url: '/product-zone',
                     type: 'POST',
                     data: data,
                     dataType: 'json',
@@ -296,7 +326,7 @@
                     }
                 });
                 $.ajax({
-                    url: '/hd-receiver-user/' + id,
+                    url: '/product-zone/' + id,
                     type: 'POST',
                     data: data,
                     dataType: 'json',
@@ -310,15 +340,51 @@
                     cache: false,
                 });
             });
+
             // fill data in edit form
             $('#table').on('click', '.edit', function (event) {
                 $('#card-form2').show();
                 var data = table.row($(this).parents('tr')).data();
                 $('#id').val(data[0]);
-                $('#hhru_name').val(data[1]);
-                $('#hhru_receive_user').val(data[2]);
+                $('#hpz_name').val(data[1]);
+                $('#hpz_user_id').val(data[4]);
+                $('#hpz_priority').val(data[3]);
             })
             // end filling
+
+            // select receiver
+            $(".select-receiver-user").select2({
+                ajax: {
+                    dir: "rtl",
+                    language: "fa",
+                    url: '/json-data-fill-hd-receiver-user',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب کاربر'),
+                dir: "rtl",
+                templateSelection: formatRepoSelection2,
+                tags: true,
+                tokenSeparators: [',', ' ']
+            });
+
+            function formatRepoSelection2(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end
+
         });
     </script>
 @endpush

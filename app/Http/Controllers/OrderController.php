@@ -117,7 +117,7 @@ class OrderController extends Controller
         $invoice_state = State::Select('id', 'hp_project_state')->where('id', $project->hp_address_state_id)->get()->last();
         $invoice_city = Address::Select('id', 'hp_city')->where('id', $project->hp_address_city_id)->get()->last();
         $items_all = OrderProduct::select('hpo_total', 'hpo_status', 'hop_due_date', 'hpo_order_id')->where('hpo_order_id', $id)->get()->last();
-        $client =Client::select('id','hc_name')->where('id',$project->ho_client)->get()->last();
+        $client = Client::select('id', 'hc_name')->where('id', $project->ho_client)->get()->last();
 
         return view('order.edit', compact('invoice_city', 'invoice_state', 'invoices_items', 'color', 'properties', 'items_all', 'invoice_statuses', 'client', 'project_type', 'address', 'state', 'product', 'project', 'items', 'type', 'help_desk', 'priority', 'user', 'tax'));
     }
@@ -141,7 +141,7 @@ class OrderController extends Controller
         $invoices_item = $request;
         $invoice_state = State::Select('id', 'hp_project_state')->where('id', $project->hp_address_state_id)->get()->last();
         $invoice_city = Address::Select('id', 'hp_city')->where('id', $project->hp_address_city_id)->get()->last();
-        $client =Client::select('id','hc_name')->where('id',$project->ho_client)->get()->last();
+        $client = Client::select('id', 'hc_name')->where('id', $project->ho_client)->get()->last();
         return view('order.editpre', ['invoices_item' => $invoices_item], compact('invoice_city', 'invoice_state', 'color', 'properties', 'invoice_statuses', 'client', 'project_type', 'address', 'state', 'product', 'project', 'items', 'type', 'help_desk', 'priority', 'user'));
 
     }
@@ -206,16 +206,17 @@ class OrderController extends Controller
         $city = address:: where('id', $order->hp_address_city_id)->get()->last();
         $state = Project_State:: where('id', $order->hp_address_state_id)->get()->last();
         $client = Client::select('id', 'hc_name')->where('id', $order->ho_client)->get()->last();
+        $collect = count(collect($data->name));
         $product = Product::select('id', 'hp_product_model', 'hp_product_color_id', 'hp_product_size', 'hp_product_property', 'hp_product_code_number', 'hp_product_name', 'hp_product_price')->get();
-        return view('order.preview', ['data' => $data], compact('client', 'order_product', 'type', 'help_desk', 'priority', 'user', 'product', 'order', 'city', 'state'));
+        return view('order.preview', ['data' => $data], compact('collect' ,'client', 'order_product', 'type', 'help_desk', 'priority', 'user', 'product', 'order', 'city', 'state'));
     }
 
     public function invoices_list_product()
     {
-        $current_user=auth()->user()->id;
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
         $repository_product = RepositoryProduct:: all();
         $repository_product_count = DB::select("SELECT sum(hr_product_stock) as sum_hpo FROM hnt_repository_product");
@@ -223,13 +224,13 @@ class OrderController extends Controller
         $product = Product::select('id', 'hp_product_name')->get();
         $query_order_product = DB::select("SELECT sum(hpo_count) as sum_hpo , hpo_status , hpo_product_id FROM hnt_products,hnt_invoice_items WHERE hnt_products.id =hnt_invoice_items.hpo_product_id group by hnt_invoice_items.hpo_product_id , hpo_status ");
         $query_order_product_all = DB::select("SELECT sum(hpo_count) as sum_hpo FROM hnt_invoice_items where hpo_status = '3'");
-        $repository=RepositoryPart::select('id','hrp_part_id','hrp_repository_id','hrp_part_count')->get();
-        $repository_name=RepositoryCreate::select('id','hr_name')->get();
-        $part = Part::select('id','hp_name')->get();
-        $repository_middle_part=RepositoryMiddlePart::select('id','hrm_count','hrm_comment','hrm_middle_part_id')->get();
-        $middle_part=MiddlePart::Select('id','hmp_name')->get();
+        $repository = RepositoryPart::select('id', 'hrp_part_id', 'hrp_repository_id', 'hrp_part_count')->get();
+        $repository_name = RepositoryCreate::select('id', 'hr_name')->get();
+        $part = Part::select('id', 'hp_name')->get();
+        $repository_middle_part = RepositoryMiddlePart::select('id', 'hrm_count', 'hrm_comment', 'hrm_middle_part_id')->get();
+        $middle_part = MiddlePart::Select('id', 'hmp_name')->get();
 
-        return view('order.invoices_list_product.index', ['repository_product_count' => $repository_product_count, 'query' => $query_order_product,'order_all' => $query_order_product_all], compact('repository_middle_part','part','repository_name','repository','user', 'repository_product', 'product', 'orders', 'help_desk', 'priority', 'type','middle_part'));
+        return view('order.invoices_list_product.index', ['repository_product_count' => $repository_product_count, 'query' => $query_order_product, 'order_all' => $query_order_product_all], compact('repository_middle_part', 'part', 'repository_name', 'repository', 'user', 'repository_product', 'product', 'orders', 'help_desk', 'priority', 'type', 'middle_part'));
 
     }
 
@@ -240,9 +241,9 @@ class OrderController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $order = Order::select('id','hp_project_name','hp_employer_name','hp_connector','hp_type_project')->where('hp_registrant', $current_user)->skip($start)->take($length)->get();
+            $order = Order::select('id', 'hp_project_name', 'hp_employer_name', 'hp_connector', 'hp_type_project')->where('hp_registrant', $current_user)->skip($start)->take($length)->get();
         } else {
-            $order = Order::select('id','hp_project_name','hp_employer_name','hp_connector','hp_type_project')->where('id', 'LIKE', "%$search%")
+            $order = Order::select('id', 'hp_project_name', 'hp_employer_name', 'hp_connector', 'hp_type_project')->where('id', 'LIKE', "%$search%")
                 ->orwhere('hp_project_name', 'LIKE', "%$search%")
                 ->orwhere('hp_employer_name', 'LIKE', "%$search%")
                 ->orwhere('hp_connector', 'LIKE', "%$search%")
