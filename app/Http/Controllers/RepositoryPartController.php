@@ -20,31 +20,14 @@ class RepositoryPartController extends Controller
         $repository->hrp_part_id = $request->hrp_part_id;
         $repository->hrp_repository_id = $request->hrp_repository_id;
         $repository->hrp_part_count = $request->hrp_part_count;
-        $repository->hrp_provider_code = $request->hrp_provider_code;
-        $repository->hrp_entry_date = $request->hrp_entry_date;
-        $repository->hrp_comment = $request->hrp_comment;
-        $repository->save();
-        return json_encode(["response" => "OK"]);
-
-    }
-
-    public function update(Request $request, $id)
-    {
-        $this->validate($request, [
-            'hrp_part_id' => 'required',
-            'hrp_repository_id' => 'required',
-            'hrp_part_count' => 'required',
-        ]);
-        $repository = RepositoryPart::find($id);
-        $repository->hrp_part_id = $request->hrp_part_id;
-        $repository->hrp_repository_id = $request->hrp_repository_id;
-        $repository->hrp_part_count = $request->hrp_part_count;
         $repository->hrp_part_count = $request->hrp_part_count;
         $repository->hrp_comment = $request->hrp_comment;
         $repository->hrp_exit = $request->hrp_exit;
         $repository->hrp_contradiction = $request->hrp_contradiction;
         $repository->hrp_return_value = $request->hrp_return_value;
         $repository->hrp_status_return_part = $request->hrp_status_return_part;
+        $repository->hrp_provider_code = $request->hrp_provider_code;
+        $repository->hrp_entry_date = $request->hrp_entry_date;
         $repository->save();
         return json_encode(["response" => "OK"]);
 

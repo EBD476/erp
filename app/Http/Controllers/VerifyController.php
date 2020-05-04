@@ -12,6 +12,9 @@ use App\OrderProduct;
 use App\OrderState;
 use App\Process;
 use App\Product;
+use App\ProductColor;
+use App\ProductProperty;
+use App\ProductPropertyItems;
 use App\Project_State;
 use App\User;
 use App\Verifier;
@@ -39,45 +42,6 @@ class VerifyController extends Controller
         return view('verify_level.index', compact('order', 'help_desk', 'priority', 'type','user'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $userID = auth()->user()->id;
@@ -100,7 +64,6 @@ class VerifyController extends Controller
             }
 
         }
-
         $current_user=auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
         $type = HDtype::select('th_name','id')->get();
@@ -108,22 +71,19 @@ class VerifyController extends Controller
         $user = User::select('id', 'name')->get();
         $order = Order::find($id);
         $product = Product::select('id','hp_product_model','hp_product_color_id','hp_product_size','hp_product_property','hp_product_code_number','hp_product_name','hp_product_price')->get();
+        $items = ProductPropertyItems::select('id','hppi_items_name','hppi_color')->get();
+        $properties = ProductProperty::select('id','hpp_property_name','hpp_property_items')->get();
         $data = OrderProduct::where('hpo_order_id',$id)->get();
+        $color = ProductColor::select('id','hn_color_name')->get();
         $data_dis = OrderProduct::select('hop_due_date')->where('hpo_order_id',$id)->get()->last();
         $city = address:: where('id', $order->hp_address_city_id)->get()->last();
         $state = Project_State:: where('id', $order->hp_address_state_id)->get()->last();
         $client =Client::select('id','hc_name')->where('id',$order->ho_client)->get()->last();
-        return view('verify_level.preview', compact('client','order', 'first_verifier', 'verifyID', 'selected_priority', 'current_verified_order', 'help_desk', 'priority', 'type','user','product','data','state','city','data_dis'));
+        $order_registrant = User::select('name')->where('id',$order->hp_registrant)->get()->last();
+        return view('verify_level.preview', compact('items','color','properties','client','order_registrant','order', 'first_verifier', 'verifyID', 'selected_priority', 'current_verified_order', 'help_desk', 'priority', 'type','user','product','data','state','city','data_dis'));
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //        ثبت نام تاییدکنندگان سطح

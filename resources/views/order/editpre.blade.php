@@ -242,84 +242,55 @@
                                         </thead>
                                         <tbody data-bind="sortable: { data: invoice_items_without_tasks, allowDrop: false, afterMove: onDragged} "
                                                class="ui-sortable">
-                                        <div hidden>{{ $index = 0 }}</div>
-                                        @foreach($invoices_item ->name as $key => $invoices_items)
-                                            <input type="hidden" value="{{$key + 1}}">
-                                            <input name="pid[]" value="{{$invoices_item->name[$index]}}"
-                                                   type="hidden">
-                                            <tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"
-                                                class="sortable-row ui-sortable-handle" style="">
-                                                <td class="hide-border td-icon">
-                                                    <i style="display:none" class="fa fa-sort"></i>
-                                                </td>
-                                                <td style="cursor:pointer" class="hide-border td-icon">
-                                                    <i class="tim-icons icon-simple-remove remove"
-                                                       title="Remove item"/>
-                                                </td>
-                                                <td>
-                                                    <select name="name[]"
-                                                            class="select-item combobox-container name"
-                                                            data-id="{{$invoices_item->name[$index]}}">
-                                                        @foreach($product as $product_selected)
-                                                            @if($product_selected->id == $invoices_item->hpo_product_id[$index])
-                                                                <option value="{{$product_selected->id}}">{{$product_selected->hp_product_name}}</option>
-                                                            @endif
-                                                        @endforeach
-                                                        @foreach($product as $product_item)
-                                                            <option value="{{$product_item->id}}"
-                                                                    data-price="{{$product_item->hp_product_price}}">
-                                                                {{$product_item->hp_product_name . $product_item->hp_product_model . $product_item->hp_product_size}}
-                                                                @foreach($color as $colors)
-                                                                    @if($colors->id == $product_item->hp_product_color_id)
-                                                                        {{$colors->hn_color_name}}
-                                                                    @endif
-                                                                @endforeach
-                                                                @foreach($properties as $property)
-                                                                    @if($property->id== $product_item->hp_product_property)
-                                                                        {{$property->hpp_property_name}}
-                                                                        @foreach ($items as $item)
-                                                                            @if($item->id == $property->hpp_property_items)
-                                                                                {{$item->hppi_items_name}}
-                                                                            @endif
-                                                                        @endforeach
-                                                                    @endif
-                                                                @endforeach
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
+                                        @foreach($product as $key => $product_selected)
+                                            @if($product_selected->id == $invoices_item->name[$loop->index])
+                                                <input type="hidden" value="{{$key + 1}}">
+                                                <input name="pid[]" value="{{$invoices_item->name[$loop->index]}}"
+                                                       type="hidden">
+                                                <tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"
+                                                    class="sortable-row ui-sortable-handle" style="">
+                                                    <td class="hide-border td-icon">
+                                                        <i style="display:none" class="fa fa-sort"></i>
+                                                    </td>
+                                                    <td style="cursor:pointer" class="hide-border td-icon">
+                                                        <i class="tim-icons icon-simple-remove remove"
+                                                           title="Remove item"/>
+                                                    </td>
+                                                    <td>
+                                                        <select name="name[]"
+                                                                class="select-item combobox-container name"
+                                                                data-id="{{$invoices_item->name[$loop->index]}}">
+                                                            <option value="{{$product_selected->id}}">{{$product_selected->hp_product_name}}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
                                                 <textarea
                                                         data-bind="value: notes, valueUpdate: 'afterkeydown', attr: {name: 'invoice_items[]'}"
                                                         rows="1" cols="60" style="resize: vertical; height: 42px;"
                                                         class="form-control word-wrap invoice_items"
-                                                        name="invoice_items[]">{{$invoices_item->invoice_items[$index]}}</textarea>
-                                                </td>
-                                                <td>
-                                                    @foreach($product as $product_item_price)
-                                                        @if($invoices_item->name[$index] == $product_item_price->id)
-                                                            <input disabled type="text"
-                                                                   class="form-control unit"
-                                                                   name="hp_product_price[]"
-                                                                   value="{{$product_item_price->hp_product_price}}">
-                                                        @endif
-                                                    @endforeach
-                                                </td>
-                                                <td style="display:table-cell">
-                                                    <input
-                                                            style="text-align: right"
-                                                            class="form-control invoice_items qty"
-                                                            name="invoice_items_qty[]"
-                                                            value="{{$invoices_item->invoice_items_qty[$index]}}">
-                                                </td>
-                                                <td style="text-align:right;padding-top:9px !important" nowrap="">
-                                                    <div class="line-total sub-total"
-                                                         name="total[]">{{$invoices_item->total[$index]}}</div>
-                                                    <input name="total[]" class="sub-total" type="hidden"
-                                                           value="{{$invoices_item->total[$index]}}">
-                                                </td>
-                                                <div hidden>{{$index++}}</div>
-                                            </tr>
+                                                        name="invoice_items[]">{{$invoices_item->invoice_items[$loop->index]}}</textarea>
+                                                    </td>
+                                                    <td>
+                                                        <input disabled type="text"
+                                                               class="form-control unit"
+                                                               name="hp_product_price[]"
+                                                               value="{{$product_selected->hp_product_price}}">
+                                                    </td>
+                                                    <td style="display:table-cell">
+                                                        <input
+                                                                style="text-align: right"
+                                                                class="form-control invoice_items qty"
+                                                                name="invoice_items_qty[]"
+                                                                value="{{$invoices_item->invoice_items_qty[$loop->index]}}">
+                                                    </td>
+                                                    <td style="text-align:right;padding-top:9px !important" nowrap="">
+                                                        <div class="line-total sub-total"
+                                                             name="total[]">{{$invoices_item->total[$loop->index]}}</div>
+                                                        <input name="total[]" class="sub-total" type="hidden"
+                                                               value="{{$invoices_item->total[$loop->index]}}">
+                                                    </td>
+                                                </tr>
+                                            @endif
                                         @endforeach
                                         </tbody>
                                         <tbody data-bind="sortable: { data: invoice_items_without_tasks, allowDrop: false, afterMove: onDragged} "
@@ -385,22 +356,22 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <label class="bmd-label-floating">{{__('Paid to Date:')}}</label>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <div class="col-lg-6 col-sm-6">
-                                                                <input class="form-control"
-                                                                       id="test-date-id"
-                                                                       type="text"
-                                                                       name="hop_due_date"
-                                                                       value="{{$invoices_item->hop_due_date}}"
-                                                                >
-                                                                &nbsp
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                {{--<div class="row">--}}
+                                                {{--<label class="bmd-label-floating">{{__('Paid to Date:')}}</label>--}}
+                                                {{--<div class="col-md-12">--}}
+                                                {{--<div class="form-group">--}}
+                                                {{--<div class="col-lg-6 col-sm-6">--}}
+                                                {{--<input class="form-control"--}}
+                                                {{--id="test-date-id"--}}
+                                                {{--type="text"--}}
+                                                {{--name="hop_due_date"--}}
+                                                {{--value="{{$invoices_item->hop_due_date}}"--}}
+                                                {{-->--}}
+                                                {{--&nbsp--}}
+                                                {{--</div>--}}
+                                                {{--</div>--}}
+                                                {{--</div>--}}
+                                                {{--</div>--}}
                                                 <div class="row">
                                                     <label class="bmd-label-floating">{{__('Total:')}}</label>
                                                     <div class="col-md-12 ">

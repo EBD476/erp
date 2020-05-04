@@ -17,7 +17,6 @@
                 <div class="col-md-12">
                     @include('layouts.partial.Msg')
                 </div>
-
                 <div class="card">
                     <div class="card-header card-header-primary">
                         <h4 class="card-title ">{{__('Edit Order')}}&nbsp;{{$project->hp_employer_name}}</h4>
@@ -74,7 +73,7 @@
                                                        class="bmd-label-floating">{{__('Client Name')}}</label>
                                                 <select class="select-client form-control" name="ho_client"
                                                         id="ho_client">
-                                                    <option>
+                                                    <option value="{{$client->id}}">
                                                         {{$client->hc_name}}
                                                     </option>
                                                 </select>
@@ -178,7 +177,7 @@
                                                        style="margin-top: -20px">{{__('State')}}</label>
                                                 <select class="select-state form-control" type="text"
                                                         name="hp_address_state_id" id="hp_address_state_id">
-                                                    <option>
+                                                    <option value="{{$invoice_state->id}}">
                                                         {{$invoice_state->hp_project_state}}
                                                     </option>
                                                 </select>
@@ -190,7 +189,7 @@
                                                        style="margin-top: -20px">{{__('City')}}</label>
                                                 <select class="select-city form-control" type="text"
                                                         name="hp_address_city_id" id="hp_address_city_id">
-                                                    <option>
+                                                    <option value="{{$invoice_city->id}}">
                                                         {{$invoice_city->hp_city}}
                                                     </option>
                                                 </select>
@@ -243,7 +242,6 @@
                                         <tbody data-bind="sortable: { data: invoice_items_without_tasks, allowDrop: false, afterMove: onDragged} "
                                                class="ui-sortable">
                                         @foreach($invoices_items as $invoices_item)
-                                            <input name="pid[]" value="{{$invoices_item->id}}" type="hidden">
                                             <tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"
                                                 class="sortable-row ui-sortable-handle" style="">
                                                 <td class="hide-border td-icon">
@@ -254,6 +252,7 @@
                                                        title="Remove item"/>
                                                 </td>
                                                 <td>
+                                                    <input name="pid[]" value="{{$invoices_item->id}}" type="hidden">
                                                     <select name="name[]"
                                                             class="select-item combobox-container name"
                                                             data-id="{{$invoices_item->id}}">
@@ -330,6 +329,7 @@
                                             <td><i class="tim-icons icon-simple-add" id="add-row"
                                                    title="Add item"></i></td>
                                             <td>
+                                                <input name="pid[]" id="pid-new" type="hidden">
                                                 <select name="name[]" class="select-item combobox-container">
                                                 </select>
 
@@ -433,8 +433,10 @@
                                                                                    value="{{$project->hp_total_discount}}"
                                                                             >
                                                                             <div class="small">
-                                                                                <h20>{{$tax->hpx_tax}}.{{__('% VAT rate is calculated')}}</h20>
-                                                                            </div>                                                                        </div>
+                                                                                <h20>{{$tax->hpx_tax}}
+                                                                                    .{{__('% VAT rate is calculated')}}</h20>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -474,25 +476,6 @@
                                                             </div>
                                                         </div>
                                                     @endif
-                                                    {{--@role('admin')--}}
-                                                    {{--<div class="row">--}}
-                                                    {{--<label class="bmd-label-floating">{{__('Statuses:')}}</label>--}}
-                                                    {{--<div class="col-md-12 ">--}}
-                                                    {{--<div class="col-lg-6 col-sm-6">--}}
-                                                    {{--<div class="form-group">--}}
-
-                                                    {{--<select name="hpo_status" class="form-control">--}}
-                                                    {{--@foreach($invoice_statuses as $invoice_status)--}}
-                                                    {{--<option>--}}
-                                                    {{--{{$invoice_status->name}}--}}
-                                                    {{--</option>--}}
-                                                    {{--@endforeach--}}
-                                                    {{--</select>--}}
-                                                    {{--</div>--}}
-                                                    {{--</div>--}}
-                                                    {{--</div>--}}
-                                                    {{--</div>--}}
-                                                    {{--@endrole--}}
                                                 </div>
                                             </div>
                                         </div>
@@ -576,8 +559,10 @@
                                                                                    value="{{$project->hp_total_discount}}"
                                                                             >
                                                                             <div class="small">
-                                                                                <h20>{{$tax->hpx_tax}}.{{__('% VAT rate is calculated')}}</h20>
-                                                                            </div>                                                                         </div>
+                                                                                <h20>{{$tax->hpx_tax}}
+                                                                                    .{{__('% VAT rate is calculated')}}</h20>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -611,8 +596,10 @@
                                                                                    type="text"
                                                                                    name="total_discount">
                                                                             <div class="small">
-                                                                                <h20>{{$tax->hpx_tax}}.{{__('% VAT rate is calculated')}}</h20>
-                                                                            </div>                                                                         </div>
+                                                                                <h20>{{$tax->hpx_tax}}
+                                                                                    .{{__('% VAT rate is calculated')}}</h20>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -720,15 +707,28 @@
     <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/leaflet.js')}}"></script>
+    <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
+
     <script>
         var total;
         var discount;
         var total_discount;
         var remove = 0;
+        var product_array = new Array();
 
         $(document).ready(function () {
             var client_id;
             var order_id;
+
+            // push current items in array
+            $('.remove').each(function () {
+                // push all items
+                product_array.push($(this).parent().parent().find("select[name='name[]']").val());
+                // end
+            });
+            // end
+
+            alert(product_array);
 
             $("#modal_form").submit(function (event) {
                 var data = $("#modal_form").serialize();
@@ -989,429 +989,448 @@
             }
 
             $(".select-item").on('select2:select', function (event) {
+
                 var result = event.params.data;
-                $("#unit").val(result.hp_product_price);
-                $('#qty').val('1');
-                unit_count = $("#unit").val();
-                unit_qty = $("#qty").val();
-                $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
-                $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
-                var all_total_val = $("#all_total").val()
 
-                $('.sub-total').each(function () {
+                // push data id for limitation select to
 
-                    total = $(this).text();
-                    if (total != "") {
-                        $("#all_total").val(parseInt(total) + parseInt(all_total_val));
-                        $("#all_total").text(parseInt(total) + parseInt(all_total_val));
-                        $("#all_tot").val(parseInt(total) + parseInt(all_total_val));
+                if (product_array.indexOf(result.id) == -1) {
 
-                    }
+                    alert(product_array.indexOf(result.id));
 
-                });
+                    product_array.push(result.id);
 
-                $(".qty").on('change', function (event) {
-                    unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
-                    unit_qty = $(this).val();
+
+                    $("#unit").val(result.hp_product_price);
+                    $('#qty').val('1');
+                    unit_count = $("#unit").val();
+                    unit_qty = $("#qty").val();
                     $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
                     $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
-                    discount = $("#discount").val();
-                    total = $("#all_total").val();
-                    if (discount != "") {
-                        total_discount = parseInt(discount) * parseInt(total) / 100;
-                        $("#all_dis").val(parseInt(total) - parseInt(total_discount))
-                        $("#total_discount").val(parseInt(total) - parseInt(total_discount))
-                        $("#total_discount").text(parseInt(total) - parseInt(total_discount))
-                    }
-                    total = 0;
+                    var all_total_val = $("#all_total").val()
+
                     $('.sub-total').each(function () {
 
-                        current = $(this).text();
-                        if (current != "") {
-                            total = total + parseInt(current);
-                            $("#all_total").val(total);
-                            $("#all_total").text(total);
+                        total = $(this).text();
+                        if (total != "") {
+
+                            $("#all_total").val(parseInt(total) + parseInt(all_total_val));
+                            $("#all_total").text(parseInt(total) + parseInt(all_total_val));
+                            $("#all_tot").val(parseInt(total) + parseInt(all_total_val));
+
                         }
-                    });
-
-                });
-
-                $("#discount").on('change', function (event) {
-                    total = $('#all_total').val();
-                    discount = $(this).val();
-                    total_discount = parseInt(discount) * parseInt(total) / 100;
-                    $('#all_dis').val(parseInt(total) - parseInt(total_discount));
-                    $('#total_discount').val(parseInt(total) - parseInt(total_discount));
-                    $('#total_discount').text(parseInt(total) - parseInt(total_discount));
-                })
-// first row on table 2
-                $("#add-row").on('click', function (event) {
-                    if ($(this).hasClass('icon-simple-add')) {
-                        append_item();
-                        $(this).removeClass('icon-simple-add');
-                    }
-                    $(this).addClass('icon-simple-remove');
-                    if ($(this).hasClass('icon-simple-remove')) {
-                        //remove item operations
-                        $("#add-row").click(function (event) {
-                            var rowCount = $('#table2 tr').length;
-                            if (rowCount > 2) {
-                                if ($('#sub-total').text() != "") {
-                                    var all = $("#all_total").val();
-                                    var total_each = all - parseInt($('#sub-total').val());
-                                    $('#all_total').val(total_each);
-                                    $('#all_tot').val(total_each);
-                                    if ($('#discount').val() != "") {
-                                        var total1 = $('#all_total').val();
-                                        discount = $('#discount').val();
-                                        total_discount = parseInt(discount) * parseInt(total1) / 100;
-                                        $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
-                                        $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
-                                        $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
-                                    }
-                                }
-
-                                if (remove == 0) {
-                                    total = all - parseInt($('#sub-total').val());
-                                    $("#all_tot").val(total);
-                                    $("#all_total").val(total);
-                                }
-
-                                $(this).parent().parent().remove();
-                                remove = 0;
-                            }
-                        })
-                    }
-                });
-
-                // end
-
-                function append_item() {
-
-                    $('.table').append('<tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"\n' +
-                        '                                        class="sortable-row ui-sortable-handle" style="">\n' +
-                        '                                        <td class="hide-border td-icon">\n' +
-                        '                                            <i style="display:none" data-bind="visible: actionsVisible() &amp;&amp;\n' +
-                        '                $parent.invoice_items_without_tasks().length > 1" class="fa fa-sort"></i>\n' +
-                        '                                        </td>\n' +
-                        '                      <td> <i class="tim-icons icon-simple-add" id="add-row' + $("#table2 tr").length + '" title="Add item"/></td>\n' +
-                        '                                        <td>\n' +
-                        '                                                       <select name="name[]" class="select-item combobox-container">\n' +
-                        '                                                        </select>\n' +
-                        '\n' +
-                        '                                        </td>\n' +
-                        '                                        <td>\n' +
-                        '                                                <textarea\n' +
-                        '                                                        data-bind="value: notes, valueUpdate: \'afterkeydown\', attr: {name: \'invoice_items[]\'}"\n' +
-                        '                                                        rows="1" cols="60" style="resize: vertical; height: 42px;"\n' +
-                        '                                                        class="form-control word-wrap"\n' +
-                        '                                                        name="invoice_items[]"></textarea>\n' +
-                        '\n' +
-                        '                                        </td>\n' +
-                        '                                        <td>\n' +
-                        '                                            <input disabled type="text"  class="form-control unit"\n' +
-                        '                                                   name="hp_product_price[]">\n' +
-                        '                                        </td>\n' +
-                        '                                        <td style="display:table-cell">\n' +
-                        '                                            <input \n' +
-                        '                                                   style="text-align: right" class="form-control invoice-item qty"\n' +
-                        '                                                   name="invoice_items_qty[]">\n' +
-                        '                                        </td>\n' +
-                        '                                        <td style="text-align:right;padding-top:9px !important" nowrap="">\n' +
-                        '                                            <div name="total[]" class="line-total sub-total"></div>\n' +
-                        '                                            <input name="total[]"class="sub-total" type="hidden">\n' +
-                        '                                        </td>\n' +
-                        '                                        <td style="cursor:pointer" class="hide-border td-icon">\n' +
-                        '                                    </tr>'
-                    )
-                    ;
-
-                    var locale = $("#tab2").data('lang');
-
-                    $(".select-item").select2({
-                        ajax: {
-                            url: '/json-data-fill-data-product',
-                            dataType: 'json',
-                            data: function (params) {
-                                return {
-                                    search: params.term, // search term
-                                    page: params.page
-                                };
-                            },
-                            processResults: function (data) {
-                                return {
-                                    results: data.results
-                                }
-                            }
-                        },
-                        theme: "bootstrap",
-                        dir: 'rtl',
-                        left: '1142px',
-                        width: '340.667px',
-                        placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
-                        templateResult: formatRepo,
-                        templateSelection: formatRepoSelection
-// allowClear: true
 
                     });
 
-                    function formatRepo(repo) {
-
-                        if (repo.loading) {
-                            return repo.text;
-                        }
-
-                        var $container = $(
-                            "<div class='select2-result-repository clearfix'>" +
-                            "<div class='select2-result-repository__avatar'><img src='/img/products/" + repo.hp_product_image + "' /></div>" +
-                            "<div class='select2-result-repository__meta'>" +
-                            "<div class='select2-result-repository__title'></div>" +
-                            "<div class='select2-result-repository__description'></div>" +
-                            "<div class='select2-result-repository__color'></div>" +
-                            "<div class='select2-result-repository__statistics'>" +
-                            // "<div class='select2-result-repository__forks'><i class='fa fa-flash'></i> </div>" +
-                            // "<div class='select2-result-repository__stargazers'><i class='fa fa-star'></i> </div>" +
-                            // "<div class='select2-result-repository__watchers'><i class='fa fa-eye'></i> </div>" +
-                            "</div>" +
-                            "</div>" +
-                            "</div>"
-                        );
-
-                        $container.find(".select2-result-repository__title").text(repo.text);
-                        $container.find(".select2-result-repository__description").text("{{__('Price')}}" + " : " + repo.hp_product_price);
-                        $container.find(".select2-result-repository__color").text("{{__('Color')}}" + " : " + repo.hn_color_name);
-                        $container.find(".select2-result-repository__statistics").text("{{__('Property')}}" + " : " + repo.hpp_property_name + repo.hppi_items_name);
-// $container.find(".select2-result-repository__forks").append(repo.forks_count + " Forks");
-// $container.find(".select2-result-repository__stargazers").append(repo.stargazers_count + " Stars");
-// $container.find(".select2-result-repository__watchers").append(repo.watchers_count + " Watchers");
-
-                        return $container;
-                    }
-
-                    function formatRepoSelection(repo) {
-                        return repo.text;
-                    }
-
-                    $(".select-item").on('select2:select', function (event) {
-
-                        var result = event.params.data;
-                        $(this).parent().parent().find("input[name='hp_product_price[]']").val(result.hp_product_price);
-                        $(this).parent().parent().find("input[name='invoice_items_qty[]']").val('1');
-
-
+                    $(".qty").on('change', function (event) {
                         unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
-                        unit_qty = $(this).parent().parent().find("input[name='invoice_items_qty[]']").val();
+                        unit_qty = $(this).val();
                         $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
                         $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
-
+                        discount = $("#discount").val();
+                        total = $("#all_total").val();
+                        if (discount != "") {
+                            total_discount = parseInt(discount) * parseInt(total) / 100;
+                            $("#all_dis").val(parseInt(total) - parseInt(total_discount))
+                            $("#total_discount").val(parseInt(total) - parseInt(total_discount))
+                            $("#total_discount").text(parseInt(total) - parseInt(total_discount))
+                        }
                         total = 0;
                         $('.sub-total').each(function () {
 
                             current = $(this).text();
                             if (current != "") {
                                 total = total + parseInt(current);
-                                $("#all_tot").val(total);
                                 $("#all_total").val(total);
                                 $("#all_total").text(total);
-                                if ($('#discount').val() != "") {
-                                    total1 = $('#all_total').val();
-                                    discount = $('#discount').val();
-                                    total_discount = parseInt(discount) * parseInt(total1) / 100;
-                                    $('#all_dis').val(parseInt(total1) - parseInt(total_discount));
-                                    $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
-                                    $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
-                                }
                             }
                         });
 
-                        $(".qty").on('change', function (event) {
-
-                            unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
-                            unit_qty = $(this).val();
-                            $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
-                            $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
-                            discount = $("#discount").val();
-                            total = $("#all_total").val();
-                            if (discount != "") {
-                                total_discount = parseInt(discount) * parseInt(total) / 100;
-                                $("#all_dis").val(parseInt(total) - parseInt(total_discount))
-                                $("#total_discount").val(parseInt(total) - parseInt(total_discount))
-                                $("#total_discount").text(parseInt(total) - parseInt(total_discount))
-                            }
-                            total = 0;
-                            $('.sub-total').each(function () {
-
-                                current = $(this).text();
-                                if (current != "") {
-                                    total = total + parseInt(current);
-                                    $("#all_tot").val(total);
-                                    $("#all_total").val(total);
-                                    $("#all_total").text(total);
-                                }
-                            });
-
-                        });
-
-                        $("#discount").on('change', function (event) {
-                            discount = $(this).val();
-                            total_discount = parseInt(discount) * parseInt(total) / 100;
-                            $('#all_dis').val(parseInt(total) - parseInt(total_discount));
-                            $('#total_discount').val(parseInt(total) - parseInt(total_discount));
-                            $('#total_discount').text(parseInt(total) - parseInt(total_discount));
-                        });
-
-                        $(".remove").click(function () {
-
-
-                            var rowCount = $('#table2 tr').length;
-
-                            if (rowCount > 2) {
-
-                                if ($(this).parent().parent().find('.sub-total').text() != "") {
-                                    all = $("#all_total").val();
-                                    total = all - parseInt($(this).parent().parent().find('.sub-total').text());
-                                    $('#all_total').val(total);
-                                    $('#all_tot').val(total);
-                                    if ($('#discount').val != "") {
-                                        total1 = $('#all_total').val();
-                                        discount = $('#discount').val();
-                                        total_discount = parseInt(discount) * parseInt(total1) / 100;
-                                        $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
-                                        $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
-                                        $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
-                                    }
-                                }
-
-
-                                if (remove == 0) {
-
-                                    total = all - parseInt($(this).parent().parent().find('.sub-total').text());
-                                    $("#all_tot").val(total);
-                                    $("#all_total").val(total);
-                                    remove += 1;
-
-                                }
-
-                                $(this).parent().parent().remove();
-                                remove = 0;
-
-                            }
-                        });
-
-                        $("#add-row" + parseInt($("#table2 tr").length - 1)).on('click', function (event) {
-
-                            if ($(this).hasClass('icon-simple-add')) {
-                                append_item();
-                                $(this).removeClass('icon-simple-add');
-                                $(this).addClass('icon-simple-remove');
-                            }
-
-                            if ($(this).hasClass('icon-simple-remove')) {
-                                //remove item operations
-                                $(this).click(function (event) {
-
-                                    var rowCount = $('#table2 tr').length;
-
-                                    if (rowCount > 2) {
-
-                                        if ($(this).parent().parent().find('.line-total').text() != "") {
-                                            var all = $("#all_total").val();
-                                            total = parseInt(all) - parseInt($(this).parent().parent().find("input[name='total[]']").val());
-                                            $('#all_total').val(total);
-                                            $('#all_tot').val(total);
-                                            if ($('#discount').val() != "") {
-                                                var total1 = $('#all_total').val();
-                                                discount = $('#discount').val();
-                                                total_discount = parseInt(discount) * parseInt(total1) / 100;
-                                                $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
-                                                $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
-                                                $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
-                                            }
-                                        }
-
-
-                                        if (remove == 0) {
-
-                                            total = all - parseInt($(this).parent().parent().find('.line-total').text());
-                                            $("#all_tot").val(total);
-                                            $("#all_total").val(total);
-                                            remove += 1;
-
-                                        }
-
-                                        $(this).parent().parent().remove();
-                                        remove = 0;
-                                    }
-                                })
-
-                            }
-                        });
-
-                        // store new row
-                        var data = {
-                            name: $(this).parent().parent().find("select[name='name[]']").val(),
-                            total: $(this).parent().parent().find('.sub-total').text(),
-                            hpo_order_id: $("#order_id").val(),
-                            // hpo_client_id: $("#order_id_show").data('client'),
-                            hop_due_date: $("#test-date-id").val(),
-                            hpo_discount: $("#discount").val(),
-                            all_tot: $("#all_total").val(),
-                            all_dis: $("#total_discount").val(),
-                        }
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-                        $.ajax({
-                            url: '/add-product',
-                            type: 'Post',
-                            data: data,
-                            dataType: 'json',
-                            async: false,
-                            success: function (data) {
-                                $(this).parent().parent().find("input[name='pid[]']").val(data.pid);
-                                alert($(this).parent().parent().find("input[name='name[]']").val());
-                            },
-                            cache: false,
-                        });
-                        // end
                     });
 
+                    $("#discount").on('change', function (event) {
+                        total = $('#all_total').val();
+                        discount = $(this).val();
+                        total_discount = parseInt(discount) * parseInt(total) / 100;
+                        $('#all_dis').val(parseInt(total) - parseInt(total_discount));
+                        $('#total_discount').val(parseInt(total) - parseInt(total_discount));
+                        $('#total_discount').text(parseInt(total) - parseInt(total_discount));
+                    })
+                    // first row on table 2
+                    $("#add-row").on('click', function (event) {
+                        if ($(this).hasClass('icon-simple-add')) {
+                            append_item();
+                            $(this).removeClass('icon-simple-add');
+                        }
+                        $(this).addClass('icon-simple-remove');
+                        if ($(this).hasClass('icon-simple-remove')) {
+                            //remove item operations
+                            $("#add-row").click(function (event) {
+                                var rowCount = $('#table2 tr').length;
+                                if (rowCount > 2) {
+                                    if ($('#sub-total').text() != "") {
+                                        var all = parseInt($("#all_total").val());
+                                        var total_each = parseInt(all) - parseInt($('#sub-total').val());
+                                        $('#all_total').val(parseInt(total_each));
+                                        $('#all_tot').val(parseInt(total_each));
+                                        if ($('#discount').val() != "") {
+                                            var total1 =  parseInt($('#all_total').val());
+                                            discount = $('#discount').val();
+                                            total_discount = parseInt(discount) * parseInt(total1) / 100;
+                                            $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
+                                            $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
+                                            $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
+                                        }
+                                    }
 
-                }
+                                    if (remove == 0) {
+                                        total = all - parseInt($('#sub-total').val());
+                                        $("#all_tot").val(total);
+                                        $("#all_total").val(total);
+                                    }
 
-                // store new row
-                var data = {
-                    name: $(this).parent().parent().find("select[name='name[]']").val(),
-                    total: $(this).parent().parent().find('.sub-total').text(),
-                    hpo_order_id: $("#order_id").val(),
-                    // hpo_client_id: $("#order_id_show").data('client'),
-                    hop_due_date: $("#test-date-id").val(),
-                    hpo_discount: $("#discount").val(),
-                    all_tot: $("#all_total").val(),
-                    all_dis: $("#total_discount").val(),
-                }
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    var data = {
+                                        id: $('#pid-new').val(),
+                                    }
+                                    $.ajaxSetup({
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        }
+                                    });
+
+                                    $.ajax({
+                                        url: '/order_product/' + data.id,
+                                        type: 'delete',
+                                        data: data,
+                                        dataType: 'json',
+                                        async: false,
+                                        success: function (data) {
+                                        },
+                                        cache: false,
+                                    });
+
+                                    // pop items from no repeat array
+                                    product_array.splice(product_array.indexOf(parseInt($(this).parent().parent().find("select[name='name[]']").val())), 1, 0);
+                                    $(this).parent().parent().remove();
+                                    alert(product_array);
+                                    remove = 0;
+                                }
+                            })
+                        }
+                    });
+                    // end
+
+                    // store new row
+                    var data = {
+                        name: $(this).parent().parent().find("select[name='name[]']").val(),
+                        total: $(this).parent().parent().find('.sub-total').text(),
+                        hpo_order_id: $("#order_id").val(),
+                        // hpo_client_id: $("#order_id_show").data('client'),
+                        hop_due_date: $("#test-date-id").val(),
+                        hpo_discount: $("#discount").val(),
+                        all_tot: $("#all_total").val(),
+                        all_dis: $("#total_discount").val(),
                     }
-                });
-                $.ajax({
-                    url: '/add-product',
-                    type: 'Post',
-                    data: data,
-                    dataType: 'json',
-                    async: false,
-                    success: function (data) {
-                        $(this).parent().parent().find("input[name='pid[]']").val(data.pid);
-                        alert($(this).parent().parent().find("input[name='name[]']").val());
-                    },
-                    cache: false,
-                });
-                // end
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: '/add-product',
+                        type: 'Post',
+                        data: data,
+                        dataType: 'json',
+                        async: false,
+                        success: function (data) {
+                            $('#pid-new').val(data.pid);
+                        },
+                        cache: false,
+                    });
 
-            })
+                    // end
+
+                    function append_item() {
+
+                        $('.table').append('<tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"\n' +
+                            '                                        class="sortable-row ui-sortable-handle" style="">\n' +
+                            '                                        <td class="hide-border td-icon">\n' +
+                            '                                            <i style="display:none" data-bind="visible: actionsVisible() &amp;&amp;\n' +
+                            '                $parent.invoice_items_without_tasks().length > 1" class="fa fa-sort"></i>\n' +
+                            '                                        </td>\n' +
+                            '                      <td> <i class="tim-icons icon-simple-add" id="add-row' + $("#table2 tr").length + '" title="Add item"/></td>\n' +
+                            '                                        <td>\n' +
+                            '                                                       <input name="pid[]" id="pid-new' + $("#table2 tr").length + '" type="hidden">\n' +
+                            '                                                       <select name="name[]" class="select-item combobox-container">\n' +
+                            '                                                        </select>\n' +
+                            '                                        </td>\n' +
+                            '                                        <td>\n' +
+                            '                                                <textarea\n' +
+                            '                                                        data-bind="value: notes, valueUpdate: \'afterkeydown\', attr: {name: \'invoice_items[]\'}"\n' +
+                            '                                                        rows="1" cols="60" style="resize: vertical; height: 42px;"\n' +
+                            '                                                        class="form-control word-wrap"\n' +
+                            '                                                        name="invoice_items[]"></textarea>\n' +
+                            '                                        </td>\n' +
+                            '                                        <td>\n' +
+                            '                                            <input disabled type="text"  class="form-control unit"\n' +
+                            '                                                   name="hp_product_price[]">\n' +
+                            '                                        </td>\n' +
+                            '                                        <td style="display:table-cell">\n' +
+                            '                                            <input \n' +
+                            '                                                   style="text-align: right" class="form-control invoice-item qty"\n' +
+                            '                                                   name="invoice_items_qty[]">\n' +
+                            '                                        </td>\n' +
+                            '                                        <td style="text-align:right;padding-top:9px !important" nowrap="">\n' +
+                            '                                            <div name="total[]" class="line-total sub-total"></div>\n' +
+                            '                                            <input name="total[]"class="sub-total" type="hidden">\n' +
+                            '                                        </td>\n' +
+                            '                                        <td style="cursor:pointer" class="hide-border td-icon">\n' +
+                            '                                    </tr>'
+                        )
+                        ;
+
+                        var locale = $("#tab2").data('lang');
+
+                        $(".select-item").select2({
+                            ajax: {
+                                url: '/json-data-fill-data-product',
+                                dataType: 'json',
+                                data: function (params) {
+                                    return {
+                                        search: params.term, // search term
+                                        page: params.page
+                                    };
+                                },
+                                processResults: function (data) {
+                                    return {
+                                        results: data.results
+                                    }
+                                }
+                            },
+                            theme: "bootstrap",
+                            dir: 'rtl',
+                            left: '1142px',
+                            width: '340.667px',
+                            placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
+                            templateResult: formatRepo,
+                            templateSelection: formatRepoSelection
+// allowClear: true
+
+                        });
+
+                        function formatRepo(repo) {
+
+                            if (repo.loading) {
+                                return repo.text;
+                            }
+
+                            var $container = $(
+                                "<div class='select2-result-repository clearfix'>" +
+                                "<div class='select2-result-repository__avatar'><img src='/img/products/" + repo.hp_product_image + "' /></div>" +
+                                "<div class='select2-result-repository__meta'>" +
+                                "<div class='select2-result-repository__title'></div>" +
+                                "<div class='select2-result-repository__description'></div>" +
+                                "<div class='select2-result-repository__color'></div>" +
+                                "<div class='select2-result-repository__statistics'>" +
+                                // "<div class='select2-result-repository__forks'><i class='fa fa-flash'></i> </div>" +
+                                // "<div class='select2-result-repository__stargazers'><i class='fa fa-star'></i> </div>" +
+                                // "<div class='select2-result-repository__watchers'><i class='fa fa-eye'></i> </div>" +
+                                "</div>" +
+                                "</div>" +
+                                "</div>"
+                            );
+
+                            $container.find(".select2-result-repository__title").text(repo.text);
+                            $container.find(".select2-result-repository__description").text("{{__('Price')}}" + " : " + repo.hp_product_price);
+                            $container.find(".select2-result-repository__color").text("{{__('Color')}}" + " : " + repo.hn_color_name);
+                            $container.find(".select2-result-repository__statistics").text("{{__('Property')}}" + " : " + repo.hpp_property_name + repo.hppi_items_name);
+                            return $container;
+                        }
+
+                        function formatRepoSelection(repo) {
+                            return repo.text;
+                        }
+
+                        $(".select-item").on('select2:select', function (event) {
+
+                            var result = event.params.data;
+
+                            // push data id for limitation select to
+                            if (product_array.indexOf(result.id) == -1) {
+
+                                product_array.push(result.id);
+                                alert(product_array);
+
+                                $(this).parent().parent().find("input[name='hp_product_price[]']").val(result.hp_product_price);
+                                $(this).parent().parent().find("input[name='invoice_items_qty[]']").val('1');
+
+
+                                unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
+                                unit_qty = $(this).parent().parent().find("input[name='invoice_items_qty[]']").val();
+                                $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
+                                $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
+
+                                total = 0;
+                                $('.sub-total').each(function () {
+
+                                    current = $(this).text();
+                                    if (current != "") {
+                                        total = total + parseInt(current);
+                                        $("#all_tot").val(total);
+                                        $("#all_total").val(total);
+                                        $("#all_total").text(total);
+                                        if ($('#discount').val() != "") {
+                                            total1 = $('#all_total').val();
+                                            discount = $('#discount').val();
+                                            total_discount = parseInt(discount) * parseInt(total1) / 100;
+                                            $('#all_dis').val(parseInt(total1) - parseInt(total_discount));
+                                            $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
+                                            $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
+                                        }
+                                    }
+                                });
+
+                                $(".qty").on('change', function (event) {
+
+                                    unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
+                                    unit_qty = $(this).val();
+                                    $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
+                                    $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
+                                    discount = $("#discount").val();
+                                    total = $("#all_total").val();
+                                    if (discount != "") {
+                                        total_discount = parseInt(discount) * parseInt(total) / 100;
+                                        $("#all_dis").val(parseInt(total) - parseInt(total_discount))
+                                        $("#total_discount").val(parseInt(total) - parseInt(total_discount))
+                                        $("#total_discount").text(parseInt(total) - parseInt(total_discount))
+                                    }
+                                    total = 0;
+                                    $('.sub-total').each(function () {
+
+                                        current = $(this).text();
+                                        if (current != "") {
+                                            total = total + parseInt(current);
+                                            $("#all_tot").val(total);
+                                            $("#all_total").val(total);
+                                            $("#all_total").text(total);
+                                        }
+                                    });
+
+                                });
+
+                                $("#discount").on('change', function (event) {
+                                    discount = $(this).val();
+                                    total_discount = parseInt(discount) * parseInt(total) / 100;
+                                    $('#all_dis').val(parseInt(total) - parseInt(total_discount));
+                                    $('#total_discount').val(parseInt(total) - parseInt(total_discount));
+                                    $('#total_discount').text(parseInt(total) - parseInt(total_discount));
+                                });
+
+                                $("#add-row" + parseInt($("#table2 tr").length - 1)).on('click', function (event) {
+
+                                    if ($(this).hasClass('icon-simple-add')) {
+                                        append_item();
+                                        $(this).removeClass('icon-simple-add');
+                                        $(this).addClass('icon-simple-remove');
+                                    }
+
+                                    if ($(this).hasClass('icon-simple-remove')) {
+                                        //remove item operations
+                                        $(this).click(function (event) {
+
+                                            var rowCount = $('#table2 tr').length;
+
+                                            if (rowCount > 2) {
+
+                                                if ($(this).parent().parent().find('.line-total').text() != "") {
+                                                    var all = parseInt($("#all_total").val());
+                                                    total = parseInt(all) - parseInt($(this).parent().parent().find("input[name='total[]']").val());
+                                                    $('#all_total').val(parseInt(total));
+                                                    $('#all_tot').val(parseInt(total));
+
+                                                    if ($('#discount').val() != "") {
+                                                        var total1 = parseInt($('#all_total').val());
+                                                        discount = parseInt($('#discount').val());
+                                                        total_discount = parseInt(discount) * parseInt(total1) / 100;
+                                                        $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
+                                                        $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
+                                                        $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
+                                                    }
+                                                }
+
+
+                                                if (remove == 0) {
+
+                                                    total = all - parseInt($(this).parent().parent().find('.line-total').text());
+                                                    $("#all_tot").val(total);
+                                                    $("#all_total").val(total);
+                                                    remove += 1;
+
+                                                }
+
+                                                var data = {
+                                                    id: $(this).parent().parent().find("#pid-new" + parseInt($("#table2 tr").length - 1)).val(),
+                                                }
+                                                $.ajaxSetup({
+                                                    headers: {
+                                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                                    }
+                                                });
+                                                $.ajax({
+                                                    url: '/order_product/' + data.id,
+                                                    type: 'delete',
+                                                    data: data,
+                                                    dataType: 'json',
+                                                    async: false,
+                                                    success: function (data) {
+                                                    },
+                                                    cache: false,
+                                                });
+
+                                                // pop items from no repeat array
+                                                product_array.splice(product_array.indexOf(parseInt($(this).parent().parent().find("select[name='name[]']").val())), 1, 0);
+                                                $(this).parent().parent().remove();
+                                                remove = 0;
+                                            }
+                                        })
+
+                                    }
+                                });
+
+                                // store new row
+                                var data = {
+                                    name: $(this).parent().parent().find("select[name='name[]']").val(),
+                                    total: $(this).parent().parent().find('.sub-total').text(),
+                                    hpo_order_id: $("#order_id").val(),
+                                    // hpo_client_id: $("#order_id_show").data('client'),
+                                    hop_due_date: $("#test-date-id").val(),
+                                    hpo_discount: $("#discount").val(),
+                                    all_tot: $("#all_total").val(),
+                                    all_dis: $("#total_discount").val(),
+                                }
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+                                $.ajax({
+                                    url: '/add-product',
+                                    type: 'Post',
+                                    data: data,
+                                    dataType: 'json',
+                                    async: false,
+                                    success: function (data) {
+                                        $("#pid-new" + parseInt($("#table2 tr").length - 1)).val(data.pid);
+                                    },
+                                    cache: false,
+                                });
+                                // end
+                            }
+                        });
+                    }
+                }
+
+            });
 
             $("#discount").on('change', function (event) {
                 total = $('#all_total').val();
@@ -1465,13 +1484,13 @@
                 if (rowCount > 2) {
 
                     if ($(this).parent().parent().find('.sub-total').text() != "") {
-                        all = $("#all_total").val();
-                        total = all - parseInt($(this).parent().parent().find('.sub-total').text());
+                        all = parseInt($("#all_total").val());
+                        total = all - parseInt($(this).parent().parent().find('.sub-total').val());
                         $('#all_total').val(total);
                         $('#all_tot').val(total);
                         if ($('#discount').val != "") {
-                            total1 = $('#all_total').val();
-                            discount = $('#discount').val();
+                            total1 = parseInt($('#all_total').val());
+                            discount = parseInt($('#discount').val());
                             total_discount = parseInt(discount) * parseInt(total1) / 100;
                             $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
                             $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
@@ -1507,8 +1526,12 @@
                         },
                         cache: false,
                     });
+
+                    // pop items from no repeat array
+                    product_array.splice(product_array.indexOf(parseInt($(this).parent().parent().find("select[name='name[]']").val())), 1, 0);
                     $(this).parent().parent().remove();
                     remove = 0;
+                    alert(product_array);
 
                 }
             });
@@ -1521,7 +1544,6 @@
 
     </script>
     {{--datapicker--}}
-    <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
     <script>
         kamaDatepicker('test-date-id', {
             buttonsColor: "blue",
@@ -1553,7 +1575,6 @@
             .openPopup();
 
         function onMapClick(e) {
-            ;
 
             var jsonLoc = JSON.parse(JSON.stringify(e.latlng));
             $("#location").val(jsonLoc.lat + ',' + jsonLoc.lng);

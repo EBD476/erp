@@ -124,14 +124,9 @@ class OrderController extends Controller
 
     public function edit_pre(Request $request, $id)
     {
-        $items = ProductPropertyItems::all();
-        $properties = ProductProperty::all();
-        $color = ProductColor::all();
         $invoice_statuses = InvoiceStatuses::ALL();
-        $project_type = Project_Type::all();
-        $address = address::all();
-        $state = State::all();
-        $product = Product::all();
+        $project_type = Project_Type::select('id','hp_name')->get();
+        $product = Product::select('id','hp_product_name')->get();
         $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
         $type = HDtype::select('th_name', 'id')->get();
@@ -139,6 +134,11 @@ class OrderController extends Controller
         $user = User::select('id', 'name')->get();
         $project = Order::find($id);
         $invoices_item = $request;
+        $color = ProductColor::all();
+        $items = ProductPropertyItems::all();
+        $properties = ProductProperty::all();
+        $address = address:: where('id', $invoices_item->hp_address_city_id)->get()->last();
+        $state = Project_State:: where('id', $invoices_item->hp_address_state_id)->get()->last();
         $invoice_state = State::Select('id', 'hp_project_state')->where('id', $project->hp_address_state_id)->get()->last();
         $invoice_city = Address::Select('id', 'hp_city')->where('id', $project->hp_address_city_id)->get()->last();
         $client = Client::select('id', 'hc_name')->where('id', $project->ho_client)->get()->last();
@@ -190,7 +190,8 @@ class OrderController extends Controller
     {
         $dataUser = Order::find($id);
         $dataUser->delete();
-        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
+        $items = OrderProduct::where('hpo_order_id',$id)->delete();
+        return json_encode(["response" => "OK"]);
 
     }
 
@@ -202,13 +203,17 @@ class OrderController extends Controller
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
         $data = $request;
+        $items = ProductPropertyItems::select('id','hppi_items_name','hppi_color')->get();
+        $properties = ProductProperty::select('id','hpp_property_name','hpp_property_items')->get();
+        $color = ProductColor::select('id','hn_color_name')->get();
         $order = Order:: where('id', $request->hpo_order_id)->get()->last();
+        $order_registrant = User::select('name')->where('id',$order->hp_registrant)->get()->last();
         $city = address:: where('id', $order->hp_address_city_id)->get()->last();
         $state = Project_State:: where('id', $order->hp_address_state_id)->get()->last();
         $client = Client::select('id', 'hc_name')->where('id', $order->ho_client)->get()->last();
         $collect = count(collect($data->name));
         $product = Product::select('id', 'hp_product_model', 'hp_product_color_id', 'hp_product_size', 'hp_product_property', 'hp_product_code_number', 'hp_product_name', 'hp_product_price')->get();
-        return view('order.preview', ['data' => $data], compact('collect' ,'client', 'order_product', 'type', 'help_desk', 'priority', 'user', 'product', 'order', 'city', 'state'));
+        return view('order.preview', ['data' => $data], compact('order_registrant','properties','items','color','collect' ,'client', 'order_product', 'type', 'help_desk', 'priority', 'user', 'product', 'order', 'city', 'state'));
     }
 
     public function invoices_list_product()

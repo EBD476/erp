@@ -1209,9 +1209,8 @@
                 });
 
                 $.ajax({
-                    url: '/repository/' + product_id,
+                    url: '/repository',
                     type: 'POST',
-                    method: 'put',
                     data: data,
                     dataType: 'json',
                     async: false,
@@ -1249,9 +1248,8 @@
                 });
 
                 $.ajax({
-                    url: '/repository-middle-part/' + middle_part_id,
+                    url: '/repository-middle-part',
                     type: 'POST',
-                    method: 'put',
                     data: data,
                     dataType: 'json',
                     async: false,
@@ -1290,9 +1288,8 @@
                 });
 
                 $.ajax({
-                    url: '/repository-part/' + part_id,
+                    url: '/repository-part',
                     type: 'POST',
-                    method: 'put',
                     data: data,
                     dataType: 'json',
                     async: false,
@@ -1540,8 +1537,8 @@
             $('#table2').on('click', '.edit-middle-part', function (event) {
                 $("#modalRegisterForm2").modal();
                 var data = table2.row($(this).parents('tr')).data();
-                $('#middle_part_id').val(data[0]);
                 $("#hrm_middle_part_id").append('<option selected value="' + data[13] + '">' + data[1] + '</option>');
+                alert(data[13]);
                 $("#hrm_provider_code").append('<option selected value="' + data[11] + '">' + data[3] + '</option>');
                 $("#hrm_repository_id").text(data[4]);
                 $('#hrm_count').val(data[2]);
@@ -1559,7 +1556,6 @@
             $('#table3').on('click', '.edit-part', function (event) {
                 $("#modalRegisterForm3").modal();
                 var data = table3.row($(this).parents('tr')).data();
-                $('#part_id').val(data[0]);
                 $("#hrp_part_id").append('<option selected value="' + data[13] + '">' + data[1] + '</option>');
                 $("#hrp_provider_code").append('<option selected value="' + data[11] + '">' + data[3] + '</option>');
                 $("#hrp_repository_id").text(data[4]);

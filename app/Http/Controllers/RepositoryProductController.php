@@ -111,29 +111,6 @@ class RepositoryProductController extends Controller
 
     }
 
-    public function update(Request $request, $id)
-    {
-        $this->validate($request, [
-            'hr_product_id' => 'required',
-            'hr_product_stock' => 'required',
-            'hr_comment' => 'required',
-        ]);
-        $repository_products = RepositoryProduct::find($id);
-        $repository_products->hr_product_id = $request->hr_product_id;
-        $repository_products->hr_product_stock = $request->hr_product_stock;
-        $repository_products->hr_comment = $request->hr_comment;
-        $repository_products->hr_entry_date = $request->hr_entry_date;
-        $repository_products->hr_exit = $request->hr_exit;
-        $repository_products->hr_contradiction = $request->hr_contradiction;
-        $repository_products->hr_provider_code = $request->hr_provider_code;
-        $repository_products->hr_return_value = $request->hr_return_value;
-        $repository_products->hr_status_return_part = $request->hr_status_return_part;
-        $repository_products->hr_repository_id = $request->hr_repository_id;
-        $repository_products->save();
-        return json_encode(["response" => "OK"]);
-
-    }
-
     public function destroy($id)
     {
         $repository_products = RepositoryProduct::find($id);
@@ -156,7 +133,7 @@ class RepositoryProductController extends Controller
                 ->join('hnt_provider', 'hnt_repository_product.hr_provider_code', '=', 'hnt_provider.id')
                 ->join('hnt_repository', 'hnt_repository_product.hr_repository_id', '=', 'hnt_repository.id')
                 ->select('hnt_repository_product.id', 'hnt_repository_product.hr_product_id', 'hnt_repository_product.hr_product_stock', 'hnt_repository_product.hr_entry_date', 'hnt_repository_product.hr_exit', 'hnt_repository_product.hr_provider_code', 'hnt_repository_product.hr_return_value', 'hnt_repository_product.hr_comment', 'hnt_repository_product.hr_repository_id', 'hnt_repository_product.hr_status_return_part', 'hnt_repository_product.hr_comment', 'hnt_repository_product.hr_contradiction', 'hnt_products.hp_product_name', 'hnt_provider.hp_name', 'hnt_repository.hr_name')
-                ->where('hnt_repository_product.deleted_at','=', Null)
+                ->where('hnt_repository_product.deleted_at', '=', Null)
                 ->skip($start)
                 ->take($length)
                 ->get();
@@ -166,7 +143,7 @@ class RepositoryProductController extends Controller
                 ->join('hnt_provider', 'hnt_repository_product.hr_provider_code', '=', 'hnt_provider.id')
                 ->join('hnt_repository', 'hnt_repository_product.hr_repository_id', '=', 'hnt_repository.id')
                 ->select('hnt_repository_product.id', 'hnt_repository_product.hr_product_id', 'hnt_repository_product.hr_product_stock', 'hnt_repository_product.hr_entry_date', 'hnt_repository_product.hr_exit', 'hnt_repository_product.hr_provider_code', 'hnt_repository_product.hr_return_value', 'hnt_repository_product.hr_comment', 'hnt_repository_product.hr_repository_id', 'hnt_repository_product.hr_status_return_part', 'hnt_repository_product.hr_comment', 'hnt_repository_product.hr_contradiction', 'hnt_products.hp_product_name', 'hnt_provider.hp_name', 'hnt_repository.hr_name')
-                ->where('hnt_repository_product.deleted_at','=', Null)
+                ->where('hnt_repository_product.deleted_at', '=', Null)
                 ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
 //                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
 //                ->orwhere('hp_connector', 'LIKE', "%$search%")

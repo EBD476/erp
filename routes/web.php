@@ -175,6 +175,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/json-data-ticket', 'TicketStatusController@fill')->name('ticket.json-data-ticket');
     Route::get('/json-data-hd-receiver-user', 'HDReceiverUserController@fill')->name('hd-receiver-user.json-data-hd-receiver-user');
     Route::get('/json-data-product-zone', 'ProductZoneController@fill')->name('product-zone.json-data-product-zone');
+    Route::get('/json-data-order-product', 'OrderProductController@fill')->name('order-product.json-data-order-product');
 
 
 

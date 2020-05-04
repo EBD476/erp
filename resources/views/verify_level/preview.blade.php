@@ -54,7 +54,8 @@
                                                         &nbsp;{{$order->hp_address}}
                                                     </th>
                                                     <th class="text-center">
-                                                        &nbsp;{{__('Create By:')}}&nbsp;{{$order->hp_registrant}}
+                                                        &nbsp;{{__('Create By:')}}&nbsp;
+                                                        {{$order_registrant->name}}
                                                     </th>
                                                     </thead>
                                                     <thead>
@@ -74,8 +75,19 @@
                                                             @if($products->id == $data_loop->hpo_product_id)
                                                                 <tr>
                                                                     <td class="text-center">{{$key + 1}}</td>
-                                                                    <td class="text-center">{{$products->hp_product_name . $products->hp_product_model . $products->hp_product_color_id . $products->hp_product_size . $products->hp_product_property . $products->hp_product_code_number}}</td>
-                                                                    <td class="text-center">{{$data_loop->hpo_count}}</td>
+                                                                    @foreach ($properties as $property)
+                                                                        @foreach ($items as $item)
+                                                                            @foreach ($color as $colors)
+                                                                                @if($colors->id == $products->hp_product_color_id)
+                                                                                    @if($property->id == $products->hp_product_property)
+                                                                                        @if($item->id == $property->hpp_property_items)
+                                                                                            <td class="text-center">{{$products->hp_product_name . " " . $products->hp_product_model . " " .$colors->hn_color_name  . " " . $products->hp_product_size . " " . $property->hpp_property_name . " " . $item->hppi_items_name}}</td>
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+                                                                            @endforeach
+                                                                        @endforeach
+                                                                    @endforeach                                                                    <td class="text-center">{{$data_loop->hpo_count}}</td>
                                                                     <td class="text-center">{{$products->hp_product_price}}</td>
                                                                     <td class="text-center">{{$data_loop->hpo_description}}</td>
                                                                     <td class="text-center">{{$data_loop->hpo_total}}</td>

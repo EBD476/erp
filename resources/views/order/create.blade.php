@@ -226,7 +226,7 @@
                                             <td><i class="tim-icons icon-simple-add" id="add-row" title="Add item"/>
                                             </td>
                                             <td>
-                                                <select name="name[]" class="select-item combobox-container">
+                                                <select name="name[]" class="select-item combobox-container" id="namepop">
                                                     <option value=""></option>
                                                 </select>
 
@@ -454,7 +454,7 @@
                         setTimeout($.unblockUI);
                         $("#modalRegisterForm").find("input").val("");
                         $("#modalRegisterForm").modal('hide');
-                        $("#client_name").append('<option selected value="'+ data.id +'">' + data.client_name + '</option>');
+                        $("#client_name").append('<option selected value="' + data.id + '">' + data.client_name + '</option>');
                     },
                     cache: false,
                 });
@@ -635,8 +635,8 @@
 
                 var result = event.params.data;
 
+                // push items in no repeat array
                 product_array.push(result.id);
-
                 $("#unit").val(result.hp_product_price);
                 $('#qty').val('1');
 
@@ -758,7 +758,7 @@
                                 $("#all_total").val(total);
                             }
 
-
+                            product_array.splice(product_array.indexOf(parseInt($('#namepop').val())), 1, 0);
                             $(this).parent().parent().remove();
                             remove = 0;
                         }
@@ -883,8 +883,6 @@
 
                         var result = event.params.data;
 
-                        // $('#add-row1').data('id',2);
-                        // alert($('#add-row1').data('id'));
                         // push data id for limitation select to
 
                         if (product_array.indexOf(result.id) == -1) {
@@ -1006,7 +1004,8 @@
 
 
                                 }
-                                product_array.splice(product_array.indexOf(13), 1, 0);
+                                // pop items from no repeat array
+                                product_array.splice(product_array.indexOf(parseInt($(this).parent().parent().find("select[name='name[]']").val())), 1, 0);
                                 $(this).parent().parent().remove();
                                 remove = 0;
                             }
