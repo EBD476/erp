@@ -9,5 +9,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Agreement extends Model
 {
     use SoftDeletes;
-    protected $table = 'hnt_agreement';
+    protected $table = 'hnt_contract';
 }

@@ -8,45 +8,20 @@ use App\HelpDesk;
 use App\ProductPropertyItems;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductPropertyItemsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $items = ProductPropertyItems::all();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         return view('products.product_items.index',compact('items','user','type','priority','help_desk'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        return view('products.product_items.create',compact('user','type','priority','help_desk'));
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -54,45 +29,13 @@ class ProductPropertyItemsController extends Controller
         ]);
         $items = New ProductPropertyItems();
         $items->hppi_items_name = $request->hppi_items_name;
+        $items->hppi_serial_number = $request->hppi_serial_number;
+        $items->hppi_color = $request->hppi_color;
         $items->save();
         return json_encode(["response" => "Done"]);
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\ProductColor $productColor
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\ProductColor $productColor
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $items = ProductPropertyItems::find($id);
-        return view('products.product_items.edit',compact('items','user','type','priority','help_desk'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\ProductColor $productColor
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request,$id)
     {
         $this->validate($request, [
@@ -100,22 +43,19 @@ class ProductPropertyItemsController extends Controller
         ]);
         $items = ProductPropertyItems :: find($id);
         $items->hppi_items_name = $request->hppi_items_name;
+        $items->hppi_serial_number = $request->hppi_serial_number;
+        $items->hppi_color = $request->hppi_color;
         $items->save();
         return json_encode(["response" => "Done"]);
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\ProductColor $productColor
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         $items = ProductPropertyItems :: find($id);
         $items->delete();
-        return redirect()->back();
+        return json_encode(["response" => "OK"]);
 
     }
 
@@ -125,21 +65,31 @@ class ProductPropertyItemsController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
+            $items = DB::table('hnt_product_property_items')
+                ->join('hnt_product_color','hnt_product_property_items.hppi_color','=','hnt_product_color.id')
+                ->select('hnt_product_property_items.id','hnt_product_property_items.hppi_items_name','hnt_product_property_items.hppi_serial_number','hnt_product_property_items.hppi_color','hnt_product_color.hn_color_name')
+                ->where('hnt_product_property_items.deleted_at','=', Null)
+                ->skip($start)
+                ->take($length)
+                ->get();
         } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-                ->orwhere('hp_connector', 'LIKE', "%$search%")
+            $items = DB::table('hnt_product_property_items')
+                ->join('hnt_product_color','hnt_product_property_items.hppi_color','=','hnt_product_color.id')
+                ->select('hnt_product_property_items.id','hnt_product_property_items.hppi_items_name','hnt_product_property_items.hppi_serial_number','hnt_product_property_items.hppi_color','hnt_product_color.hn_color_name')
+                ->where('hnt_product_property_items.deleted_at','=', Null)
+                ->where('hppi_items_name', 'LIKE', "%$search%")
+                ->orwhere('hppi_serial_number', 'LIKE', "%$search%")
                 ->get();
         }
 
         $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+        $key = 0;
+        foreach ($items as $itemss) {
+            $key++;
+            $data .= '["' . $key . '",' . '"' . $itemss->hppi_items_name . '",' . '"' . $itemss->hppi_serial_number . '",' . '"' . $itemss->hn_color_name . '",' . '"' . $itemss->hppi_color . '",' . '"' . $itemss->id . '"],';
         }
         $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+        $items_count = ProductPropertyItems::all()->count();
+        return response('{ "recordsTotal":' . $items_count . ',"recordsFiltered":' . $items_count . ',"data": [' . $data . ']}');
     }
 }

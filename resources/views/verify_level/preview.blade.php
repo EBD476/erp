@@ -7,7 +7,7 @@
 
 @section('content')
     <!------ Include the above in your HEAD tag ---------->
-    @role('Admin')
+    @role('Admin|order')
     <div class="content persian">
         <div class="container-fluid">
             <div class="card">
@@ -40,7 +40,7 @@
                                                 <table class="table table-condensed">
                                                     <thead>
                                                     <th class="text-center"><strong>{{__('Owner profile')}}
-                                                            &nbsp;{{$order->ho_client}}
+                                                            &nbsp;{{$client->hc_name}}
                                                             &nbsp;{{$order->hp_phone_number}}</strong></th>
                                                     <th class="text-center">{{__('Employer Name:')}}
                                                         &nbsp;{{$order->hp_employer_name}}</th>
@@ -54,17 +54,20 @@
                                                         &nbsp;{{$order->hp_address}}
                                                     </th>
                                                     <th class="text-center">
-                                                        &nbsp;{{__('Create By:')}}&nbsp;{{$order->hp_registrant}}
+                                                        &nbsp;{{__('Create By:')}}&nbsp;
+                                                        {{$order_registrant->name}}
                                                     </th>
                                                     </thead>
                                                     <thead>
                                                     <th class="text-center"><strong>{{__('Row')}}</strong></th>
                                                     <th class="text-center"><strong>{{__('Product Name')}}</strong></th>
+                                                    <th class="text-center"><strong>{{__('Quantity')}}</strong></th>
                                                     <th class="text-center">
                                                         <strong>{{__('Description of Product')}}</strong></th>
+                                                    @role('Admin||order')
                                                     <th class="text-center"><strong>{{__('Price')}}</strong></th>
-                                                    <th class="text-center"><strong>{{__('Quantity')}}</strong></th>
                                                     <th class="text-center"><strong>{{__('Sub Total')}}</strong></th>
+                                                    @endrole
                                                     </thead>
                                                     <tbody>
                                                     <!-- foreach ($order->lineItems as $line) or some such thing here -->
@@ -74,53 +77,71 @@
                                                             @if($products->id == $data_loop->hpo_product_id)
                                                                 <tr>
                                                                     <td class="text-center">{{$key + 1}}</td>
-                                                                    <td class="text-center">{{$products->hp_product_name . $products->hp_product_model . $products->hp_product_color_id . $products->hp_product_size . $products->hp_product_property . $products->hp_product_code_number}}</td>
+                                                                    @foreach ($properties as $property)
+                                                                        @foreach ($items as $item)
+                                                                            @foreach ($color as $colors)
+                                                                                @if($colors->id == $products->hp_product_color_id)
+                                                                                    @if($property->id == $products->hp_product_property)
+                                                                                        @if($item->id == $property->hpp_property_items)
+                                                                                            <td class="text-center">{{$products->hp_product_name . " " . $products->hp_product_model . " " .$colors->hn_color_name  . " " . $products->hp_product_size . " " . $property->hpp_property_name . " " . $item->hppi_items_name}}</td>
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+                                                                            @endforeach
+                                                                        @endforeach
+                                                                    @endforeach
                                                                     <td class="text-center">{{$data_loop->hpo_count}}</td>
-                                                                    <td class="text-center">{{$products->hp_product_price}}</td>
                                                                     <td class="text-center">{{$data_loop->hpo_description}}</td>
+                                                                    @role('Admin||order')
+                                                                    <td class="text-center">{{$products->hp_product_price}}</td>
                                                                     <td class="text-center">{{$data_loop->hpo_total}}</td>
+                                                                    @endrole
                                                                 </tr>
                                                             @endif
                                                         @endforeach
                                                     @endforeach
                                                     <td class="thick-line"></td>
                                                     </tbody>
+                                                    @role('Admin||order')
                                                     <table>
                                                         <tr>
                                                             <th class="no-line"></th>
                                                             <th class="no-line"></th>
                                                             <th class="no-line">
-                                                                <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Totals')}}</strong>&nbsp;{{$data_dis->hpo_total}}
+                                                                <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Totals')}}</strong>&nbsp;{{$order->hp_total_all}}
                                                             </th>
 
                                                         </tr>
-                                                        <tr>
-                                                            <th class="no-line"></th>
-                                                            <th class="no-line"></th>
-                                                            <th class="no-line">
-                                                                <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Discount')}}
-                                                                    %&nbsp;</strong>{{$data_dis->hpo_discount}}&nbsp;&nbsp;
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class="no-line"></th>
-                                                            <th class="no-line"></th>
-                                                            <th class="no-line">
-                                                                <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Total including discount:')}}
-                                                                    &nbsp;</strong>{{$data_dis->hpo_total_discount}}
-                                                            </th>
-                                                        </tr>
+                                                        @if($order->hp_discount != "")
+                                                            <tr>
+                                                                <th class="no-line"></th>
+                                                                <th class="no-line"></th>
+                                                                <th class="no-line">
+                                                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Discount')}}
+                                                                        %&nbsp;</strong>{{$order->hp_discount}}&nbsp;&nbsp;
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="no-line"></th>
+                                                                <th class="no-line"></th>
+                                                                <th class="no-line">
+                                                                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{__('Total including discount:')}}
+                                                                        &nbsp;</strong>{{$order->hp_total_discount}}
+                                                                </th>
+                                                            </tr>
+                                                        @endif
                                                     </table>
                                                 </table>
                                             </div>
-                                            @if ($current_verified_order === null)
+                                            @if ($current_verified_order === null and $order->hp_status == 1)
                                                 <form method="POST" action="{{route('verify_pre.update',$order->id)}}"
                                                       ENCTYPE="multipart/form-data">
                                                     @CSRF
                                                     @method('PUT')
-                                                    <button class="btn btn-primary">{{__('send')}}</button>
+                                                    <button class="btn btn-primary">{{__('Verify')}}</button>
                                                 </form>
                                             @endif
+                                            @endrole
                                         </div>
                                     </div>
                                 </div>

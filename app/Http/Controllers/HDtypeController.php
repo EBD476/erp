@@ -12,30 +12,14 @@ class HDtypeController extends Controller
 {
     public function index()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $types=HDtype::all();
-        return view('hd_type.index',compact('type','help_desk','priority','type','types','user'));
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        return view('help_desk.hd_type.index',compact('type','help_desk','priority','type','user'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('hd_type.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request,[
@@ -47,40 +31,6 @@ class HDtypeController extends Controller
         return json_encode(["response"=>"Done"]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\HDpriority  $hDpriority
-     * @return \Illuminate\Http\Response
-     */
-    public function show(HDpriority $hDpriority)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\HDpriority  $hDpriority
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(HDpriority $hDpriority)
-    {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $priority=HDtype::find($hDpriority);
-        return view('priority.index',compact('priority','type','types','help_desk','user'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\HDpriority  $hDpriority
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request,$id)
     {
         $this->validate($request,[
@@ -92,17 +42,11 @@ class HDtypeController extends Controller
         return json_encode(["response"=>"Done"]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\HDpriority  $hDpriority
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(HDpriority $hDpriority)
+    public function destroy(Request $request,$id)
     {
-        $type = HDtype::find($hDpriority);
+        $type = HDtype::find($id);
         $type->delete();
-        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
+        return json_encode(["response" => "Done"]);
     }
 
     public function fill(Request $request)
@@ -111,21 +55,25 @@ class HDtypeController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
+            $type = HDtype::select('id','th_name')
+                ->skip($start)
+                ->take($length)
+                ->get();
         } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-                ->orwhere('hp_connector', 'LIKE', "%$search%")
+            $type = HDtype::select('id','th_name')
+                ->where('id', 'LIKE', "%$search%")
+                ->orwhere('th_name', 'LIKE', "%$search%")
                 ->get();
         }
 
         $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+        $key = 0;
+        foreach ($type as $types) {
+            $key ++;
+            $data .= '["' . $key . '",' . '"' . $types->th_name . '",' . '"' . $types->id . '"],';
         }
         $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+        $types_count = HDtype::all()->count();
+        return response('{ "recordsTotal":' . $types_count . ',"recordsFiltered":' . $types_count . ',"data": [' . $data . ']}');
     }
 }

@@ -19,10 +19,11 @@ class ProjectController extends Controller
 
     public function index()
     {
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $user=User::all();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $support_response =Support::where('hs_show','0')->get();
         $projects = Project::all();
         return view('projects.index', compact('projects','user','support_response','type','help_desk','priority'));
@@ -30,10 +31,11 @@ class ProjectController extends Controller
 
     public function create()
     {
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $user=User::all();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $support_response =Support::where('hs_show','0')->get();
         $projects_type = Project_Type::ALL();
         $projects = Project_State::ALL();
@@ -82,10 +84,11 @@ class ProjectController extends Controller
 
     public function edit($id)
     {
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $user=User::all();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $support_response =Support::where('hs_show','0')->get();
         $projects_state = Project_State::all();
         $projects_type = Project_Type::ALL();
@@ -136,11 +139,12 @@ class ProjectController extends Controller
 
     public function send_request($id)
     {
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $support_response =Support::where('hs_show','0')->get();
-        $user = User::all();
         $request_support = Project::find($id);
         return view('projects.support_request', compact('request_support', 'user','support_response','type','help_desk','priority'));
     }
@@ -165,22 +169,25 @@ class ProjectController extends Controller
 
     public function show_response($id)
     {
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $support_response =Support::where('hs_show','0')->get();
-        $user=User::all();
         $request = Support::where('id', $id)->first();
         $project = Project::where('id', $request->hs_project_id)->first();
         $project_type = Project_Type::where('id', $project->hp_project_type)->first();
         return view('projects.show_response_data', compact('project', 'request', 'project_type','user','support_response','type','help_desk','priority'));
     }
+
     public function show_all_response()
     {
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $user=User::all();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $support_response =Support::where('hs_show','0')->get();
         $request = Support::where('hs_status', '2')->get();
         $support_state = SupportStatus::ALL();
@@ -195,9 +202,9 @@ class ProjectController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
+            $Project = Project::skip($start)->take($length)->get();
         } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
+            $Project = Project::where('id', 'LIKE', "%$search%")
                 ->orwhere('hp_project_name', 'LIKE', "%$search%")
                 ->orwhere('hp_employer_name', 'LIKE', "%$search%")
                 ->orwhere('hp_connector', 'LIKE', "%$search%")
@@ -205,12 +212,12 @@ class ProjectController extends Controller
         }
 
         $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+        foreach ($Project as $Projects) {
+            $data .= '["' . $Projects->id . '",' . '"' . $Projects->hp_project_name . '",' . '"' . $Projects->hp_employer_name . '",' . '"' . $Projects->hp_connector . '",' . '"' . $Projects->hp_type_project. '"],';
         }
         $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+        $Projects_count = Project::all()->count();
+        return response('{ "recordsTotal":' . $Projects_count . ',"recordsFiltered":' . $Projects_count . ',"data": [' . $data . ']}');
     }
 
 }

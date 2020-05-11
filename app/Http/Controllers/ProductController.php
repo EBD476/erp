@@ -13,168 +13,94 @@ use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\Null_;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        $user = User::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $products = Product::all();
-        return view('products.index', compact('products', 'type', 'priority', 'help_desk', 'user'));
+        $current_user = auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        return view('products.index', compact('type', 'priority', 'help_desk', 'user', 'items'));
     }
-
 
     public function checkbox(Request $request, $id)
     {
         $checkbox = Product::find($id);
-        $checkbox->hp_statuse = $request->checkbox;
+        $checkbox->hp_status = $request->status;
         $checkbox->save();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $items = ProductPropertyItems::all();
-        $user = User::all();
-        $properties = ProductProperty::all();
-        $color = ProductColor::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        return view('products.create', compact('type', 'help_desk', 'priority', 'color', 'items', 'properties', 'user'));
+        return json_encode(["response" => "OK"]);
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
-            'product_name' => 'required',
-            'product_model' => 'required',
-            'product_price' => 'required',
+            'hp_product_name' => 'required',
+            'hp_product_model' => 'required',
             'hp_description' => 'required',
-            'hp_product_size' => 'required',
-            'hp_product_color_id' => 'required',
         ]);
         $product = new Product();
-        $product->hp_product_name = $request->product_name;
-        $product->hp_product_model = $request->product_model;
-        $product->hp_product_price = $request->product_price;
+        $product->hp_product_name = $request->hp_product_name;
+        $product->hp_product_model = $request->hp_product_model;
+        $product->hp_product_price = $request->hp_product_price;
         $product->hp_product_property = $request->hp_product_property;
         $product->hp_product_color_id = $request->hp_product_color_id;
         $product->hp_description = $request->hp_description;
         $product->hp_product_size = $request->hp_product_size;
         $product->hp_product_image = $request->product_image;
+        $product->hp_voltage = $request->hp_voltage;
+        $product->hp_status = 1;
         $product->save();
 
         return json_encode(["response" => "OK"]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Product $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Product $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $properties = ProductProperty::all();
-        $color = ProductColor::all();
-        $items = ProductPropertyItems::all();
-        $user = User::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $product = Product::find($id);
-        return view('products.edit', compact('product', 'type', 'priority', 'help_desk', 'user', 'items', 'color', 'properties'));
-
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Product $product
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'product_name' => 'required',
-            'product_model' => 'required',
-            'product_price' => 'required',
+            'hp_product_name' => 'required',
+            'hp_product_model' => 'required',
             'hp_description' => 'required',
         ]);
         $product = Product::find($id);
-        $product->hp_product_name = $request->product_name;
-        $product->hp_product_model = $request->product_model;
-        $product->hp_product_price = $request->product_price;
+        $product->hp_product_name = $request->hp_product_name;
+        $product->hp_product_model = $request->hp_product_model;
+        $product->hp_product_price = $request->hp_product_price;
         $product->hp_description = $request->hp_description;
         $product->hp_product_property = $request->hp_product_property;
         $product->hp_product_color_id = $request->hp_product_color_id;
         $product->hp_product_size = $request->hp_product_size;
-        $product->hp_product_image = $request->product_image;
+        $product->hp_product_image = $request->product_image1;
+        $product->hp_voltage = $request->hp_voltage;
         $product->save();
         return json_encode(["response" => "OK"]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Product $product
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $product = Product::find($id);
         $product->delete();
-        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
+        $filename = "img/products/" . $product->hp_product_image;
+        if (file_exists($filename)) {
+            unlink($filename);
+            return json_encode(["response" => "OK"]);
+        }
+
     }
 
-    public function fill(Request $request)
+    public function destroy_image($id)
     {
-        $start = $request->start;
-        $length = $request->length;
-        $search = $request->search['value'];
-        if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
-        } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-                ->orwhere('hp_connector', 'LIKE', "%$search%")
-                ->get();
+        $product = Product::find($id);
+        $filename = "img/products/" . $product->hp_product_image;
+        if (file_exists($filename)) {
+            unlink($filename);
+            return json_encode(["response" => "OK"]);
         }
 
-        $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '"],';
-        }
-        $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
     }
 
     public function upload(Request $request)
@@ -183,7 +109,7 @@ class ProductController extends Controller
         $filename = $_FILES['file']['name'];
 
         if (isset($image)) {
-            $current_date = Carbon::now()->todatestring();
+//            $current_date = Carbon::now()->todatestring();
 //          $image_name = $current_date . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
             if (!file_exists('img/products')) {
                 mkdir('img/products', 0777, true);
@@ -194,10 +120,50 @@ class ProductController extends Controller
         }
 
         return response()->json([
-            'link' => '/img/news/' . $filename
+            'link' => '/img/products/' . $filename
         ]);
     }
 
+    public function fill(Request $request)
+    {
+        $start = $request->start;
+        $length = $request->length;
+        $search = $request->search['value'];
+        if ($search == '') {
+
+            $product = DB::table('hnt_products')
+                ->join('hnt_product_color', 'hnt_products.hp_product_color_id', '=', 'hnt_product_color.id')
+                ->join('hnt_product_property', 'hnt_products.hp_product_property', '=', 'hnt_product_property.id')
+                ->select('hnt_products.id', 'hnt_products.hp_product_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_color_id', 'hnt_products.hp_description', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_products.hp_product_image', 'hnt_products.hp_status', 'hnt_products.hp_voltage', 'hnt_products.hp_serial_number')
+                ->where('hnt_products.deleted_at', '=', Null)
+                ->skip($start)->take($length)->get();
+//            $product = Product::onlyTrashed()->get();
+//            $product = Product::withTrashed()->get();
+
+        } else {
+            $product = DB::table('hnt_products')
+                ->join('hnt_product_color', 'hnt_products.hp_product_color_id', '=', 'hnt_product_color.id')
+                ->join('hnt_product_property', 'hnt_products.hp_product_property', '=', 'hnt_product_property.id')
+                ->select('hnt_products.id', 'hnt_products.hp_product_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_color_id', 'hnt_products.hp_description', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_products.hp_product_image', 'hnt_products.hp_status', 'hnt_products.hp_voltage', 'hnt_products.hp_serial_number')
+                ->where('hnt_products.deleted_at', '=', Null)
+                ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
+                ->orwhere('hnt_products.hp_product_model', 'LIKE', "%$search%")
+                ->orwhere('hnt_product_color.hn_color_name', 'LIKE', "%$search%")
+                ->get();
+        }
+
+        $data = '';
+        $key = 0;
+        foreach ($product as $products) {
+            $key++;
+            $data .= '["' . $key . '",' . '"' . $products->hp_serial_number . '",' . '"' . $products->hp_product_name . '",' . '"' . $products->hp_product_model . '",' . '"' . $products->hpp_property_name . '",' . '"' . $products->hn_color_name . '",' . '"' . $products->hp_voltage . '",' . '"' . $products->hp_product_size . '",' . '"' . $products->hp_product_property . '",' . '"' . $products->hp_product_color_id . '",' . '"' . $products->hp_description . '",' . '"' . $products->hp_product_image . '",' . '"' . $products->hp_status . '",' . '"' . $products->id . '"],';
+        }
+        $data = substr($data, 0, -1);
+        $products_count = Product::all()->count();
+        return response('{ "recordsTotal":' . $products_count . ',"recordsFiltered":' . $products_count . ',"data": [' . $data . ']}');
+    }
+
+//    fill select to
     public function fill_data_product_color(Request $request)
     {
         $search = $request->search;
@@ -208,19 +174,27 @@ class ProductController extends Controller
         return json_encode(["results" => $product_color]);
     }
 
-    public function fill_data_product_property(Request $request)
+    public function fill_data_product_item(Request $request)
     {
         $search = $request->search;
         if ($search != "") {
 
+            $product_item = ProductPropertyItems::select('hppi_items_name as text', 'id')->where('hppi_items_name', 'LIKE', "%$search%")->get();
+        }
+        return json_encode(["results" => $product_item]);
+    }
 
+    public function fill_data_product_property(Request $request)
+    {
+        $search = $request->search;
+        if ($search != "") {
             $product_property = DB::table('hnt_product_property')
                 ->join('hnt_product_property_items', 'hnt_product_property.hpp_property_items', 'hnt_product_property_items.id')
-                ->select('hnt_product_property.id','hnt_product_property.hpp_property_name as text','hnt_product_property_items.hppi_items_name')
-                ->where('hnt_products_property.hpp_property_name', 'LIKE', "%$search%")
+                ->select('hnt_product_property.id', 'hnt_product_property.hpp_property_name as text', 'hnt_product_property_items.hppi_items_name')
+                ->where('hnt_product_property.hpp_property_name', 'LIKE', "%$search%")
                 ->get();
         }
-//        dd($product_property);
         return json_encode(["results" => $product_property]);
     }
+//    end filling
 }

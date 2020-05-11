@@ -3,7 +3,7 @@
 @section('title',__('HNT Level'))
 
 @push('css')
-    <link href="{{ asset('assets/css/datatables.min.css') }}" rel="stylesheet">
+    <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
 @endpush
 
 @section('content')
@@ -11,15 +11,9 @@
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-12">
-                    <a href="{{route('level.create')}}" class="btn btn-primary float-left mb-lg-2">
-                        <i class="tim-icons icon-simple-add"></i> &nbsp;
-                        {{__('New Level')}}
-                    </a>
-                </div>
                 <div class="card">
                     <div class="card-body">
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                             <div class="card">
                                 <div class="card-header card-header-primary">
                                     <h4 class="card-title text-right font-weight-400">{{__('Level List')}}</h4>
@@ -39,69 +33,82 @@
                                                 {{__('Action')}}
                                             </th>
                                             </thead>
-                                            <tbody>
-
-                                            @foreach($level as $levels)
-                                                <tr>
-                                                    <td>
-                                                        {{$levels ->hp_process_id}}
-                                                    </td>
-                                                    <td>
-                                                        {{$levels ->hp_process_name}}
-                                                    </td>
-                                                    <td>
-                                                        <div class="dropdown">
-                                                            <button type="button"
-                                                                    class="btn btn-link dropdown-toggle btn-icon"
-                                                                    data-toggle="dropdown">
-                                                                <i class="tim-icons icon-settings-gear-63"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu dropdown-menu-right"
-                                                                 aria-labelledby="dropdownMenuLink">
-                                                                <a class="dropdown-item"
-                                                                   href="{{route('level.edit',$levels->id)}}"
-                                                                >{{__('Edit')}}</a>
-                                                                <form id="-form-delete{{$levels->id}}"
-                                                                      style="display: none;" method="POST"
-                                                                      action="{{route('level.destroy',$levels->id)}}">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                </form>
-                                                                <a class="dropdown-item"
-                                                                   onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
-                                                                           event.preventDefault();
-                                                                           document.getElementById('-form-delete{{$levels->id}}').submit();
-                                                                           }else {
-                                                                           event.preventDefault();}">{{__('Delete')}}</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <br><br>
+                        <div class="col-md-4">
                             <div class="card card-user">
-                                <div class="card-body">
-                                    <p class="card-text">
-                                    <div class="author">
-                                        <div class="block block-one"></div>
-                                        <div class="block block-two"></div>
-                                        <div class="block block-three"></div>
-                                        <div class="block block-four"></div>
-                                        <a href="javascript:void(0)">
-                                            {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
-                                            <h5 class="title">Hanta IBMS</h5>
-                                        </a>
+                                <div class="card">
+                                    <div class="card-header card-header-primary">
+                                        <h4 class="card-title ">{{__('New Level')}}</h4>
+                                        <p class="card-category"></p>
                                     </div>
-                                    </p>
-                                    <div class="card-description">
-
+                                    <div class="card-body">
+                                        <form id="form1">
+                                            <div class="row">
+                                                <div class="col-md-6 pr-md-1">
+                                                    <div class="form-group">
+                                                        <label>{{__('Level Name')}}</label>
+                                                        <input name="hp_process_name" type="text" class="form-control"
+                                                               required=""
+                                                               aria-invalid="false">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 pr-md-1">
+                                                    <div class="form-group">
+                                                        <label>{{__('Level ID')}}</label>
+                                                        <input name="hp_process_id" type="number" class="form-control"
+                                                               required=""
+                                                               aria-invalid="false">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="submit"
+                                                        class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-user" id="card-form2">
+                                <div class="card">
+                                    <div class="card-header card-header-primary">
+                                        <h4 class="card-title ">{{__('Edit Level')}}</h4>
+                                        <p class="card-category"></p>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="form2">
+                                            <div class="row">
+                                                <div class="col-md-6 pr-md-1">
+                                                    <div class="form-group">
+                                                        <label>{{__('Level Name')}}</label>
+                                                        <input name="hp_process_name" id="hp_process_name" type="text" class="form-control"
+                                                               required=""
+                                                               aria-invalid="false">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 pr-md-1">
+                                                    <div class="form-group">
+                                                        <label>{{__('Level ID')}}</label>
+                                                        <input name="hp_process_id" id="hp_process_id" type="number" class="form-control"
+                                                               required=""
+                                                               aria-invalid="false">
+                                                        <input hidden id="level-id">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="submit"
+                                                        class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -117,160 +124,214 @@
 @push('scripts')
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
-    {{--<script>--}}
-        {{--$(document).ready(function () {--}}
+    <script>
+        $(document).ready(function () {
 
-            {{--var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));--}}
+            $('#card-form2').hide();
 
-            {{--$('#table').on('click', 'button', function (event) {--}}
+            var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
 
-                {{--var data = table.row($(this).parents('tr')).data();--}}
-                {{--$.ajaxSetup({--}}
-                    {{--headers: {--}}
-                        {{--'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
-                    {{--}--}}
-                {{--});--}}
-                {{--swal({--}}
-                    {{--// title: "",--}}
-                    {{--text: "{{__('Are you sure?')}}",--}}
-                    {{--buttons: ["{{__('cancel')}}", "{{__('Done')}}"],--}}
-                    {{--icon: "warning",--}}
-                    {{--// buttons: true,--}}
-                    {{--dangerMode: true,--}}
-                {{--})--}}
-                    {{--.then((willDelete) => {--}}
-                        {{--if (willDelete) {--}}
-                            {{--$.ajax({--}}
-                                {{--url: '/product-destroy/' + data[0],--}}
-                                {{--type: 'delete',--}}
-                                {{--data: data,--}}
-                                {{--dataType: 'json',--}}
-                                {{--async: false,--}}
-                                {{--success: function (data) {--}}
-                                    {{--swal("{{__("Poof! Your imaginary file has been deleted!")}}", {--}}
-                                        {{--icon: "success",--}}
-                                        {{--button: "{{__('Done')}}",--}}
-                                    {{--});--}}
-                                {{--},--}}
-                                {{--cache: false,--}}
-                            {{--});--}}
-                            {{--location.reload();--}}
-                        {{--} else {--}}
-                            {{--swal(--}}
-                                {{--"{{__("Your imaginary file is safe!")}}",--}}
-                                {{--{button: "{{__('Done')}}"}--}}
-                            {{--);--}}
+            $('#table').on('click', 'button', function (event) {
 
-                        {{--}--}}
-                    {{--});--}}
-            {{--});--}}
-            {{--var table = $('#table').on('draw.dt', function (e, settings, json, xhr) {--}}
-                {{--}).DataTable({--}}
+                var data = table.row($(this).parents('tr')).data();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                swal({
+                    // title: "",
+                    text: "{{__('Are you sure?')}}",
+                    buttons: ["{{__('cancel')}}", "{{__('Done')}}"],
+                    icon: "warning",
+                    // buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: '/level-destroy/' + data[0],
+                                type: 'delete',
+                                data: data,
+                                dataType: 'json',
+                                async: false,
+                                success: function (data) {
+                                    swal("{{__("Poof! Your imaginary file has been deleted!")}}", {
+                                        icon: "success",
+                                        button: "{{__('Done')}}",
+                                    });
+                                },
+                                cache: false,
+                            });
+                            $('#table').DataTable().ajax.reload();
+                        } else {
+                            swal(
+                                "{{__("Your imaginary file is safe!")}}",
+                                {button: "{{__('Done')}}"}
+                            );
 
-                    {{--"processing":--}}
-                        {{--true,--}}
-                    {{--"serverSide":--}}
-                        {{--true,--}}
-                    {{--"ajax":--}}
-                        {{--'/json-data-product',--}}
-                    {{--"columnDefs":--}}
-                        {{--[{--}}
-                            {{--"targets": -1,--}}
-                            {{--"data": null,--}}
-                            {{--"defaultContent": "  <div class=\"dropdown\">\n" +--}}
-                                {{--"                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +--}}
-                                {{--"                                                                    data-toggle=\"dropdown\">\n" +--}}
-                                {{--"                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +--}}
-                                {{--"                                                            </a>\n" +--}}
-                                {{--"                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +--}}
-                                {{--"                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +--}}
-                                {{--"                                                                <a href=\"{{route('order.edit',113)}}\" class=\"dropdown-item\"\n" +--}}
-                                {{--"                                                                >{{__('Edit')}}</a>\n" +--}}
-                                {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
-                                {{--"                                                            </div>\n" +--}}
-                                {{--"                                                        </div>"--}}
-                        {{--}, {--}}
-                            {{--"targets": -2,--}}
-                            {{--"data": null,--}}
-                            {{--"defaultContent": '  <div class="progress">\n' +--}}
-                                {{--'                                                            @foreach($order as $orders)\n' +--}}
-                                {{--'                                                            @foreach($progress as $progresses)\n' +--}}
-                                {{--// '                                                                <span class="progress-value">25%</span>\n' +--}}
-                                {{--'                                                                @if($progresses->ho_process_id == 1 and $orders->id == $progresses->order_id )\n' +--}}
-                                {{--'                                                                    <div class="progress-bar" role="progressbar"\n' +--}}
-                                {{--'                                                                         aria-valuenow="60" aria-valuemin="0"\n' +--}}
-                                {{--'                                                                         aria-valuemax="100"\n' +--}}
-                                {{--'                                                                         style="width: 25%;"></div>\n' +--}}
-                                {{--'                                                                @endif\n' +--}}
-                                {{--'                                                                @if($progresses->ho_process_id == 2 and $orders->id == $progresses->order_id)\n' +--}}
-                                {{--'                                                                    <div class="progress-bar" role="progressbar"\n' +--}}
-                                {{--'                                                                         aria-valuenow="60" aria-valuemin="0"\n' +--}}
-                                {{--'                                                                         aria-valuemax="100"\n' +--}}
-                                {{--'                                                                         style="width: 50%;"></div>\n' +--}}
-                                {{--'                                                                @endif\n' +--}}
-                                {{--'                                                                @if($progresses->ho_process_id == 3 and $orders->id == $progresses->order_id)\n' +--}}
-                                {{--'                                                                    <div class="progress-bar" role="progressbar"\n' +--}}
-                                {{--'                                                                         aria-valuenow="60" aria-valuemin="0"\n' +--}}
-                                {{--'                                                                         aria-valuemax="100"\n' +--}}
-                                {{--'                                                                         style="width: 75%;"></div>\n' +--}}
-                                {{--'                                                                @endif\n' +--}}
-                                {{--'                                                                @if($progresses->ho_process_id == 4 and $orders->id == $progresses->order_id )\n' +--}}
-                                {{--'                                                                    <div class="progress-bar" role="progressbar"\n' +--}}
-                                {{--'                                                                         aria-valuenow="60" aria-valuemin="0"\n' +--}}
-                                {{--'                                                                         aria-valuemax="100"\n' +--}}
-                                {{--'                                                                         style="width:100%; direction: ltr"></div>\n' +--}}
-                                {{--'                                                                @endif\n' +--}}
-                                {{--'                                                            @endforeach\n' +--}}
-                                {{--'                                                            @endforeach\n' +--}}
-                                {{--'                                                        </div>'--}}
-                        {{--}],--}}
-                    {{--"language":--}}
-                        {{--{--}}
-                            {{--"sEmptyTable":--}}
-                                {{--"هیچ داده ای در جدول وجود ندارد",--}}
-                            {{--"sInfo":--}}
-                                {{--"نمایش _START_ تا _END_ از _TOTAL_ رکورد",--}}
-                            {{--"sInfoEmpty":--}}
-                                {{--"نمایش 0 تا 0 از 0 رکورد",--}}
-                            {{--"sInfoFiltered":--}}
-                                {{--"(فیلتر شده از _MAX_ رکورد)",--}}
-                            {{--"sInfoPostFix":--}}
-                                {{--"",--}}
-                            {{--"sInfoThousands":--}}
-                                {{--",",--}}
-                            {{--"sLengthMenu":--}}
-                                {{--"نمایش _MENU_ رکورد",--}}
-                            {{--"sLoadingRecords":--}}
-                                {{--"در حال بارگزاری...",--}}
-                            {{--"sProcessing":--}}
-                                {{--"در حال پردازش...",--}}
-                            {{--"sSearch":--}}
-                                {{--"جستجو:",--}}
-                            {{--"sZeroRecords":--}}
-                                {{--"رکوردی با این مشخصات پیدا نشد",--}}
-                            {{--"oPaginate":--}}
-                                {{--{--}}
-                                    {{--"sFirst":--}}
-                                        {{--"ابتدا",--}}
-                                    {{--"sLast":--}}
-                                        {{--"انتها",--}}
-                                    {{--"sNext":--}}
-                                        {{--"بعدی",--}}
-                                    {{--"sPrevious":--}}
-                                        {{--"قبلی"--}}
-                                {{--}--}}
-                            {{--,--}}
-                            {{--"oAria":--}}
-                                {{--{--}}
-                                    {{--"sSortAscending":--}}
-                                        {{--": فعال سازی نمایش به صورت صعودی",--}}
-                                    {{--"sSortDescending":--}}
-                                        {{--": فعال سازی نمایش به صورت نزولی"--}}
-                                {{--}--}}
-                        {{--}--}}
-                {{--})--}}
-            {{--;--}}
-        {{--});--}}
-    {{--</script>--}}
+                        }
+                    });
+            });
+            var table = $('#table').on('draw.dt', function (e, settings, json, xhr) {
+
+            }).DataTable({
+                "processing":
+                    true,
+                "serverSide":
+                    true,
+                "ajax":
+                    '/json-data-level',
+                "columnDefs":
+                    [{
+                        "targets": -1,
+                        "data": null,
+
+                        "render": function (data, type, row, meta) {
+                            return "  <div class=\"dropdown\">\n" +
+                                "                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +
+                                "                                                                    data-toggle=\"dropdown\">\n" +
+                                "                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +
+                                "                                                            </a>\n" +
+                                "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
+                                "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
+                                "                                                                <a class=\"dropdown-item edit\"\n" +
+                                "                                                                >{{__('Edit')}}</a>\n" +
+                                "                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +
+                                "                                                            </div>\n" +
+                                "                                                        </div>"
+                        }
+                    }],
+                "language":
+                    {
+                        "sEmptyTable":
+                            "هیچ داده ای در جدول وجود ندارد",
+                        "sInfo":
+                            "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                        "sInfoEmpty":
+                            "نمایش 0 تا 0 از 0 رکورد",
+                        "sInfoFiltered":
+                            "(فیلتر شده از _MAX_ رکورد)",
+                        "sInfoPostFix":
+                            "",
+                        "sInfoThousands":
+                            ",",
+                        "sLengthMenu":
+                            "نمایش _MENU_ رکورد",
+                        "sLoadingRecords":
+                            "در حال بارگزاری...",
+                        "sProcessing":
+                            "در حال پردازش...",
+                        "sSearch":
+                            "جستجو:",
+                        "sZeroRecords":
+                            "رکوردی با این مشخصات پیدا نشد",
+                        "oPaginate":
+                            {
+                                "sFirst":
+                                    "ابتدا",
+                                "sLast":
+                                    "انتها",
+                                "sNext":
+                                    "بعدی",
+                                "sPrevious":
+                                    "قبلی"
+                            }
+                        ,
+                        "oAria":
+                            {
+                                "sSortAscending":
+                                    ": فعال سازی نمایش به صورت صعودی",
+                                "sSortDescending":
+                                    ": فعال سازی نمایش به صورت نزولی"
+                            }
+                    }
+            });
+            // store level
+            $("#form1").submit(function (event) {
+                var data = $("#form1").serialize();
+                event.preventDefault();
+                $("#form1").block({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url: '/level',
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        setTimeout($("#form1").unblock(), 2000);
+                        document.getElementById('form1').reset();
+                        $('#table').DataTable().ajax.reload();
+                    },
+                    cache: false,
+                });
+            });
+
+            // update level
+            $("#form2").submit(function (event) {
+                var data = $("#form2").serialize();
+                var level = $('#level-id').val();
+                event.preventDefault();
+                $('#form2').block({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+                //token
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: '/level/' + level,
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    method: 'put',
+                    async: false,
+                    success: function (data) {
+                        setTimeout($('#form2').unblock(), 2000);
+                        $('#table').DataTable().ajax.reload();
+                        $('#card-form2').hide();
+                    },
+                    cache: false,
+                });
+            });
+
+            // fill data in edit form
+            $('#table').on('click', '.edit', function (event) {
+                $('#card-form2').show();
+                var data = table.row($(this).parents('tr')).data();
+                $('#hp_process_id').val(data[0]);
+                $('#hp_process_name').val(data[1]);
+                $('#level-id').val(data[2]);
+            })
+            // end filling
+        });
+    </script>
 @endpush

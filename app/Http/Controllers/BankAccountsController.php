@@ -14,12 +14,12 @@ class BankAccountsController extends Controller
 {
     public function index()
     {
-        $user=User::all();
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $bank_account = BankAccounts::all();
-        $type = HDtype::all();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $priority = HDpriority::all();
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.index', compact('priority', 'help_desk', 'type', 'bank_account','user'));
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.index', compact('priority', 'help_desk', 'type', 'bank_account', 'user'));
     }
 
     /**
@@ -29,12 +29,12 @@ class BankAccountsController extends Controller
      */
     public function create()
     {
-        $user=User::all();
-        $bank=FinanceBank::all();
-        $type = HDtype::all();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $priority = HDpriority::all();
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.create',compact('priority', 'help_desk', 'type','bank','user'));
+        $bank = FinanceBank::all();
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.create', compact('priority', 'help_desk', 'type', 'bank', 'user'));
     }
 
     /**
@@ -85,11 +85,12 @@ class BankAccountsController extends Controller
      */
     public function edit($id)
     {
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $bank_account = HDpriority::find($id);
-        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.index', compact('priority', 'help_desk', 'priority', 'type','bank_account'));
+        return view('finance_fund.fund_current_assets.fund_criticism.bank_accounts.index', compact('user','priority', 'help_desk', 'priority', 'type', 'bank_account'));
     }
 
     /**
@@ -133,6 +134,7 @@ class BankAccountsController extends Controller
         $bank_account->delete();
         return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
     }
+
     public function fill(Request $request)
     {
         $start = $request->start;
@@ -150,7 +152,7 @@ class BankAccountsController extends Controller
 
         $data = '';
         foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '"],';
         }
         $data = substr($data, 0, -1);
         $orders_count = Order::all()->count();

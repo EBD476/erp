@@ -10,36 +10,17 @@ use App\HelpDesk;
 
 class HDpriorityController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        $user=User::all();
-        $type = HDtype::all();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $priority = HDpriority::all();
-        return view('priority.index', compact('priority', 'help_desk', 'type','user'));
+        $current_user = auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        return view('priority.index', compact('priority', 'help_desk', 'type', 'user'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('priority.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -51,40 +32,6 @@ class HDpriorityController extends Controller
         return json_encode(["response" => "Done"]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\HDpriority $hDpriority
-     * @return \Illuminate\Http\Response
-     */
-    public function show(HDpriority $hDpriority)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\HDpriority $hDpriority
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(HDpriority $hDpriority)
-    {
-        $user=User::all();
-        $type = HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status', '1')->get();
-        $priorities = HDpriority::find($hDpriority);
-        return view('priority.index', compact('priority', 'help_desk', 'priority', 'type', 'priorities','user'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\HDpriority $hDpriority
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -96,17 +43,11 @@ class HDpriorityController extends Controller
         return json_encode(["response" => "Done"]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\HDpriority $hDpriority
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(HDpriority $hDpriority)
+    public function destroy(Request $request, $id)
     {
-        $priority = HDpriority::find($hDpriority);
+        $priority = HDpriority::find($id);
         $priority->delete();
-        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
+        return json_encode(["response" => "Done"]);
     }
 
     public function fill(Request $request)
@@ -115,21 +56,25 @@ class HDpriorityController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
+            $priority = HDpriority::select('id','hdp_name')
+                ->skip($start)
+                ->take($length)
+                ->get();
         } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-                ->orwhere('hp_connector', 'LIKE', "%$search%")
+            $priority = HDpriority::select('id','hdp_name')
+                ->where('id', 'LIKE', "%$search%")
+                ->orwhere('hdp_name', 'LIKE', "%$search%")
                 ->get();
         }
 
         $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+        $key = 0;
+        foreach ($priority as $priorities) {
+            $key++;
+            $data .= '["' .$key . '",' . '"' . $priorities->hdp_name . '",' . '"' .  $priorities->id . '"],';
         }
         $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+        $priority_count = HDpriority::all()->count();
+        return response('{ "recordsTotal":' . $priority_count . ',"recordsFiltered":' . $priority_count . ',"data": [' . $data . ']}');
     }
 }

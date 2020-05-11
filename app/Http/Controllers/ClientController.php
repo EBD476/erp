@@ -19,12 +19,14 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $client = Client::all();
-        return view('client.index',compact('client','help_desk','priority','type','user'));
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        $client = Client::where('hc_dealership_number' ,$current_user)->get();
+        $admin_client = Client::all();
+        return view('client.index',compact('admin_client','client','help_desk','priority','type','user'));
     }
 
     /**
@@ -34,10 +36,11 @@ class ClientController extends Controller
      */
     public function create()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         return view('client.create',compact('priority', 'help_desk', 'type','user'));
     }
 
@@ -87,6 +90,7 @@ class ClientController extends Controller
 //
 //        ]);
         $client = new Client();
+        $client->hc_dealership_number = auth()->user()->id;
         $client->vat_number= $request->vat_number;
         $client->hc_name= $request->hc_name;
         $client->hc_address= $request->hc_address;
@@ -147,10 +151,11 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
+        $current_user=auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name','id')->get();
+        $priority = HDpriority::select('id','hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $client = Client::find($id);
         return view('client.edit',compact('client','priority', 'help_desk', 'type','user'));
     }

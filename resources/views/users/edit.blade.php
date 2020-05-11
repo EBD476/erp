@@ -42,6 +42,8 @@
                                         <label>{{__('Password')}}</label>
                                         <input type="password" class="form-control" name="password"
                                                value="{{$user->password}}">
+                                        <p class="card-category" style="margin-top: -20px">{{__('Min 6 Character')}}</p>
+
                                     </div>
                                 </div>
                             </div>
@@ -133,34 +135,15 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>{{__('Username')}}</label>
-                                        <input type="text" class="form-control" name="username"
-                                               value="{{$user->username}}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>{{__('Device ID')}}</label>
-                                        <input type="number" class="form-control" name="device_id"
-                                               value="{{$user->device_id}}">
+                                    <div class="form-group   ">
+                                        <label>{{__('Current Password')}}</label>
+                                        <input type="password" class="form-control" name="password">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group   ">
-                                        <label>{{__('Password')}}</label>
-                                        <input type="password" class="form-control" name="password"
-                                               value="{{$user->password}}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="form-group">
-                                        <label>{{__('Email')}}</label>
-                                        <input type="email" class="form-control" name="email" value="{{$user->email}}">
+                                        <label>{{__('new Password')}}</label>
+                                        <input type="password" class="form-control" name="newPassword">
                                     </div>
                                 </div>
                             </div>

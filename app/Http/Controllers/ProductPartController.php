@@ -10,44 +10,28 @@ use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use Illuminate\Support\Facades\DB;
+
 class ProductPartController extends Controller
 {
     public function index()
     {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $product=Product::ALL();
-        $part=Part::ALL();
-        $product_part = ProductPart::all();
-        return view('product_part.index',compact('product_part','product','part','type','priority','help_desk','user'));
+        $current_user = auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        return view('product_part.index', compact('type', 'priority', 'help_desk', 'user'));
     }
 
 
-
-    public function checkbox(Request $request , $id)
+    public function checkbox(Request $request, $id)
     {
-        $checkbox=ProductPart::find($id);
-        $checkbox->hp_statuse=$request->checkbox;
+        $checkbox = ProductPart::find($id);
+        $checkbox->hp_statuse = $request->checkbox;
         $checkbox->save();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $part_id=Part::all();
-        $product_id=Product::all();
-        return view('product_part.create',compact('part_id','product_id','type','priority','help_desk','user'));
-    }
 
     public function store(Request $request)
     {
@@ -60,67 +44,37 @@ class ProductPartController extends Controller
         $product_part->hpp_part_id = $request->hpp_part_id;
         $product_part->hpp_product_id = $request->hpp_product_id;
         $product_part->hpp_part_count = $request->hpp_part_count;
+        $product_part->hpp_product_zone = $request->hpp_product_zone;
         $product_part->save();
 
         return json_encode(["response" => "OK"]);
     }
 
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $user=User::all();
-        $type=HDtype::all();
-        $priority = HDpriority::ALL();
-        $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
-        $part_id=Part::all();
-        $product_id=Product::all();
-        $product_part=ProductPart::find($id);
-        return view('product_part.edit',compact('product_part','part_id','product_id','type','priority','help_desk','user'));
-
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $this->validate($request, [
             'hpp_part_id' => 'required',
             'hpp_product_id' => 'required',
             'hpp_part_count' => 'required',
         ]);
-        $product_part =ProductPart::find($id);
+        $product_part = ProductPart::find($id);
         $product_part->hpp_part_id = $request->hpp_part_id;
         $product_part->hpp_product_id = $request->hpp_product_id;
         $product_part->hpp_part_count = $request->hpp_part_count;
+        $product_part->hpp_product_zone = $request->hpp_product_zone;
         $product_part->save();
-        return view('product_part.index',compact('product_part'));
+        return json_encode(["response" => "OK"]);
 
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         $product_part = ProductPart::find($id);
         $product_part->delete();
-        return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
+        return json_encode(["response" => "OK"]);
     }
 
     public function fill(Request $request)
@@ -129,21 +83,35 @@ class ProductPartController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
+            $product_part = DB::table('hnt_product_part')
+                ->join('hnt_product_zone', 'hnt_product_part.hpp_product_zone', '=', 'hnt_product_zone.id')
+                ->join('hnt_parts', 'hnt_product_part.hpp_part_id', '=', 'hnt_parts.id')
+                ->join('hnt_products', 'hnt_product_part.hpp_product_id', '=', 'hnt_products.id')
+                ->select('hnt_product_part.id', 'hnt_product_part.hpp_product_id', 'hnt_product_part.hpp_part_id', 'hnt_products.hp_product_name', 'hnt_product_part.hpp_product_zone', 'hnt_product_part.hpp_part_count', 'hnt_parts.hp_name','hnt_product_zone.hpz_name')
+                ->where('hnt_product_part.deleted_at', '=', Null)
+                ->skip($start)
+                ->take($length)
+                ->get();
         } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-                ->orwhere('hp_connector', 'LIKE', "%$search%")
+            $product_part = DB::table('hnt_product_part')
+                ->join('hnt_parts', 'hnt_product_part.hpp_part_id', '=', 'hnt_parts.id')
+                ->join('hnt_product_zone', 'hnt_product_part.hpp_product_zone', '=', 'hnt_product_zone.id')
+                ->join('hnt_products', 'hnt_product_part.hpp_product_id', '=', 'hnt_products.id')
+                ->select('hnt_product_part.id', 'hnt_product_part.hpp_product_id', 'hnt_product_part.hpp_part_id', 'hnt_product_part.hpp_part_count', 'hnt_product_part.hpp_product_zone', 'hnt_products.hp_product_name', 'hnt_parts.hp_name','hnt_product_zone.hpz_name')
+                ->where('hnt_product_part.deleted_at', '=', Null)
+                ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
+                ->orwhere('hnt_parts.hp_name', 'LIKE', "%$search%")
                 ->get();
         }
 
         $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+        $key = 0;
+        foreach ($product_part as $product_parts) {
+            $key++;
+            $data .= '["' . $key . '",' . '"' . $product_parts->hp_product_name . '",' . '"' . $product_parts->hp_name . '",' . '"' . $product_parts->hpz_name . '",' . '"' . $product_parts->hpp_part_count . '",' . '"' . $product_parts->hpp_product_id . '",' . '"' . $product_parts->hpp_part_id . '",' . '"' . $product_parts->hpp_product_zone . '",' . '"' . $product_parts->id . '"],';
         }
         $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+        $product_parts_count = ProductPart::all()->count();
+        return response('{ "recordsTotal":' . $product_parts_count . ',"recordsFiltered":' . $product_parts_count . ',"data": [' . $data . ']}');
     }
 }

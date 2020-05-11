@@ -10,7 +10,7 @@
 @endpush
 
 @section('content')
-    @role('Admin')
+    @role('Admin|order')
     <div class="content">
         <div class="container-fluid">
             <div class="row">
@@ -35,7 +35,7 @@
                         <ul class="nav nav-pills" style="float: none">
                             <li class="nav-item" style="width: 33.3333%;">
                                 <a class="nav-link active" href="#tab1" data-toggle="tab" role="tab">
-                                    {{__('Order')}}
+                                    {{__('Project Information')}}
                                 </a>
                             </li>
                             <li class="nav-item" style="width: 33.3333%;">
@@ -157,27 +157,19 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="bmd-label-floating">{{__('State')}}</label>
-                                                <select class="form-control" type="text"
+                                                <label style="margin-top: -20px"
+                                                       class="bmd-label-floating">{{__('State')}}</label>
+                                                <select class="select-state form-control" type="text"
                                                         name="hp_address_state_id">
-                                                    @foreach($state as $code)
-                                                        <option value="{{$code->id}}">
-                                                            {{$code->hp_project_state}}
-                                                        </option>
-                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="bmd-label-floating">{{__('City')}}</label>
-                                                <select class="form-control" type="text"
+                                                <label class="bmd-label-floating"
+                                                       style="margin-top: -20px">{{__('City')}}</label>
+                                                <select class="select-city form-control" type="text"
                                                         name="hp_address_city_id">
-                                                    @foreach($address as $city)
-                                                        <option value="{{$city->id}}">
-                                                            {{$city->hp_city}}
-                                                        </option>
-                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -234,7 +226,8 @@
                                             <td><i class="tim-icons icon-simple-add" id="add-row" title="Add item"/>
                                             </td>
                                             <td>
-                                                <select name="name[]" class="select-item combobox-container">
+                                                <select name="name[]" class="select-item combobox-container"
+                                                        id="namepop">
                                                     <option value=""></option>
                                                 </select>
 
@@ -261,9 +254,6 @@
                                                 <div class="line-total" id="sub-total" name="total[]"></div>
                                                 <input name="total[]" id="sub-total" type="hidden">
                                             </td>
-                                            <td style="cursor:pointer" class="hide-border td-icon">
-                                                <i class="tim-icons icon-simple-remove" id="rmv1" title="Remove item"/>
-                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -283,19 +273,6 @@
                                                                                                 type="number"
                                                                                                 name="hpo_discount">
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <label class="bmd-label-floating">{{__('Paid to Date:')}}</label>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <div class="col-lg-6 col-sm-6">
-                                                                <input class="form-control"
-                                                                       id="test-date-id"
-                                                                       type="text"
-                                                                       name="hop_due_date">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -390,14 +367,16 @@
                                                 {{--<i class="fas fa-user prefix grey-text"></i>--}}
                                                 <label class="bmd-label-floating" data-error="wrong"
                                                        data-success="right"
-                                                       for="orangeForm-name">{{__('Name')}}</label>
+                                                       for="orangeForm-name"
+                                                       style="display: flex;margin-top: -40px;margin: -20px;margin-right: 4px;">{{__('Name')}}</label>
                                                 <input type="text" id="orangeForm-name" class="form-control validate"
                                                        name="hc_name">
                                             </div>
                                             <div class="md-form mb-5">
                                                 {{--<i class="fas fa-envelope prefix grey-text"></i>--}}
                                                 <label class="bmd-label-floating" data-error="wrong"
-                                                       data-success="right">{{__('Phone')}}</label>
+                                                       data-success="right"
+                                                       style="display: flex;margin-top: -40px;margin: -20px;margin-right: 4px;">{{__('Phone')}}</label>
                                                 <input type="number" required class="form-control validate"
                                                        name="hc_phone">
                                             </div>
@@ -405,7 +384,8 @@
                                             <div class="md-form mb-4">
                                                 {{--<i class="fas fa-lock prefix grey-text"></i>--}}
                                                 <label class="bmd-label-floating" data-error="wrong"
-                                                       data-success="right">{{__('Address')}}</label>
+                                                       data-success="right"
+                                                       style="display: flex;margin-top: -40px;margin: -20px;margin-right: 4px;">{{__('Address')}}</label>
                                                 <input type="text" class="form-control validate" name="hc_address">
                                             </div>
 
@@ -438,8 +418,7 @@
         var discount;
         var total_discount;
         var remove = 0;
-        var last_total = 0;
-
+        var product_array = new Array();
         $(document).ready(function () {
 
             var client_id;
@@ -476,7 +455,7 @@
                         setTimeout($.unblockUI);
                         $("#modalRegisterForm").find("input").val("");
                         $("#modalRegisterForm").modal('hide');
-                        $("#client_name").append('<option selected>' + data.client_name + '</option>');
+                        $("#client_name").append('<option selected value="' + data.id + '">' + data.client_name + '</option>');
                     },
                     cache: false,
                 });
@@ -563,7 +542,7 @@
                 dir: "rtl",
                 language: "fa",
                 ajax: {
-                    url: '/json-data-fill_data',
+                    url: '/json-data-fill-client-data',
                     dataType: 'json',
                     data: function (params) {
                         return {
@@ -579,11 +558,58 @@
                 },
                 theme: "bootstrap",
                 placeholder: (locale == 'fa' ? 'انتخاب مشتری' : 'Select Client'),
+                templateSelection: formatRepoSelection1
+
             });
 
+            $(".select-city").select2({
+                dir: "rtl",
+                language: "fa",
+                ajax: {
+                    url: '/json-data-fill-data-city',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: (locale == 'fa' ? 'انتخاب شهر' : 'Select City'),
+            });
+
+            $(".select-state").select2({
+                dir: "rtl",
+                language: "fa",
+                ajax: {
+                    url: '/json-data-fill-data-state',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: (locale == 'fa' ? 'انتخاب استان' : 'Select State'),
+            });
+
+            // operation first row on table 2
             $(".select-item").select2({
                 ajax: {
-                    url: '/json-data-fill_data_product',
+                    url: '/json-data-fill-data-product',
                     dataType: 'json',
                     data: function (params) {
                         return {
@@ -599,6 +625,8 @@
                 },
                 theme: "bootstrap",
                 dir: 'rtl',
+                left: '1142px',
+                width: '340.667px',
                 placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
                 templateResult: formatRepo,
                 templateSelection: formatRepoSelection
@@ -608,6 +636,8 @@
 
                 var result = event.params.data;
 
+                // push items in no repeat array
+                product_array.push(result.id);
                 $("#unit").val(result.hp_product_price);
                 $('#qty').val('1');
 
@@ -616,35 +646,7 @@
 
                 $("#sub-total").text(unit_count * unit_qty);
                 $("#sub-total").val(unit_count * unit_qty);
-
-                $("#rmv1").click(function (event) {
-                    var rowCount = $('#table2 tr').length;
-                    if (rowCount > 2) {
-                        if ($('#sub-total').text() != "") {
-                            all = $("#all_total").val();
-                            var total_each = all - parseInt($('#sub-total').val());
-                            $('#all_total').val(total_each);
-                            $('#all_tot').val(total_each);
-                            if ($('#discount').val() != "") {
-                                total1 = $('#all_total').val();
-                                discount = $('#discount').val();
-                                total_discount = parseInt(discount) * parseInt(total1) / 100;
-                                $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
-                                $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
-                                $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
-                            }
-                        }
-
-                        if (remove == 0) {
-                            total = all - parseInt($('#sub-total').val());
-                            $("#all_tot").val(total);
-                            $("#all_total").val(total);
-                        }
-
-                        $(this).parent().parent().remove();
-                        remove = 0;
-                    }
-                })
+                $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
 
                 $('#sub-total').each(function () {
                     total = $('#sub-total').text();
@@ -652,6 +654,7 @@
                         $("#all_total").val(total);
                         $("#all_total").text(total);
                         $("#all_tot").val(total);
+
                     }
 
                 });
@@ -661,7 +664,47 @@
                     unit_qty = $("#qty").val();
                     $('#sub-total').text(unit_count * unit_qty);
                     $('#sub-total').val(unit_count * unit_qty);
+                    $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
+
                     discount = $("#discount").val();
+                    total = $("#sub-total").val();
+
+                    if (discount != "") {
+                        total_discount = parseInt(discount) * parseInt(total) / 100;
+                        $("#all_dis").val(parseInt(total) - parseInt(total_discount));
+                        $("#total_discount").val(parseInt(total) - parseInt(total_discount));
+                        $("#total_discount").text(parseInt(total) - parseInt(total_discount));
+                    }
+
+                    total = 0;
+                    var rowCount = $('#table2 tr').length;
+                    if (rowCount == 2) {
+                        $('#sub-total').each(function () {
+                            current = $('#sub-total').val();
+                            if (current != "") {
+                                total = parseInt(current);
+                                $("#all_total").val(total);
+                                $("#all_total").text(total);
+                            }
+                        });
+                    }
+                    else {
+                        total = 0;
+                        $('.line-total').each(function () {
+                            current = $(this).text();
+                            subtotal = $('#sub-total').val();
+                            if (current != "") {
+                                if (current != "") {
+                                    total = parseInt(total) + parseInt(current);
+                                    $("#all_tot").val(total);
+                                    $("#all_total").val(total);
+                                    $("#all_total").text(total);
+                                }
+
+                            }
+                        });
+                    }
+
                     total = $("#all_total").val();
                     if (discount != "") {
                         total_discount = parseInt(discount) * parseInt(total) / 100;
@@ -669,15 +712,6 @@
                         $("#total_discount").val(parseInt(total) - parseInt(total_discount))
                         $("#total_discount").text(parseInt(total) - parseInt(total_discount))
                     }
-                    total = 0;
-                    $('#sub-total').each(function () {
-                        current = $('#sub-total').val();
-                        if (current != "") {
-                            total = total + parseInt(current);
-                            $("#all_total").val(total);
-                            $("#all_total").text(total);
-                        }
-                    });
 
                 });
 
@@ -688,16 +722,58 @@
                     $('#all_dis').val(parseInt(total) - parseInt(total_discount));
                     $('#total_discount').val(parseInt(total) - parseInt(total_discount));
                     $('#total_discount').text(parseInt(total) - parseInt(total_discount));
-                })
+                });
 
             });
+
+            // first row on table 2
+            $("#add-row").on('click', function (event) {
+                if ($(this).hasClass('icon-simple-add')) {
+                    append_item();
+                    $(this).removeClass('icon-simple-add');
+                }
+                $(this).addClass('icon-simple-remove');
+                if ($(this).hasClass('icon-simple-remove')) {
+                    //remove item operations
+                    $("#add-row").click(function (event) {
+                        var rowCount = $('#table2 tr').length;
+                        if (rowCount > 2) {
+                            if ($('#sub-total').text() != "") {
+                                var all = $("#all_total").val();
+                                var total_each = all - parseInt($('#sub-total').val());
+                                $('#all_total').val(total_each);
+                                $('#all_tot').val(total_each);
+                                if ($('#discount').val() != "") {
+                                    var total1 = $('#all_total').val();
+                                    discount = $('#discount').val();
+                                    total_discount = parseInt(discount) * parseInt(total1) / 100;
+                                    $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
+                                    $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
+                                    $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
+                                }
+                            }
+
+                            if (remove == 0) {
+                                total = all - parseInt($('#sub-total').val());
+                                $("#all_tot").val(total);
+                                $("#all_total").val(total);
+                            }
+
+                            product_array.splice(product_array.indexOf(parseInt($('#namepop').val())), 1, 0);
+                            $(this).parent().parent().remove();
+                            remove = 0;
+                        }
+                    })
+                }
+            });
+
+            // end
 
             function formatRepo(repo) {
 
                 if (repo.loading) {
                     return repo.text;
                 }
-
                 var $container = $(
                     "<div class='select2-result-repository clearfix'>" +
                     "<div class='select2-result-repository__avatar'><img src='/img/products/" + repo.hp_product_image + "' /></div>" +
@@ -721,25 +797,20 @@
                 // $container.find(".select2-result-repository__forks").append(repo.forks_count + " Forks");
                 // $container.find(".select2-result-repository__stargazers").append(repo.stargazers_count + " Stars");
                 // $container.find(".select2-result-repository__watchers").append(repo.watchers_count + " Watchers");
-
                 return $container;
+
             }
 
             function formatRepoSelection(repo) {
-                return repo.id || repo.text;
+                return repo.text
             }
 
-            // add new row to table 2
-            $("#add-row").on('click', function (event) {
-                $(this).removeClass('icon-simple-add');
-                $(this).addClass('icon-simple-remove');
+            function formatRepoSelection1(repo) {
+                return repo.text;
 
-                if ($(this).hasClass('icon-simple-remove')) {
-                    //remove item operations
-                    append_item();
-                }
-            });
+            }
 
+            // append item to table2
             function append_item() {
                 $('.table').append('<tr data-bind="event: { mouseover: showActions, mouseout: hideActions }"\n' +
                     '                                       class="sortable-row ui-sortable-handle" style="">\n' +
@@ -749,7 +820,7 @@
                     '' +
                     '             $parent.invoice_items_without_tasks().length > 1" class="fa fa-sort"></i>\n' +
                     '                                        </td>\n' +
-                    '                      <td> <i class="tim-icons icon-simple-add" id="add-row' + $("#table2 tr").length + '" title="Add item"/></td>\n' +
+                    '                      <td> <i class="tim-icons icon-simple-add add-row"  id="add-row' + $("#table2 tr").length + '" title="Add item"/></td>\n' +
                     '                                        <td>\n' +
                     '                                                       <select name="name[]" class="select-item combobox-container">\n' +
                     '                                                            <option value=""></option>' +
@@ -765,31 +836,27 @@
                     '\n' +
                     '                                        </td>\n' +
                     '                                        <td>\n' +
-                    '                                            <input disabled type="text" id= "unit' + $("#table2 tr").length + '" class="form-control"\n' +
+                    '                                            <input disabled type="text" id= "unit' + $("#table2 tr").length + '" class="form-control unit"\n' +
                     '                                                   name="hp_product_price[]">\n' +
                     '                                        </td>\n' +
                     '                                        <td style="display:table-cell">\n' +
                     '                                            <input \n' +
-                    '                                                   style="text-align: right" class="form-control invoice-item "\n' +
+                    '                                                   style="text-align: right" class="form-control invoice-item qty"\n' +
                     '                                                 id= "qty' + $("#table2 tr").length + '"   name="invoice_items_qty[]">\n' +
                     '                                        </td>\n' +
                     '                                        <td style="text-align:right;padding-top:9px !important" nowrap="">\n' +
                     '                                            <div name="total[]" class="line-total" id="sub-total' + $("#table2 tr").length + '"></div>\n' +
                     '                                            <input name="total[]" id="sub-total' + $("#table2 tr").length + '" type="hidden">\n' +
                     '                                        </td>\n' +
-                    '                                        <td style="cursor:pointer" class="hide-border td-icon">\n' +
-                    '                                            <i \n' +
-                    '                                               \n' +
-                    '                                               class="tim-icons icon-simple-remove" id=rmv' + $("#table2 tr").length + '  title="Remove item">\n' +
-                    '                                            </i></td>\n' +
                     '                                    </tr>'
                 );
+
 
                 var locale = $("#tab2").data('lang');
 
                 $(".select-item").select2({
                     ajax: {
-                        url: '/json-data-fill_data_product',
+                        url: '/json-data-fill-data-product',
                         dataType: 'json',
                         data: function (params) {
                             return {
@@ -805,6 +872,8 @@
                     },
                     theme: "bootstrap",
                     dir: 'rtl',
+                    left: '1142px',
+                    width: '340.667px',
                     placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
                     templateResult: formatRepo,
                     templateSelection: formatRepoSelection
@@ -812,175 +881,112 @@
 
                 }).on('select2:select', function (event) {
 
-                    var result = event.params.data;
-
-                    $("#unit" + parseInt($("#table2 tr").length - 1)).val(result.hp_product_price);
-
-                    $('#qty' + parseInt($("#table2 tr").length - 1)).val('1');
-
-                    unit_count = $("#unit" + parseInt($("#table2 tr").length - 1)).val();
-
-                    unit_qty = $("#qty" + parseInt($("#table2 tr").length - 1)).val();
-
-                    $("#sub-total" + parseInt($("#table2 tr").length - 1)).text(unit_count * unit_qty);
-
-                    $("#sub-total" + parseInt($("#table2 tr").length - 1)).val(unit_count * unit_qty);
-
-                    $("#rmv1").click(function (event) {
-                        var rowCount = $('#table2 tr').length;
-                        if (rowCount > 2) {
-                            if ($('#sub-total').text() != "") {
-                                all = $("#all_total").val();
-                                var total_each = all - parseInt($('#sub-total').val());
-                                $('#all_total').val(total_each);
-                                $('#all_tot').val(total_each);
-                                if ($('#discount').val() != "") {
-                                    total1 = $('#all_total').val();
-                                    discount = $('#discount').val();
-                                    total_discount = parseInt(discount) * parseInt(total1) / 100;
-                                    $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
-                                    $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
-                                    $('#total_discount').text(parseInt(total1) - parseInt(total_discount));
-                                }
-                            }
-
-                            if (remove == 0) {
-                                total = all - parseInt($('#sub-total').val());
-                                $("#all_tot").val(total);
-                                $("#all_total").val(total);
-                            }
-
-                            $(this).parent().parent().remove();
-                            remove = 0;
-                        }
-                    })
-
-                    $('.line-total').each(function () {
-
-                        current = $(this).text();
-                        subtotal = $('#sub-total').val();
-                        if (current != "") {
-                            total = 0;
-                            if (current != "") {
-                                total = parseInt(subtotal) + parseInt(current);
-                                $("#all_tot").val(total);
-                                $("#all_total").val(total);
-                                $("#all_total").text(total);
-                            }
-
-                        }
-                    });
-
-                    $("#qty" + parseInt($("#table2 tr").length - 1)).on('change', function (event) {
-                        unit_count = $("#unit" + parseInt($("#table2 tr").length - 1)).val();
-                        unit_qty = $("#qty" + parseInt($("#table2 tr").length - 1)).val();
-                        $('#sub-total' + parseInt($("#table2 tr").length - 1)).text(unit_count * unit_qty);
-                        $('#sub-total' + parseInt($("#table2 tr").length - 1)).val(unit_count * unit_qty);
-                        discount = $("#discount").val();
-                        total = $("#all_total").val();
-                        if (discount != "") {
-                            total_discount = parseInt(discount) * parseInt(total) / 100;
-                            $("#all_dis").val(parseInt(total) - parseInt(total_discount))
-                            $("#total_discount").val(parseInt(total) - parseInt(total_discount))
-                            $("#total_discount").text(parseInt(total) - parseInt(total_discount))
-                        }
-                        total = 0;
-                        $('#sub-total' + parseInt($("#table2 tr").length - 1)).each(function () {
-                            current = $('#sub-total' + parseInt($("#table2 tr").length - 1)).val();
-                            total = $('#sub-total').text();
-                            if (total != "") {
-                                total = 0;
-                                // current = $(this).text();
-                                if (current != "") {
-                                    total = total + parseInt(current);
-                                    $("#all_tot").val(total);
-                                    $("#all_total").val(total);
-                                    $("#all_total").text(total);
-
-
-                                    $("#all_total").val(total);
-                                    $("#all_total").text(total);
-                                    $("#all_tot").val(total);
-                                }
-
-                            }
-                        });
-
-                    });
-
-                    $("#discount").on('change', function (event) {
-                        total = $('#all_total').val();
-                        discount = $('#discount').val();
-                        total_discount = parseInt(discount) * parseInt(total) / 100;
-                        $('#all_dis').val(parseInt(total) - parseInt(total_discount));
-                        $('#total_discount').val(parseInt(total) - parseInt(total_discount));
-                        $('#total_discount').text(parseInt(total) - parseInt(total_discount));
-                    })
-                });
-
-                // add new row len _1 to table 2
-                $("#add-row" + parseInt($("#table2 tr").length - 1)).on('click', function (event) {
-
-                    append_item();
-
-                    $(this).removeClass('icon-simple-add');
-                    $(this).addClass('icon-simple-remove');
-
-                    if ($(this).hasClass('icon-simple-remove')) {
-                        //remove item operations
-                    }
-
-                    var locale = $("#tab2").data('lang');
-
-                    $(".select-item").select2({
-                        ajax: {
-                            url: '/json-data-fill_data_product',
-                            dataType: 'json',
-                            data: function (params) {
-                                return {
-                                    search: params.term, // search term
-                                    page: params.page
-                                };
-                            },
-                            processResults: function (data) {
-                                return {
-                                    results: data.results
-                                }
-                            }
-                        },
-                        theme: "bootstrap",
-                        dir: 'rtl',
-                        placeholder: (locale == 'fa' ? 'انتخاب محصول' : 'Select Product'),
-                        templateResult: formatRepo,
-                        templateSelection: formatRepoSelection
-                        // allowClear: true
-
-                    }).on('select2:select', function (event) {
 
                         var result = event.params.data;
 
-                        $("#unit" + parseInt($("#table2 tr").length - 1)).val(result.hp_product_price);
+                        // push data id for limitation select to
 
-                        $('#qty' + parseInt($("#table2 tr").length - 1)).val('1');
+                        if (product_array.indexOf(result.id) == -1) {
 
-                        unit_count = $("#unit" + parseInt($("#table2 tr").length - 1)).val();
+                            product_array.push(result.id);
 
-                        unit_qty = $("#qty" + parseInt($("#table2 tr").length - 1)).val();
 
-                        $("#sub-total" + parseInt($("#table2 tr").length - 1)).text(unit_count * unit_qty);
+                            $(this).parent().parent().find(".unit").val(result.hp_product_price);
 
-                        $("#sub-total" + parseInt($("#table2 tr").length - 1)).val(unit_count * unit_qty);
+                            $(this).parent().parent().find('.qty').val('1');
 
-                        $("#rmv1").click(function (event) {
+                            unit_count = $(this).parent().parent().find(".unit").val();
+
+                            unit_qty = 1;
+
+                            $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
+
+                            $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
+
+                            $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
+
+                            total = 0;
+                            $('.line-total').each(function () {
+                                current = $(this).text();
+                                if (current != "") {
+                                    if (current != "") {
+                                        total = parseInt(total) + parseInt(current);
+                                        $("#all_tot").val(total);
+                                        $("#all_total").val(total);
+                                        $("#all_total").text(total);
+                                    }
+
+                                }
+                            });
+
+                            $(".qty").on('change', function (event) {
+                                unit_count = $(this).parent().parent().find("input[name='hp_product_price[]']").val();
+                                unit_qty = $(this).val();
+                                $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
+                                $(this).parent().parent().find("div[name='total[]']").val(unit_count * unit_qty);
+                                $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
+
+                                discount = $("#discount").val();
+                                total = 0;
+                                $('.line-total').each(function () {
+                                    var current = $(this).text();
+                                    if (current != "") {
+                                        if (current != "") {
+                                            total = total + parseInt(current);
+                                            $("#all_tot").val(total);
+                                            $("#all_total").val(total);
+                                            $("#all_total").text(total);
+                                        }
+
+                                    }
+                                });
+                                total = $("#all_total").val();
+                                if (discount != "") {
+                                    total_discount = parseInt(discount) * parseInt(total) / 100;
+                                    $("#all_dis").val(parseInt(total) - parseInt(total_discount))
+                                    $("#total_discount").val(parseInt(total) - parseInt(total_discount))
+                                    $("#total_discount").text(parseInt(total) - parseInt(total_discount))
+                                }
+                            });
+
+                            $("#discount").on('change', function (event) {
+                                total = $('#all_total').val();
+                                discount = $('#discount').val();
+                                total_discount = parseInt(discount) * parseInt(total) / 100;
+                                $('#all_dis').val(parseInt(total) - parseInt(total_discount));
+                                $('#total_discount').val(parseInt(total) - parseInt(total_discount));
+                                $('#total_discount').text(parseInt(total) - parseInt(total_discount));
+                            })
+
+                        }
+                        // end limitation
+
+                    }
+                );
+
+                $(".add-row").on('click', function (event) {
+
+                    if ($(this).hasClass('icon-simple-add')) {
+                        append_item();
+                        $(this).removeClass('icon-simple-add');
+                        $(this).addClass('icon-simple-remove');
+                    }
+
+                    if ($(this).hasClass('icon-simple-remove')) {
+                        //remove item operations
+                        $(this).click(function (event) {
+
                             var rowCount = $('#table2 tr').length;
+
                             if (rowCount > 2) {
-                                if ($('#sub-total').text() != "") {
-                                    all = $("#all_total").val();
-                                    var total_each = all - parseInt($('#sub-total').val());
-                                    $('#all_total').val(total_each);
-                                    $('#all_tot').val(total_each);
+
+                                if ($(this).parent().parent().find('.line-total').text() != "") {
+                                    var all = $("#all_total").val();
+                                    total = parseInt(all) - parseInt($(this).parent().parent().find("input[name='total[]']").val());
+                                    $('#all_total').val(total);
+                                    $('#all_tot').val(total);
                                     if ($('#discount').val() != "") {
-                                        total1 = $('#all_total').val();
+                                        var total1 = $('#all_total').val();
                                         discount = $('#discount').val();
                                         total_discount = parseInt(discount) * parseInt(total1) / 100;
                                         $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
@@ -989,72 +995,29 @@
                                     }
                                 }
 
+
                                 if (remove == 0) {
-                                    total = all - parseInt($('#sub-total').val());
+
+                                    total = all - parseInt($(this).parent().parent().find('.line-total').text());
                                     $("#all_tot").val(total);
                                     $("#all_total").val(total);
-                                }
+                                    remove += 1;
 
+
+                                }
+                                // pop items from no repeat array
+                                product_array.splice(product_array.indexOf(parseInt($(this).parent().parent().find("select[name='name[]']").val())), 1, 0);
                                 $(this).parent().parent().remove();
                                 remove = 0;
                             }
                         })
 
-                        // alert('#sub-total'+parseInt($('#table2 tr').length - 1));
-
-                        //    $('#sub-total'+parseInt($('#table2 tr').length - 1)).on('change',function () {
-
-                        //sum totals
-                        //alert(current);
-                        current = parseInt($('#sub-total' + parseInt($('#table2 tr').length - 1)).text());
-                        subtotal = $("#all_total").text()
-                        if (current != "") {
-                            //total = 0;
-                            if (current != "") {
-                                if ($('#table2 tr').length - 1 == 3) {
-                                    total = parseInt(current) + parseInt(subtotal);
-                                } else {
-                                    total = parseInt(current) + parseInt(last_total);
-                                }
-                                $("#all_tot").val(total);
-                                $("#all_total").val(total);
-                                $("#all_total").text(total);
-                                last_total = parseInt($("#all_total").text());
-                            }
-
-                        }
-                        //   });
-
-                        $("#qty" + parseInt($("#table2 tr").length - 1)).on('change', function (event) {
-                            unit_count = $("#unit" + parseInt($("#table2 tr").length - 1)).val();
-                            unit_qty = $("#qty" + parseInt($("#table2 tr").length - 1)).val();
-                            $('#sub-total' + parseInt($("#table2 tr").length - 1)).text(unit_count * unit_qty);
-                            $('#sub-total' + parseInt($("#table2 tr").length - 1)).val(unit_count * unit_qty);
-                            discount = $("#discount").val();
-                            total = $("#all_total").val();
-                            if (discount != "") {
-                                total_discount = parseInt(discount) * parseInt(total) / 100;
-                                $("#all_dis").val(parseInt(total) - parseInt(total_discount))
-                                $("#total_discount").val(parseInt(total) - parseInt(total_discount))
-                                $("#total_discount").text(parseInt(total) - parseInt(total_discount))
-                            }
-
-                        });
-
-                        $("#discount").on('change', function (event) {
-                            total = $('#all_total').val();
-                            discount = $('#discount').val();
-                            total_discount = parseInt(discount) * parseInt(total) / 100;
-                            $('#all_dis').val(parseInt(total) - parseInt(total_discount));
-                            $('#total_discount').val(parseInt(total) - parseInt(total_discount));
-                            $('#total_discount').text(parseInt(total) - parseInt(total_discount));
-                        })
-                    });
-
+                    }
                 });
-
             }
+
         });
+
 
         //edit preview factor
         $('#edit_pre').on('click', function (event) {
@@ -1117,10 +1080,11 @@
             });
         });
 
-
         //preview factor
         $('#preview').on('click', function () {
-            $('#form2').attr('action', '{{route('order.preview')}}', 'method', 'post');
+            $('#form2').attr('action', '{{route('order.preview')}}', 'method', 'post', '_blank');
+            <!--var url = $('#form2').attr('action', '{{route('order.preview')}}', 'method', 'post', '_blank');-->
+            // window.open(url, '_blank');
         })
 
     </script>
