@@ -162,6 +162,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+
         /*
          * Package Service Providers...
          */
@@ -177,6 +178,8 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         jeremykenedy\LaravelLogger\LaravelLoggerServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Hekmatinasser\Verta\VertaServiceProvider::class,
+
 
     ],
 
@@ -228,6 +231,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Verta' => Hekmatinasser\Verta\Verta::class,
+
 
     ],
 

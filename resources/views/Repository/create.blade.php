@@ -40,7 +40,7 @@
                                             <label class="bmd-label-floating">{{__('Repository Name')}}</label>
                                             <select class="form-control" name="hr_repository_id">
                                                 @foreach($repository_name as $namess)
-                                                    <option value="{{$namess->id}}">
+                                                    <option value="{{$namess->hr_priority_id}}">
                                                         {{$namess->hr_name}}
                                                     </option>
                                                 @endforeach

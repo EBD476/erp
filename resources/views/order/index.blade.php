@@ -158,7 +158,7 @@
                                     "                                                            </a>\n" +
                                     "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
                                     "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
-                                    "                                                               <a  href=\"verify_pre/" + data[5] + "/edit\" class=\"dropdown-item\"\n" +
+                                    "                                                               <a target=\"_blank\"  href=\"verify_pre/" + data[5] + "/edit\" class=\"dropdown-item\"\n" +
                                     "                                                                >{{__('Preview Factor')}}</a>\n" +
                                     "                                                               <a  href=\"order/" + data[5] + "/edit\" class=\"dropdown-item\"\n" +
                                     "                                                                >{{__('Edit')}}</a>\n" +

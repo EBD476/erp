@@ -256,6 +256,7 @@
                         if (willDelete) {
                             $.ajax({
                                 url: '/product-middle-part-destroy/' + data[8],
+                                url: '/product-middle-part-destroy/' + data[0],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',

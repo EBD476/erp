@@ -426,8 +426,6 @@
                     })
                     // end filling
 
-                    //////////////////////////////
-
 
                     // fill receiver table
                     $('#table1').on('click', 'button', function (event) {

@@ -57,6 +57,16 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
+                                                <label>{{__('Priority')}}</label>
+                                                <input name="hr_priority_id" type="number" class="form-control"
+                                                       required=""
+                                                       aria-invalid="false">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
                                                 <label>{{__('Name')}}</label>
                                                 <input name="hr_name" type="text" class="form-control" required=""
                                                        aria-invalid="false">
@@ -88,7 +98,19 @@
                                 <p class="card-category"></p>
                             </div>
                             <div class="card-body">
-                                <form id="form1">
+                                <form id="form2">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>{{__('Priority')}}</label>
+                                                <input id="rid" hidden>
+                                                <input name="hr_priority_id" id="hr_priority_id" type="number"
+                                                       class="form-control"
+                                                       required=""
+                                                       aria-invalid="false">
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -330,6 +352,7 @@
                 $('#rid').val(data[3]);
                 $('#hr_name').val(data[1]);
                 $('#hr_description').val(data[2]);
+                $('#hr_priority_id').val(data[4]);
             })
             // end filling
         });

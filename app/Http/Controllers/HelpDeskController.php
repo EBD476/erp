@@ -11,7 +11,6 @@ use App\User;
 use Illuminate\Http\Request;
 use carbon\carbon;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 class HelpDeskController extends Controller
 {
@@ -150,7 +149,7 @@ class HelpDeskController extends Controller
                 ->join('users', 'hnt_help_desk.hhd_receiver_user_id', '=', 'users.id')
                 ->where('hnt_help_desk.hhd_request_user_id', '=', auth()->user()->id)
                 ->where('hnt_help_desk.deleted_at', '=', Null)
-                ->select('hnt_help_desk.id', 'hnt_help_desk.hhd_ticket_id', 'hnt_help_desk.hhd_title', 'hnt_help_desk.hhd_type', 'hnt_hd_priority.hdp_name', 'hnt_th_type.th_name', 'hnt_help_desk.hhd_problem', 'hnt_help_desk.hhd_ticket_status', 'hnt_help_desk.hhd_priority', 'hnt_ticket_status.ts_name', 'hnt_help_desk.hhd_request_user_id', 'hnt_help_desk.hhd_receiver_user_id', 'hnt_help_desk.hhd_file_atach', 'hnt_help_desk.created_at','hnt_help_desk.hhd_response', 'users.name as username')->skip($start)
+                ->select('hnt_help_desk.id', 'hnt_help_desk.hhd_ticket_id', 'hnt_help_desk.hhd_title', 'hnt_help_desk.hhd_type', 'hnt_hd_priority.hdp_name', 'hnt_th_type.th_name', 'hnt_help_desk.hhd_problem', 'hnt_help_desk.hhd_ticket_status', 'hnt_help_desk.hhd_priority', 'hnt_ticket_status.ts_name', 'hnt_help_desk.hhd_request_user_id', 'hnt_help_desk.hhd_receiver_user_id', 'hnt_help_desk.hhd_file_atach', 'hnt_help_desk.created_at', 'hnt_help_desk.hhd_response', 'users.name as username')->skip($start)
                 ->take($length)
                 ->get();
         } else {
@@ -160,7 +159,7 @@ class HelpDeskController extends Controller
                 ->join('hnt_hd_priority', 'hnt_help_desk.hhd_priority', '=', 'hnt_hd_priority.id')
                 ->join('users', 'hnt_help_desk.hhd_receiver_user_id', '=', 'users.id')
                 ->where('hnt_help_desk.hhd_request_user_id', '=', auth()->user()->id)
-                ->select('hnt_help_desk.id', 'hnt_help_desk.hhd_ticket_id', 'hnt_help_desk.hhd_title', 'hnt_help_desk.hhd_type', 'hnt_hd_priority.hdp_name', 'hnt_th_type.th_name', 'hnt_help_desk.hhd_problem', 'hnt_help_desk.hhd_ticket_status', 'hnt_help_desk.hhd_priority', 'hnt_ticket_status.ts_name', 'hnt_help_desk.hhd_request_user_id', 'hnt_help_desk.hhd_receiver_user_id', 'hnt_help_desk.hhd_file_atach', 'hnt_help_desk.created_at', 'users.name as username','hnt_help_desk.hhd_response')->skip($start)
+                ->select('hnt_help_desk.id', 'hnt_help_desk.hhd_ticket_id', 'hnt_help_desk.hhd_title', 'hnt_help_desk.hhd_type', 'hnt_hd_priority.hdp_name', 'hnt_th_type.th_name', 'hnt_help_desk.hhd_problem', 'hnt_help_desk.hhd_ticket_status', 'hnt_help_desk.hhd_priority', 'hnt_ticket_status.ts_name', 'hnt_help_desk.hhd_request_user_id', 'hnt_help_desk.hhd_receiver_user_id', 'hnt_help_desk.hhd_file_atach', 'hnt_help_desk.created_at', 'users.name as username', 'hnt_help_desk.hhd_response')->skip($start)
                 ->where('users.name', 'LIKE', "%$search%")
                 ->where('hnt_help_desk.deleted_at', '=', Null)
                 ->orwhere('hnt_help_desk.hhd_title', 'LIKE', "%$search%")
@@ -172,7 +171,7 @@ class HelpDeskController extends Controller
         $data = '';
         $key = 0;
         foreach ($help_desk as $help_desks) {
-            $key ++;
+            $key++;
             $data .= '["' . $key . '",' . '"' . $help_desks->hhd_title . '",' . '"' . $help_desks->hhd_ticket_id . '",' . '"' . $help_desks->hdp_name . '",' . '"' . $help_desks->ts_name . '",' . '"' . $help_desks->th_name . '",' . '"' . $help_desks->created_at . '",' . '"' . $help_desks->hhd_problem . '",' . '"' . $help_desks->hhd_type . '",' . '"' . $help_desks->hhd_ticket_status . '",' . '"' . $help_desks->hhd_priority . '",' . '"' . $help_desks->hhd_request_user_id . '",' . '"' . $help_desks->hhd_receiver_user_id . '",' . '"' . $help_desks->hhd_file_atach . '",' . '"' . $help_desks->hhd_response . '",' . '"' . $help_desks->id . '"],';
         }
         $data = substr($data, 0, -1);
@@ -202,7 +201,7 @@ class HelpDeskController extends Controller
                 ->join('hnt_th_type', 'hnt_help_desk.hhd_type', '=', 'hnt_th_type.id')
                 ->join('hnt_hd_priority', 'hnt_help_desk.hhd_priority', '=', 'hnt_hd_priority.id')
                 ->join('users', 'hnt_help_desk.hhd_request_user_id', '=', 'users.id')
-                ->select('hnt_help_desk.id', 'hnt_help_desk.hhd_ticket_id', 'hnt_help_desk.hhd_title', 'hnt_help_desk.hhd_type', 'hnt_hd_priority.hdp_name', 'hnt_th_type.th_name', 'hnt_help_desk.hhd_problem', 'hnt_help_desk.hhd_ticket_status', 'hnt_help_desk.hhd_priority', 'hnt_ticket_status.ts_name', 'hnt_help_desk.hhd_request_user_id', 'hnt_help_desk.hhd_receiver_user_id', 'hnt_help_desk.hhd_file_atach', 'hnt_help_desk.created_at','hnt_help_desk.hhd_response', 'users.name as username')->skip($start)
+                ->select('hnt_help_desk.id', 'hnt_help_desk.hhd_ticket_id', 'hnt_help_desk.hhd_title', 'hnt_help_desk.hhd_type', 'hnt_hd_priority.hdp_name', 'hnt_th_type.th_name', 'hnt_help_desk.hhd_problem', 'hnt_help_desk.hhd_ticket_status', 'hnt_help_desk.hhd_priority', 'hnt_ticket_status.ts_name', 'hnt_help_desk.hhd_request_user_id', 'hnt_help_desk.hhd_receiver_user_id', 'hnt_help_desk.hhd_file_atach', 'hnt_help_desk.created_at', 'hnt_help_desk.hhd_response', 'users.name as username')->skip($start)
                 ->where('hnt_help_desk.deleted_at', '=', Null)
                 ->where('hnt_help_desk.hhd_receiver_user_id', '=', auth()->user()->id)
                 ->where('users.name', 'LIKE', "%$search%")
@@ -215,7 +214,7 @@ class HelpDeskController extends Controller
         $data = '';
         $key = 0;
         foreach ($help_desk as $help_desks) {
-            $key ++;
+            $key++;
             $data .= '["' . $key . '",' . '"' . $help_desks->hhd_title . '",' . '"' . $help_desks->username . '",' . '"' . $help_desks->hhd_ticket_id . '",' . '"' . $help_desks->hdp_name . '",' . '"' . $help_desks->ts_name . '",' . '"' . $help_desks->th_name . '",' . '"' . $help_desks->created_at . '",' . '"' . $help_desks->hhd_problem . '",' . '"' . $help_desks->hhd_type . '",' . '"' . $help_desks->hhd_ticket_status . '",' . '"' . $help_desks->hhd_priority . '",' . '"' . $help_desks->hhd_request_user_id . '",' . '"' . $help_desks->hhd_receiver_user_id . '",' . '"' . $help_desks->hhd_file_atach . '",' . '"' . $help_desks->hhd_response . '",' . '"' . $help_desks->id . '"],';
         }
         $data = substr($data, 0, -1);

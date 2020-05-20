@@ -66,8 +66,7 @@
                                             <label>{{__('User')}}</label>
                                             <div class="form-group">
                                                 <select name="hpz_user_id[]"
-                                                        class="form-control select-receiver-user" required=""
-                                                        multiple="multiple"></select>
+                                                        class="form-control select-receiver-user"></select>
                                             </div>
                                         </div>
                                     </div>
@@ -110,7 +109,7 @@
                                             <div class="form-group">
                                                 <select name="hpz_user_id"
                                                         class="form-control select-receiver-user" required="">
-                                                    <option id="hpz_user_id"></option>
+                                                    <option id="hpz_user_id_val"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -268,6 +267,7 @@
                             }
                     }
             });
+
             // store receiver
             $("#form1").submit(function (event) {
                 var data = $("#form1").serialize();
@@ -303,6 +303,7 @@
                     cache: false,
                 });
             });
+
             // update receiver
             $("#form2").submit(function (event) {
                 var data = $("#form2").serialize();
@@ -337,7 +338,7 @@
                         $('#table').DataTable().ajax.reload();
                         $('#card-form2').hide();
                     },
-                    cache: false,
+                    // cache: false,
                 });
             });
 
@@ -347,7 +348,7 @@
                 var data = table.row($(this).parents('tr')).data();
                 $('#id').val(data[5]);
                 $('#hpz_name').val(data[1]);
-                $('#hpz_user_id').val(data[4]);
+                // $('#hpz_user_id_val').val(data[4]);
                 $('#hpz_priority').val(data[3]);
             })
             // end filling

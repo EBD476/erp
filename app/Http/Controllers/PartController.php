@@ -39,6 +39,7 @@ class PartController extends Controller
         $this->validate($request, [
             'hp_name' => 'required',
             'hp_part_model' => 'required',
+
         ]);
         $current_date = Carbon::now();
         $current_date = $current_date->year . $current_date->month . $current_date->day;
@@ -48,7 +49,7 @@ class PartController extends Controller
         $part->hp_part_image = $request->part_image;
         $part->hp_serial_number = $code;
         $part->hp_part_model = $request->hp_part_model;
-        $part->hp_main_unit= $request->hp_main_unit;
+        $part->hp_main_unit = $request->hp_main_unit;
         $part->hp_category_id = $request->hp_category_id;
         $part->hp_description = $request->hp_description;
         $part->save();
@@ -69,9 +70,8 @@ class PartController extends Controller
         $part->hp_part_model = $request->hp_part_model;
         $part->hp_part_image = $request->part_image1;
         $part->hp_category_id = $request->hp_category_id;
-        $part->hp_produce_date = $request->hp_produce_date;
         $part->hp_description = $request->hp_description;
-        $part->hp_main_unit= $request->hp_main_unit;
+        $part->hp_main_unit = $request->hp_main_unit;
         $part->save();
         return json_encode(["response" => "OK"]);
 
@@ -105,18 +105,19 @@ class PartController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $part = Part::select('hnt_parts.id', 'hnt_parts.hp_name as name', 'hnt_parts.hp_serial_number', 'hnt_parts.hp_size', 'hnt_parts.hp_main_unit', 'hnt_parts.hp_description', 'hnt_parts.hp_part_model', 'hnt_parts.hp_part_image')
+            $part = DB::table('hnt_parts')
+                ->select( 'hnt_parts.id', 'hnt_parts.hp_name as name', 'hnt_parts.hp_serial_number','hnt_parts.hp_size', 'hnt_parts.hp_description', 'hnt_parts.hp_part_model', 'hnt_parts.hp_part_image', 'hnt_parts.hp_main_unit')
+                ->where('hnt_parts.deleted_at', '=', Null)
                 ->skip($start)
                 ->take($length)
                 ->get();
         } else {
-            $part = Part::select('hnt_parts.id', 'hnt_parts.hp_name as name', 'hnt_parts.hp_serial_number', 'hnt_parts.hp_size','hnt_parts.hp_main_unit', 'hnt_parts.hp_description', 'hnt_parts.hp_part_model', 'hnt_parts.hp_part_image')
-                ->join('hnt_provider', 'hnt_parts.hp_provider', '=', 'hnt_provider.id')
+            $part = DB::table('hnt_parts')
+                ->select( 'hnt_parts.id', 'hnt_parts.hp_name as name', 'hnt_parts.hp_serial_number','hnt_parts.hp_size', 'hnt_parts.hp_description', 'hnt_parts.hp_part_model', 'hnt_parts.hp_part_image', 'hnt_parts.hp_main_unit')
+                ->where('hnt_parts.deleted_at', '=', Null)
                 ->where('hnt_parts.hp_name', 'LIKE', "%$search%")
                 ->orwhere('hnt_parts.hp_serial_number', 'LIKE', "%$search%")
                 ->get();
-
-
         }
 
         $data = '';

@@ -664,7 +664,6 @@
                 $('#hmp_voltage').val(data[6]);
                 $('#hmp_middle_part_color').val(data[7]);
                 $('#hmp_description').val(data[9]);
-                $('#part_image1').val(data[10]);
                 $('#hp_image').attr('src', 'img/middle_parts/' + data[10]);
 
             })
@@ -839,6 +838,6 @@
                     return false;
                 }
             };
-        // end drop zone
+        // enddropzone
     </script>
 @endpush

@@ -177,9 +177,21 @@
                             </a>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('product-zone.index')}}">
+                            <a class="nav-link" href="{{ route('product-task.index')}}">
                                 <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal">{{__('Product Task')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product-zone.index')}}">
+                                <i class="tim-icons icon-chart-pie-36"></i>
                                 <span class="sidebar-normal">{{__('Product Zone')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product-status.index')}}">
+                                <i class="tim-icons icon-atom"></i>
+                                <span class="sidebar-normal">{{__('Product Status')}}</span>
                             </a>
                         </li>
                         <li class="nav-item ">

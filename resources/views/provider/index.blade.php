@@ -93,46 +93,47 @@
                                 <form id="form2">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>{{__('Name')}}</label>
-                                                <input id="hp_name" class="form-control"
-                                                       name="hp_name">
-                                                <input id="provider-id" hidden>
+                                                <div class="form-group">
+                                                    <label>{{__('Name')}}</label>
+                                                    <input id="hp_name" class="form-control"
+                                                           name="hp_name">
+                                                    <input id="provider-id" hidden>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>{{__('Phone')}}</label>
-                                                <input name="hp_phone" type="text" class="form-control" required=""
-                                                       aria-invalid="false" id="hp_phone">
+                                        <div class=" row">
+                                            <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>{{__('Phone')}}</label>
+                                                        <input name="hp_phone" type="text" class="form-control"
+                                                               required=""
+                                                               aria-invalid="false" id="hp_phone">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class=" row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>{{__('Address')}}</label>
-                                                <input name="hp_address" type="text" class="form-control"
-                                                       required=""
-                                                       aria-invalid="false" id="hp_address">
+                                            <div class=" row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>{{__('Address')}}</label>
+                                                        <input name="hp_address" type="text" class="form-control"
+                                                               required=""
+                                                               aria-invalid="false" id="hp_address">
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    {{--<div class="row">--}}
-                                    {{--<div class="col-md-6 pr-md-1">--}}
-                                    {{--<div class="form-group">--}}
-                                    {{--<label>{{__('Account Number')}}</label>--}}
-                                    {{--<input name="hp_account_number" disabled--}}
-                                    {{--class="form-control"    value="{{$provider->hp_account_number}}">--}}
-                                    {{--</div>--}}
-                                    {{--</div>--}}
-                                    {{--</div>--}}
-                                    <div class="card-footer">
-                                        <button type="submit"
-                                                class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                                    </div>
+                                            {{--<div class="row">--}}
+                                            {{--<div class="col-md-6 pr-md-1">--}}
+                                            {{--<div class="form-group">--}}
+                                            {{--<label>{{__('Account Number')}}</label>--}}
+                                            {{--<input name="hp_account_number" disabled--}}
+                                            {{--class="form-control"    value="{{$provider->hp_account_number}}">--}}
+                                            {{--</div>--}}
+                                            {{--</div>--}}
+                                            {{--</div>--}}
+                                            <div class="card-footer">
+                                                <button type="submit"
+                                                        class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                            </div>
                                 </form>
                             </div>
                         </div>

@@ -723,7 +723,7 @@
             // push current items in array
             $('.remove').each(function () {
                 // push all items
-                product_array.push($(this).parent().parent().find("select[name='name[]']").val());
+                product_array.push(parseInt($(this).parent().parent().find("select[name='name[]']").val()));
                 // end
             });
             // end
@@ -994,8 +994,6 @@
 
                 if (product_array.indexOf(result.id) == -1) {
 
-                    alert(product_array.indexOf(result.id));
-
                     product_array.push(result.id);
 
 
@@ -1005,7 +1003,7 @@
                     unit_qty = $("#qty").val();
                     $(this).parent().parent().find("div[name='total[]']").text(unit_count * unit_qty);
                     $(this).parent().parent().find("input[name='total[]']").val(unit_count * unit_qty);
-                    var all_total_val = $("#all_total").val()
+                    var all_total_val = $("#all_total").val();
 
                     $('.sub-total').each(function () {
 
@@ -1015,7 +1013,14 @@
                             $("#all_total").val(parseInt(total) + parseInt(all_total_val));
                             $("#all_total").text(parseInt(total) + parseInt(all_total_val));
                             $("#all_tot").val(parseInt(total) + parseInt(all_total_val));
-
+                            discount = $("#discount").val();
+                            total = $("#all_total").val();
+                            if (discount != "") {
+                                total_discount = parseInt(discount) * parseInt(total) / 100;
+                                $("#all_dis").val(parseInt(total) - parseInt(total_discount));
+                                $("#total_discount").val(parseInt(total) - parseInt(total_discount));
+                                $("#total_discount").text(parseInt(total) - parseInt(total_discount));
+                            }
                         }
 
                     });
@@ -1067,14 +1072,14 @@
                                 var rowCount = $('#table2 tr').length;
                                 if (rowCount > 2) {
                                     if ($(this).parent().parent().find("div[name='total[]']").text() != "") {
-                                        var all =$("#all_total").val();
+                                        var all = $("#all_total").val();
                                         var total_each = parseInt(all) - parseInt($(this).parent().parent().find("div[name='total[]']").text());
 
                                         $('#all_total').val(total_each);
                                         $('#all_tot').val(total_each);
 
                                         if ($('#discount').val() != "") {
-                                            var total1 =  parseInt($('#all_total').val());
+                                            var total1 = $('#all_total').val();
                                             discount = $('#discount').val();
                                             total_discount = parseInt(discount) * parseInt(total1) / 100;
                                             $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
@@ -1252,7 +1257,6 @@
                             if (product_array.indexOf(result.id) == -1) {
 
                                 product_array.push(result.id);
-                                alert(product_array);
 
                                 $(this).parent().parent().find("input[name='hp_product_price[]']").val(result.hp_product_price);
                                 $(this).parent().parent().find("input[name='invoice_items_qty[]']").val('1');
@@ -1336,14 +1340,14 @@
                                             if (rowCount > 2) {
 
                                                 if ($(this).parent().parent().find('.line-total').text() != "") {
-                                                    var all =$("#all_total").val();
+                                                    var all = $("#all_total").val();
                                                     total = parseInt(all) - parseInt($(this).parent().parent().find("div[name='total[]']").text());
                                                     $('#all_total').val(parseInt(total));
                                                     $('#all_tot').val(parseInt(total));
 
                                                     if ($('#discount').val() != "") {
-                                                        var total1 =$('#all_total').val();
-                                                        var discount =$('#discount').val();
+                                                        var total1 = $('#all_total').val();
+                                                        var discount = $('#discount').val();
                                                         total_discount = parseInt(discount) * parseInt(total1) / 100;
                                                         $('#total_dis').val(parseInt(total1) - parseInt(total_discount));
                                                         $('#total_discount').val(parseInt(total1) - parseInt(total_discount));
@@ -1467,12 +1471,12 @@
                 if (rowCount > 2) {
 
                     if ($(this).parent().parent().find('.sub-total').text() != "") {
-                        var all = parseInt($("#all_total").val());
-                        total = all - parseInt($(this).parent().parent().find('.sub-total').val());
-                        $('#all_total').val(total);
-                        $('#all_tot').val(total);
-                        if ($('#discount').val != "") {
-                            total1 = parseInt($('#all_total').val());
+                        var all = $("#all_total").val();
+                        var tot = parseInt(all) - parseInt($(this).parent().parent().find("div[name='total[]']").text());
+                        $('#all_total').val(parseInt(tot));
+                        $('#all_tot').val(parseInt(tot));
+                        if ($('#discount').val() != "") {
+                            var total1 = parseInt($('#all_total').val());
                             discount = parseInt($('#discount').val());
                             total_discount = parseInt(discount) * parseInt(total1) / 100;
                             $('#total_dis').val(parseInt(total1) - parseInt(total_discount));

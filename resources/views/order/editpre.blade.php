@@ -505,7 +505,7 @@
         // push current items in array
         $('.remove').each(function () {
             // push all items
-            product_array.push($(this).parent().parent().find("select[name='name[]']").val());
+            product_array.push(parseInt($(this).parent().parent().find("select[name='name[]']").val()));
             // end
         });
         // end

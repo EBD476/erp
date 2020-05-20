@@ -10,86 +10,86 @@
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title text-right font-weight-400">{{__('Product Color List')}}</h4>
-                                    <p class="card-category"></p>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive table-hover">
-                                        <table id="table" class="table" cellspacing="0" width="100%">
-                                            <thead class=" text-primary">
-                                            <th>
-                                                {{__('ID')}}
-                                            </th>
-                                            <th>
-                                                {{__('Product Color Name')}}
-                                            </th>
-                                            <th>
-                                                {{__('Action')}}
-                                            </th>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                </div>
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title text-right font-weight-400">{{__('Product Color List')}}</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive table-hover">
+                                <table id="table" class="table" cellspacing="0" width="100%">
+                                    <thead class=" text-primary">
+                                    <th>
+                                        {{__('ID')}}
+                                    </th>
+                                    <th>
+                                        {{__('Product Color Name')}}
+                                    </th>
+                                    <th>
+                                        {{__('Action')}}
+                                    </th>
+                                    </thead>
+                                </table>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card card-user">
-                                <div class="card-body">
-                                    <div class="card-header card-header-primary">
-                                        <h4 class="card-title ">{{__('New Product Color')}}</h4>
-                                        <p class="card-category"></p>
-                                    </div>
-                                    <div class="card-body">
-                                        <form id="form1">
-                                            <div class="row">
-                                                <div class="col-md-6 pr-md-1">
-                                                    <div class="form-group">
-                                                        <label>{{__('Product Color Name')}}</label>
-                                                        <input name="hn_color_name" type="text" class="form-control"
-                                                               required=""
-                                                               aria-invalid="false">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-footer">
-                                                <button type="submit"
-                                                        class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-user">
+                        <div class="card-body">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('New Product Color')}}</h4>
+                                <p class="card-category"></p>
                             </div>
-                            <div class="card card-user">
-                                <div class="card-body" id="card-form2">
-                                    <div class="card-header card-header-primary">
-                                        <h4 class="card-title ">{{__('Edit Products Color')}}</h4>
-                                        <p class="card-category"></p>
-                                    </div>
-                                    <div class="card-body">
-                                        <form id="form2">
-                                            <div class="row">
-                                                <div class="col-md-6 pr-md-1">
-                                                    <div class="form-group">
-                                                        <label>{{__('Product Color Name')}}</label>
-                                                        <input name="hn_color_name" type="text" class="form-control"
-                                                               required="" id="hn_color_name"
-                                                               aria-invalid="false">
-                                                        <input id="pcid" hidden>
-                                                    </div>
-                                                </div>
+                            <div class="card-body">
+                                <form id="form1">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>{{__('Product Color Name')}}</label>
+                                                <input name="hn_color_name" type="text" class="form-control"
+                                                       required=""
+                                                       aria-invalid="false">
                                             </div>
-                                            <div class="card-footer">
-                                                <button type="submit"
-                                                        class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                                            </div>
-                                        </form>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
+                    </div>
+                    <div class="card card-user">
+                        <div class="card-body" id="card-form2">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('Edit Products Color')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <form id="form2">
+                                    <div class="row">
+                                        <div class="col-md-6 pr-md-1">
+                                            <div class="form-group">
+                                                <label>{{__('Product Color Name')}}</label>
+                                                <input name="hn_color_name" type="text" class="form-control"
+                                                       required="" id="hn_color_name"
+                                                       aria-invalid="false">
+                                                <input id="pcid" hidden>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -128,7 +128,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: '/product-color-destroy/' + data[2],
+                                url: '/product-color-destroy/' + data[13],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',
@@ -301,10 +301,10 @@
             $('#table').on('click', '.edit', function (event) {
                 $('#card-form2').show();
                 var data = table.row($(this).parents('tr')).data();
-                $('#pcid').val(data[2]);
+                $('#pcid').val(data[13]);
                 $('#hn_color_name').val(data[1]);
             })
-            // endfilling
+            // end filling
         });
     </script>
 @endpush

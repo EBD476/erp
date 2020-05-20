@@ -31,13 +31,16 @@
                                         {{__('Name')}}
                                     </th>
                                     <th>
-                                        {{__('Code')}}
+                                        {{__('Serial Number')}}
                                     </th>
                                     <th>
                                         {{__('Model')}}
                                     </th>
                                     <th>
                                         {{__('Size')}}
+                                    </th>
+                                    <th>
+                                        {{__('Description')}}
                                     </th>
                                     <th>
                                         {{__('Action')}}
@@ -87,6 +90,15 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
+                                            <label>{{__('Category Id')}}</label>
+                                            <input name="hp_category_id" type="number" class="form-control"
+                                                   aria-invalid="false">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
                                             <label>{{__('Main Unit')}}</label>
                                             <input name="hp_main_unit" type="text" class="form-control"
                                                    required=""
@@ -100,15 +112,6 @@
                                             <label>{{__('Category Id')}}</label>
                                             <input name="hp_category_id" type="number" class="form-control"
                                                    aria-invalid="false">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>{{__('Produce Date')}}</label>
-                                            <input name="hp_produce_date" class="form-control"
-                                                   required="" id="test-date-id">
                                         </div>
                                     </div>
                                 </div>
@@ -288,17 +291,25 @@
                             $.ajax({
                                 url: '/part-destroy/' + data[7],
                                 type: 'delete',
-                                data: data,
-                                dataType: 'json',
-                                async: false,
-                                success: function (data) {
-                                    swal("{{__("Poof! Your imaginary file has been deleted!")}}", {
-                                        icon: "success",
-                                        button: "{{__('Done')}}",
-                                    });
-                                },
+                                data:
+                                data,
+                                dataType:
+                                    'json',
+                                async:
+                                    false,
+                                success:
+
+                                    function (data) {
+                                        swal("{{__("Poof! Your imaginary file has been deleted!")}}", {
+                                            icon: "success",
+                                            button: "{{__('Done')}}",
+                                        });
+                                    }
+
+                                ,
                                 cache: false,
-                            });
+                            })
+                            ;
                             $('#table').DataTable().ajax.reload();
                         } else {
                             swal(
@@ -459,6 +470,32 @@
                 });
             });
             //end store
+            // add new provider
+            $("#modal_form").submit(function (event) {
+                var data = $("#modal_form").serialize();
+                event.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url: '/provider',
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        setTimeout($.unblockUI, 2000);
+                        $("#modalRegisterForm").modal('hide');
+                        $("#provider-1").append('<option selected>' + data.provider + '</option>');
+
+                    },
+                    cache: false,
+                });
+            });
+            // end adding
 
             // calendr
             kamaDatepicker('test-date-id', {
@@ -468,6 +505,27 @@
                 previousButtonIcon: "fa fa-arrow-circle-left"
                 // end calender
             });
+            Dropzone.options.dropzone =
+                {
+                    maxFilesize: 12,
+                    // فایل نوع آبجکت است
+                    renameFile: function (file) {
+                        var dt = new Date();
+                        var time = dt.getTime();
+                        return time + '-' + file.name;
+                    },
+                    acceptedFiles: ".jpeg,.jpg,.png,.gif",
+                    addRemoveLinks: true,
+                    timeout: 5000,
+                    success: function (file, response) {
+                        // اسم اینپوت و مقداری که باید به آن ارسال شود
+                        $('#product_image').val(file.upload.filename);
+                        $('#product_image1').val(file.upload.filename);
+                    },
+                    error: function (file, response) {
+                        return false;
+                    }
+                };
 
             // remove image
             $("#img-remove").on('click', function () {
@@ -519,7 +577,6 @@
             });
             //end removing
         });
-
         Dropzone.options.dropzone =
             {
                 maxFilesize: 12,

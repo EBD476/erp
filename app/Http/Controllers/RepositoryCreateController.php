@@ -24,10 +24,12 @@ class RepositoryCreateController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'hr_priority_id' => 'required',
             'hr_name' => 'required',
             'hr_description' => 'required',
         ]);
         $repository = new RepositoryCreate();
+        $repository->hr_priority_id = $request->hr_priority_id;
         $repository->hr_name = $request->hr_name;
         $repository->hr_description = $request->hr_description;
         $repository->save();
@@ -38,10 +40,12 @@ class RepositoryCreateController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
+            'hr_priority_id' => 'required',
             'hr_name' => 'required',
             'hr_description' => 'required',
         ]);
         $repository = RepositoryCreate::find($id);
+        $repository->hr_priority_id = $request->hr_priority_id;
         $repository->hr_name = $request->hr_name;
         $repository->hr_description = $request->hr_description;
         $repository->save();
@@ -63,22 +67,24 @@ class RepositoryCreateController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $repository = RepositoryCreate::select('id', 'hr_name', 'hr_description')
+            $repository = RepositoryCreate::select('id', 'hr_name', 'hr_description','hr_priority_id')
+                ->orderBy('hr_priority_id')
                 ->skip($start)
                 ->take($length)
                 ->get();
         } else {
-            $repository = RepositoryCreate::select('id', 'hr_name', 'hr_description')
+            $repository = RepositoryCreate::select('id', 'hr_name', 'hr_description','hr_priority_id')
+                ->orderBy('hr_priority_id')
                 ->where('id', 'LIKE', "%$search%")
                 ->orwhere('hr_name', 'LIKE', "%$search%")
                 ->get();
         }
 
         $data = '';
-        $key =0;
+        $key = 0;
         foreach ($repository as $repositories) {
             $key++;
-            $data .= '["' . $key . '",' . '"' . $repositories->hr_name . '",' . '"' . $repositories->hr_description . '",' . '"' . $repositories->id . '"],';
+            $data .= '["' . $key . '",' . '"' . $repositories->hr_name . '",' . '"' . $repositories->hr_description . '",' . '"' . $repositories->id . '",' . '"' . $repositories->hr_priority_id . '"],';
         }
         $data = substr($data, 0, -1);
         $repository_count = RepositoryCreate::all()->count();

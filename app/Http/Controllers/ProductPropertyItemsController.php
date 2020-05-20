@@ -14,12 +14,12 @@ class ProductPropertyItemsController extends Controller
 {
     public function index()
     {
-        $current_user=auth()->user()->id;
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        return view('products.product_items.index',compact('items','user','type','priority','help_desk'));
+        return view('products.product_items.index', compact('items', 'user', 'type', 'priority', 'help_desk'));
     }
 
     public function store(Request $request)
@@ -36,12 +36,12 @@ class ProductPropertyItemsController extends Controller
 
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $this->validate($request, [
             'hppi_items_name' => 'required',
         ]);
-        $items = ProductPropertyItems :: find($id);
+        $items = ProductPropertyItems:: find($id);
         $items->hppi_items_name = $request->hppi_items_name;
         $items->hppi_serial_number = $request->hppi_serial_number;
         $items->hppi_color = $request->hppi_color;
@@ -53,7 +53,7 @@ class ProductPropertyItemsController extends Controller
 
     public function destroy($id)
     {
-        $items = ProductPropertyItems :: find($id);
+        $items = ProductPropertyItems:: find($id);
         $items->delete();
         return json_encode(["response" => "OK"]);
 
@@ -66,17 +66,17 @@ class ProductPropertyItemsController extends Controller
         $search = $request->search['value'];
         if ($search == '') {
             $items = DB::table('hnt_product_property_items')
-                ->join('hnt_product_color','hnt_product_property_items.hppi_color','=','hnt_product_color.id')
-                ->select('hnt_product_property_items.id','hnt_product_property_items.hppi_items_name','hnt_product_property_items.hppi_serial_number','hnt_product_property_items.hppi_color','hnt_product_color.hn_color_name')
-                ->where('hnt_product_property_items.deleted_at','=', Null)
+                ->join('hnt_product_color', 'hnt_product_property_items.hppi_color', '=', 'hnt_product_color.id')
+                ->select('hnt_product_property_items.id', 'hnt_product_property_items.hppi_items_name', 'hnt_product_property_items.hppi_serial_number', 'hnt_product_property_items.hppi_color', 'hnt_product_color.hn_color_name')
+                ->where('hnt_product_property_items.deleted_at', '=', Null)
                 ->skip($start)
                 ->take($length)
                 ->get();
         } else {
             $items = DB::table('hnt_product_property_items')
-                ->join('hnt_product_color','hnt_product_property_items.hppi_color','=','hnt_product_color.id')
-                ->select('hnt_product_property_items.id','hnt_product_property_items.hppi_items_name','hnt_product_property_items.hppi_serial_number','hnt_product_property_items.hppi_color','hnt_product_color.hn_color_name')
-                ->where('hnt_product_property_items.deleted_at','=', Null)
+                ->join('hnt_product_color', 'hnt_product_property_items.hppi_color', '=', 'hnt_product_color.id')
+                ->select('hnt_product_property_items.id', 'hnt_product_property_items.hppi_items_name', 'hnt_product_property_items.hppi_serial_number', 'hnt_product_property_items.hppi_color', 'hnt_product_color.hn_color_name')
+                ->where('hnt_product_property_items.deleted_at', '=', Null)
                 ->where('hppi_items_name', 'LIKE', "%$search%")
                 ->orwhere('hppi_serial_number', 'LIKE', "%$search%")
                 ->get();

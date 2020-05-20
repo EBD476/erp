@@ -51,7 +51,7 @@ class RepositoryProductController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $repository_name = RepositoryCreate::select('id', 'hr_name')->get();
+        $repository_name = RepositoryCreate::select('id', 'hr_name', 'hr_priority_id')->get();
         return view('Repository.create', compact('repository_name', 'type', 'priority', 'help_desk', 'user', 'product'));
     }
 
@@ -120,7 +120,6 @@ class RepositoryProductController extends Controller
 
     //    end charging
 
-
     //fill data to repositories
     public function fill(Request $request)
     {
@@ -131,7 +130,7 @@ class RepositoryProductController extends Controller
             $repository_product = DB::table('hnt_repository_product')
                 ->join('hnt_products', 'hnt_repository_product.hr_product_id', '=', 'hnt_products.id')
                 ->join('hnt_provider', 'hnt_repository_product.hr_provider_code', '=', 'hnt_provider.id')
-                ->join('hnt_repository', 'hnt_repository_product.hr_repository_id', '=', 'hnt_repository.id')
+                ->join('hnt_repository', 'hnt_repository_product.hr_repository_id', '=', 'hnt_repository.hr_priority_id')
                 ->select('hnt_repository_product.id', 'hnt_repository_product.hr_product_id', 'hnt_repository_product.hr_product_stock', 'hnt_repository_product.hr_entry_date', 'hnt_repository_product.hr_exit', 'hnt_repository_product.hr_provider_code', 'hnt_repository_product.hr_return_value', 'hnt_repository_product.hr_comment', 'hnt_repository_product.hr_repository_id', 'hnt_repository_product.hr_status_return_part', 'hnt_repository_product.hr_comment', 'hnt_repository_product.hr_contradiction', 'hnt_products.hp_product_name', 'hnt_provider.hp_name', 'hnt_repository.hr_name')
                 ->where('hnt_repository_product.deleted_at', '=', Null)
                 ->skip($start)
@@ -141,20 +140,18 @@ class RepositoryProductController extends Controller
             $repository_product = DB::table('hnt_repository_product')
                 ->join('hnt_products', 'hnt_repository_product.hr_product_id', '=', 'hnt_products.id')
                 ->join('hnt_provider', 'hnt_repository_product.hr_provider_code', '=', 'hnt_provider.id')
-                ->join('hnt_repository', 'hnt_repository_product.hr_repository_id', '=', 'hnt_repository.id')
+                ->join('hnt_repository', 'hnt_repository_product.hr_repository_id', '=', 'hnt_repository.hr_priority_id')
                 ->select('hnt_repository_product.id', 'hnt_repository_product.hr_product_id', 'hnt_repository_product.hr_product_stock', 'hnt_repository_product.hr_entry_date', 'hnt_repository_product.hr_exit', 'hnt_repository_product.hr_provider_code', 'hnt_repository_product.hr_return_value', 'hnt_repository_product.hr_comment', 'hnt_repository_product.hr_repository_id', 'hnt_repository_product.hr_status_return_part', 'hnt_repository_product.hr_comment', 'hnt_repository_product.hr_contradiction', 'hnt_products.hp_product_name', 'hnt_provider.hp_name', 'hnt_repository.hr_name')
                 ->where('hnt_repository_product.deleted_at', '=', Null)
                 ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
-//                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-//                ->orwhere('hp_connector', 'LIKE', "%$search%")
                 ->get();
         }
 
         $data = '';
-        $key = 0 ;
+        $key = 0;
         foreach ($repository_product as $repository_products) {
             $key++;
-            $data .= '["' .$key . '",' . '"' . $repository_products->hp_product_name . '",' . '"' . $repository_products->hr_product_stock . '",' . '"' . $repository_products->hp_name . '",' . '"' . $repository_products->hr_name . '",' . '"' . $repository_products->hr_entry_date . '",' . '"' . $repository_products->hr_exit . '",' . '"' . $repository_products->hr_return_value . '",' . '"' . $repository_products->hr_contradiction . '",' . '"' . $repository_products->hr_status_return_part . '",' . '"' . $repository_products->hr_comment . '",' . '"' . $repository_products->hr_provider_code . '",' . '"' . $repository_products->hr_repository_id . '",' . '"' . $repository_products->hr_product_id . '",' . '"' . $repository_products->id . '"],';
+            $data .= '["' . $key . '",' . '"' . $repository_products->hp_product_name . '",' . '"' . $repository_products->hr_product_stock . '",' . '"' . $repository_products->hp_name . '",' . '"' . $repository_products->hr_name . '",' . '"' . $repository_products->hr_entry_date . '",' . '"' . $repository_products->hr_exit . '",' . '"' . $repository_products->hr_return_value . '",' . '"' . $repository_products->hr_contradiction . '",' . '"' . $repository_products->hr_status_return_part . '",' . '"' . $repository_products->hr_comment . '",' . '"' . $repository_products->hr_provider_code . '",' . '"' . $repository_products->hr_repository_id . '",' . '"' . $repository_products->hr_product_id . '",' . '"' . $repository_products->id . '"],';
         }
         $data = substr($data, 0, -1);
         $repository_products_count = Order::all()->count();
@@ -168,26 +165,33 @@ class RepositoryProductController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
+            $last_repository = DB::table('hnt_repository')->max('hr_priority_id');
             $repository_product = DB::table('hnt_repository_product')
                 ->join('hnt_products', 'hnt_repository_product.hr_product_id', '=', 'hnt_products.id')
-                ->join('hnt_repository', 'hnt_repository_product.hr_repository_id', '=', 'hnt_repository.id')
-                ->select('hnt_repository_product.id', 'hnt_repository_product.hr_product_stock','hnt_products.hp_product_name', 'hnt_repository.hr_name')
+                ->join('hnt_repository', 'hnt_repository_product.hr_repository_id', '=', 'hnt_repository.hr_priority_id')
+                ->select('hnt_repository_product.id', 'hnt_repository_product.hr_product_stock', 'hnt_products.hp_product_name', 'hnt_repository.hr_name')
                 ->where('hnt_repository_product.deleted_at', '=', Null)
+                ->where('hnt_repository_product.hr_repository_id', '=', $last_repository)
+                ->orderBy('hnt_repository_product.created_at', 'DESC')
+                ->groupBy('hnt_repository_product.hr_product_id')
+                ->distinct()
                 ->skip($start)
                 ->take($length)
                 ->get();
         } else {
             $repository_product = DB::table('hnt_repository_product')
                 ->join('hnt_products', 'hnt_repository_product.hr_product_id', '=', 'hnt_products.id')
-                ->join('hnt_repository', 'hnt_repository_product.hr_repository_id', '=', 'hnt_repository.id')
-                ->select('hnt_repository_product.id', 'hnt_repository_product.hr_product_stock','hnt_products.hp_product_name', 'hnt_repository.hr_name')
+                ->join('hnt_repository', 'hnt_repository_product.hr_repository_id', '=', 'hnt_repository.hr_priority_id')
+                ->select('hnt_repository_product.id', 'hnt_repository_product.hr_product_stock', 'hnt_products.hp_product_name', 'hnt_repository.hr_name')
                 ->where('hnt_repository_product.deleted_at', '=', Null)
-                ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
-                ->get();
+                ->where('hnt_repository_product.hr_repository_id', '=', $last_repository)
+                ->orderBy('hnt_repository_product.created_at', 'DESC')
+                ->groupBy('hnt_repository_product.hr_product_id')
+                ->distinct()->get();
         }
 
         $data = '';
-        $key = 0 ;
+        $key = 0;
         foreach ($repository_product as $repository_products) {
             $key++;
             $data .= '["' . $key . '",' . '"' . $repository_products->hp_product_name . '",' . '"' . $repository_products->hr_product_stock . '",' . '"' . $repository_products->hr_name . '"],';
@@ -196,4 +200,5 @@ class RepositoryProductController extends Controller
         $repository_products_count = Order::all()->count();
         return response('{ "recordsTotal":' . $repository_products_count . ',"recordsFiltered":' . $repository_products_count . ',"data": [' . $data . ']}');
     }
+//    end filling
 }

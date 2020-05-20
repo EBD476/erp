@@ -33,7 +33,7 @@ class ProductZoneController extends Controller
         if ($size_name == 1) {
             $product_zone = new ProductZone();
             $product_zone->hpz_name = $request->hpz_name;
-            $product_zone->hpz_user_id = $request->hpz_user_id;
+            $product_zone->hpz_user_id = $request->hpz_user_id[0];
             $product_zone->hpz_priority = $request->hpz_priority;
             $product_zone->save();
         } else {
@@ -47,8 +47,9 @@ class ProductZoneController extends Controller
                 $product_zone->save();
                 $index++;
             }
-            return json_encode(["response" => "OK",]);
         }
+        return json_encode(["response" => "OK",]);
+
     }
 
     public
@@ -59,11 +60,11 @@ class ProductZoneController extends Controller
             'hpz_user_id' => 'required',
             'hpz_priority' => 'required',
         ]);
-            $product_zone = ProductZone::find($id);
-            $product_zone->hpz_name = $request->hpz_name;
-            $product_zone->hpz_user_id = $request->hpz_user_id;
-            $product_zone->hpz_priority = $request->hpz_priority;
-            $product_zone->save();
+        $product_zone = ProductZone::find($id);
+        $product_zone->hpz_name = $request->hpz_name;
+        $product_zone->hpz_user_id = $request->hpz_user_id;
+        $product_zone->hpz_priority = $request->hpz_priority;
+        $product_zone->save();
         return json_encode(["response" => "Done"]);
 
 
@@ -101,7 +102,7 @@ class ProductZoneController extends Controller
         }
 
         $data = '';
-        $key =0;
+        $key = 0;
         foreach ($product_zone as $product_zones) {
             $key++;
             $data .= '["' . $key . '",' . '"' . $product_zones->hpz_name . '",' . '"' . $product_zones->name . '",' . '"' . $product_zones->hpz_priority . '",' . '"' . $product_zones->hpz_user_id . '",' . '"' . $product_zones->id . '"],';

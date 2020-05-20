@@ -7,6 +7,7 @@ use App\Order;
 use App\OrderProduct;
 use App\Tax;
 use Carbon\Carbon;
+use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Browsershot\Browsershot;
@@ -18,9 +19,11 @@ class OrderProductController extends Controller
 //    store invoices item
     public function store(Request $request)
     {
-        $date = Carbon::now();
+        $date = Verta::now();
 //        deu date time for exit from product level
-        $create_due_date = date('Y-m-d', strtotime($date . ' + 60 days'));
+        $create_due_date_all = $date->addMonth(2);
+        $create_due_date = $create_due_date_all->formatJalaliDate();
+
         $size_name = count(collect($request)->get('total'));
 
         if ($size_name == 1) {
@@ -82,9 +85,10 @@ class OrderProductController extends Controller
 //    update invoices item
     public function update(Request $request, $id)
     {
-        $date = Carbon::now();
+        $date = Verta::now();
 //        deu date time for exit from product level
-        $create_due_date = date('Y-m-d', strtotime($date . ' + 60 days'));
+        $create_due_date_all = $date->addMonth(2);
+        $create_due_date = $create_due_date_all->formatJalaliDate();
         $items = $request->pid;
         $index = 0;
         foreach ($items as $item) {
@@ -139,9 +143,10 @@ class OrderProductController extends Controller
 
     public function add(Request $request)
     {
-        $date = Carbon::now();
+        $date = Verta::now();
 //        deu date time for exit from product level
-        $create_due_date = date('Y-m-d', strtotime($date . ' + 60 days'));
+        $create_due_date_all = $date->addMonth(2);
+        $create_due_date = $create_due_date_all->formatJalaliDate();
         $size_name = count(collect($request)->get('total'));
 
         if ($size_name == 1) {
@@ -160,51 +165,4 @@ class OrderProductController extends Controller
             }
         }
     }
-
-//    fill  data table
-    public function fill(Request $request)
-    {
-        $start = $request->start;
-        $length = $request->length;
-        $search = $request->search['value'];
-        if ($search == '') {
-
-            $product = DB::table('hnt_invoice_items')
-                ->join('hnt_invoices', 'hnt_invoice_items.hpo_order_id', '=', 'hnt_invoices.id')
-                ->join('hnt_products', 'hnt_invoice_items.hpo_product_id', '=', 'hnt_products.id')
-                ->join('hnt_product_color', 'hnt_products.hp_product_color_id', '=', 'hnt_product_color.id')
-                ->join('hnt_product_property', 'hnt_products.hp_product_property', '=', 'hnt_product_property.id')
-                ->select('hnt_invoice_items.id','hnt_invoice_items.hpo_order_id','hnt_invoice_items.hpo_count','hnt_invoice_items.hop_due_date', 'hnt_products.hp_product_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_color_id','hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_invoices.hp_Invoice_number', 'hnt_invoices.hp_employer_name')
-                ->where('hnt_invoice_items.deleted_at', '=', Null)
-                ->where('hnt_invoices.hp_Invoice_number', '!=', Null)
-                ->where('hnt_invoice_items.hpo_status', '=', 3)
-                ->skip($start)->take($length)->get();
-//            $product = Product::onlyTrashed()->get();
-//            $product = Product::withTrashed()->get();
-
-        } else {
-            $product = DB::table('hnt_invoice_items')
-                ->join('hnt_invoices', 'hnt_invoice_items.hpo_order_id', '=', 'hnt_invoices.id')
-                ->join('hnt_products', 'hnt_invoice_items.hpo_product_id', '=', 'hnt_products.id')
-                ->join('hnt_product_color', 'hnt_products.hp_product_color_id', '=', 'hnt_product_color.id')
-                ->join('hnt_product_property', 'hnt_products.hp_product_property', '=', 'hnt_product_property.id')
-                ->select('hnt_invoice_items.id','hnt_invoice_items.hpo_count','hnt_invoice_items.hpo_order_id','hnt_invoice_items.hop_due_date', 'hnt_products.hp_product_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_color_id','hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_invoices.hp_Invoice_number', 'hnt_invoices.hp_employer_name')
-                ->where('hnt_invoices.hp_Invoice_number', '!=', Null)
-                ->where('hnt_invoice_items.deleted_at', '=', Null)
-                ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
-                ->orwhere('hnt_product_color.hn_color_name', 'LIKE', "%$search%")
-                ->get();
-        }
-
-        $data = '';
-        $key = 0;
-        foreach ($product as $products) {
-            $key++;
-            $data .= '["' . $key . '","' . $products->hp_Invoice_number . '",' . '"' . $products->hp_product_name . '",' . '"' . $products->hp_product_model . '",' . '"' . $products->hpp_property_name . '",' . '"' . $products->hn_color_name . '",' . '"' . $products->hp_product_size . '",' . '"' . $products->hpo_count . '",' . '"' . $products->hop_due_date . '",' . '"' . $products->hpo_order_id . '"],';
-        }
-        $data = substr($data, 0, -1);
-        $products_count = OrderProduct::all()->count();
-        return response('{ "recordsTotal":' . $products_count . ',"recordsFiltered":' . $products_count . ',"data": [' . $data . ']}');
-    }
-
 }

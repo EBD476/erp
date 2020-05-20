@@ -37,7 +37,7 @@
   "Name": "نام",
   "Model": "مدل",
   "Price": "قیمت",
-  "ID": "ردیف",
+  "ID": "شناسه",
   "Type": "نوع",
   "Units": "تعداد واحد",
   "Completed": "درصد پیشرفت",
@@ -488,6 +488,7 @@
   "New Product Property Items": "اضافه کردن آیتم جدید برای مشخصه ظاهری محصول ",
   "Product Size": "سایز محصول",
   "Pre Invoice Sales Of Product": "پیش فاکتور فروش کالا-خدمات",
+  "Invoice Sales Of Product": "فاکتور فروش کالا-خدمات",
   "Date:": "تاریخ:",
   "Invoice Information": "اطلاعات سفارش",
   "Description of Product": "شرح کالا",
@@ -541,7 +542,7 @@
   "Middle part Requirement":"نیازمندی محصول میانی",
   "part Requirement":"نیازمندی مواد اولیه",
   "New Middle Part Requirement":"نیازمندی جدید محصول میانی",
-  "Part Requirement Management":"مدیریت نیازمندی مواد اولیه",
+  "Part Requirement Management":"مدیریت نیازمندی محصول",
   "New Part Requirement":"نیازمندی جدید مواد اولیه",
   "Edit Requirement":"ویرایش نیازمندی",
   "Middle Part Requirement":"نیازمندی محصول میانی",
@@ -582,5 +583,16 @@
   "Start The Process":"شروع فرآیند تولید",
   "The production process was successfully completed.":"فرآیند تولید با موفقیت به اتمام رسید.",
   "Preview Detail": "نمایش جزئیات",
-  "Main Unit": "واحد اصلی"
+  "Ordered":"سفارش داده شده",
+  "Product Task":"وظیفه",
+  "Product Status":"وضعیت محصول",
+  "Product Status List":"لیست وضعیت محصول",
+  "New Status":"وضعیت جدید",
+  "Edit Status":"ویرایش وضعیت",
+  "Report List":"لیست گزارشات ",
+  "Factor Report List:":"لیست گزارشات فاکتور:",
+  "Report":"گزارش",
+  "success":"انجام شد",
+  "Registrant":"ثبت کننده"
+
 }

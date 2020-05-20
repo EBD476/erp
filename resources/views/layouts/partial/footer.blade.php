@@ -17,7 +17,7 @@
                 {{--</a>--}}
             {{--</li>--}}
         {{--</ul>--}}
-        <div class="copyright fc-ltr">
+        <div class="copyright fc-ltr" style="display: contents;">
             <a href=http://hantaibms.com>Hantaibms</a> Co. by PGH ©2020
         </div>
     </div>

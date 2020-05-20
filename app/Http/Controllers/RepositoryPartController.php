@@ -64,8 +64,6 @@ class RepositoryPartController extends Controller
                 ->select('hnt_repository_part.id', 'hnt_repository_part.hrp_part_id', 'hnt_repository_part.hrp_part_count', 'hnt_repository_part.hrp_entry_date', 'hnt_repository_part.hrp_exit', 'hnt_repository_part.hrp_provider_code', 'hnt_repository_part.hrp_return_value', 'hnt_repository_part.hrp_comment', 'hnt_repository_part.hrp_repository_id', 'hnt_repository_part.hrp_status_return_part', 'hnt_repository_part.hrp_contradiction', 'hnt_parts.hp_name', 'hnt_provider.hp_name as name', 'hnt_repository.hr_name')
                 ->where('hnt_repository_part.deleted_at', '=', Null)
                 ->where('hnt_parts.hp_name', 'LIKE', "%$search%")
-//                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-//                ->orwhere('hp_connector', 'LIKE', "%$search%")
                 ->get();
         }
 
@@ -92,6 +90,7 @@ class RepositoryPartController extends Controller
                 ->join('hnt_repository', 'hnt_repository_part.hrp_repository_id', '=', 'hnt_repository.id')
                 ->select('hnt_repository_part.id', 'hnt_repository_part.hrp_part_count', 'hnt_parts.hp_name', 'hnt_repository.hr_name')
                 ->where('hnt_repository_part.deleted_at', '=', Null)
+                ->where('hnt_repository_part.deleted_at', '=', Null)
                 ->skip($start)
                 ->take($length)
                 ->get();
@@ -109,7 +108,7 @@ class RepositoryPartController extends Controller
         $key = 0;
         foreach ($repository as $repositories) {
             $key++;
-            $data .= '["' . $key. '",' . '"' . $repositories->hp_name . '",' . '"' . $repositories->hrp_part_count . '",' . '"' . $repositories->hr_name . '"],';
+            $data .= '["' . $key . '",' . '"' . $repositories->hp_name . '",' . '"' . $repositories->hrp_part_count . '",' . '"' . $repositories->hr_name . '"],';
         }
         $data = substr($data, 0, -1);
         $repository_count = RepositoryPart::all()->count();

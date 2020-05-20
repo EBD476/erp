@@ -63,6 +63,12 @@ class MiddlePartController extends Controller
         $part->hmp_description = $request->hmp_description;
         $part->hmp_serial_number = $request->hmp_serial_number;
         $part->hmp_voltage = $request->hmp_voltage;
+        $part->hmp_image = $request->part_image1;
+        $part->hmp_middle_part_model = $request->hmp_middle_part_model;
+        $part->hmp_middle_part_color = $request->hmp_middle_part_color;
+        $part->hmp_middle_part_property = $request->hmp_middle_part_property;
+        $part->hmp_description = $request->hmp_description;
+        $part->hmp_serial_number = $request->hmp_serial_number;
         $part->save();
         return json_encode(["response" => "OK"]);
 
@@ -121,7 +127,7 @@ class MiddlePartController extends Controller
             $part = $part = DB::table('hnt_middle_part')
                 ->join('hnt_product_color', 'hnt_middle_part.hmp_middle_part_color', '=', 'hnt_product_color.id')
                 ->join('hnt_product_property', 'hnt_middle_part.hmp_middle_part_property', '=', 'hnt_product_property.id')
-                ->select('hnt_middle_part.id', 'hnt_middle_part.hmp_name', 'hnt_middle_part.hmp_serial_number', 'hnt_middle_part.hmp_middle_part_model', 'hnt_middle_part.hmp_middle_part_property', 'hnt_middle_part.hmp_middle_part_color', 'hnt_middle_part.hmp_description', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name','hnt_middle_part.hmp_image','hnt_middle_part.hmp_voltage')
+                ->select('hnt_middle_part.id', 'hnt_middle_part.hmp_name', 'hnt_middle_part.hmp_serial_number', 'hnt_middle_part.hmp_middle_part_model', 'hnt_middle_part.hmp_middle_part_property', 'hnt_middle_part.hmp_middle_part_color', 'hnt_middle_part.hmp_description', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_middle_part.hmp_image', 'hnt_middle_part.hmp_voltage')
                 ->where('hnt_middle_part.deleted_at', '=', Null)
                 ->skip($start)
                 ->take($length)
@@ -130,7 +136,7 @@ class MiddlePartController extends Controller
             $part = DB::table('hnt_middle_part')
                 ->join('hnt_product_color', 'hnt_middle_part.hmp_middle_part_color', '=', 'hnt_product_color.id')
                 ->join('hnt_product_property', 'hnt_middle_part.hmp_middle_part_property', '=', 'hnt_product_property.id')
-                ->select('hnt_middle_part.id', 'hnt_middle_part.hmp_name', 'hnt_middle_part.hmp_serial_number', 'hnt_middle_part.hmp_middle_part_model', 'hnt_middle_part.hmp_middle_part_property', 'hnt_middle_part.hmp_middle_part_color','hnt_middle_part.hmp_description', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_middle_part.hmp_image','hnt_middle_part.hmp_voltage')
+                ->select('hnt_middle_part.id', 'hnt_middle_part.hmp_name', 'hnt_middle_part.hmp_serial_number', 'hnt_middle_part.hmp_middle_part_model', 'hnt_middle_part.hmp_middle_part_property', 'hnt_middle_part.hmp_middle_part_color', 'hnt_middle_part.hmp_description', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_middle_part.hmp_image', 'hnt_middle_part.hmp_voltage')
                 ->where('hnt_middle_part.deleted_at', '=', Null)
                 ->where('hnt_middle_part.hmp_name', 'LIKE', "%$search%")
                 ->orwhere('hnt_middle_part.hmp_serial_number', 'LIKE', "%$search%")
@@ -139,10 +145,10 @@ class MiddlePartController extends Controller
         }
 
         $data = '';
-        $key =0;
+        $key = 0;
         foreach ($part as $parts) {
             $key++;
-            $data .= '["' .$key . '",' . '"' . $parts->hmp_name . '",' . '"' . $parts->hmp_serial_number . '",' . '"' . $parts->hmp_middle_part_model . '",' . '"' . $parts->hpp_property_name . '",' . '"' . $parts->hn_color_name . '",' . '"' . $parts->hmp_voltage. '",' . '"' . $parts->hmp_middle_part_color . '",' . '"' . $parts->hmp_middle_part_property  . '",' . '"' . $parts->hmp_description . '",' . '"' . $parts->hmp_image . '",' . '"' . $parts->id . '"],';
+            $data .= '["' . $key . '",' . '"' . $parts->hmp_name . '",' . '"' . $parts->hmp_serial_number . '",' . '"' . $parts->hmp_middle_part_model . '",' . '"' . $parts->hpp_property_name . '",' . '"' . $parts->hn_color_name . '",' . '"' . $parts->hmp_voltage . '",' . '"' . $parts->hmp_middle_part_color . '",' . '"' . $parts->hmp_middle_part_property . '",' . '"' . $parts->hmp_description . '",' . '"' . $parts->hmp_image . '",' . '"' . $parts->id . '"],';
         }
         $data = substr($data, 0, -1);
         $part_count = MiddlePart::all()->count();

@@ -80,16 +80,16 @@ class PartRequirementController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $part_requirement =DB::table('hnt_part_requirements')
+            $part_requirement = DB::table('hnt_part_requirements')
                 ->join('hnt_parts', 'hnt_part_requirements.hpr_part_id', '=', 'hnt_parts.id')
                 ->select('hnt_part_requirements.id', 'hnt_part_requirements.hpr_part_id', 'hnt_part_requirements.hpr_part_count', 'hnt_part_requirements.hpr_comment', 'hnt_parts.hp_name')
-                ->where('hnt_part_requirements.deleted_at','=', Null)
+                ->where('hnt_part_requirements.deleted_at', '=', Null)
                 ->skip($start)->take($length)->get();
         } else {
             $part_requirement = DB::table('hnt_part_requirements')
                 ->join('hnt_parts', 'hnt_part_requirements.hpr_part_id', '=', 'hnt_parts.id')
                 ->select('hnt_part_requirements.id', 'hnt_part_requirements.hpr_part_id', 'hnt_part_requirements.hpr_part_count', 'hnt_part_requirements.hpr_comment', 'hnt_parts.hp_name')
-                ->where('hnt_part_requirements.deleted_at','=', Null)
+                ->where('hnt_part_requirements.deleted_at', '=', Null)
                 ->where('hnt_parts.hp_name', 'LIKE', "%$search%")
                 ->get();
         }

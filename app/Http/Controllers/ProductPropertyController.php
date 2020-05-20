@@ -33,7 +33,6 @@ class ProductPropertyController extends Controller
         $properties->hpp_property_items = $request->hpp_property_items;
         $properties->save();
         $property_item = ProductPropertyItems::select('id', 'hppi_items_name')->where('id', $properties->hpp_property_items)->get()->first();
-        dd($property_item->hppi_items_name);
         return json_encode(["response" => "Done", "item" => $property_item->hppi_items_name, "name" => $properties->hpp_property_name, "id" => $properties->id]);
 
     }

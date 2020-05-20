@@ -716,6 +716,7 @@
                 $('#table-form2').hide();
                 $('#table-form').show();
                 event.preventDefault();
+
             })
         });
     </script>

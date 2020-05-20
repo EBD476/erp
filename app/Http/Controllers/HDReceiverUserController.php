@@ -97,8 +97,8 @@ class HDReceiverUserController extends Controller
         $data = '';
         $key = 0;
         foreach ($receiver as $receivers) {
-            $key ++;
-            $data .= '["' . $key . '",' . '"' . $receivers->name . '",' . '"' . $receivers->th_name . '",' . '"' . $receivers->hhru_name . '",' . '"' . $receivers->hhru_receive_user . '",' . '"' .$receivers->id . '"],';
+            $key++;
+            $data .= '["' . $key . '",' . '"' . $receivers->name . '",' . '"' . $receivers->th_name . '",' . '"' . $receivers->hhru_name . '",' . '"' . $receivers->hhru_receive_user . '",' . '"' . $receivers->id . '"],';
         }
         $data = substr($data, 0, -1);
         $receivers_count = HDReceiverUser::all()->count();

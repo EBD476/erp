@@ -71,7 +71,7 @@ class TicketStatusController extends Controller
         $data = '';
         $key = 0;
         foreach ($ticket as $tickets) {
-            $key ++;
+            $key++;
             $data .= '["' . $key . '",' . '"' . $tickets->ts_name . '",' . '"' . $tickets->id . '"],';
         }
         $data = substr($data, 0, -1);

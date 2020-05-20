@@ -56,12 +56,12 @@ class HDpriorityController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $priority = HDpriority::select('id','hdp_name')
+            $priority = HDpriority::select('id', 'hdp_name')
                 ->skip($start)
                 ->take($length)
                 ->get();
         } else {
-            $priority = HDpriority::select('id','hdp_name')
+            $priority = HDpriority::select('id', 'hdp_name')
                 ->where('id', 'LIKE', "%$search%")
                 ->orwhere('hdp_name', 'LIKE', "%$search%")
                 ->get();
@@ -71,7 +71,7 @@ class HDpriorityController extends Controller
         $key = 0;
         foreach ($priority as $priorities) {
             $key++;
-            $data .= '["' .$key . '",' . '"' . $priorities->hdp_name . '",' . '"' .  $priorities->id . '"],';
+            $data .= '["' . $key . '",' . '"' . $priorities->hdp_name . '",' . '"' . $priorities->id . '"],';
         }
         $data = substr($data, 0, -1);
         $priority_count = HDpriority::all()->count();

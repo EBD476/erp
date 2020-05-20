@@ -64,6 +64,7 @@
                     </div>
                 </div>
                 {{--End Repository Product Data List--}}
+
                 {{--Repository Middle Part List--}}
                 <div class="col-md-12">
                     <div class="card">
@@ -214,7 +215,7 @@
                                         <select class="form-control" name="hr_repository_id">
                                             <option id="hr_repository_id"></option>
                                             @foreach($repository_name as $namess)
-                                                <option value="{{$namess->id}}">
+                                                <option value="{{$namess->hr_priority_id}}">
                                                     {{$namess->hr_name}}
                                                 </option>
                                             @endforeach
@@ -243,7 +244,7 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Exit')}}</label>
-                                        <input class="form-control" required=""
+                                        <input class="form-control"
                                                aria-invalid="false" name="hr_exit" id="test-date-id-3"
                                         >
                                     </div>
@@ -254,7 +255,7 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Contradiction')}}</label>
-                                        <input class="form-control" required=""
+                                        <input class="form-control"
                                                aria-invalid="false" name="hr_contradiction" id="hr_contradiction"
                                         >
                                     </div>
@@ -263,7 +264,7 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Return Value')}}</label>
-                                        <input class="form-control" required=""
+                                        <input class="form-control"
                                                aria-invalid="false" name="hr_return_value" id="hr_return_value"
                                         >
                                     </div>
@@ -272,7 +273,7 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Status Return Part')}}</label>
-                                        <input class="form-control" required=""
+                                        <input class="form-control"
                                                aria-invalid="false" name="hr_status_return_part"
                                                id="hr_status_return_part"
                                         >
@@ -366,7 +367,7 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Exit')}}</label>
-                                        <input class="form-control" required=""
+                                        <input class="form-control"
                                                aria-invalid="false" name="hrm_exit" id="test-date-id-4">
                                     </div>
                                 </div>
@@ -376,7 +377,7 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Contradiction')}}</label>
-                                        <input class="form-control" required=""
+                                        <input class="form-control"
                                                aria-invalid="false" name="hrm_contradiction" id="hrm_contradiction">
                                     </div>
                                 </div>
@@ -384,7 +385,7 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Return Value')}}</label>
-                                        <input class="form-control" required=""
+                                        <input class="form-control"
                                                aria-invalid="false" name="hrm_return_value" id="hrm_return_value"
                                         >
                                     </div>
@@ -393,7 +394,7 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Status Return Part')}}</label>
-                                        <input class="form-control" required=""
+                                        <input class="form-control"
                                                aria-invalid="false" name="hrm_status_return_part"
                                                id="hrm_status_return_part">
                                     </div>
@@ -486,7 +487,7 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Status Return Part')}}</label>
-                                        <input class="form-control" required=""
+                                        <input class="form-control"
                                                aria-invalid="false" name="hrp_status_return_part"
                                                id="hrp_status_return_part">
                                     </div>
@@ -497,7 +498,7 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Exit')}}</label>
-                                        <input class="form-control" required=""
+                                        <input class="form-control"
                                                aria-invalid="false" name="hrp_exit" id="test-date-id-5"
                                         >
                                     </div>
@@ -506,7 +507,7 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Contradiction')}}</label>
-                                        <input class="form-control" required=""
+                                        <input class="form-control"
                                                aria-invalid="false" name="hrp_contradiction" id="hrp_contradiction"
                                         >
                                     </div>
@@ -515,7 +516,7 @@
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Return Value')}}</label>
-                                        <input class="form-control" required=""
+                                        <input class="form-control"
                                                aria-invalid="false" name="hrp_return_value" id="hrp_return_value"
                                         >
                                     </div>
@@ -571,7 +572,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: '/repository-product-destroy/' + data[14],
+                                url: '/repository-product-destroy/' + data[0],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',
@@ -690,7 +691,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: '/repository-middle-part-destroy/' + data[14],
+                                url: '/repository-middle-part-destroy/' + data[0],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',
@@ -792,7 +793,7 @@
             // fill and show repository part data
             $('#table3').on('click', 'button', function (event) {
 
-                var data = table3.row($(this).parents('tr')).data();
+                var data = table.row($(this).parents('tr')).data();
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -809,7 +810,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: '/repository-part-destroy/' + data[14],
+                                url: '/repository-part-destroy/' + data[0],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',
@@ -822,7 +823,7 @@
                                 },
                                 cache: false,
                             });
-                            $('#table3').DataTable().ajax.reload();
+                            $('#table2').DataTable().ajax.reload();
                         } else {
                             swal(
                                 "{{__("Your imaginary file is safe!")}}",
@@ -1090,6 +1091,51 @@
             });
             // End Modal Form
 
+            // pass checkbox data
+            $('.checkbox').on('change', function (event) {
+                if (event.target.checked) {
+                    var data = {
+                        id: $(this).data('id'),
+                        state: $(this)[0].checked == true ? 3 : 2,
+                        product: $(this).data('pid'),
+                        computing_repository_requirement: $(this).data('computing_repository_requirement'),
+
+                    };
+                    $.blockUI({
+                        message: '{{__('please wait...')}}', css: {
+                            border: 'none',
+                            padding: '15px',
+                            backgroundColor: '#000',
+                            '-webkit-border-radius': '10px',
+                            '-moz-border-radius': '10px',
+                            opacity: .5,
+                            color: '#fff'
+                        }
+                    });
+                    //token
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: '/order-state/' + data.id,
+                        type: 'POST',
+                        data: data,
+                        dataType: 'json',
+                        async: false,
+                        success: function (data) {
+                            setTimeout($.unblockUI, 2000);
+                            location.reload();
+                        },
+                        cache: false,
+                    });
+                }
+
+
+            });
+            // End data pass
+
             {{--edit repositories modal--}}
 
             // pass product data
@@ -1134,6 +1180,7 @@
             // pass middle part data
             $("#form2").submit(function (event) {
                 var data = $("#form2").serialize();
+                var middle_part_id = $('#middle_part_id').val();
                 event.preventDefault();
                 $("#form2").block({
                     message: '{{__('please wait...')}}', css: {
@@ -1172,6 +1219,7 @@
             // pass part data
             $("#form3").submit(function (event) {
                 var data = $("#form3").serialize();
+                var part_id = $('#part_id').val();
                 event.preventDefault();
                 $("#form3").block({
                     message: '{{__('please wait...')}}', css: {

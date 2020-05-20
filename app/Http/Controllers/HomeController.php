@@ -13,6 +13,8 @@ use App\ProcessLevel;
 use App\Project;
 use App\Support;
 use App\User;
+use Hekmatinasser\Verta\Verta;
+//use Verta;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -52,7 +54,7 @@ class HomeController extends Controller
             ->whereNotNull('hp_Invoice_number')->count();
         $order = Order::select('id', 'hp_project_name', 'created_at')
             ->where('hp_Invoice_number', Null)->get();
-        $order_agent = Order::select('id', 'hp_project_name', 'created_at', 'hp_status')
+        $order_agent = Order::select('id', 'hp_project_name', 'created_at')
             ->where('hp_registrant', $current_user)->get();
         $projects = Project::all();
         $orders = Order::all()->count();
@@ -60,7 +62,5 @@ class HomeController extends Controller
         $process_level = ProcessLevel::select('hp_process_id', 'hp_process_name')->get();
         $progress = OrderState::select('order_id')->get();
         return view('home', ['product_requirement' => $product_requirement], compact('progress', 'un_seen_message', 'process_level', 'order_agent', 'order_order', 'agreement_order', 'client_order', 'user', 'order', 'projects', 'order_req', 'agreement', 'client', 'orders', 'support_response', 'help_desk', 'priority', 'type'));
-
-
     }
 }

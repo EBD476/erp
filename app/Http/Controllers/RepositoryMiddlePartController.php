@@ -80,13 +80,11 @@ class RepositoryMiddlePartController extends Controller
                 ->select('hnt_repository_middle_part.id', 'hnt_repository_middle_part.hrm_middle_part_id', 'hnt_repository_middle_part.hrm_count', 'hnt_repository_middle_part.hrm_entry_date', 'hnt_repository_middle_part.hrm_exit', 'hnt_repository_middle_part.hrm_provider_code', 'hnt_repository_middle_part.hrm_return_value', 'hnt_repository_middle_part.hrm_comment', 'hnt_repository_middle_part.hrm_repository_id', 'hnt_repository_middle_part.hrm_status_return_part', 'hnt_repository_middle_part.hrm_comment', 'hnt_repository_middle_part.hrm_contradiction', 'hnt_middle_part.hmp_name', 'hnt_provider.hp_name', 'hnt_repository.hr_name')
                 ->where('hnt_repository_middle_part.deleted_at', '=', Null)
                 ->where('hnt_middle_part.hmp_name', 'LIKE', "%$search%")
-//                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-//                ->orwhere('hp_connector', 'LIKE', "%$search%")
                 ->get();
         }
 
         $data = '';
-        $key=0;
+        $key = 0;
         foreach ($repository_product as $repository_products) {
             $key++;
             $data .= '["' . $key . '",' . '"' . $repository_products->hmp_name . '",' . '"' . $repository_products->hrm_count . '",' . '"' . $repository_products->hp_name . '",' . '"' . $repository_products->hr_name . '",' . '"' . $repository_products->hrm_entry_date . '",' . '"' . $repository_products->hrm_exit . '",' . '"' . $repository_products->hrm_return_value . '",' . '"' . $repository_products->hrm_contradiction . '",' . '"' . $repository_products->hrm_status_return_part . '",' . '"' . $repository_products->hrm_comment . '",' . '"' . $repository_products->hrm_provider_code . '",' . '"' . $repository_products->hrm_repository_id . '",' . '"' . $repository_products->hrm_middle_part_id . '",' . '"' . $repository_products->id . '"],';
@@ -123,12 +121,12 @@ class RepositoryMiddlePartController extends Controller
         }
 
         $data = '';
-        $key=0;
+        $key = 0;
         foreach ($repository_product as $repository_products) {
             $key++;
             $data .= '["' . $key . '",' . '"' . $repository_products->hmp_name . '",' . '"' . $repository_products->hrm_count . '",' . '"' . $repository_products->hr_name . '"],';
+            $data = substr($data, 0, -1);
         }
-        $data = substr($data, 0, -1);
         $repository_products_count = RepositoryMiddlePart::all()->count();
         return response('{ "recordsTotal":' . $repository_products_count . ',"recordsFiltered":' . $repository_products_count . ',"data": [' . $data . ']}');
     }

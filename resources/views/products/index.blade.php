@@ -398,7 +398,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: '/product-destroy/' + data[13],
+                                url: '/product-destroy/' + data[0],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',
@@ -819,7 +819,7 @@
                 $('#hp_product_property').val(data[8]);
                 $('#hp_product_size').val(data[7]);
                 $('#hp_description').val(data[10]);
-                $('#product_image1').val(data[11]);
+                $('#product_image').val(data[11]);
                 $('#hp_voltage').val(data[6]);
                 $('#hp_image').attr('src', 'img/products/' + data[11]);
             })

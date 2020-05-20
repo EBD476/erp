@@ -72,8 +72,8 @@ class ProductRequirementController extends Controller
         if ($search == '') {
             $product_requirement = DB::table('hnt_product_requirements')
                 ->join('hnt_products', 'hnt_product_requirements.Product_Id', '=', 'hnt_products.id')
-                ->select('hnt_product_requirements.Product_Id','hnt_product_requirements.id', 'hnt_product_requirements.Product_Count','hnt_products.hp_product_name','hnt_product_requirements.Comment')
-                ->where('hnt_product_requirements.deleted_at','=', Null)
+                ->select('hnt_product_requirements.Product_Id', 'hnt_product_requirements.id', 'hnt_product_requirements.Product_Count', 'hnt_products.hp_product_name', 'hnt_product_requirements.Comment')
+                ->where('hnt_product_requirements.deleted_at', '=', Null)
                 ->skip($start)
                 ->take($length)
                 ->get();
@@ -81,8 +81,8 @@ class ProductRequirementController extends Controller
 
             $product_requirement = DB::table('hnt_product_requirements')
                 ->join('hnt_products', 'hnt_product_requirements.Product_Id', '=', 'hnt_products.id')
-                ->select('hnt_product_requirements.id','hnt_product_requirements.Product_Id', 'hnt_product_requirements.Product_Count', 'hnt_product_requirements.Comment', 'hnt_products.hp_product_name')
-                ->where('hnt_product_requirements.deleted_at','=', Null)
+                ->select('hnt_product_requirements.id', 'hnt_product_requirements.Product_Id', 'hnt_product_requirements.Product_Count', 'hnt_product_requirements.Comment', 'hnt_products.hp_product_name')
+                ->where('hnt_product_requirements.deleted_at', '=', Null)
                 ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
                 ->get();
         }

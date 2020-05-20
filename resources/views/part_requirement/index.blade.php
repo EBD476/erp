@@ -343,6 +343,7 @@
                 $('#card-form2').show();
                 var data = table.row($(this).parents('tr')).data();
                 $('#pid').val(data[5]);
+                $('#pid').val(data[0]);
                 $('#hpr_part_id').val(data[4]);
                 $('#hpr_part_count').val(data[2]);
                 $('#hpr_comment').val(data[3]);

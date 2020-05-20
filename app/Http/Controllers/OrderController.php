@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\address;
 use App\Client;
 use App\InvoiceStatuses;
+use App\MiddlePart;
 use App\Order;
 use App\OrderProduct;
 use App\OrderState;
@@ -14,16 +15,22 @@ use App\ProductProperty;
 use App\ProductPropertyItems;
 use App\Project_State;
 use App\Project_Type;
+use App\RepositoryMiddlePart;
 use App\RepositoryProduct;
 use App\State;
+use App\Task;
 use App\Tax;
 use App\User;
-use Carbon\Carbon;
+use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
 use Illuminate\Support\Facades\DB;
+use App\Part;
+use App\RepositoryCreate;
+use App\RepositoryPart;
+
 class OrderController extends Controller
 {
     public function index()
@@ -45,7 +52,6 @@ class OrderController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-//        $invoice_statuses = InvoiceStatuses::ALL();
         $project_type = Project_Type::all();
         return view('order.create', compact('address', 'state', 'project_type', 'product', 'invoice_statuses', 'type', 'help_desk', 'priority', 'product', 'user', 'items', 'properties', 'color'));
     }
@@ -84,7 +90,6 @@ class OrderController extends Controller
         $order->hp_project_location = $request->hp_project_location;
         $order->hp_contract_type = $request->hp_contract_type;
         $order->hp_registrant = $current_user;
-        $order->hp_status = 1;
         $order->ho_client = $request->ho_client;
         $order->save();
         return json_encode(["response" => "OK", "client_id" => $order->ho_client, "order_id" => $order->id]);
@@ -175,7 +180,6 @@ class OrderController extends Controller
         $order->hp_contract_type = $request->hp_contract_type;
         $order->hp_registrant = $current_user;
         $order->ho_client = $request->ho_client;
-        $order->hp_status = 1;
         $order->save();
         return json_encode(["response" => "OK", "client_id" => $order->ho_client, "order_id" => $order->id]);
 
@@ -198,9 +202,10 @@ class OrderController extends Controller
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
         $data = $request;
-        $date_now = Carbon::now();
+        $date = Verta::now();
 //        deu date time for exit from product level
-        $create_due_date = date('Y-m-d', strtotime($date_now . ' + 60 days'));
+        $create_due_date_all = $date->addMonth(2);
+        $create_due_date = $create_due_date_all->formatJalaliDate();
         $items = ProductPropertyItems::select('id', 'hppi_items_name', 'hppi_color')->get();
         $properties = ProductProperty::select('id', 'hpp_property_name', 'hpp_property_items')->get();
         $color = ProductColor::select('id', 'hn_color_name')->get();
@@ -221,14 +226,18 @@ class OrderController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-
-
         $repository_product = RepositoryProduct:: all();
+        $repository_product_count = DB::select("SELECT sum(hr_product_stock) as sum_hpo FROM hnt_repository_product");
         $orders = OrderProduct::select('hpo_status', 'hpo_product_id', 'hpo_count', 'hpo_order_id')->where('hpo_status', '3')->get();
         $product = Product::select('id', 'hp_product_name')->get();
         $query_order_product = DB::select("SELECT sum(hpo_count) as sum_hpo , hpo_status , hpo_product_id FROM hnt_products,hnt_invoice_items WHERE hnt_products.id =hnt_invoice_items.hpo_product_id group by hnt_invoice_items.hpo_product_id , hpo_status ");
-        return view('order.invoices_list_product.index', ['query' => $query_order_product,], compact('inventory_deficit', 'repository_middle_part', 'part', 'repository_name', 'repository', 'user', 'repository_product', 'product', 'orders', 'help_desk', 'priority', 'type', 'middle_part'));
-
+        $query_order_product_all = DB::select("SELECT sum(hpo_count) as sum_hpo FROM hnt_invoice_items where hpo_status = '3'");
+        $repository = RepositoryPart::select('id', 'hrp_part_id', 'hrp_repository_id', 'hrp_part_count')->get();
+        $repository_name = RepositoryCreate::select('id', 'hr_name')->get();
+        $part = Part::select('id', 'hp_name')->get();
+        $repository_middle_part = RepositoryMiddlePart::select('id', 'hrm_count', 'hrm_comment', 'hrm_middle_part_id')->get();
+        $middle_part = MiddlePart::Select('id', 'hmp_name')->get();
+        return view('order.invoices_list_product.index', ['repository_product_count' => $repository_product_count, 'query' => $query_order_product, 'order_all' => $query_order_product_all], compact('repository_middle_part', 'part', 'repository_name', 'repository', 'user', 'repository_product', 'product', 'orders', 'help_desk', 'priority', 'type', 'middle_part'));
     }
 
 //  fill data table order
@@ -247,12 +256,11 @@ class OrderController extends Controller
                 ->orwhere('hp_connector', 'LIKE', "%$search%")
                 ->get();
         }
-
         $data = '';
         $key = 0;
         foreach ($order as $orders) {
-            $key ++;
-            $data .= '["' .$key  . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '",' . '"' . $orders->id . '"],';
+            $key++;
+            $data .= '["' . $key . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '",' . '"' . $orders->id . '"],';
         }
         $data = substr($data, 0, -1);
         $orders_count = Order::all()->count();
@@ -273,11 +281,69 @@ class OrderController extends Controller
                 ->join('hnt_product_color', 'hnt_products.hp_product_color_id', '=', 'hnt_product_color.id')
                 ->join('hnt_product_property', 'hnt_products.hp_product_property', '=', 'hnt_product_property.id')
                 ->join('hnt_repository_product', 'hnt_products.id', '=', 'hnt_repository_product.hr_product_id')
-                ->select('hnt_invoice_items.id', 'hnt_invoice_items.hpo_product_id', 'hnt_invoice_items.hpo_count', 'hnt_invoice_items.hop_due_date', 'hnt_products.hp_product_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_color_id', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_invoices.hp_Invoice_number', 'hnt_invoices.hp_employer_name', 'hnt_repository_product.hr_product_stock')
+                ->select('hnt_invoice_items.id','hnt_invoice_items.hpo_serial_number', 'hnt_invoice_items.hpo_order_id','hnt_invoice_items.hpo_product_id', 'hnt_invoice_items.hpo_count', 'hnt_invoice_items.hop_due_date', 'hnt_products.hp_product_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_color_id', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_invoices.hp_Invoice_number', 'hnt_invoices.hp_employer_name', 'hnt_repository_product.hr_product_stock')
+                ->where('hnt_invoice_items.deleted_at', '=', Null)
+                ->where('hnt_repository_product.deleted_at', '=', Null)
+                ->where('hnt_invoices.hp_Invoice_number', '!=', Null)
+                ->where('hnt_invoice_items.hpo_status', '=', 3)
+                ->orderBy('hnt_invoices.hp_Invoice_number')
+                ->skip($start)
+                ->take($length)
+                ->get();
+
+        } else {
+            $product = DB::table('hnt_invoice_items')
+                ->join('hnt_invoices', 'hnt_invoice_items.hpo_order_id', '=', 'hnt_invoices.id')
+                ->join('hnt_products', 'hnt_invoice_items.hpo_product_id', '=', 'hnt_products.id')
+                ->join('hnt_product_color', 'hnt_products.hp_product_color_id', '=', 'hnt_product_color.id')
+                ->join('hnt_product_property', 'hnt_products.hp_product_property', '=', 'hnt_product_property.id')
+                ->join('hnt_repository_product', 'hnt_products.id', '=', 'hnt_repository_product.hr_product_id')
+                ->select('hnt_invoice_items.id','hnt_invoice_items.hpo_serial_number', 'hnt_invoice_items.hpo_order_id','hnt_invoice_items.hpo_product_id', 'hnt_invoice_items.hpo_count', 'hnt_invoice_items.hop_due_date', 'hnt_products.hp_product_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_color_id', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_invoices.hp_Invoice_number', 'hnt_invoices.hp_employer_name', 'hnt_repository_product.hr_product_stock')
+                ->where('hnt_invoice_items.hpo_status', '=', 3)
+                ->where('hnt_invoices.hp_Invoice_number', '!=', Null)
+                ->where('hnt_invoice_items.deleted_at', '=', Null)
+                ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
+                ->orwhere('hnt_invoices.hp_Invoice_number', 'LIKE', "%$search%")
+                ->get();
+        }
+
+
+        $data = '';
+        $key = 0;
+        foreach ($product as $products) {
+            $status = Task::select('hpt_status')->where('hpt_invoice_number',$products->hp_Invoice_number)->where('hpt_product_id',$products->hpo_product_id)->get()->last();
+            $result = $products->hr_product_stock - $products->hpo_count;
+            $key++;
+            $data .= '["' . $key . '","' . $products->hp_Invoice_number . '",' . '"' . $products->hp_product_name . " " . $products->hp_product_model . " " . $products->hn_color_name . " " . $products->hpp_property_name . '",' . '"' . $products->hpo_count . '",' . '"' . $result . '",' . '"' . $products->hop_due_date . '",' . '"' . $products->hpo_product_id . '",' . '"' . $products->id . '",' . '"' . $products->hpo_order_id . '",' . '"' . $products->hpo_serial_number . '",' . '"' . $status->hpt_status . '"],';
+        }
+        $data = substr($data, 0, -1);
+        $products_count = OrderProduct::all()->count();
+        return response('{ "recordsTotal":' . $products_count . ',"recordsFiltered":' . $products_count . ',"data": [' . $data . ']}');
+    }
+
+//  fill data table invoice product invoices_list_product_inventory list
+    public function invoices_list_product_inventory(Request $request)
+    {
+        $start = $request->start;
+        $length = $request->length;
+        $search = $request->search['value'];
+        if ($search == '') {
+
+            $product = DB::table('hnt_invoice_items')
+                ->join('hnt_invoices', 'hnt_invoice_items.hpo_order_id', '=', 'hnt_invoices.id')
+                ->join('hnt_products', 'hnt_invoice_items.hpo_product_id', '=', 'hnt_products.id')
+                ->join('hnt_product_color', 'hnt_products.hp_product_color_id', '=', 'hnt_product_color.id')
+                ->join('hnt_product_property', 'hnt_products.hp_product_property', '=', 'hnt_product_property.id')
+                ->join('hnt_repository_product', 'hnt_products.id', '=', 'hnt_repository_product.hr_product_id')
+                ->select('hnt_invoice_items.id', 'hnt_invoice_items.hpo_product_id', 'hnt_invoice_items.hpo_count', 'hnt_invoice_items.hop_due_date', 'hnt_products.hp_product_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_color_id', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_invoices.hp_Invoice_number', 'hnt_invoices.hp_employer_name', 'hnt_repository_product.hr_product_stock',DB::raw('SUM(hnt_invoice_items.hpo_count) as total_items'))
                 ->where('hnt_invoice_items.deleted_at', '=', Null)
                 ->where('hnt_invoices.hp_Invoice_number', '!=', Null)
                 ->where('hnt_invoice_items.hpo_status', '=', 3)
-                ->skip($start)->take($length)->get();
+                ->groupBy('hnt_invoice_items.hpo_product_id')
+                ->orderBy('hnt_invoice_items.hpo_product_id')
+                ->skip($start)
+                ->take($length)
+                ->get();
 
         } else {
             $product = DB::table('hnt_invoice_items')
@@ -292,15 +358,19 @@ class OrderController extends Controller
                 ->where('hnt_invoice_items.deleted_at', '=', Null)
                 ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
                 ->orwhere('hnt_invoices.hp_Invoice_number', 'LIKE', "%$search%")
+                ->groupBy('hnt_invoice_items.hpo_product_id')
+                ->orderBy('hnt_invoice_items.hpo_product_id')
                 ->get();
         }
 
         $data = '';
         $key = 0;
         foreach ($product as $products) {
-            $result = $products->hr_product_stock - $products->hpo_count;
-            $key++;
-            $data .= '["' . $key . '","' . $products->hp_Invoice_number . '",' . '"' . $products->hp_product_name . " " . $products->hp_product_model . " " . $products->hn_color_name . " " . $products->hpp_property_name . '",' . '"' . $products->hpo_count . '",' . '"' . $result . '",' . '"' . $products->hpo_product_id . '"],';
+            $result_tot = $products->hr_product_stock - $products->total_items;
+            if ($result_tot < 0) {
+                $key++;
+                $data .= '["' . $key . '",' . '"' . $products->hp_product_name . " " . $products->hp_product_model . " " . $products->hn_color_name . " " . $products->hpp_property_name . '",' . '"' . $products->total_items  . '",' . '"' . $result_tot . '",' . '"' . $products->id . '"],';
+            }
         }
         $data = substr($data, 0, -1);
         $products_count = OrderProduct::all()->count();

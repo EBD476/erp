@@ -20,6 +20,7 @@ class ProductController extends Controller
 
     public function index()
     {
+        $items = ProductPropertyItems::all();
         $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
         $type = HDtype::select('th_name', 'id')->get();
@@ -109,8 +110,9 @@ class ProductController extends Controller
         $filename = $_FILES['file']['name'];
 
         if (isset($image)) {
-//            $current_date = Carbon::now()->todatestring();
-//          $image_name = $current_date . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+            $current_date = Carbon::now();
+            $image_name = $current_date . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
             if (!file_exists('img/products')) {
                 mkdir('img/products', 0777, true);
             }
@@ -119,9 +121,7 @@ class ProductController extends Controller
             $image_name = 'default.png';
         }
 
-        return response()->json([
-            'link' => '/img/products/' . $filename
-        ]);
+        return response()->json(['link' => '/img/products/' . $filename]);
     }
 
     public function fill(Request $request)
@@ -168,7 +168,6 @@ class ProductController extends Controller
     {
         $search = $request->search;
         if ($search != "") {
-
             $product_color = ProductColor::select('hn_color_name as text', 'id')->where('hn_color_name', 'LIKE', "%$search%")->get();
         }
         return json_encode(["results" => $product_color]);

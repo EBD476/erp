@@ -12,37 +12,37 @@ class HDtypeController extends Controller
 {
     public function index()
     {
-        $current_user=auth()->user()->id;
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        return view('help_desk.hd_type.index',compact('type','help_desk','priority','type','user'));
+        return view('help_desk.hd_type.index', compact('type', 'help_desk', 'priority', 'type', 'user'));
     }
 
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'th_name'=>'required'
+        $this->validate($request, [
+            'th_name' => 'required'
         ]);
-        $type=New HDtype();
+        $type = New HDtype();
         $type->th_name = $request->th_name;
         $type->save();
-        return json_encode(["response"=>"Done"]);
+        return json_encode(["response" => "Done"]);
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-        $this->validate($request,[
-            'th_name'=>'required'
+        $this->validate($request, [
+            'th_name' => 'required'
         ]);
-        $type=HDtype :: find($id);
+        $type = HDtype:: find($id);
         $type->th_name = $request->th_name;
         $type->save();
-        return json_encode(["response"=>"Done"]);
+        return json_encode(["response" => "Done"]);
     }
 
-    public function destroy(Request $request,$id)
+    public function destroy(Request $request, $id)
     {
         $type = HDtype::find($id);
         $type->delete();
@@ -55,12 +55,12 @@ class HDtypeController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $type = HDtype::select('id','th_name')
+            $type = HDtype::select('id', 'th_name')
                 ->skip($start)
                 ->take($length)
                 ->get();
         } else {
-            $type = HDtype::select('id','th_name')
+            $type = HDtype::select('id', 'th_name')
                 ->where('id', 'LIKE', "%$search%")
                 ->orwhere('th_name', 'LIKE', "%$search%")
                 ->get();
@@ -69,7 +69,7 @@ class HDtypeController extends Controller
         $data = '';
         $key = 0;
         foreach ($type as $types) {
-            $key ++;
+            $key++;
             $data .= '["' . $key . '",' . '"' . $types->th_name . '",' . '"' . $types->id . '"],';
         }
         $data = substr($data, 0, -1);
