@@ -35,7 +35,7 @@
                                                 {{__('Serial Number')}}
                                             </th>
                                             <th>
-                                            {{__('Color')}}
+                                                {{__('Color')}}
                                             </th>
                                             <th>
                                                 {{__('Action')}}
@@ -48,92 +48,100 @@
                         </div>
                         <div class="col-md-4">
                             <div class="card card-user">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title ">{{__('New Product Property Items')}}</h4>
-                                    <p class="card-category"></p>
-                                </div>
                                 <div class="card-body">
-                                    <form id="form1">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>{{__('Items Name')}}</label>
-                                                    <input name="hppi_items_name" type="text" class="form-control"
-                                                           required=""
-                                                           aria-invalid="false">
+                                    <div class="card-header card-header-primary">
+                                        <h4 class="card-title ">{{__('New Product Property Items')}}</h4>
+                                        <p class="card-category"></p>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="form1">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>{{__('Items Name')}}</label>
+                                                        <input name="hppi_items_name" type="text" class="form-control"
+                                                               required=""
+                                                               aria-invalid="false">
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>{{__('Serial Number')}}</label>
-                                                    <input name="hppi_serial_number" type="text" class="form-control"
-                                                           required=""
-                                                           aria-invalid="false">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>{{__('Serial Number')}}</label>
+                                                        <input name="hppi_serial_number" type="text"
+                                                               class="form-control"
+                                                               required=""
+                                                               aria-invalid="false">
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label>{{__('Product Color')}}</label>
-                                                <div class="form-group">
-                                                    <select class="form-control select-item-color" name="hppi_color"></select>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label>{{__('Product Color')}}</label>
+                                                    <div class="form-group">
+                                                        <select class="form-control select-item-color"
+                                                                name="hppi_color"></select>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="card-footer">
-                                            <button type="submit"
-                                                    class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                                        </div>
-                                    </form>
+                                            <div class="card-footer">
+                                                <button type="submit"
+                                                        class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card card-user" id="card-form2">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title ">{{__('Edit Product Property Items')}}</h4>
-                                    <p class="card-category"></p>
-                                </div>
                                 <div class="card-body">
-                                    <form id="form2">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>{{__('Items Name')}}</label>
-                                                    <input name="hppi_items_name" type="text" class="form-control"
-                                                           id="hppi_items_name"
-                                                           required=""
-                                                           aria-invalid="false">
-                                                    <input id="pid" hidden>
+                                    <div class="card-header card-header-primary">
+                                        <h4 class="card-title ">{{__('Edit Product Property Items')}}</h4>
+                                        <p class="card-category"></p>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="form2">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>{{__('Items Name')}}</label>
+                                                        <input name="hppi_items_name" type="text" class="form-control"
+                                                               id="hppi_items_name"
+                                                               required=""
+                                                               aria-invalid="false">
+                                                        <input id="pid" hidden>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>{{__('Serial Number')}}</label>
-                                                    <input name="hppi_serial_number" type="text" class="form-control"
-                                                           id="hppi_serial_number"
-                                                           required=""
-                                                           aria-invalid="false">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>{{__('Serial Number')}}</label>
+                                                        <input name="hppi_serial_number" type="text"
+                                                               class="form-control"
+                                                               id="hppi_serial_number"
+                                                               required=""
+                                                               aria-invalid="false">
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label>{{__('Product Color')}}</label>
-                                                <div class="form-group">
-                                                    <select class="select-item-color form-control" name="hppi_color">
-                                                        <option id="hppi_color"></option>
-                                                    </select>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label>{{__('Product Color')}}</label>
+                                                    <div class="form-group">
+                                                        <select class="select-item-color form-control"
+                                                                name="hppi_color">
+                                                            <option id="hppi_color"></option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="card-footer">
-                                            <button type="submit"
-                                                    class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                                        </div>
-                                    </form>
+                                            <div class="card-footer">
+                                                <button type="submit"
+                                                        class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -146,8 +154,8 @@
 @endsection
 
 @push('scripts')
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="{{asset('assets/js/jquery.dataTables.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
@@ -379,6 +387,7 @@
             function formatRepoSelection1(repo) {
                 return repo.text || repo.id;
             }
+
             // end
 
 

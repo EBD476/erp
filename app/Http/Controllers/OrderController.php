@@ -369,7 +369,7 @@ class OrderController extends Controller
             $result_tot = $products->hr_product_stock - $products->total_items;
             if ($result_tot < 0) {
                 $key++;
-                $data .= '["' . $key . '",' . '"' . $products->hp_product_name . " " . $products->hp_product_model . " " . $products->hn_color_name . " " . $products->hpp_property_name . '",' . '"' . $products->total_items  . '",' . '"' . $result_tot . '",' . '"' . $products->id . '"],';
+                $data .= '["' . $key . '",' . '"' . $products->hp_product_name . " " . $products->hp_product_model . " " . $products->hn_color_name . " " . $products->hpp_property_name . '",' . '"' . $products->total_items  . '",' . '"' . $result_tot . '",' . '"' . $products->hpo_product_id . '"],';
             }
         }
         $data = substr($data, 0, -1);

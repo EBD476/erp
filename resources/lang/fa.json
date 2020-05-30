@@ -479,13 +479,13 @@
   "Products Property List": "لیست مشخصه ظاهری محصولات",
   "Products Property Items List": "لیست آیتم های مشخصه ظاهری محصولات",
   "Items Name": "نام آیتم",
-  "Edit Product Property Items": "ویرایش آیتم های مشخصه ظاهری محصولات",
+  "Edit Product Property Items": "ویرایش آیتم های مشخصه ظاهری محصول",
   "New Product Color": "رنگ جدید محصول",
   "Product Color": "رنگ محصول",
   "Product Property": "مشخصه ظاهری محصول",
   "Product Property Items": "آیتم های مشخصه ظاهری",
   "Product Color List": "لیست رنگ محصولات",
-  "New Product Property Items": "اضافه کردن آیتم جدید برای مشخصه ظاهری محصول ",
+  "New Product Property Items": "آیتم جدید برای مشخصه ظاهری محصول ",
   "Product Size": "سایز محصول",
   "Pre Invoice Sales Of Product": "پیش فاکتور فروش کالا-خدمات",
   "Invoice Sales Of Product": "فاکتور فروش کالا-خدمات",
@@ -593,6 +593,8 @@
   "Factor Report List:":"لیست گزارشات فاکتور:",
   "Report":"گزارش",
   "success":"انجام شد",
-  "Registrant":"ثبت کننده"
+  "Registrant":"ثبت کننده",
+  "Products Price":"قیمت گذاری روی محصولات",
+  "New Price":"قیمت گذاری جدید"
 
 }

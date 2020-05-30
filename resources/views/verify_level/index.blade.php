@@ -106,35 +106,35 @@
 @endsection
 
 @push('scripts')
-    {{--<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>--}}
-    {{--<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>--}}
-    {{--<script>--}}
-    {{--$(document).ready(function() {--}}
-    {{--$('#table').DataTable({--}}
-    {{--"language": {--}}
-    {{--"sEmptyTable":     "هیچ داده ای در جدول وجود ندارد",--}}
-    {{--"sInfo":           "نمایش _START_ تا _END_ از _TOTAL_ رکورد",--}}
-    {{--"sInfoEmpty":      "نمایش 0 تا 0 از 0 رکورد",--}}
-    {{--"sInfoFiltered":   "(فیلتر شده از _MAX_ رکورد)",--}}
-    {{--"sInfoPostFix":    "",--}}
-    {{--"sInfoThousands":  ",",--}}
-    {{--"sLengthMenu":     "نمایش _MENU_ رکورد",--}}
-    {{--"sLoadingRecords": "در حال بارگزاری...",--}}
-    {{--"sProcessing":     "در حال پردازش...",--}}
-    {{--"sSearch":         "جستجو:",--}}
-    {{--"sZeroRecords":    "رکوردی با این مشخصات پیدا نشد",--}}
-    {{--"oPaginate": {--}}
-    {{--"sFirst":    "ابتدا",--}}
-    {{--"sLast":     "انتها",--}}
-    {{--"sNext":     "بعدی",--}}
-    {{--"sPrevious": "قبلی"--}}
-    {{--},--}}
-    {{--"oAria": {--}}
-    {{--"sSortAscending":  ": فعال سازی نمایش به صورت صعودی",--}}
-    {{--"sSortDescending": ": فعال سازی نمایش به صورت نزولی"--}}
-    {{--}--}}
-    {{--}--}}
-    {{--} );--}}
-    {{--});--}}
-    {{--</script>--}}
+    <script src="{{asset('assets/js/jquery.dataTables.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
+    <script>
+    $(document).ready(function() {
+    $('#table').DataTable({
+    "language": {
+    "sEmptyTable":     "هیچ داده ای در جدول وجود ندارد",
+    "sInfo":           "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+    "sInfoEmpty":      "نمایش 0 تا 0 از 0 رکورد",
+    "sInfoFiltered":   "(فیلتر شده از _MAX_ رکورد)",
+    "sInfoPostFix":    "",
+    "sInfoThousands":  ",",
+    "sLengthMenu":     "نمایش _MENU_ رکورد",
+    "sLoadingRecords": "در حال بارگزاری...",
+    "sProcessing":     "در حال پردازش...",
+    "sSearch":         "جستجو:",
+    "sZeroRecords":    "رکوردی با این مشخصات پیدا نشد",
+    "oPaginate": {
+    "sFirst":    "ابتدا",
+    "sLast":     "انتها",
+    "sNext":     "بعدی",
+    "sPrevious": "قبلی"
+    },
+    "oAria": {
+    "sSortAscending":  ": فعال سازی نمایش به صورت صعودی",
+    "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
+    }
+    }
+    } );
+    });
+    </script>
 @endpush

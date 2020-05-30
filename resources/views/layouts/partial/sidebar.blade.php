@@ -75,6 +75,12 @@
                             </a>
                         </li>
                         <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product.product-price-index') }}">
+                                <i class="tim-icons icon-coins"></i>
+                                <span class="sidebar-normal">{{__('Products Price')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
                             <a class="nav-link" href="{{ route('fund.index') }}">
                                 <i class="tim-icons icon-coins"></i>
                                 <span class="sidebar-normal">

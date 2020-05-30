@@ -94,11 +94,15 @@ Route::group(['middleware' => ['auth']], function () {
     route::get('product-report-user/{id}', 'TaskController@preview')->name('product-task.preview');
     route::get('invoices_list_product', 'OrderController@invoices_list_product')->name('order.invoices_list_product');
     route::get('computing-middle-part-detail', 'MiddleSectionPartController@computing_middle_part_detail')->name('middle_section_part.computing-middle-part-detail');
+    route::get('computing-product-part-detail', 'ProductPartController@computing_product_part_detail')->name('product_part.computing-product-part-detail');
+    route::get('computing-product-middle-part-detail', 'ProductMiddlePartController@computing_product_middle_part_detail')->name('product_middle_part.computing-product-middle-part-detail');
+    route::get('product-price-index', 'ProductController@product_price_index')->name('product.product-price-index');
 
 
 //put data
     route::put('edit_pre/{id}', 'OrderController@edit_pre')->name('order.edit_pre');
     route::put('checkbox/{id}', 'ProductController@checkbox')->name('product.checkbox');
+    route::put('product-price/{id}', 'ProductController@product_price')->name('product.product-price');
     Route::put('receive_show/{id}', 'HelpDeskController@receive_show')->name('help_desk.receive_show');
     Route::put('order-state/{id}', 'RepositoryProductController@order_state')->name('repository.order_state');
     Route::put('checkbox-product-status/{id}', 'TaskController@checkbox')->name('product-task.checkbox-product-status');
@@ -138,6 +142,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/json-data-permissions', 'PermissionsController@fill')->name('permission.json-data-permissions');
     Route::get('/json-data-projects', 'ProjectController@fill')->name('projects.json-data-projects');
     Route::get('/json-data-product', 'ProductController@fill')->name('product.json-data-product');
+    Route::get('/json-data-product-price', 'ProductController@fill_product_price')->name('product.json-data-product-price');
     Route::get('/json-data-repository', 'RepositoryProductController@fill')->name('repository.json-data-repository');
     Route::get('/json-data-repository_requirement', 'RepositoryRequirementController@fill')->name('repository_requirement.json-data-repository_requirement');
     Route::get('/json-data-verifier', 'VerifierController@fill')->name('verifier.json-data-verifier');
@@ -196,6 +201,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/invoices-list-product-inventory', 'OrderController@invoices_list_product_inventory')->name('order.invoices-list-product-inventory');
     Route::get('json-data-product-task', 'TaskController@fill')->name('product-task.json-data-product-task');;
     Route::get('json-data-product-new-task', 'TaskController@fill_new')->name('product-task.json-data-product-new-task');;
+    route::get('json-data-product-part-compute', 'ProductPartController@computing_product_part')->name('product_part.computing-product-part');
+    route::get('json-data-product-middle-part-compute', 'ProductMiddlePartController@computing_product_middle_part_detail')->name('product_middle_part.json-data-product-middle-part-compute');
 
 
 

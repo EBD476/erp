@@ -48,14 +48,15 @@
                                                 <td>{{ $user_select->name }}</td>
                                                 <td>{{ $user_select->username }}</td>
                                                 <td>{{ $user_select->device_id }}</td>
-{{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
-{{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
+                                                {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
+                                                {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
                                                 <td>
                                                     <a href="{{ route('users.edit', $user_select->id) }}"
                                                        class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
                                                         <i class="tim-icons icon-pencil"></i></a>
                                                     <form id="-form-delete{{$user_select->id}}" style="display: none;"
-                                                          method="POST" action="{{route('users.destroy', $user_select->id)}}">
+                                                          method="POST"
+                                                          action="{{route('users.destroy', $user_select->id)}}">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
@@ -102,7 +103,8 @@
                     </div>
                 </div>
             </div>
-        </div></div>
+        </div>
+    </div>
     @endrole
     @role('finance')
     <div class="wrap main-content" data-scrollbar>
@@ -126,18 +128,18 @@
                                         </thead>
 
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>{{$role_user->name}}</td>
-                                                <td>{{$role_user->username}}</td>
-{{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
-{{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
-                                                <td>
-                                                    <a href="{{ route('users.edit', $role_user->id) }}"
-                                                       class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
-                                                        <i class="tim-icons icon-pencil"></i></a>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>{{$role_user->name}}</td>
+                                            <td>{{$role_user->username}}</td>
+                                            {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
+                                            {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
+                                            <td>
+                                                <a href="{{ route('users.edit', $role_user->id) }}"
+                                                   class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
+                                                    <i class="tim-icons icon-pencil"></i></a>
+                                            </td>
+                                        </tr>
                                         </tbody>
 
                                     </table>
@@ -171,7 +173,8 @@
                     </div>
                 </div>
             </div>
-        </div></div>
+        </div>
+    </div>
     @endrole
     @role('dealership')
     <div class="wrap main-content" data-scrollbar>
@@ -195,18 +198,18 @@
                                         </thead>
 
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>{{$role_user->name}}</td>
-                                                <td>{{$role_user->username}}</td>
-{{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
-{{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
-                                                <td>
-                                                    <a href="{{ route('users.edit', $role_user->id) }}"
-                                                       class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
-                                                        <i class="tim-icons icon-pencil"></i></a>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>{{$role_user->name}}</td>
+                                            <td>{{$role_user->username}}</td>
+                                            {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
+                                            {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
+                                            <td>
+                                                <a href="{{ route('users.edit', $role_user->id) }}"
+                                                   class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
+                                                    <i class="tim-icons icon-pencil"></i></a>
+                                            </td>
+                                        </tr>
                                         </tbody>
 
                                     </table>
@@ -240,7 +243,8 @@
                     </div>
                 </div>
             </div>
-        </div></div>
+        </div>
+    </div>
     @endrole
     @role('repository')
     <div class="wrap main-content" data-scrollbar>
@@ -264,18 +268,18 @@
                                         </thead>
 
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>{{$role_user->name}}</td>
-                                                <td>{{$role_user->username}}</td>
-{{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
-{{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
-                                                <td>
-                                                    <a href="{{ route('users.edit', $role_user->id) }}"
-                                                       class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
-                                                        <i class="tim-icons icon-pencil"></i></a>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>{{$role_user->name}}</td>
+                                            <td>{{$role_user->username}}</td>
+                                            {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
+                                            {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
+                                            <td>
+                                                <a href="{{ route('users.edit', $role_user->id) }}"
+                                                   class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
+                                                    <i class="tim-icons icon-pencil"></i></a>
+                                            </td>
+                                        </tr>
                                         </tbody>
 
                                     </table>
@@ -309,7 +313,8 @@
                     </div>
                 </div>
             </div>
-        </div></div>
+        </div>
+    </div>
     @endrole
     @role('product')
     <div class="wrap main-content" data-scrollbar>
@@ -333,18 +338,18 @@
                                         </thead>
 
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>{{$role_user->name}}</td>
-                                                <td>{{$role_user->username}}</td>
-{{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
-{{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
-                                                <td>
-                                                    <a href="{{ route('users.edit', $role_user->id) }}"
-                                                       class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
-                                                        <i class="tim-icons icon-pencil"></i></a>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>{{$role_user->name}}</td>
+                                            <td>{{$role_user->username}}</td>
+                                            {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
+                                            {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
+                                            <td>
+                                                <a href="{{ route('users.edit', $role_user->id) }}"
+                                                   class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
+                                                    <i class="tim-icons icon-pencil"></i></a>
+                                            </td>
+                                        </tr>
                                         </tbody>
 
                                     </table>
@@ -378,7 +383,8 @@
                     </div>
                 </div>
             </div>
-        </div></div>
+        </div>
+    </div>
     @endrole
     @role('order')
     <div class="wrap main-content" data-scrollbar>
@@ -402,18 +408,18 @@
                                         </thead>
 
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>{{$role_user->name}}</td>
-                                                <td>{{$role_user->username}}</td>
-{{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
-{{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
-                                                <td>
-                                                    <a href="{{ route('users.edit', $role_user->id) }}"
-                                                       class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
-                                                        <i class="tim-icons icon-pencil"></i></a>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>{{$role_user->name}}</td>
+                                            <td>{{$role_user->username}}</td>
+                                            {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
+                                            {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
+                                            <td>
+                                                <a href="{{ route('users.edit', $role_user->id) }}"
+                                                   class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
+                                                    <i class="tim-icons icon-pencil"></i></a>
+                                            </td>
+                                        </tr>
                                         </tbody>
 
                                     </table>
@@ -447,7 +453,8 @@
                     </div>
                 </div>
             </div>
-        </div></div>
+        </div>
+    </div>
     @endrole
     @role('geust')
     <div class="wrap main-content" data-scrollbar>
@@ -471,18 +478,18 @@
                                         </thead>
 
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>{{$role_user->name}}</td>
-                                                <td>{{$role_user->username}}</td>
-{{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
-{{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
-                                                <td>
-                                                    <a href="{{ route('users.edit', $role_user->id) }}"
-                                                       class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
-                                                        <i class="tim-icons icon-pencil"></i></a>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>{{$role_user->name}}</td>
+                                            <td>{{$role_user->username}}</td>
+                                            {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
+                                            {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
+                                            <td>
+                                                <a href="{{ route('users.edit', $role_user->id) }}"
+                                                   class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
+                                                    <i class="tim-icons icon-pencil"></i></a>
+                                            </td>
+                                        </tr>
                                         </tbody>
 
                                     </table>
@@ -516,41 +523,42 @@
                     </div>
                 </div>
             </div>
-        </div></div>
+        </div>
+    </div>
     @endrole
 
 @endsection
 
 @push('scripts')
-            <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-            <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
-            <script>
-                $(document).ready(function() {
-                    $('#table').DataTable({
-                        "language": {
-                            "sEmptyTable":     "هیچ داده ای در جدول وجود ندارد",
-                            "sInfo":           "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
-                            "sInfoEmpty":      "نمایش 0 تا 0 از 0 رکورد",
-                            "sInfoFiltered":   "(فیلتر شده از _MAX_ رکورد)",
-                            "sInfoPostFix":    "",
-                            "sInfoThousands":  ",",
-                            "sLengthMenu":     "نمایش _MENU_ رکورد",
-                            "sLoadingRecords": "در حال بارگزاری...",
-                            "sProcessing":     "در حال پردازش...",
-                            "sSearch":         "جستجو:",
-                            "sZeroRecords":    "رکوردی با این مشخصات پیدا نشد",
-                            "oPaginate": {
-                                "sFirst":    "ابتدا",
-                                "sLast":     "انتها",
-                                "sNext":     "بعدی",
-                                "sPrevious": "قبلی"
-                            },
-                            "oAria": {
-                                "sSortAscending":  ": فعال سازی نمایش به صورت صعودی",
-                                "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
-                            }
-                        }
-                    });
-                });
-            </script>
+    <script src="{{asset('assets/js/jquery.dataTables.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            $('#table').DataTable({
+                "language": {
+                    "sEmptyTable": "هیچ داده ای در جدول وجود ندارد",
+                    "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                    "sInfoEmpty": "نمایش 0 تا 0 از 0 رکورد",
+                    "sInfoFiltered": "(فیلتر شده از _MAX_ رکورد)",
+                    "sInfoPostFix": "",
+                    "sInfoThousands": ",",
+                    "sLengthMenu": "نمایش _MENU_ رکورد",
+                    "sLoadingRecords": "در حال بارگزاری...",
+                    "sProcessing": "در حال پردازش...",
+                    "sSearch": "جستجو:",
+                    "sZeroRecords": "رکوردی با این مشخصات پیدا نشد",
+                    "oPaginate": {
+                        "sFirst": "ابتدا",
+                        "sLast": "انتها",
+                        "sNext": "بعدی",
+                        "sPrevious": "قبلی"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": فعال سازی نمایش به صورت صعودی",
+                        "sSortDescending": ": فعال سازی نمایش به صورت نزولی"
+                    }
+                }
+            });
+        });
+    </script>
 @endpush

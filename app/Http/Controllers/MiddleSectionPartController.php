@@ -114,37 +114,38 @@ class MiddleSectionPartController extends Controller
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];
+
         if ($search == '') {
 
-            $middle_part =  DB::Table('hnt_middle_section_part')
+            $middle_part = DB::Table('hnt_middle_section_part')
                 ->Join('hnt_repository_part', 'hnt_middle_section_part.hpp_part_id', 'hnt_repository_part.hrp_part_id')
                 ->join('hnt_middle_part', 'hnt_middle_section_part.hpp_middle_part_id', 'hnt_middle_part.id')
-                ->select('hnt_middle_section_part.hpp_part_id', 'hnt_middle_section_part.hpp_middle_part_id', 'hnt_middle_section_part.hpp_part_count', 'hnt_repository_part.hrp_part_count', 'hnt_middle_part.hmp_name')
+//                ->select('hnt_middle_section_part.hpp_part_id', 'hnt_middle_section_part.hpp_middle_part_id', 'hnt_middle_section_part.hpp_part_count', 'hnt_repository_part.hrp_part_count', 'hnt_middle_part.hmp_name')
+                ->selectRaw('*,MIN(hnt_repository_part.hrp_part_count/hnt_middle_section_part.hpp_part_count)as total')
                 ->where('hnt_middle_section_part.deleted_at', '=', Null)
-                ->where('hnt_middle_part.hmp_name', 'LIKE', "%$search%")
-                ->orderBy('hnt_middle_section_part.hpp_middle_part_id', 'DESC')
                 ->groupBy('hnt_middle_section_part.hpp_middle_part_id')
+                ->orderBY('total', 'DESC')
                 ->skip($start)
                 ->take($length)
                 ->get();
         } else {
-//            $middle_part = DB::Table('hnt_middle_section_part')
-//                ->Join('hnt_repository_part', 'hnt_middle_section_part.hpp_part_id', 'hnt_repository_part.hrp_part_id')
-//                ->join('hnt_middle_part', 'hnt_middle_section_part.hpp_middle_part_id', 'hnt_middle_part.id')
-//                ->selectRaw('hnt_middle_section_part.hpp_part_id', 'hnt_middle_section_part.hpp_middle_part_id', 'hnt_middle_section_part.hpp_part_count', 'hnt_repository_part.hrp_part_count', 'hnt_middle_part.hmp_name','*,(hnt_repository_part.hrp_part_count/hnt_middle_section_part.hpp_part_count) as c')
-//                ->where('hnt_middle_section_part.deleted_at', '=', Null)
-//                ->where('hnt_middle_part.hmp_name', 'LIKE', "%$search%")
-//                ->orderBy('c', 'DESC')
-//                ->orderBy('hnt_middle_section_part.hpp_middle_part_id', 'DESC')
-//                ->groupBy('hnt_middle_section_part.hpp_middle_part_id')
-//                ->get();
+            $middle_part = DB::Table('hnt_middle_section_part')
+                ->Join('hnt_repository_part', 'hnt_middle_section_part.hpp_part_id', 'hnt_repository_part.hrp_part_id')
+                ->join('hnt_middle_part', 'hnt_middle_section_part.hpp_middle_part_id', 'hnt_middle_part.id')
+//                ->select('hnt_middle_section_part.hpp_part_id', 'hnt_middle_section_part.hpp_middle_part_id', 'hnt_middle_section_part.hpp_part_count', 'hnt_repository_part.hrp_part_count', 'hnt_middle_part.hmp_name')
+                ->selectRaw('*,MIN(hnt_repository_part.hrp_part_count/hnt_middle_section_part.hpp_part_count)as total')
+                ->where('hnt_middle_section_part.deleted_at', '=', Null)
+                ->where('hnt_middle_part.hmp_name', 'LIKE', "%$search%")
+                ->groupBy('hnt_middle_section_part.hpp_middle_part_id')
+                ->orderBY('total', 'DESC')
+                ->get();
         }
         $computing = '';
         $key = 0;
         foreach ($middle_part as $m) {
-            $key++;
-            $comp = round($m->hrp_part_count / $m->hpp_part_count);
-            $computing .= '["' . $key . '","' . $m->hmp_name . '",' . '"' . $comp . '",' . '"' . $m->hpp_middle_part_id . '"],';
+            $number=($m->total);
+            $round = number_format((floor($number)), 0, '.', '');            $key++;
+            $computing .= '["' . $key . '","' . $m->hmp_name . '",' . '"' . $round . '",' . '"' . $m->hpp_middle_part_id . '"],';
         }
         $computing = substr($computing, 0, -1);
         $middle_parts = MiddleSectionPart::ALL()->count();
@@ -164,9 +165,8 @@ class MiddleSectionPartController extends Controller
                 ->join('hnt_repository_part', 'hnt_middle_section_part.hpp_part_id', 'hnt_repository_part.hrp_part_id')
                 ->join('hnt_middle_part', 'hnt_middle_section_part.hpp_middle_part_id', 'hnt_middle_part.id')
                 ->join('hnt_parts', 'hnt_middle_section_part.hpp_part_id', 'hnt_parts.id')
-                ->select('hnt_parts.id', 'hnt_middle_section_part.hpp_part_count', 'hnt_repository_part.hrp_part_count', 'hnt_parts.hp_name')
+                ->selectRaw('*,hnt_repository_part.hrp_part_count/hnt_middle_section_part.hpp_part_count as total')
                 ->where('hnt_middle_section_part.hpp_middle_part_id', '=', $middle_part_id)
-                ->latest('hnt_repository_part.hrp_part_count')
                 ->orderBy('hnt_middle_section_part.hpp_middle_part_id')
                 ->skip($start)
                 ->take($length)
@@ -176,7 +176,8 @@ class MiddleSectionPartController extends Controller
                 ->join('hnt_repository_part', 'hnt_middle_section_part.hpp_part_id', 'hnt_repository_part.hrp_part_id')
                 ->join('hnt_middle_part', 'hnt_middle_section_part.hpp_middle_part_id', 'hnt_middle_part.id')
                 ->join('hnt_parts', 'hnt_middle_section_part.hpp_part_id', 'hnt_parts.id')
-                ->select('hnt_parts.id', 'hnt_middle_section_part.hpp_part_count', 'hnt_repository_part.hrp_part_count', 'hnt_parts.hp_name')
+                ->selectRaw('*,hnt_repository_part.hrp_part_count/hnt_middle_section_part.hpp_part_count as total')
+                ->orderBy('hnt_middle_section_part.hpp_middle_part_id')
                 ->where('hnt_middle_section_part.hpp_middle_part_id', '=', $middle_part_id)
                 ->orwhere('hnt_parts.hp_name', 'LIKE', "%$search%")
                 ->get();
@@ -184,9 +185,9 @@ class MiddleSectionPartController extends Controller
         $computing = '';
         $key = 0;
         foreach ($middle_part as $m) {
-            $comp = round($m->hrp_part_count / $m->hpp_part_count);
-            $key++;
-            $computing .= '["' . $key . '",' . '"' . $m->hp_name . '",' . '"' . $comp . '",' . '"' . $m->hrp_part_count . '",' . '"' . $m->id . '"],';
+            $number=($m->total);
+            $round = number_format((floor($number)), 0, '.', '');            $key++;
+            $computing .= '["' . $key . '",' . '"' . $m->hp_name . '",' . '"' . $round . '",' . '"' . $m->hrp_part_count . '",' . '"' . $m->id . '"],';
         }
         $computing = substr($computing, 0, -1);
         $middle_parts = MiddleSectionPart::ALL()->count();

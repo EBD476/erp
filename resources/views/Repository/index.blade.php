@@ -543,8 +543,8 @@
 
 @endsection
 @push('scripts')
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="{{asset('assets/js/jquery.dataTables.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
@@ -572,7 +572,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: '/repository-product-destroy/' + data[0],
+                                url: '/repository-product-destroy/' + data[14],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',
@@ -1468,7 +1468,7 @@
             $('#table').on('click', '.edit-product', function (event) {
                 $("#modalRegisterForm1").modal();
                 var data = table.row($(this).parents('tr')).data();
-                $('#product_id').val(data[0]);
+                $('#product_id').val(data[14]);
                 $("#hr_product_id").append('<option selected value="' + data[13] + '">' + data[1] + '</option>');
                 $('#hr_product_stock').val(data[2]);
                 $("#hr_provider_code").append('<option selected value="' + data[11] + '">' + data[3] + '</option>');

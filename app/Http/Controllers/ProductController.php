@@ -20,20 +20,37 @@ class ProductController extends Controller
 
     public function index()
     {
-        $items = ProductPropertyItems::all();
         $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        return view('products.index', compact('type', 'priority', 'help_desk', 'user', 'items'));
+        return view('products.index', compact('type', 'priority', 'help_desk', 'user'));
+    }
+
+    public function product_price_index()
+    {
+        $current_user = auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        return view('finance.product_price.index', compact('type', 'priority', 'help_desk', 'user'));
     }
 
     public function checkbox(Request $request, $id)
     {
         $checkbox = Product::find($id);
-        $checkbox->hp_status = $request->status;
+        $checkbox->hp_status = $request->hp_status;
         $checkbox->save();
+        return json_encode(["response" => "OK"]);
+    }
+
+    public function product_price(Request $request, $id)
+    {
+        $product_price = Product::find($id);
+        $product_price->hp_product_price = $request->hp_product_price;
+        $product_price->save();
         return json_encode(["response" => "OK"]);
     }
 
@@ -157,6 +174,43 @@ class ProductController extends Controller
         foreach ($product as $products) {
             $key++;
             $data .= '["' . $key . '",' . '"' . $products->hp_serial_number . '",' . '"' . $products->hp_product_name . '",' . '"' . $products->hp_product_model . '",' . '"' . $products->hpp_property_name . '",' . '"' . $products->hn_color_name . '",' . '"' . $products->hp_voltage . '",' . '"' . $products->hp_product_size . '",' . '"' . $products->hp_product_property . '",' . '"' . $products->hp_product_color_id . '",' . '"' . $products->hp_description . '",' . '"' . $products->hp_product_image . '",' . '"' . $products->hp_status . '",' . '"' . $products->id . '"],';
+        }
+        $data = substr($data, 0, -1);
+        $products_count = Product::all()->count();
+        return response('{ "recordsTotal":' . $products_count . ',"recordsFiltered":' . $products_count . ',"data": [' . $data . ']}');
+    }
+
+    public function fill_product_price(Request $request)
+    {
+        $start = $request->start;
+        $length = $request->length;
+        $search = $request->search['value'];
+        if ($search == '') {
+
+            $product = DB::table('hnt_products')
+                ->join('hnt_product_color', 'hnt_products.hp_product_color_id', '=', 'hnt_product_color.id')
+                ->join('hnt_product_property', 'hnt_products.hp_product_property', '=', 'hnt_product_property.id')
+                ->select('hnt_products.id', 'hnt_products.hp_product_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_color_id', 'hnt_products.hp_description', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_products.hp_product_image', 'hnt_products.hp_status', 'hnt_products.hp_voltage', 'hnt_products.hp_serial_number', 'hnt_products.hp_product_price')
+                ->where('hnt_products.deleted_at', '=', Null)
+                ->skip($start)->take($length)->get();
+
+        } else {
+            $product = DB::table('hnt_products')
+                ->join('hnt_product_color', 'hnt_products.hp_product_color_id', '=', 'hnt_product_color.id')
+                ->join('hnt_product_property', 'hnt_products.hp_product_property', '=', 'hnt_product_property.id')
+                ->select('hnt_products.id', 'hnt_products.hp_product_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_color_id', 'hnt_products.hp_description', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_products.hp_product_image', 'hnt_products.hp_status', 'hnt_products.hp_voltage', 'hnt_products.hp_serial_number', 'hnt_products.hp_product_price')
+                ->where('hnt_products.deleted_at', '=', Null)
+                ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
+                ->orwhere('hnt_products.hp_product_model', 'LIKE', "%$search%")
+                ->orwhere('hnt_product_color.hn_color_name', 'LIKE', "%$search%")
+                ->get();
+        }
+
+        $data = '';
+        $key = 0;
+        foreach ($product as $products) {
+            $key++;
+            $data .= '["' . $key . '",' . '"' . $products->hp_serial_number . '",' . '"' . $products->hp_product_name . '",' . '"' . $products->hp_product_model . '",' . '"' . $products->hpp_property_name . '",' . '"' . $products->hn_color_name . '",' . '"' . $products->hp_voltage . '",' . '"' . $products->hp_product_size . '",' . '"' . $products->hp_product_price . '",' . '"' . $products->id . '"],';
         }
         $data = substr($data, 0, -1);
         $products_count = Product::all()->count();

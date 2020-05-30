@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use App\ProductStatus;
 use App\ProductZone;
 use App\User;
 use Illuminate\Http\Request;
@@ -14,12 +15,13 @@ class ProductZoneController extends Controller
 {
     public function index()
     {
+        $status = ProductStatus::select('hps_name','hps_level')->get();
         $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        return view('products.product_zone.index', compact('type', 'priority', 'help_desk', 'user'));
+        return view('products.product_zone.index', compact('status','type', 'priority', 'help_desk', 'user'));
     }
 
     public function store(Request $request)

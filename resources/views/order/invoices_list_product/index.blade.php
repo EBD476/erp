@@ -63,32 +63,32 @@
             {{-- Repository List--}}
             {{--Repository Product Data List--}}
             <div class="row">
-            <div class="card">
-                <div class="card-header card-header-primary">
-                    <h4 class="card-title ">{{__('inventory Repository Product')}}</h4>
-                    <p class="card-category"></p>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table" id="table2" cellspacing="0" width="100%">
-                            <thead class=" text-primary">
-                            <th>
-                                {{__('ID')}}
-                            </th>
-                            <th>
-                                {{__('Product Name')}}
-                            </th>
-                            <th>
-                                {{__('Stock')}}
-                            </th>
-                            <th>
-                                {{__('Repository')}}
-                            </th>
-                            </thead>
-                        </table>
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title ">{{__('inventory Repository Product')}}</h4>
+                        <p class="card-category"></p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table" id="table2" cellspacing="0" width="100%">
+                                <thead class=" text-primary">
+                                <th>
+                                    {{__('ID')}}
+                                </th>
+                                <th>
+                                    {{__('Product Name')}}
+                                </th>
+                                <th>
+                                    {{__('Stock')}}
+                                </th>
+                                <th>
+                                    {{__('Repository')}}
+                                </th>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
             </div>
             {{--End Repository Product Data List--}}
             <div class="row">
@@ -192,22 +192,18 @@
                                 <th>
                                     {{__('Inventory Deficit')}}
                                 </th>
+                                <th>
+                                    {{__('Action')}}
+                                </th>
                                 </thead>
-                                </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <input id="Product_Id" name="Product_Id[]" hidden>
-                    <input id="Product_Count" name="Product_Count[]" hidden>
+                    <input id="Product_Id" name="Product_Id" hidden>
+                    <input id="Product_Count" name="Product_Count" hidden>
+                    <input id="Comment" name="Comment" hidden>
                 </form>
-                {{--<div class="col-md-12">--}}
-                {{--<div class="modal-footer d-flex justify-content-center">--}}
-                {{--<button type="submit"--}}
-                {{--class="btn btn-deep-orange" form="modal_form" id="sub_inventory"--}}
-                {{--value="Submit">{{__('Request Send')}}</button>--}}
-                {{--</div>--}}
-                {{--</div>--}}
             </div>
         </div>
     </div>
@@ -217,8 +213,8 @@
 
 @endsection
 @push('scripts')
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="{{asset('assets/js/jquery.dataTables.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/switchery.min.js')}}"></script>
     <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
@@ -610,6 +606,23 @@
                         true,
                     "ajax":
                         '/invoices-list-product-inventory',
+                "columnDefs":
+                    [{
+                        "targets": -1,
+                        "data": null,
+                        "render": function (data, type, row, meta) {
+                            return "  <div class=\"dropdown\">\n" +
+                                "                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +
+                                "                                                                    data-toggle=\"dropdown\">\n" +
+                                "                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +
+                                "                                                            </a>\n" +
+                                "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
+                                "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
+                                "                                                                <button class=\"dropdown-item \"  type=\"submit\">{{__('Send Request')}}</button>\n" +
+                                "                                                            </div>\n" +
+                                "                                                        </div>"
+                        }
+                    }],
                     "language":
                         {
                             "sEmptyTable":
@@ -657,10 +670,16 @@
                 })
             ;
 
-            // Modal Form
-            $('#sub_inventory').on('click', function (event) {
+            // set data to input inventory
+            $('#table6').on('click', 'button', function (event) {
+                var data_table_inventory = table6.row($(this).parents('tr')).data();
+                $('#Product_Id').val(data_table_inventory[4]);
+                $('#Product_Count').val(data_table_inventory[3]);
+                $('#Comment').val('Inventory Deficit');
+
                 var data = $('#modal_form').serialize();
                 event.preventDefault();
+
                 $('#modal_form').block({
                     message: '{{__('please wait...')}}', css: {
                         border: 'none',
@@ -691,16 +710,6 @@
                     cache: false,
                 });
             });
-            // End Modal Form
-
-            // set data to input inventory
-            // $('#table6').show(function (event) {
-            //     var data_table_inventory = table6.data();
-            //     // alert(data_table_inventory);
-            //     $('#Product_Id').val(4);
-            //     $('#Product_Count').val(3);
-            // })
-
         });
     </script>
 @endpush

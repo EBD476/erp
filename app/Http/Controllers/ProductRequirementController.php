@@ -28,7 +28,7 @@ class ProductRequirementController extends Controller
         $this->validate($request, [
             'Product_Id' => 'required',
             'Product_Count' => 'required',
-            'Comment' => 'required',
+            'Comment' => 'required' ,
         ]);
 
         $product_requirement = new ProductRequirement();
@@ -46,7 +46,7 @@ class ProductRequirementController extends Controller
         $this->validate($request, [
             'Product_Id' => 'required',
             'Product_Count' => 'required',
-//            'Comment' => 'required' ,
+            'Comment' => 'required' ,
         ]);
         $product_requirement = ProductRequirement::find($id);
         $product_requirement->Product_Id = $request->Product_Id;

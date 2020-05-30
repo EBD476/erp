@@ -186,11 +186,14 @@
                             </div>
                             <form method="post" id="modal_form" enctype="multipart/form-data">
                                 <div class="modal-body mx-3">
-                                    <div class="md-form mb-5">
+                                    <div class="md-form mb-5" id="table-form">
                                         {{--<i class="fas fa-user prefix grey-text"></i>--}}
-                                        <table class="table" cellspacing="0" width="100%">
+                                        <table class="table" id="table1" cellspacing="0" width="100%">
                                             <tbody>
                                             <thead class=" text-primary">
+                                            <th>
+                                                {{__('ID')}}
+                                            </th>
                                             <th>
                                                 {{__('Product Name')}}
                                             </th>
@@ -201,33 +204,39 @@
                                                 {{__('Verify')}}
                                             </th>
                                             </thead>
-                                            <tr>
-                                                <td>
-
-                                                </td>
-                                                <td>
-
-                                                </td>
-                                                <td>
-
-                                                </td>
-
-                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="modal-footer d-flex justify-content-center">
-                                        <button type="submit"
-                                                class="btn btn-deep-orange">{{__('Send')}}</button>
+                                    <div class="md-form mb-5" id="table-form2">
+                                        <table class="table" id="table2" cellspacing="0" width="100%">
+                                            <tbody>
+                                            <h5 class="card-title ">{{__('Product Name')}}</h5>
+                                            <thead class=" text-primary">
+                                            <th>
+                                                {{__('ID')}}
+                                            </th>
+                                            <th>
+                                                {{__('Part Name')}}
+                                            </th>
+                                            <th>
+                                                {{__('Count')}}
+                                            </th>
+                                            <th>
+                                                {{__('Stock')}}
+                                            </th>
+                                            <th>
+                                                {{__('Verify')}}
+                                            </th>
+                                            </thead>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-                {{--end Modal--}}
+                {{--end Product Details --}}
             </div>
         </div>
     </div>
@@ -235,8 +244,8 @@
 @endsection
 
 @push('scripts')
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="{{asset('assets/js/jquery.dataTables.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
@@ -244,6 +253,7 @@
         $(document).ready(function () {
 
             $('#card-form2').hide();
+            $('#table-form2').hide();
 
             var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
 
@@ -363,7 +373,8 @@
                             }
                     }
             });
-            // store color
+
+            // store data
             $("#form1").submit(function (event) {
                 var data = $("#form1").serialize();
                 event.preventDefault();
@@ -399,7 +410,7 @@
                 });
             });
 
-            // update color
+            // update data
             $("#form2").submit(function (event) {
                 var data = $("#form2").serialize();
                 var pid = $('#pid').val();
@@ -449,32 +460,164 @@
             })
             // end filling
 
-            // Computing Modal Form
-            $("#modal_form").submit(function (event) {
-                var data = $("#modal_form").serialize();
-                event.preventDefault();
-                $.blockUI();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+            var table1 = $('#table1').DataTable({
+                "processing":
+                    true,
+                "serverSide":
+                    true,
+                "ajax":
+                    '/json-data-product-part-compute',
+                "columnDefs":
+                    [{
+                        "targets": -1,
+                        "data": null,
+
+                        "render": function (data, type, row, meta) {
+                            return "  <div class=\"dropdown\">\n" +
+                                "                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +
+                                "                                                                    data-toggle=\"dropdown\">\n" +
+                                "                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +
+                                "                                                            </a>\n" +
+                                "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
+                                "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
+                                "                                                                <a class=\"dropdown-item edit\"\n" +
+                                "                                                                >{{__('Verify')}}</a>\n" +
+                                "                                                                <button class=\"dropdown-item preview\"  type=\"submit\">{{__('Preview Detail')}}</button>\n" +
+                                "                                                            </div>\n" +
+                                "                                                        </div>"
+                        }
+                    }],
+                "language":
+                    {
+                        "sEmptyTable":
+                            "هیچ داده ای در جدول وجود ندارد",
+                        "sInfo":
+                            "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                        "sInfoEmpty":
+                            "نمایش 0 تا 0 از 0 رکورد",
+                        "sInfoFiltered":
+                            "(فیلتر شده از _MAX_ رکورد)",
+                        "sInfoPostFix":
+                            "",
+                        "sInfoThousands":
+                            ",",
+                        "sLengthMenu":
+                            "نمایش _MENU_ رکورد",
+                        "sLoadingRecords":
+                            "در حال بارگزاری...",
+                        "sProcessing":
+                            "در حال پردازش...",
+                        "sSearch":
+                            "جستجو:",
+                        "sZeroRecords":
+                            "رکوردی با این مشخصات پیدا نشد",
+                        "oPaginate":
+                            {
+                                "sFirst":
+                                    "ابتدا",
+                                "sLast":
+                                    "انتها",
+                                "sNext":
+                                    "بعدی",
+                                "sPrevious":
+                                    "قبلی"
+                            }
+                        ,
+                        "oAria":
+                            {
+                                "sSortAscending":
+                                    ": فعال سازی نمایش به صورت صعودی",
+                                "sSortDescending":
+                                    ": فعال سازی نمایش به صورت نزولی"
+                            }
                     }
+            });
+
+
+            // fill data in preview form
+            $('#table1').on('click', '.preview', function (event) {
+                $('#table-form').hide();
+                $('#table-form2').show();
+                event.preventDefault();
+                var data = table1.row($(this).parents('tr')).data();
+                $('#table2').DataTable({
+                    "processing":
+                        true,
+                    "serverSide":
+                        true,
+                    "ajax":
+                        '/computing-product-part-detail',
+                    "columnDefs":
+                        [{
+                            "targets": -1,
+                            "data": data[3],
+
+                            "render": function (data, type, row, meta) {
+                                return "  <div class=\"dropdown\">\n" +
+                                    "                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +
+                                    "                                                                    data-toggle=\"dropdown\">\n" +
+                                    "                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +
+                                    "                                                            </a>\n" +
+                                    "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
+                                    "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
+                                    "                                                                <a class=\"dropdown-item edit\"\n" +
+                                    "                                                                >{{__('Edit')}}</a>\n" +
+                                    "                                                                <button class=\"dropdown-item deleted\"  type=\"submit\">{{__('Delete')}}</button>\n" +
+                                    "                                                            </div>\n" +
+                                    "                                                        </div>"
+                            }
+                        }],
+                    "language":
+                        {
+                            "sEmptyTable":
+                                "هیچ داده ای در جدول وجود ندارد",
+                            "sInfo":
+                                "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                            "sInfoEmpty":
+                                "نمایش 0 تا 0 از 0 رکورد",
+                            "sInfoFiltered":
+                                "(فیلتر شده از _MAX_ رکورد)",
+                            "sInfoPostFix":
+                                "",
+                            "sInfoThousands":
+                                ",",
+                            "sLengthMenu":
+                                "نمایش _MENU_ رکورد",
+                            "sLoadingRecords":
+                                "در حال بارگزاری...",
+                            "sProcessing":
+                                "در حال پردازش...",
+                            "sSearch":
+                                "جستجو:",
+                            "sZeroRecords":
+                                "رکوردی با این مشخصات پیدا نشد",
+                            "oPaginate":
+                                {
+                                    "sFirst":
+                                        "ابتدا",
+                                    "sLast":
+                                        "انتها",
+                                    "sNext":
+                                        "بعدی",
+                                    "sPrevious":
+                                        "قبلی"
+                                }
+                            ,
+                            "oAria":
+                                {
+                                    "sSortAscending":
+                                        ": فعال سازی نمایش به صورت صعودی",
+                                    "sSortDescending":
+                                        ": فعال سازی نمایش به صورت نزولی"
+                                }
+                        }
                 });
 
-                $.ajax({
-                    url: '/repository_requirement',
-                    type: 'POST',
-                    data: data,
-                    dataType: 'json',
-                    async: false,
-                    success: function (data) {
-                        setTimeout($.unblockUI);
-                        $("#modalRegisterForm").find("input").val("");
-                        $("#modalRegisterForm").modal('hide');
-                    },
-                    cache: false,
-                });
+
             });
-            // End Modal Form
+            // end filling
+
 
             // fill data in select product
             $(".select-product").select2({
@@ -626,6 +769,13 @@
             }
 
             // end fill data in select part
+
+            $('#back').on('click',function () {
+                $('#table-form2').hide();
+                $('#table-form').show();
+                event.preventDefault();
+
+            })
         });
     </script>
 @endpush
