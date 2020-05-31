@@ -45,7 +45,7 @@
                             </div>
                             <form id="form1">
                                 <div class="row">
-                                    <div class="col-md-6 pr-md-1">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label>{{__('Name')}}</label>
                                             <input name="hdp_name" type="text" class="form-control"
@@ -69,7 +69,7 @@
                             </div>
                             <form id="form2">
                                 <div class="row">
-                                    <div class="col-md-6 pr-md-1">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label>{{__('Name')}}</label>
                                             <input name="hdp_name" id="hdp_name" type="text"

@@ -74,7 +74,7 @@
                                                        class="bmd-label-floating">{{__('Client Name')}}</label>
                                                 <select class="select-client form-control" name="ho_client"
                                                         id="ho_client">
-                                                    <option>
+                                                    <option value="{{$client->id}}">
                                                         {{$client->hc_name}}
                                                     </option>
                                                 </select>
@@ -178,7 +178,7 @@
                                                        style="margin-top: -20px">{{__('State')}}</label>
                                                 <select class="select-state form-control" type="text"
                                                         name="hp_address_state_id" id="hp_address_state_id">
-                                                    <option>
+                                                    <option value="{{$invoice_state->id}}">
                                                         {{$invoice_state->hp_project_state}}
                                                     </option>
                                                 </select>
@@ -190,7 +190,7 @@
                                                        style="margin-top: -20px">{{__('City')}}</label>
                                                 <select class="select-city form-control" type="text"
                                                         name="hp_address_city_id" id="hp_address_city_id">
-                                                    <option>
+                                                    <option value="{{$invoice_city->id}}">
                                                         {{$invoice_city->hp_city}}
                                                     </option>
                                                 </select>
@@ -510,9 +510,6 @@
         });
         // end
 
-        alert(product_array);
-
-
         $(document).ready(function () {
             var client_id;
             var order_id;
@@ -773,8 +770,6 @@
 
                 if (product_array.indexOf(result.id) == -1) {
 
-                    alert(product_array.indexOf(result.id));
-
                     product_array.push(result.id);
 
                     $("#unit").val(result.hp_product_price);
@@ -979,7 +974,6 @@
                                 if (product_array.indexOf(result.id) == -1) {
 
                                     product_array.push(result.id);
-                                    alert(product_array);
 
                                     $(this).parent().parent().find("input[name='hp_product_price[]']").val(result.hp_product_price);
                                     $(this).parent().parent().find("input[name='invoice_items_qty[]']").val('1');

@@ -46,7 +46,7 @@
                                     <div class="card-body">
                                         <form id="form1">
                                             <div class="row">
-                                                <div class="col-md-6 pr-md-1">
+                                                <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>{{__('Name')}}</label>
                                                         <input name="th_name" type="text" class="form-control"
@@ -73,7 +73,7 @@
                                     <div class="card-body">
                                         <form id="form2">
                                             <div class="row">
-                                                <div class="col-md-6 pr-md-1">
+                                                <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label>{{__('Name')}}</label>
                                                         <input name="th_name" id="th_name" type="text"

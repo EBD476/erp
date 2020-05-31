@@ -330,8 +330,9 @@
                     async: false,
                     success: function (data) {
                         setTimeout($('#form2').unblock(), 2000);
-                        $('#table').DataTable().ajax.reload();
                         $('#card-form2').hide();
+                        $('#table').DataTable().ajax.reload();
+
                     },
                     cache: false,
                 });
@@ -343,7 +344,6 @@
                 $('#card-form2').show();
                 var data = table.row($(this).parents('tr')).data();
                 $('#pid').val(data[5]);
-                $('#pid').val(data[0]);
                 $('#hpr_part_id').val(data[4]);
                 $('#hpr_part_count').val(data[2]);
                 $('#hpr_comment').val(data[3]);

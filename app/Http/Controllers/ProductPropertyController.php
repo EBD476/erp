@@ -85,7 +85,7 @@ class ProductPropertyController extends Controller
         $key = 0;
         foreach ($properties as $property) {
             $key++;
-            $data .= '["' . $key . '",' . '"' . $property->hpp_property_name . '",' . '"' . $property->hppi_items_name . '",' . '"' . $property->id . '"],';
+            $data .= '["' . $key . '",' . '"' . $property->hpp_property_name . '",' . '"' . $property->hppi_items_name . '",' . '"' . $property->id . '",' . '"' . $property->hpp_property_items . '"],';
         }
         $data = substr($data, 0, -1);
         $property_count = ProductProperty::all()->count();

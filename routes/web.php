@@ -97,6 +97,7 @@ Route::group(['middleware' => ['auth']], function () {
     route::get('computing-product-part-detail', 'ProductPartController@computing_product_part_detail')->name('product_part.computing-product-part-detail');
     route::get('computing-product-middle-part-detail', 'ProductMiddlePartController@computing_product_middle_part_detail')->name('product_middle_part.computing-product-middle-part-detail');
     route::get('product-price-index', 'ProductController@product_price_index')->name('product.product-price-index');
+    route::get('report-list', 'TaskController@product_task_report_list')->name('product-task.report-list');
 
 
 //put data
@@ -201,8 +202,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/invoices-list-product-inventory', 'OrderController@invoices_list_product_inventory')->name('order.invoices-list-product-inventory');
     Route::get('json-data-product-task', 'TaskController@fill')->name('product-task.json-data-product-task');;
     Route::get('json-data-product-new-task', 'TaskController@fill_new')->name('product-task.json-data-product-new-task');;
+    Route::get('json-data-product-report-list', 'TaskController@fill_report_list')->name('product-task.json-data-product-report-list');;
     route::get('json-data-product-part-compute', 'ProductPartController@computing_product_part')->name('product_part.computing-product-part');
-    route::get('json-data-product-middle-part-compute', 'ProductMiddlePartController@computing_product_middle_part_detail')->name('product_middle_part.json-data-product-middle-part-compute');
+    route::get('json-data-product-middle-part-compute', 'ProductMiddlePartController@computing_product_middle_part')->name('product_middle_part.json-data-product-middle-part-compute');
 
 
 

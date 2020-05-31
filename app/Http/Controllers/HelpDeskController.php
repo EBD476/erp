@@ -63,7 +63,6 @@ class HelpDeskController extends Controller
         //end
 
         $size_name = count(collect($receive_user));
-
         if ($size_name == 1) {
             $help_desk = new HelpDesk();
             $help_desk->hhd_ticket_id = $sub_total;
@@ -77,7 +76,7 @@ class HelpDeskController extends Controller
                 $help_desk->hhd_ticket_status = 1;
             }
             $help_desk->hhd_request_user_id = auth()->user()->id;
-            $help_desk->hhd_receiver_user_id = $receive_user->hhru_receive_user;
+            $help_desk->hhd_receiver_user_id = $receive_user[0]->hhru_receive_user;
 //        $help_desk->hhd_file_atach = $request->hhd_file_atach;
             $help_desk->save();
         } else {

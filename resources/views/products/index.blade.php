@@ -434,7 +434,7 @@
                         var cdata = table.row($(this).parents('tr')).data();
                         var data = {
                             id: cdata[13],
-                            status: $(this)[0].checked == true ? 1 : 0
+                            hp_status: $(this)[0].checked == true ? 1 : 0
                         };
                         //token
                         $.ajaxSetup({

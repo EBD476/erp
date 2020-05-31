@@ -13,136 +13,132 @@
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title text-right font-weight-400">{{__('Products Property Items List')}}</h4>
-                                    <p class="card-category"></p>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive table-hover">
-                                        <table id="table" class="table" cellspacing="0" width="100%">
-                                            <thead class=" text-primary">
-                                            <th>
-                                                {{__('ID')}}
-                                            </th>
-                                            <th>
-                                                {{__('Items Name')}}
-                                            </th>
-                                            <th>
-                                                {{__('Serial Number')}}
-                                            </th>
-                                            <th>
-                                                {{__('Color')}}
-                                            </th>
-                                            <th>
-                                                {{__('Action')}}
-                                            </th>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                </div>
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title text-right font-weight-400">{{__('Products Property Items List')}}</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive table-hover">
+                                <table id="table" class="table" cellspacing="0" width="100%">
+                                    <thead class=" text-primary">
+                                    <th>
+                                        {{__('ID')}}
+                                    </th>
+                                    <th>
+                                        {{__('Items Name')}}
+                                    </th>
+                                    <th>
+                                        {{__('Serial Number')}}
+                                    </th>
+                                    {{--<th>--}}
+                                    {{--{{__('Color')}}--}}
+                                    {{--</th>--}}
+                                    <th>
+                                        {{__('Action')}}
+                                    </th>
+                                    </thead>
+                                </table>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card card-user">
-                                <div class="card-body">
-                                    <div class="card-header card-header-primary">
-                                        <h4 class="card-title ">{{__('New Product Property Items')}}</h4>
-                                        <p class="card-category"></p>
-                                    </div>
-                                    <div class="card-body">
-                                        <form id="form1">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label>{{__('Items Name')}}</label>
-                                                        <input name="hppi_items_name" type="text" class="form-control"
-                                                               required=""
-                                                               aria-invalid="false">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label>{{__('Serial Number')}}</label>
-                                                        <input name="hppi_serial_number" type="text"
-                                                               class="form-control"
-                                                               required=""
-                                                               aria-invalid="false">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <label>{{__('Product Color')}}</label>
-                                                    <div class="form-group">
-                                                        <select class="form-control select-item-color"
-                                                                name="hppi_color"></select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-footer">
-                                                <button type="submit"
-                                                        class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-user">
+                        <div class="card-body">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('New Product Property Items')}}</h4>
+                                <p class="card-category"></p>
                             </div>
-                            <div class="card card-user" id="card-form2">
-                                <div class="card-body">
-                                    <div class="card-header card-header-primary">
-                                        <h4 class="card-title ">{{__('Edit Product Property Items')}}</h4>
-                                        <p class="card-category"></p>
+                            <div class="card-body">
+                                <form id="form1">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>{{__('Items Name')}}</label>
+                                                <input name="hppi_items_name" type="text" class="form-control"
+                                                       required=""
+                                                       aria-invalid="false">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="card-body">
-                                        <form id="form2">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label>{{__('Items Name')}}</label>
-                                                        <input name="hppi_items_name" type="text" class="form-control"
-                                                               id="hppi_items_name"
-                                                               required=""
-                                                               aria-invalid="false">
-                                                        <input id="pid" hidden>
-                                                    </div>
-                                                </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>{{__('Serial Number')}}</label>
+                                                <input name="hppi_serial_number" type="text"
+                                                       class="form-control"
+                                                       required=""
+                                                       aria-invalid="false">
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label>{{__('Serial Number')}}</label>
-                                                        <input name="hppi_serial_number" type="text"
-                                                               class="form-control"
-                                                               id="hppi_serial_number"
-                                                               required=""
-                                                               aria-invalid="false">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <label>{{__('Product Color')}}</label>
-                                                    <div class="form-group">
-                                                        <select class="select-item-color form-control"
-                                                                name="hppi_color">
-                                                            <option id="hppi_color"></option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-footer">
-                                                <button type="submit"
-                                                        class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                                            </div>
-                                        </form>
+                                        </div>
                                     </div>
-                                </div>
+                                    {{--<div class="row">--}}
+                                    {{--<div class="col-md-12">--}}
+                                    {{--<label>{{__('Product Color')}}</label>--}}
+                                    {{--<div class="form-group">--}}
+                                    {{--<select class="form-control select-item-color"--}}
+                                    {{--name="hppi_color"></select>--}}
+                                    {{--</div>--}}
+                                    {{--</div>--}}
+                                    {{--</div>--}}
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card card-user" id="card-form2">
+                        <div class="card-body">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('Edit Product Property Items')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <form id="form2">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>{{__('Items Name')}}</label>
+                                                <input name="hppi_items_name" type="text" class="form-control"
+                                                       id="hppi_items_name"
+                                                       required=""
+                                                       aria-invalid="false">
+                                                <input id="pid" hidden>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>{{__('Serial Number')}}</label>
+                                                <input name="hppi_serial_number" type="text"
+                                                       class="form-control"
+                                                       id="hppi_serial_number"
+                                                       required=""
+                                                       aria-invalid="false">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{--<div class="row">--}}
+                                    {{--<div class="col-md-12">--}}
+                                    {{--<label>{{__('Product Color')}}</label>--}}
+                                    {{--<div class="form-group">--}}
+                                    {{--<select class="select-item-color form-control"--}}
+                                    {{--name="hppi_color">--}}
+                                    {{--<option id="hppi_color"></option>--}}
+                                    {{--</select>--}}
+                                    {{--</div>--}}
+                                    {{--</div>--}}
+                                    {{--</div>--}}
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -186,7 +182,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: '/product-property-items-destroy/' + data[5],
+                                url: '/product-property-items-destroy/' + data[3],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',
@@ -364,7 +360,7 @@
                 ajax: {
                     dir: "rtl",
                     language: "fa",
-                    url: '/json-data-fill_data_product_color',
+                    url: '/json-data-fill-data-product-color',
                     dataType: 'json',
                     data: function (params) {
                         return {
@@ -395,10 +391,9 @@
             $('#table').on('click', '.edit', function (event) {
                 $('#card-form2').show();
                 var data = table.row($(this).parents('tr')).data();
-                $('#pid').val(data[5]);
+                $('#pid').val(data[3]);
                 $('#hppi_items_name').val(data[1]);
                 $('#hppi_serial_number').val(data[2]);
-                $('#hppi_color').val(data[4]);
             })
             // end filling
 

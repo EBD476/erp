@@ -21,6 +21,13 @@ class RepositoryMiddlePartController extends Controller
             'hrm_comment' => 'required',
         ]);
 
+        //      deleted last rows of this product
+        $repository_middle_part_latest = RepositoryMiddlePart::select('id')->where('hrm_middle_part_id', $request->hrm_middle_part_id)->get();
+        foreach ($repository_middle_part_latest as $delete_latest_row) {
+            $repository_middle_part = RepositoryMiddlePart::find($delete_latest_row->id);
+            $repository_middle_part->delete();
+        }
+
         $repository_middle_part = new RepositoryMiddlePart();
         $repository_middle_part->hrm_middle_part_id = $request->hrm_middle_part_id;
         $repository_middle_part->hrm_count = $request->hrm_count;
@@ -68,7 +75,6 @@ class RepositoryMiddlePartController extends Controller
                 ->join('hnt_provider', 'hnt_repository_middle_part.hrm_provider_code', '=', 'hnt_provider.id')
                 ->join('hnt_repository', 'hnt_repository_middle_part.hrm_repository_id', '=', 'hnt_repository.id')
                 ->select('hnt_repository_middle_part.id', 'hnt_repository_middle_part.hrm_middle_part_id', 'hnt_repository_middle_part.hrm_count', 'hnt_repository_middle_part.hrm_entry_date', 'hnt_repository_middle_part.hrm_exit', 'hnt_repository_middle_part.hrm_provider_code', 'hnt_repository_middle_part.hrm_return_value', 'hnt_repository_middle_part.hrm_comment', 'hnt_repository_middle_part.hrm_repository_id', 'hnt_repository_middle_part.hrm_status_return_part', 'hnt_repository_middle_part.hrm_comment', 'hnt_repository_middle_part.hrm_contradiction', 'hnt_middle_part.hmp_name', 'hnt_provider.hp_name', 'hnt_repository.hr_name')
-                ->where('hnt_repository_middle_part.deleted_at', '=', Null)
                 ->skip($start)
                 ->take($length)
                 ->get();
@@ -78,7 +84,6 @@ class RepositoryMiddlePartController extends Controller
                 ->join('hnt_provider', 'hnt_repository_middle_part.hrm_provider_code', '=', 'hnt_provider.id')
                 ->join('hnt_repository', 'hnt_repository_middle_part.hrm_repository_id', '=', 'hnt_repository.id')
                 ->select('hnt_repository_middle_part.id', 'hnt_repository_middle_part.hrm_middle_part_id', 'hnt_repository_middle_part.hrm_count', 'hnt_repository_middle_part.hrm_entry_date', 'hnt_repository_middle_part.hrm_exit', 'hnt_repository_middle_part.hrm_provider_code', 'hnt_repository_middle_part.hrm_return_value', 'hnt_repository_middle_part.hrm_comment', 'hnt_repository_middle_part.hrm_repository_id', 'hnt_repository_middle_part.hrm_status_return_part', 'hnt_repository_middle_part.hrm_comment', 'hnt_repository_middle_part.hrm_contradiction', 'hnt_middle_part.hmp_name', 'hnt_provider.hp_name', 'hnt_repository.hr_name')
-                ->where('hnt_repository_middle_part.deleted_at', '=', Null)
                 ->where('hnt_middle_part.hmp_name', 'LIKE', "%$search%")
                 ->get();
         }

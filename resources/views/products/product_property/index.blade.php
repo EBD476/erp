@@ -13,106 +13,104 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title text-right font-weight-400">{{__('Products Property List')}}</h4>
-                                    <p class="card-category"></p>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive table-hover">
-                                        <table id="table" class="table" cellspacing="0" width="100%">
-                                            <thead class=" text-primary">
-                                            <th>
-                                                {{__('ID')}}
-                                            </th>
-                                            <th>
-                                                {{__('Property Name')}}
-                                            </th>
-                                            <th>
-                                                {{__('Items')}}
-                                            </th>
-                                            <th>
-                                                {{__('Action')}}
-                                            </th>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                </div>
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title text-right font-weight-400">{{__('Products Property List')}}</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive table-hover">
+                                <table id="table" class="table" cellspacing="0" width="100%">
+                                    <thead class=" text-primary">
+                                    <th>
+                                        {{__('ID')}}
+                                    </th>
+                                    <th>
+                                        {{__('Property Name')}}
+                                    </th>
+                                    <th>
+                                        {{__('Items')}}
+                                    </th>
+                                    <th>
+                                        {{__('Action')}}
+                                    </th>
+                                    </thead>
+                                </table>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card card-user">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title ">{{__('New Products Property')}}</h4>
-                                    <p class="card-category"></p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-user">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title ">{{__('New Products Property')}}</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+                            <form id="form1">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>{{__('Property Name')}}</label>
+                                            <input name="hpp_property_name" type="text" class="form-control"
+                                                   required=""
+                                                   aria-invalid="false">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <form id="form1">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>{{__('Property Name')}}</label>
-                                                    <input name="hpp_property_name" type="text" class="form-control"
-                                                           required=""
-                                                           aria-invalid="false">
-                                                </div>
-                                            </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>{{__('Items')}}</label>
+                                        <div class="form-group">
+                                            <select class="form-control select-product-property-items"
+                                                    name="hpp_property_items">
+                                            </select>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label>{{__('Items')}}</label>
-                                                <div class="form-group">
-                                                    <select class="form-control select-product-property-items"
-                                                            name="hpp_property_items">
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer">
-                                            <button type="submit"
-                                                    class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                                        </div>
-                                    </form>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="card card-user" id="card-form2">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title ">{{__('Edit Products Property')}}</h4>
-                                    <p class="card-category"></p>
+                                <div class="card-footer">
+                                    <button type="submit"
+                                            class="btn btn-fill btn-primary">{{__('Save')}}</button>
                                 </div>
-                                <div class="card-body">
-                                    <form id="form2">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>{{__('Property Name')}}</label>
-                                                    <input id="hpp_property_name" type="text" class="form-control"
-                                                           required=""
-                                                           aria-invalid="false">
-                                                    <input hidden id="pid">
-                                                </div>
-                                            </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card card-user" id="card-form2">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title ">{{__('Edit Products Property')}}</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+                            <form id="form2">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>{{__('Property Name')}}</label>
+                                            <input id="hpp_property_name" type="text" class="form-control"
+                                                   name="hpp_property_name"
+                                                   required=""
+                                                   aria-invalid="false">
+                                            <input hidden id="pid">
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label>{{__('Items')}}</label>
-                                                <div class="form-group">
-                                                    <select class="form-control select-product-property-items"
-                                                            name="hpp_property_items">
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer">
-                                            <button type="submit"
-                                                    class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                                        </div>
-                                    </form>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>{{__('Items')}}</label>
+                                        <div class="form-group">
+                                            <select class="form-control select-product-property-items"
+                                                    name="hpp_property_items">
+                                                <option id="hpp_property_items"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit"
+                                            class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -132,8 +130,6 @@
         $(document).ready(function () {
 
             $('#card-form2').hide();
-
-            var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
 
             $('#table').on('click', 'button', function (event) {
 
@@ -273,7 +269,7 @@
                 });
 
                 $.ajax({
-                    url: '/product-property-items',
+                    url: '/product-property',
                     type: 'POST',
                     data: data,
                     dataType: 'json',
@@ -329,7 +325,7 @@
                 var data = table.row($(this).parents('tr')).data();
                 $('#pid').val(data[3]);
                 $('#hpp_property_name').val(data[1]);
-                $('#hpp_property_items').val(data[2]);
+                $('#hpp_property_items').val(data[4]);
             })
             // endfilling
 

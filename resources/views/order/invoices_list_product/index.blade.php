@@ -454,6 +454,14 @@
                             "targets": -2,
                             "data": null,
                             "render": function (data, type, row) {
+                                if (data[10] == 0) {
+                                    return '<div class="progress">\n' +
+                                        // '                                                                <span class="progress-value">25%</span>\n' +
+                                        '                                                                    <div class="progress-bar" role="progressbar"\n' +
+                                        '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
+                                        '                                                                         aria-valuemax="100"\n' +
+                                        '                                                                         style="width: 0%;"></div>\n'
+                                }
                                 if (data[10] == 1) {
                                     return '<div class="progress">\n' +
                                         // '                                                                <span class="progress-value">25%</span>\n' +

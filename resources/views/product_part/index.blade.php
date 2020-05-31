@@ -12,13 +12,13 @@
     @role('Admin|product')
     <div class="content persian">
         <div class="container-fluid">
+            <div class="col-md-12">
+                <a class="btn btn-primary float-left mb-lg-2" data-target="#modalRegisterForm" href="#"
+                   data-toggle="modal">
+                    {{__('Computing Product')}}
+                </a>
+            </div>
             <div class="row">
-                <div class="col-md-12">
-                    <a class="btn btn-primary float-left mb-lg-2" data-target="#modalRegisterForm" href="#"
-                       data-toggle="modal">
-                        {{__('Computing Product')}}
-                    </a>
-                </div>
                 <div class="row">
                     <div class="col-md-8">
                         <div class="card">
@@ -230,6 +230,9 @@
                                             </thead>
                                             </tbody>
                                         </table>
+                                        <div class="card-footer">
+                                            <button type="submit" class="btn btn-fill btn-primary" id="back">{{__('Back')}}</button>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -454,7 +457,7 @@
                 var data = table.row($(this).parents('tr')).data();
                 $('#pid').val(data[8]);
                 $('#hpp_part_id').val(data[6]);
-                $('#hpp_product_zone').val(data[3]);
+                $('#hpp_product_zone').val(data[7]);
                 $('#hpp_product_id').val(data[5]);
                 $('#hpp_part_count').val(data[4]);
             })

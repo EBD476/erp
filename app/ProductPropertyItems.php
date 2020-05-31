@@ -3,8 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductPropertyItems extends Model
 {
-   protected $table ='hnt_product_property_items';
+    Use SoftDeletes;
+    protected $table = 'hnt_product_property_items';
 }

@@ -71,7 +71,7 @@ class VerifyController extends Controller
         $user = User::select('id', 'name')->get();
         $order = Order::find($id);
         $product = Product::select('id','hp_product_model','hp_product_color_id','hp_product_size','hp_product_property','hp_product_code_number','hp_product_name','hp_product_price')->get();
-        $items = ProductPropertyItems::select('id','hppi_items_name','hppi_color')->get();
+        $items = ProductPropertyItems::select('id','hppi_items_name')->get();
         $properties = ProductProperty::select('id','hpp_property_name','hpp_property_items')->get();
         $data = OrderProduct::where('hpo_order_id',$id)->get();
         $color = ProductColor::select('id','hn_color_name')->get();

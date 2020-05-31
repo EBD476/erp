@@ -12,65 +12,119 @@
     @role('Admin|product')
     <div class="content persian">
         <div class="container-fluid">
+            <div class="col-md-12">
+                <a class="btn btn-primary float-left mb-lg-2" data-target="#modalRegisterForm" href="#"
+                   data-toggle="modal">
+                    {{__('Computing Product Middle Part')}}
+                </a>
+            </div>
             <div class="row">
-                <div class="col-md-12">
-                    <a class="btn btn-primary float-left mb-lg-2" data-target="#modalRegisterForm" href="#"
-                       data-toggle="modal">
-                        {{__('Computing Product Middle Part')}}
-                    </a>
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title text-right font-weight-400">{{__('Product Middle Part List')}}</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive table-hover">
+                                <table id="table" class="table" cellspacing="0" width="100%">
+                                    <thead class=" text-primary">
+                                    {{--<th>--}}
+                                    {{--{{__('Statuses')}}--}}
+                                    {{--</th>--}}
+                                    <th>
+                                        {{__('ID')}}
+                                    </th>
+                                    <th>
+                                        {{__('Product Name')}}
+                                    </th>
+                                    <th>
+                                        {{__('Middle Part Name')}}
+                                    </th>
+                                    <th>
+                                        {{__('Zone')}}
+                                    </th>
+                                    <th>
+                                        {{__('Middle Part Count')}}
+                                    </th>
+                                    <th>
+                                        {{__('Action')}}
+                                    </th>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title text-right font-weight-400">{{__('Product Middle Part List')}}</h4>
-                                    <p class="card-category"></p>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive table-hover">
-                                        <table id="table" class="table" cellspacing="0" width="100%">
-                                            <thead class=" text-primary">
-                                            {{--<th>--}}
-                                            {{--{{__('Statuses')}}--}}
-                                            {{--</th>--}}
-                                            <th>
-                                                {{__('ID')}}
-                                            </th>
-                                            <th>
-                                                {{__('Product Name')}}
-                                            </th>
-                                            <th>
-                                                {{__('Middle Part Name')}}
-                                            </th>
-                                            <th>
-                                                {{__('Zone')}}
-                                            </th>
-                                            <th>
-                                                {{__('Middle Part Count')}}
-                                            </th>
-                                            <th>
-                                                {{__('Action')}}
-                                            </th>
-                                            </thead>
-                                        </table>
+                <div class="col-md-4">
+                    <div class="card card-user">
+                        <div class="card-body">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title ">{{__('New Product Middle Part')}}</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <form id="form1">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>{{__('Product Name')}}</label>
+                                    <div class="form-group">
+                                        <select class="form-control select-product" name="hpp_product_id">
+                                        </select>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card card-user">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title ">{{__('New Product Middle Part')}}</h4>
-                                    <p class="card-category"></p>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>{{__('Middle Part Name')}}</label>
+                                    <div class="form-group">
+                                        <select id="part_id" class="form-control select-middle-part"
+                                                name="hpp_middle_part_id">
+                                        </select>
+                                    </div>
                                 </div>
-                                <form id="form1">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>{{__('Set Middle Part Zone')}}</label>
+                                    <div class="form-group">
+                                        <select class="form-control select-product-zone"
+                                                name="hpp_middle_part_zone">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>{{__('Part Count')}}</label>
+                                        <input name="hpp_part_count" type="text" class="form-control"
+                                               required="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                    <div class="card card-user" id="card-form2">
+                        <div class="card-body">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('Edit Product Middle Parts')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <form id="form2">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label>{{__('Product Name')}}</label>
                                             <div class="form-group">
-                                                <select class="form-control select-product" name="hpp_product_id">
+                                                <select class="form-control select-product"
+                                                        name="hpp_product_id">
+                                                    <option id="hpp_product_id"></option>
                                                 </select>
+                                                <input id="pmpid" hidden>
                                             </div>
                                         </div>
                                     </div>
@@ -78,8 +132,9 @@
                                         <div class="col-md-12">
                                             <label>{{__('Middle Part Name')}}</label>
                                             <div class="form-group">
-                                                <select id="part_id" class="form-control select-middle-part"
+                                                <select class="form-control select-middle-part"
                                                         name="hpp_middle_part_id">
+                                                    <option id="hpp_middle_part_id"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -90,6 +145,7 @@
                                             <div class="form-group">
                                                 <select class="form-control select-product-zone"
                                                         name="hpp_middle_part_zone">
+                                                    <option id="hpp_middle_part_zone"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -99,147 +155,94 @@
                                             <div class="form-group">
                                                 <label>{{__('Part Count')}}</label>
                                                 <input name="hpp_part_count" type="text" class="form-control"
-                                                       required="">
+                                                       required=""
+                                                       id="hpp_part_count">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <button type="submit" class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Save')}}</button>
                                     </div>
                                 </form>
                             </div>
-                            <div class="card card-user" id="card-form2">
-                                <div class="card-body">
-                                    <div class="card-header card-header-primary">
-                                        <h4 class="card-title ">{{__('Edit Product Middle Parts')}}</h4>
-                                        <p class="card-category"></p>
-                                    </div>
-                                    <div class="card-body">
-                                        <form id="form2">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <label>{{__('Product Name')}}</label>
-                                                    <div class="form-group">
-                                                        <select class="form-control select-product"
-                                                                name="hpp_product_id">
-                                                            <option id="hpp_product_id"></option>
-                                                        </select>
-                                                        <input id="pmpid" hidden>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <label>{{__('Middle Part Name')}}</label>
-                                                    <div class="form-group">
-                                                        <select class="form-control select-middle-part"
-                                                                name="hpp_middle_part_id">
-                                                            <option id="hpp_middle_part_id"></option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <label>{{__('Set Middle Part Zone')}}</label>
-                                                    <div class="form-group">
-                                                        <select id="hpp_middle_part_zone"
-                                                                class="form-control select-product-zone"
-                                                                name="hpp_middle_part_zone">
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label>{{__('Part Count')}}</label>
-                                                        <input name="hpp_part_count" type="text" class="form-control"
-                                                               required=""
-                                                               id="hpp_part_count">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card-footer">
-                                                <button type="submit"
-                                                        class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
-
-                {{--//Product Details Modal//--}}
-                <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"
-                     aria-labelledby="myModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header text-center">
-                                <h4 class="modal-title w-100 font-weight-bold">{{__('View Product Details')}}</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <form method="post" id="modal_form" enctype="multipart/form-data">
-                                <div class="modal-body mx-3">
-                                    <div class="md-form mb-5" id="table-form">
-                                        {{--<i class="fas fa-user prefix grey-text"></i>--}}
-                                        <table class="table" id="table1" cellspacing="0" width="100%">
-                                            <tbody>
-                                            <thead class=" text-primary">
-                                            <th>
-                                                {{__('ID')}}
-                                            </th>
-                                            <th>
-                                                {{__('Product Name')}}
-                                            </th>
-                                            <th>
-                                                {{__('Count')}}
-                                            </th>
-                                            <th>
-                                                {{__('Verify')}}
-                                            </th>
-                                            </thead>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="md-form mb-5" id="table-form2">
-                                        <table class="table" id="table2" cellspacing="0" width="100%">
-                                            <tbody>
-                                            <h5 class="card-title ">{{__('Product Name')}}</h5>
-                                            <thead class=" text-primary">
-                                            <th>
-                                                {{__('ID')}}
-                                            </th>
-                                            <th>
-                                                {{__('Part Name')}}
-                                            </th>
-                                            <th>
-                                                {{__('Count')}}
-                                            </th>
-                                            <th>
-                                                {{__('Stock')}}
-                                            </th>
-                                            <th>
-                                                {{__('Verify')}}
-                                            </th>
-                                            </thead>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                {{--end Product Details --}}
-
             </div>
+
+            {{--//Product Details Modal//--}}
+            <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header text-center">
+                            <h4 class="modal-title w-100 font-weight-bold">{{__('View Product Details')}}</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form method="post" id="modal_form" enctype="multipart/form-data">
+                            <div class="modal-body mx-3">
+                                <div class="md-form mb-5" id="table-form">
+                                    {{--<i class="fas fa-user prefix grey-text"></i>--}}
+                                    <table class="table" id="table1" cellspacing="0" width="100%">
+                                        <tbody>
+                                        <thead class=" text-primary">
+                                        <th>
+                                            {{__('ID')}}
+                                        </th>
+                                        <th>
+                                            {{__('Product Name')}}
+                                        </th>
+                                        <th>
+                                            {{__('Count')}}
+                                        </th>
+                                        <th>
+                                            {{__('Verify')}}
+                                        </th>
+                                        </thead>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="md-form mb-5" id="table-form2">
+                                    <table class="table" id="table2" cellspacing="0" width="100%">
+                                        <tbody>
+                                        <h5 class="card-title ">{{__('Product Name')}}</h5>
+                                        <thead class=" text-primary">
+                                        <th>
+                                            {{__('ID')}}
+                                        </th>
+                                        <th>
+                                            {{__('Part Name')}}
+                                        </th>
+                                        <th>
+                                            {{__('Count')}}
+                                        </th>
+                                        <th>
+                                            {{__('Stock')}}
+                                        </th>
+                                        <th>
+                                            {{__('Verify')}}
+                                        </th>
+                                        </thead>
+                                        </tbody>
+                                    </table>
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-fill btn-primary"
+                                                id="back">{{__('Back')}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {{--end Product Details --}}
+
         </div>
+    </div>
     </div>
     @endrole
 @endsection
@@ -413,8 +416,6 @@
                                 }
                         }
                 });
-
-
             });
             // end filling
 
@@ -438,7 +439,6 @@
                         if (willDelete) {
                             $.ajax({
                                 url: '/product-middle-part-destroy/' + data[8],
-                                url: '/product-middle-part-destroy/' + data[0],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',
@@ -618,11 +618,11 @@
                 $('#card-form2').show();
                 var data = table.row($(this).parents('tr')).data();
                 $('#pmpid').val(data[8]);
-                $('#hpp_part_count').val(data[3]);
-                $('#hpp_middle_part_id').val(data[4]);
-                $('#hpp_product_id').val(data[5]);
-                $('#hpp_middle_part_zone').val(data[6]);
-            })
+                $('#hpp_part_count').val(data[4]);
+                $('#hpp_middle_part_id').val(data[5]);
+                $('#hpp_product_id').val(data[6]);
+                $('#hpp_middle_part_zone').val(data[7]);
+            });
             // end filling
 
 
@@ -781,7 +781,6 @@
                 $('#table-form2').hide();
                 $('#table-form').show();
                 event.preventDefault();
-
             })
 
         });

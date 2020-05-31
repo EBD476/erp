@@ -64,7 +64,6 @@ class ProductController extends Controller
         $product = new Product();
         $product->hp_product_name = $request->hp_product_name;
         $product->hp_product_model = $request->hp_product_model;
-        $product->hp_product_price = $request->hp_product_price;
         $product->hp_product_property = $request->hp_product_property;
         $product->hp_product_color_id = $request->hp_product_color_id;
         $product->hp_description = $request->hp_description;
@@ -87,13 +86,15 @@ class ProductController extends Controller
         $product = Product::find($id);
         $product->hp_product_name = $request->hp_product_name;
         $product->hp_product_model = $request->hp_product_model;
-        $product->hp_product_price = $request->hp_product_price;
         $product->hp_description = $request->hp_description;
         $product->hp_product_property = $request->hp_product_property;
         $product->hp_product_color_id = $request->hp_product_color_id;
         $product->hp_product_size = $request->hp_product_size;
-        $product->hp_product_image = $request->product_image1;
+        if ($request->product_image1 != "") {
+            $product->hp_product_image = $request->product_image1;
+        }
         $product->hp_voltage = $request->hp_voltage;
+        $product->hp_status = 1;
         $product->save();
         return json_encode(["response" => "OK"]);
     }
@@ -244,6 +245,7 @@ class ProductController extends Controller
             $product_property = DB::table('hnt_product_property')
                 ->join('hnt_product_property_items', 'hnt_product_property.hpp_property_items', 'hnt_product_property_items.id')
                 ->select('hnt_product_property.id', 'hnt_product_property.hpp_property_name as text', 'hnt_product_property_items.hppi_items_name')
+                ->where('hnt_product_property.deleted_at', '=', Null)
                 ->where('hnt_product_property.hpp_property_name', 'LIKE', "%$search%")
                 ->get();
         }

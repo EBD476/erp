@@ -88,8 +88,10 @@
                                         <div class="col-md-12">
                                             <label>{{__('Name')}}</label>
                                             <div class="form-group">
-                                                <select class="form-control select-type-ticket" id="hhru_name"
-                                                        name="hhru_name"></select>
+                                                <select class="form-control select-type-ticket"
+                                                        name="hhru_name">
+                                                    <option id="hhru_name"></option>
+                                                </select>
                                                 <input id="id" hidden>
                                             </div>
                                         </div>
@@ -98,14 +100,16 @@
                                         <div class="col-md-12">
                                             <label>{{__('Receiver User')}}</label>
                                             <div class="form-group">
-                                                <select name="hhru_receive_user" id="hhru_receive_user"
-                                                        class="form-control select-receiver-user" required=""></select>
+                                                <select name="hhru_receive_user"
+                                                        class="form-control select-receiver-user" required="">
+                                                    <option id="hhru_receive_user"></option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card-footer">
                                         <button type="submit"
-                                                class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                                class="btn btn-fill btn-primary" id="submit">{{__('Save')}}</button>
                                     </div>
                                 </form>
                             </div>
@@ -283,7 +287,7 @@
                 });
             });
             // update receiver
-            $("#form2").submit(function (event) {
+            $("#submit").on('click',function (event) {
                 var data = $("#form2").serialize();
                 var id = $('#id').val();
                 event.preventDefault();
@@ -325,8 +329,8 @@
                 $('#card-form2').show();
                 var data = table.row($(this).parents('tr')).data();
                 $('#id').val(data[5]);
-                $('#hhru_name').val(data[1]);
-                $('#hhru_receive_user').val(data[2]);
+                $('#hhru_name').val(data[3]);
+                $('#hhru_receive_user').val(data[4]);
             })
             // end filling
 

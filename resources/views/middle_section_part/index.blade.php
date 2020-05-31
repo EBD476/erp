@@ -12,140 +12,138 @@
     @role('Admin|product')
     <div class="content persian">
         <div class="container-fluid">
+            <div class="col-md-12">
+                <a class="btn btn-primary float-left mb-lg-2" data-target="#modalRegisterForm" href="#"
+                   data-toggle="modal">
+                    {{__('Computing Product Middle Part')}}
+                </a>
+            </div>
             <div class="row">
-                <div class="col-md-12">
-                    <a class="btn btn-primary float-left mb-lg-2" data-target="#modalRegisterForm" href="#"
-                       data-toggle="modal">
-                        {{__('Computing Product Middle Part')}}
-                    </a>
-                </div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-header card-header-primary">
-                                <h4 class="card-title text-right font-weight-400">{{__('Middle Section Part List')}}</h4>
-                                <p class="card-category"></p>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive table-hover">
-                                    <table id="table" class="table" cellspacing="0" width="100%">
-                                        <thead class=" text-primary">
-                                        {{--<th>--}}
-                                        {{--{{__('Statuses')}}--}}
-                                        {{--</th>--}}
-                                        <th>
-                                            {{__('ID')}}
-                                        </th>
-                                        <th>
-                                            {{__('Middle Part Name')}}
-                                        </th>
-                                        <th>
-                                            {{__('Part Name')}}
-                                        </th>
-                                        <th>
-                                            {{__('Count')}}
-                                        </th>
-                                        <th>
-                                            {{__('Action')}}
-                                        </th>
-                                        </thead>
-                                    </table>
-                                </div>
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title text-right font-weight-400">{{__('Middle Section Part List')}}</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive table-hover">
+                                <table id="table" class="table" cellspacing="0" width="100%">
+                                    <thead class=" text-primary">
+                                    {{--<th>--}}
+                                    {{--{{__('Statuses')}}--}}
+                                    {{--</th>--}}
+                                    <th>
+                                        {{__('ID')}}
+                                    </th>
+                                    <th>
+                                        {{__('Middle Part Name')}}
+                                    </th>
+                                    <th>
+                                        {{__('Part Name')}}
+                                    </th>
+                                    <th>
+                                        {{__('Count')}}
+                                    </th>
+                                    <th>
+                                        {{__('Action')}}
+                                    </th>
+                                    </thead>
+                                </table>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card card-user">
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-user">
+                        <div class="card-body">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('New Middle Section Part')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
                             <div class="card-body">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title ">{{__('New Middle Section Part')}}</h4>
-                                    <p class="card-category"></p>
-                                </div>
-                                <div class="card-body">
-                                    <form id="form1">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label>{{__('Middle Part Name')}}</label>
-                                                <div class="form-group">
-                                                    <select class="form-control select-middle-part"
-                                                            name="hpp_middle_part_id">
-                                                    </select>
-                                                </div>
+                                <form id="form1">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>{{__('Middle Part Name')}}</label>
+                                            <div class="form-group">
+                                                <select class="form-control select-middle-part"
+                                                        name="hpp_middle_part_id">
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label>{{__('Part Name')}}</label>
-                                                <div class="form-group">
-                                                    <select class="form-control select-part" name="hpp_part_id">
-                                                    </select>
-                                                </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>{{__('Part Name')}}</label>
+                                            <div class="form-group">
+                                                <select class="form-control select-part" name="hpp_part_id">
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>{{__('Part Count')}}</label>
-                                                    <input name="hpp_part_count" type="text" class="form-control"
-                                                           required=""
-                                                           aria-invalid="false">
-                                                </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>{{__('Part Count')}}</label>
+                                                <input name="hpp_part_count" type="text" class="form-control"
+                                                       required=""
+                                                       aria-invalid="false">
                                             </div>
                                         </div>
-                                        <div class="card-footer">
-                                            <button type="submit"
-                                                    class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <div class="card card-user" id="card-form2">
+                    </div>
+                    <div class="card card-user" id="card-form2">
+                        <div class="card-body">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('New Middle Section Part')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
                             <div class="card-body">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title ">{{__('New Middle Section Part')}}</h4>
-                                    <p class="card-category"></p>
-                                </div>
-                                <div class="card-body">
-                                    <form id="form2">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label>{{__('Middle Part Name')}}</label>
-                                                <div class="form-group">
-                                                    <input id="pid" hidden>
-                                                    <select class="form-control select-middle-part"
-                                                            name="hpp_middle_part_id">
-                                                        <option id="hpp_middle_part_id"></option>
-                                                    </select>
-                                                </div>
+                                <form id="form2">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>{{__('Middle Part Name')}}</label>
+                                            <div class="form-group">
+                                                <input id="pid" hidden>
+                                                <select class="form-control select-middle-part"
+                                                        name="hpp_middle_part_id">
+                                                    <option id="hpp_middle_part_id"></option>
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label>{{__('Part Name')}}</label>
-                                                <div class="form-group">
-                                                    <select class="form-control select-part" name="hpp_part_id">
-                                                        <option id="hpp_part_id"></option>
-                                                    </select>
-                                                </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>{{__('Part Name')}}</label>
+                                            <div class="form-group">
+                                                <select class="form-control select-part" name="hpp_part_id">
+                                                    <option id="hpp_part_id"></option>
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>{{__('Part Count')}}</label>
-                                                    <input name="hpp_part_count" id="hpp_part_count" type="text"
-                                                           class="form-control" required=""
-                                                           aria-invalid="false">
-                                                </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>{{__('Part Count')}}</label>
+                                                <input name="hpp_part_count" id="hpp_part_count" type="text"
+                                                       class="form-control" required=""
+                                                       aria-invalid="false">
                                             </div>
                                         </div>
-                                        <div class="card-footer">
-                                            <button type="submit"
-                                                    class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -211,6 +209,9 @@
                                 </thead>
                                 </tbody>
                             </table>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-fill btn-primary" id="back">{{__('Back')}}</button>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -705,7 +706,7 @@
             // end fill data in select middle part
 
 
-            $('#back').on('click',function () {
+            $('#back').on('click', function () {
                 $('#table-form2').hide();
                 $('#table-form').show();
                 event.preventDefault();

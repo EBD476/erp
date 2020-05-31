@@ -408,7 +408,7 @@
                 $('#card-form2').show();
                 var data = table.row($(this).parents('tr')).data();
                 $('#pid').val(data[5]);
-                $('#Product_Id').val(data[1]);
+                $('#Product_Id').val(data[4]);
                 $('#Product_Count').val(data[2]);
                 $('#Comment').val(data[3]);
             })

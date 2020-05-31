@@ -129,6 +129,7 @@ class ProductPartController extends Controller
 //                ->select('hnt_middle_section_part.hpp_part_id', 'hnt_middle_section_part.hpp_middle_part_id', 'hnt_middle_section_part.hpp_part_count', 'hnt_repository_part.hrp_part_count', 'hnt_middle_part.hmp_name')
                 ->selectRaw('*,MIN(hnt_repository_part.hrp_part_count/hnt_product_part.hpp_part_count)as total')
                 ->where('hnt_product_part.deleted_at', '=', Null)
+                ->where('hnt_repository_part.deleted_at', '=', Null)
                 ->groupBy('hnt_product_part.hpp_product_id')
                 ->orderBY('total', 'DESC')
                 ->skip($start)
@@ -141,6 +142,7 @@ class ProductPartController extends Controller
 //                ->select('hnt_middle_section_part.hpp_part_id', 'hnt_middle_section_part.hpp_middle_part_id', 'hnt_middle_section_part.hpp_part_count', 'hnt_repository_part.hrp_part_count', 'hnt_middle_part.hmp_name')
                 ->selectRaw('*,MIN(hnt_repository_part.hrp_part_count/hnt_product_part.hpp_part_count)as total')
                 ->where('hnt_product_part.deleted_at', '=', Null)
+                ->where('hnt_repository_part.deleted_at', '=', Null)
                 ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
                 ->groupBy('hnt_product_part.hpp_product_id')
                 ->orderBY('total', 'DESC')
@@ -172,10 +174,10 @@ class ProductPartController extends Controller
             $product_part = DB::Table('hnt_product_part')
                 ->Join('hnt_repository_part', 'hnt_product_part.hpp_part_id', 'hnt_repository_part.hrp_part_id')
                 ->join('hnt_parts', 'hnt_product_part.hpp_part_id', 'hnt_parts.id')
-                ->selectRaw('*,MIN(hnt_repository_part.hrp_part_count/hnt_product_part.hpp_part_count)as total')
+                ->selectRaw('*,hnt_repository_part.hrp_part_count/hnt_product_part.hpp_part_count as total')
                 ->where('hnt_product_part.deleted_at', '=', Null)
+                ->where('hnt_repository_part.deleted_at', '=', Null)
                 ->where('hnt_product_part.hpp_product_id', '=', $product_id)
-                ->orderBY('total', 'DESC')
                 ->skip($start)
                 ->take($length)
                 ->get();
@@ -183,11 +185,11 @@ class ProductPartController extends Controller
             $product_part = DB::Table('hnt_product_part')
                 ->Join('hnt_repository_part', 'hnt_product_part.hpp_part_id', 'hnt_repository_part.hrp_part_id')
                 ->join('hnt_parts', 'hnt_product_part.hpp_part_id', 'hnt_parts.id')
-                ->selectRaw('*,MIN(hnt_repository_part.hrp_part_count/hnt_product_part.hpp_part_count)as total')
+                ->selectRaw('*,hnt_repository_part.hrp_part_count/hnt_product_part.hpp_part_count as total')
+                ->where('hnt_repository_part.deleted_at', '=', Null)
                 ->where('hnt_product_part.deleted_at', '=', Null)
                 ->where('hnt_product_part.hpp_product_id', '=', $product_id)
                 ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
-                ->orderBY('total', 'DESC')
                 ->get();
         }
         $computing = '';
@@ -195,7 +197,7 @@ class ProductPartController extends Controller
         foreach ($product_part as $m) {
             $number=($m->total);
             $round = number_format((floor($number)), 0, '.', '');            $key++;
-            $computing .= '["' . $key . '","' . $m->hp_name . '",' . '"' . $round . '",' . '"' . $m->hpp_product_id . '"],';
+            $computing .= '["' . $key . '","' . $m->hp_name . '",' . '"' . $round . '",' . '"' . $m->hrp_part_count . '",' . '"' . $m->hpp_product_id . '"],';
         }
         $computing = substr($computing, 0, -1);
         $product_part_count = ProductPart::ALL()->count();

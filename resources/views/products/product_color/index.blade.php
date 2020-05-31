@@ -71,7 +71,7 @@
                             <div class="card-body">
                                 <form id="form2">
                                     <div class="row">
-                                        <div class="col-md-6 pr-md-1">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>{{__('Product Color Name')}}</label>
                                                 <input name="hn_color_name" type="text" class="form-control"
@@ -128,7 +128,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: '/product-color-destroy/' + data[13],
+                                url: '/product-color-destroy/' + data[2],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',
@@ -301,7 +301,7 @@
             $('#table').on('click', '.edit', function (event) {
                 $('#card-form2').show();
                 var data = table.row($(this).parents('tr')).data();
-                $('#pcid').val(data[13]);
+                $('#pcid').val(data[2]);
                 $('#hn_color_name').val(data[1]);
             })
             // end filling

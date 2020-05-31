@@ -32,7 +32,7 @@ class HDReceiverUserController extends Controller
         if ($size_name == 1) {
             $receiver = new HDReceiverUser();
             $receiver->hhru_name = $request->hhru_name;
-            $receiver->hhru_receive_user = $request->hhru_receive_user;
+            $receiver->hhru_receive_user = $request->hhru_receive_user[0];
             $receiver->save();
         } else {
             $item = $request->hhru_receive_user;

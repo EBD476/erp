@@ -12,10 +12,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    {{--                    @can('browse-btn-user')--}}
                     <a href="{{route('client.create')}}" class="btn btn-primary float-left mb-lg-2"><i
                                 class="tim-icons icon-simple-add"></i>{{__('Create new client')}}</a>
-                    {{--@endcan--}}
                 </div>
                 <div class="card">
                     <div class="card-body">
@@ -27,7 +25,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table id="table" class="table" cellspacing="0" width="100%">
+                                        <table class="table" cellspacing="0" width="100%">
                                             <thead class=" text-primary">
                                             <th>
                                                 {{__('ID')}}
@@ -125,10 +123,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    {{--                    @can('browse-btn-user')--}}
                     <a href="{{route('client.create')}}" class="btn btn-primary float-left mb-lg-2"><i
                                 class="tim-icons icon-simple-add"></i>{{__('Create new client')}}</a>
-                    {{--@endcan--}}
                 </div>
                 <div class="card">
                     <div class="card-body">
@@ -140,16 +136,13 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table id="table" class="table" cellspacing="0" width="100%">
+                                        <table class="table" cellspacing="0" width="100%">
                                             <thead class=" text-primary">
                                             <th>
                                                 {{__('ID')}}
                                             </th>
                                             <th>
                                                 {{__('Name')}}
-                                            </th>
-                                            <th>
-                                                {{__('Create At')}}
                                             </th>
                                             <th>
                                                 {{__('action')}}
@@ -163,10 +156,7 @@
                                                         {{$key + 1}}
                                                     </td>
                                                     <td>
-                                                        {{$client -> hc_name}}
-                                                    </td>
-                                                    <td>
-                                                        {{$client -> created_at}}
+                                                        {{$client ->hc_name}}
                                                     </td>
                                                     <td>
                                                         <div class="dropdown">
@@ -234,4 +224,7 @@
     </div>
     @endrole
 @endsection
-
+@push('scripts')
+    <script src="{{asset('assets/js/jquery.dataTables.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
+@endpush

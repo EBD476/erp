@@ -30,7 +30,7 @@ class OrderProductController extends Controller
             if ($request->name != "") {
                 $product = new OrderProduct();
                 $product->hpo_product_id = $request->name[0];
-                $product->hpo_count = 1;
+                $product->hpo_count = $request->invoice_items_qty[0];
                 $product->hpo_order_id = $request->hpo_order_id;
                 $product->hop_due_date = $create_due_date;
                 $product->hpo_description = $request->invoice_items[0];

@@ -30,6 +30,16 @@ class TaskController extends Controller
         return view('products.product_task.index', compact('type', 'priority', 'help_desk', 'user'));
     }
 
+    public function product_task_report_list()
+    {
+        $current_user = auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        return view('products.product_task.report_list', compact('type', 'priority', 'help_desk', 'user'));
+    }
+
     public function checkbox(Request $request, $id)
     {
         $status = ProductStatus::all()->count();
@@ -140,6 +150,54 @@ class TaskController extends Controller
         $data = substr($data, 0, -1);
         $task_count = Task::all()->count();
         return response('{ "recordsTotal":' . $task_count . ',"recordsFiltered":' . $task_count . ',"data": [' . $data . ']}');
+    }//     fill new order
+
+    public function fill_report_list(Request $request)
+    {
+        $current_user = auth()->user()->id;
+        $select_zone = ProductZone::select('id')->where('hpz_user_id', $current_user)->get()->last();
+        $start = $request->start;
+        $length = $request->length;
+        $search = $request->search['value'];
+        if ($search == '') {
+            $task = DB::table('hnt_product_task_report')
+                ->join('hnt_product_zone', 'hnt_product_task_report.hpt_product_zone_id', '=', 'hnt_product_zone.id')
+                ->join('hnt_products', 'hnt_product_task_report.hpt_product_id', '=', 'hnt_products.id')
+                ->join('hnt_product_color', 'hnt_products.hp_product_color_id', '=', 'hnt_product_color.id')
+                ->join('hnt_product_property', 'hnt_products.hp_product_property', '=', 'hnt_product_property.id')
+                ->join('users', 'hnt_product_task_report.hpt_user_id', '=', 'users.id')
+                ->join('hnt_product_status', 'hnt_product_task_report.hpt_status', '=', 'hnt_product_status.hps_level')
+                ->select('hnt_product_task_report.id', 'hnt_product_task_report.hpt_product_id', 'hnt_products.hp_product_name', 'hnt_product_task_report.hpt_invoice_number', 'hnt_product_task_report.hpt_count', 'hnt_product_task_report.hpt_report', 'hnt_product_task_report.hpt_comment', 'hnt_products.hp_product_model', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_products.hp_product_image', 'hnt_product_status.hps_name', 'hnt_products.hp_voltage', 'hnt_products.hp_serial_number', 'hnt_product_zone.hpz_name', 'users.name', 'hnt_product_task_report.hpt_product_zone_id', 'hnt_product_task_report.hpt_status')
+                ->where('hnt_product_task_report.hpt_product_zone_id', '=', $select_zone->id)
+                ->where('hnt_products.deleted_at', '=', Null)
+                ->skip($start)
+                ->take($length)
+                ->get();
+        } else {
+            $task = B::table('hnt_product_task_report')
+                ->join('hnt_product_zone', 'hnt_product_task_report.hpt_product_zone_id', '=', 'hnt_product_zone.id')
+                ->join('hnt_products', 'hnt_product_task_report.hpt_product_id', '=', 'hnt_products.id')
+                ->join('hnt_product_color', 'hnt_products.hp_product_color_id', '=', 'hnt_product_color.id')
+                ->join('hnt_product_property', 'hnt_products.hp_product_property', '=', 'hnt_product_property.id')
+                ->join('users', 'hnt_product_task_report.hpt_user_id', '=', 'users.id')
+                ->join('hnt_product_status', 'hnt_product_task_report.hpt_status', '=', 'hnt_product_status.hps_level')
+                ->select('hnt_product_task_report.id', 'hnt_product_task_report.hpt_product_id', 'hnt_products.hp_product_name', 'hnt_product_task_report.hpt_invoice_number', 'hnt_product_task_report.hpt_count', 'hnt_product_task_report.hpt_report', 'hnt_product_task_report.hpt_comment', 'hnt_products.hp_product_model', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_products.hp_product_image', 'hnt_product_status.hps_name', 'hnt_products.hp_voltage', 'hnt_products.hp_serial_number', 'hnt_product_zone.hpz_name', 'users.name', 'hnt_product_task_report.hpt_product_zone_id', 'hnt_product_task_report.hpt_status')
+                ->where('hnt_product_task_report.hpt_product_zone_id', '=', $select_zone->id)
+                ->where('hnt_products.deleted_at', '=', Null)
+                ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
+                ->where('hnt_product_task.hpt_verify', '=', 0)
+                ->get();
+        }
+
+        $data = '';
+        $key = 0;
+        foreach ($task as $tasks) {
+            $key++;
+            $data .= '["' . $key . '","' . $tasks->hpt_invoice_number . '",' . '"' . $tasks->hp_serial_number . " " . $tasks->hp_product_name . " " . $tasks->hp_product_model . " " . $tasks->hn_color_name . " " . $tasks->hpp_property_name . " " . $tasks->hp_product_size . '",' . '"' . $tasks->hpt_count . '",' . '"' . $tasks->name . '",' . '"' . $tasks->hpz_name . '",' . '"' . $tasks->hps_name . '",' . '"' . $tasks->hpt_report . '",' . '"' . $tasks->hpt_comment . '",' . '"' . $tasks->id . '",' . '"' . $tasks->hpt_product_zone_id . '",' . '"' . $tasks->hpt_status . '",' . '"' . $tasks->hpt_product_id . '"],';
+        }
+        $data = substr($data, 0, -1);
+        $task_count = Task::all()->count();
+        return response('{ "recordsTotal":' . $task_count . ',"recordsFiltered":' . $task_count . ',"data": [' . $data . ']}');
     }
 
 //    fill report list
@@ -157,12 +215,12 @@ class TaskController extends Controller
             ->join('hnt_product_property', 'hnt_products.hp_product_property', '=', 'hnt_product_property.id')
             ->join('users', 'hnt_product_task_report.hpt_user_id', '=', 'users.id')
             ->join('hnt_product_status', 'hnt_product_task_report.hpt_status', '=', 'hnt_product_status.hps_level')
-            ->select( 'hnt_product_task_report.hpt_product_id', 'hnt_products.hp_product_name', 'hnt_product_task_report.hpt_invoice_number', 'hnt_product_task_report.hpt_count', 'hnt_product_task_report.hpt_report', 'hnt_product_task_report.hpt_comment', 'hnt_products.hp_product_model', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_products.hp_product_image', 'hnt_products.hp_voltage', 'hnt_products.hp_serial_number', 'hnt_product_zone.hpz_name', 'users.name')
+            ->select('hnt_product_task_report.hpt_product_id', 'hnt_products.hp_product_name', 'hnt_product_task_report.hpt_invoice_number', 'hnt_product_task_report.hpt_count', 'hnt_product_task_report.hpt_report', 'hnt_product_task_report.hpt_comment', 'hnt_products.hp_product_model', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_products.hp_product_image', 'hnt_products.hp_voltage', 'hnt_products.hp_serial_number', 'hnt_product_zone.hpz_name', 'users.name')
             ->where('hnt_products.deleted_at', '=', Null)
             ->where('hnt_product_task_report.hpt_invoice_number', '=', $request->id)
             ->get();
-       $data_invoices = $data->last();
-        return view('products.product_task.preview',["data" => $data], compact('type', 'priority', 'help_desk', 'user','data_invoices'));
+        $data_invoices = $data->last();
+        return view('products.product_task.preview', ["data" => $data], compact('type', 'priority', 'help_desk', 'user', 'data_invoices'));
     }
 
 }

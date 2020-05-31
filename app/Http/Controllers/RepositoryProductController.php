@@ -187,8 +187,6 @@ class RepositoryProductController extends Controller
                 ->select('hnt_repository_product.hr_product_stock', 'hnt_products.hp_product_name', 'hnt_repository.hr_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name')
                 ->where('hnt_repository_product.deleted_at', '=', Null)
                 ->where('hnt_repository_product.hr_repository_id', '=', $last_repository)
-//                ->groupBy('hnt_repository_product.hr_product_id')
-                ->orderBy('hnt_products.hp_product_name')
                 ->distinct()
                 ->skip($start)
                 ->take($length)
@@ -204,8 +202,6 @@ class RepositoryProductController extends Controller
                 ->where('hnt_repository_product.deleted_at', '=', Null)
                 ->where('hnt_repository_product.hr_repository_id', '=', $last_repository)
                 ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
-//              ->groupBy('hnt_repository_product.hr_product_id')
-                ->orderBy('hnt_products.hp_product_name')
                 ->get();
         }
 

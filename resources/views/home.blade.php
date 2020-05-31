@@ -1627,7 +1627,7 @@
     @role('order')
     <div class="content persian">
         <div class="row">
-            <div class="col-lg-2 col-md-6">
+            <div class="col-lg-2 col-md-4">
                 <div class="card card-stats">
                     <div class="card-body">
                         <div class="row">
@@ -1653,7 +1653,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-2 col-md-6">
+            <div class="col-lg-2 col-md-4">
                 <div class="card card-stats">
                     <div class="card-body">
                         <div class="row">
@@ -1705,7 +1705,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-2 col-md-6">
+            <div class="col-lg-2 col-md-4">
                 <div class="card card-stats">
                     <div class="card-body">
                         <div class="row">
@@ -1731,7 +1731,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-2 col-md-6">
+            <div class="col-lg-2 col-md-8">
                 <div class="card card-stats">
                     <div class="card-body">
                         <div class="row">

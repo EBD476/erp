@@ -44,103 +44,101 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card">
-                        <div class="card card-user">
+                    <div class="card card-user">
+                        <div class="card-body">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('New Zone')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
                             <div class="card-body">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title ">{{__('New Zone')}}</h4>
-                                    <p class="card-category"></p>
-                                </div>
-                                <div class="card-body">
-                                    <form id="form1">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label>{{__('Name')}}</label>
-                                                <div class="form-group">
-                                                    <input name="hpz_name" class="form-control">
-                                                    <input id="id" hidden>
-                                                </div>
+                                <form id="form1">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>{{__('Name')}}</label>
+                                            <div class="form-group">
+                                                <input name="hpz_name" class="form-control">
+                                                <input id="id" hidden>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label>{{__('User')}}</label>
-                                                <div class="form-group">
-                                                    <select name="hpz_user_id[]"
-                                                            class="form-control select-receiver-user"
-                                                            multiple="multiple"></select>
-                                                </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>{{__('User')}}</label>
+                                            <div class="form-group">
+                                                <select name="hpz_user_id[]"
+                                                        class="form-control select-receiver-user"
+                                                        multiple="multiple"></select>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label>{{__('Priority')}}</label>
-                                                <div class="form-group">
-                                                    <select name="hpz_priority"
-                                                            class="form-control" required="" type="number">
-                                                        @foreach($status as $statuses)
-                                                            <option value="{{$statuses->hps_level}}">{{$statuses->hps_name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>{{__('Priority')}}</label>
+                                            <div class="form-group">
+                                                <select name="hpz_priority"
+                                                        class="form-control" required="" type="number">
+                                                    @foreach($status as $statuses)
+                                                        <option value="{{$statuses->hps_level}}">{{$statuses->hps_name}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="card-footer">
-                                            <button type="submit"
-                                                    class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <div class="card card-user" id="card-form2">
+                    </div>
+                    <div class="card card-user" id="card-form2">
+                        <div class="card-body">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('Edit Zone')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
                             <div class="card-body">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title ">{{__('Edit Zone')}}</h4>
-                                    <p class="card-category"></p>
-                                </div>
-                                <div class="card-body">
-                                    <form id="form2">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label>{{__('Name')}}</label>
-                                                <div class="form-group">
-                                                    <input class="form-control" id="hpz_name" name="hpz_name">
-                                                    <input id="id" hidden>
-                                                </div>
+                                <form id="form2">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>{{__('Name')}}</label>
+                                            <div class="form-group">
+                                                <input class="form-control" id="hpz_name" name="hpz_name">
+                                                <input id="id" hidden>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label>{{__('User')}}</label>
-                                                <div class="form-group">
-                                                    <select style="width: 450px;" name="hpz_user_id[]"
-                                                            class="form-control select-receiver-user">
-                                                        <option id="hpz_user_id_val"></option>
-                                                    </select>
-                                                </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>{{__('User')}}</label>
+                                            <div class="form-group">
+                                                <select style="width: 450px;" name="hpz_user_id"
+                                                        class="form-control select-receiver-user">
+                                                    <option id="hpz_user_id_val"></option>
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label>{{__('Priority')}}</label>
-                                                <div class="form-group">
-                                                    <select name="hpz_priority"
-                                                            class="form-control" required="" type="number">
-                                                        <option id="hpz_priority"></option>
-                                                        @foreach($status as $statuses)
-                                                            <option value="{{$statuses->hps_level}}">{{$statuses->hps_name}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>{{__('Priority')}}</label>
+                                            <div class="form-group">
+                                                <select name="hpz_priority"
+                                                        class="form-control" required="" type="number">
+                                                    <option id="hpz_priority"></option>
+                                                    @foreach($status as $statuses)
+                                                        <option value="{{$statuses->hps_level}}">{{$statuses->hps_name}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
-                                        <div class="card-footer">
-                                            <button type="submit"
-                                                    class="btn btn-fill btn-primary">{{__('Save')}}</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Save')}}</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

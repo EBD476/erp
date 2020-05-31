@@ -30,7 +30,7 @@ class ProductPropertyItemsController extends Controller
         $items = New ProductPropertyItems();
         $items->hppi_items_name = $request->hppi_items_name;
         $items->hppi_serial_number = $request->hppi_serial_number;
-        $items->hppi_color = $request->hppi_color;
+//        $items->hppi_color = $request->hppi_color;
         $items->save();
         return json_encode(["response" => "Done"]);
 
@@ -44,7 +44,7 @@ class ProductPropertyItemsController extends Controller
         $items = ProductPropertyItems:: find($id);
         $items->hppi_items_name = $request->hppi_items_name;
         $items->hppi_serial_number = $request->hppi_serial_number;
-        $items->hppi_color = $request->hppi_color;
+//        $items->hppi_color = $request->hppi_color;
         $items->save();
         return json_encode(["response" => "Done"]);
 
@@ -66,16 +66,16 @@ class ProductPropertyItemsController extends Controller
         $search = $request->search['value'];
         if ($search == '') {
             $items = DB::table('hnt_product_property_items')
-                ->join('hnt_product_color', 'hnt_product_property_items.hppi_color', '=', 'hnt_product_color.id')
-                ->select('hnt_product_property_items.id', 'hnt_product_property_items.hppi_items_name', 'hnt_product_property_items.hppi_serial_number', 'hnt_product_property_items.hppi_color', 'hnt_product_color.hn_color_name')
+//                ->join('hnt_product_color', 'hnt_product_property_items.hppi_color', '=', 'hnt_product_color.id')
+                ->select('hnt_product_property_items.id', 'hnt_product_property_items.hppi_items_name', 'hnt_product_property_items.hppi_serial_number')
                 ->where('hnt_product_property_items.deleted_at', '=', Null)
                 ->skip($start)
                 ->take($length)
                 ->get();
         } else {
             $items = DB::table('hnt_product_property_items')
-                ->join('hnt_product_color', 'hnt_product_property_items.hppi_color', '=', 'hnt_product_color.id')
-                ->select('hnt_product_property_items.id', 'hnt_product_property_items.hppi_items_name', 'hnt_product_property_items.hppi_serial_number', 'hnt_product_property_items.hppi_color', 'hnt_product_color.hn_color_name')
+//                ->join('hnt_product_color', 'hnt_product_property_items.hppi_color', '=', 'hnt_product_color.id')
+                ->select('hnt_product_property_items.id', 'hnt_product_property_items.hppi_items_name', 'hnt_product_property_items.hppi_serial_number')
                 ->where('hnt_product_property_items.deleted_at', '=', Null)
                 ->where('hppi_items_name', 'LIKE', "%$search%")
                 ->orwhere('hppi_serial_number', 'LIKE', "%$search%")
@@ -86,7 +86,7 @@ class ProductPropertyItemsController extends Controller
         $key = 0;
         foreach ($items as $itemss) {
             $key++;
-            $data .= '["' . $key . '",' . '"' . $itemss->hppi_items_name . '",' . '"' . $itemss->hppi_serial_number . '",' . '"' . $itemss->hn_color_name . '",' . '"' . $itemss->hppi_color . '",' . '"' . $itemss->id . '"],';
+            $data .= '["' . $key . '",' . '"' . $itemss->hppi_items_name . '",' . '"' . $itemss->hppi_serial_number . '",' . '"' . $itemss->id . '"],';
         }
         $data = substr($data, 0, -1);
         $items_count = ProductPropertyItems::all()->count();

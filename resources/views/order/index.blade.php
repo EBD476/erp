@@ -12,10 +12,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    {{--@can('browse-btn-user')--}}
                     <a href="{{route('order.create')}}" class="btn btn-primary float-left mb-lg-2"><i
                                 class="tim-icons icon-simple-add"></i>{{__('Add New Order')}}</a>
-                    {{--@endcan--}}
                 </div>
                 <div class="card">
                     <div class="card-body">

@@ -629,7 +629,6 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        // alert(data.id);
                         setTimeout($.unblockUI, 2000);
                         $('#client_details').removeClass('hidden');
                         client_id = data.id;
@@ -665,9 +664,7 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        alert(data.response);
                         setTimeout($.unblockUI, 2000);
-                        // location.reload();
                         window.location.href = "/client";
                     },
                     cache: false,

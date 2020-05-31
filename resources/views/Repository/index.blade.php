@@ -619,7 +619,7 @@
                                 "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
                                 "                                                                <a class=\"dropdown-item edit-product\"\n" +
                                 "                                                                >{{__('Edit')}}</a>\n" +
-                                "                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +
+                                {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
                                 "                                                            </div>\n" +
                                 "                                                        </div>"
                         }
@@ -738,7 +738,7 @@
                                 "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
                                 "                                                                <a class=\"dropdown-item edit-middle-part\"\n" +
                                 "                                                                >{{__('Edit')}}</a>\n" +
-                                "                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +
+                                {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
                                 "                                                            </div>\n" +
                                 "                                                        </div>"
                         }
@@ -857,7 +857,7 @@
                                 "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
                                 "                                                                <a class=\"dropdown-item edit-part\"\n" +
                                 "                                                                >{{__('Edit')}}</a>\n" +
-                                "                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +
+                                {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
                                 "                                                            </div>\n" +
                                 "                                                        </div>"
                         }
