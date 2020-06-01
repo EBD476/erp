@@ -397,7 +397,6 @@
                                 hpt_invoice_number: cdata[1],
                                 hpt_count: cdata[3],
                                 hpt_product_id: cdata[6],
-                                hpt_status: 1,
                                 hpo_order_id: cdata[8]
                             };
                             //token
@@ -456,7 +455,6 @@
                             "render": function (data, type, row) {
                                 if (data[10] == 0) {
                                     return '<div class="progress">\n' +
-                                        // '                                                                <span class="progress-value">25%</span>\n' +
                                         '                                                                    <div class="progress-bar" role="progressbar"\n' +
                                         '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
                                         '                                                                         aria-valuemax="100"\n' +
@@ -464,43 +462,38 @@
                                 }
                                 if (data[10] == 1) {
                                     return '<div class="progress">\n' +
-                                        // '                                                                <span class="progress-value">25%</span>\n' +
                                         '                                                                    <div class="progress-bar" role="progressbar"\n' +
                                         '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
                                         '                                                                         aria-valuemax="100"\n' +
-                                        '                                                                         style="width: 10%;"></div>\n'
+                                        '                                                                         style="width: 10%;">\'<span class="progress-value">10%</span>\\n\' +\n</div>\n'
                                 }
                                 if (data[10] == 2) {
                                     return '<div class="progress">\n' +
-                                        // '                                                                <span class="progress-value">25%</span>\n' +
                                         '                                                                    <div class="progress-bar" role="progressbar"\n' +
                                         '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
                                         '                                                                         aria-valuemax="100"\n' +
-                                        '                                                                         style="width: 30%;"></div>\n'
+                                        '                                                                         style="width: 30%;">\'<span class="progress-value">30%</span>\\n\' +\n</div>\n'
                                 }
                                 if (data[10] == 3) {
                                     return '<div class="progress">\n' +
-                                        // '                                                                <span class="progress-value">25%</span>\n' +
                                         '                                                                    <div class="progress-bar" role="progressbar"\n' +
                                         '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
                                         '                                                                         aria-valuemax="100"\n' +
-                                        '                                                                         style="width: 50%;"></div>\n'
+                                        '                                                                         style="width: 50%;">\'<span class="progress-value">50%</span>\\n\' +\n</div>\n'
                                 }
                                 if (data[10] == 4) {
                                     return '<div class="progress">\n' +
-                                        // '                                                                <span class="progress-value">25%</span>\n' +
                                         '                                                                    <div class="progress-bar" role="progressbar"\n' +
                                         '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
                                         '                                                                         aria-valuemax="100"\n' +
-                                        '                                                                         style="width: 70%;"></div>\n'
+                                        '                                                                         style="width: 70%;">\'<span class="progress-value">70%</span>\\n\' +\n</div>\n'
                                 }
                                 if (data[10] == 5) {
                                     return '<div class="progress">\n' +
-                                        // '                                                                <span class="progress-value">25%</span>\n' +
                                         '                                                                    <div class="progress-bar" role="progressbar"\n' +
                                         '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
                                         '                                                                         aria-valuemax="100"\n' +
-                                        '                                                                         style="width: 100%;"></div>\n'
+                                        '                                                                         style="width: 100%;">\'<span class="progress-value">100%</span>\\n\' +\n</div>\n'
                                 }
                             }
                         },
@@ -614,23 +607,23 @@
                         true,
                     "ajax":
                         '/invoices-list-product-inventory',
-                "columnDefs":
-                    [{
-                        "targets": -1,
-                        "data": null,
-                        "render": function (data, type, row, meta) {
-                            return "  <div class=\"dropdown\">\n" +
-                                "                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +
-                                "                                                                    data-toggle=\"dropdown\">\n" +
-                                "                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +
-                                "                                                            </a>\n" +
-                                "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
-                                "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
-                                "                                                                <button class=\"dropdown-item \"  type=\"submit\">{{__('Send Request')}}</button>\n" +
-                                "                                                            </div>\n" +
-                                "                                                        </div>"
-                        }
-                    }],
+                    "columnDefs":
+                        [{
+                            "targets": -1,
+                            "data": null,
+                            "render": function (data, type, row, meta) {
+                                return "  <div class=\"dropdown\">\n" +
+                                    "                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +
+                                    "                                                                    data-toggle=\"dropdown\">\n" +
+                                    "                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +
+                                    "                                                            </a>\n" +
+                                    "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
+                                    "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
+                                    "                                                                <button class=\"dropdown-item \"  type=\"submit\">{{__('Send Request')}}</button>\n" +
+                                    "                                                            </div>\n" +
+                                    "                                                        </div>"
+                            }
+                        }],
                     "language":
                         {
                             "sEmptyTable":

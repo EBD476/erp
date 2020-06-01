@@ -20,7 +20,7 @@ class InstallController extends Controller
         $priority = HDpriority::ALL();
         $help_desk = HelpDesk::where('hhd_ticket_status','1')->get();
         $product=Product::all();
-        $invoice_status=DB::select("SELECT hpo_order_id,hp_Invoice_number,hp_project_name,hpo_product_id,hpo_count,hop_due_date,hpo_client_id FROM hnt_invoices , hnt_invoice_items WHERE hnt_invoices.hp_contract_type ='نصب در محل' and   hnt_invoice_items.hpo_status = '4' group by hnt_invoice_items.hpo_order_id ");
+        $invoice_status=DB::select("SELECT hpo_order_id,hp_Invoice_number,hp_project_name,hpo_product_id,hpo_count,hop_due_date FROM hnt_invoices , hnt_invoice_items WHERE hnt_invoices.hp_contract_type ='نصب در محل' and   hnt_invoice_items.hpo_status = '4' group by hnt_invoice_items.hpo_order_id ");
         return view('install.index',['invoice_status'=>$invoice_status],compact('product','help_desk','priority','type','user'));
     }
 //    store data
@@ -37,7 +37,7 @@ class InstallController extends Controller
                 }
                 if (OrderProduct::where('hpo_order_id', $id)->count() == $number) {
                     OrderState::where('order_id', $id)
-                        ->update(['ho_process_id' => '5']);
+                        ->update(['ho_process_id' => '6']);
                     $order=Order::Select()->where('id',$id);
                     $current_date = Carbon::now();
                     $current_date = $current_date->year . $current_date->month . $current_date->day;

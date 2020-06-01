@@ -44,13 +44,16 @@
                                                                 <strong>{{__('Count')}}</strong>
                                                             </th>
                                                             <th class="text-center">
-                                                                <strong>{{__('Comment')}}</strong>
-                                                            </th>
-                                                            <th class="text-center">
                                                                 <strong>{{__('Report')}}</strong>
                                                             </th>
                                                             <th class="text-center">
+                                                                <strong>{{__('Comment')}}</strong>
+                                                            </th>
+                                                            <th class="text-center">
                                                                 <strong>{{__('Zone')}}</strong>
+                                                            </th>
+                                                            <th class="text-center">
+                                                                <strong>{{__('Level')}}</strong>
                                                             </th>
                                                             <th class="text-center">
                                                                 <strong>{{__('Registrant')}}</strong>
@@ -69,7 +72,8 @@
                                                                 <td class="text-center">{{$data_report->hpt_count}}</td>
                                                                 <td class="text-center">{{$data_report->hpt_report}}</td>
                                                                 <td class="text-center">{{$data_report->hpt_comment}}</td>
-                                                                <td class="text-center">{{$data_report->hpz_name}}</td>
+                                                                <td class="text-center">{{$data_report->hpt_product_zone_name}}</td>
+                                                                <td class="text-center">{{$data_report->hps_name}}</td>
                                                                 <td class="text-center">{{$data_report->name}}</td>
                                                             </tr>
                                                         @endforeach

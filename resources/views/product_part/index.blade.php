@@ -146,7 +146,7 @@
                                                 <div class="form-group">
                                                     <select class="form-control select-product-zone"
                                                             name="hpp_product_zone"
-                                                           ><option  id="hpp_product_zone"></option></select>
+                                                    ></select>
                                                 </div>
                                             </div>
                                         </div>
@@ -231,7 +231,8 @@
                                             </tbody>
                                         </table>
                                         <div class="card-footer">
-                                            <button type="submit" class="btn btn-fill btn-primary" id="back">{{__('Back')}}</button>
+                                            <button type="submit" class="btn btn-fill btn-primary"
+                                                    id="back">{{__('Back')}}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -279,7 +280,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: '/product-part-destroy/' + data[8],
+                                url: '/product-part-destroy/' + data[7],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',
@@ -455,9 +456,8 @@
             $('#table').on('click', '.edit', function (event) {
                 $('#card-form2').show();
                 var data = table.row($(this).parents('tr')).data();
-                $('#pid').val(data[8]);
+                $('#pid').val(data[7]);
                 $('#hpp_part_id').val(data[6]);
-                $('#hpp_product_zone').val(data[7]);
                 $('#hpp_product_id').val(data[5]);
                 $('#hpp_part_count').val(data[4]);
             })
@@ -773,7 +773,7 @@
 
             // end fill data in select part
 
-            $('#back').on('click',function () {
+            $('#back').on('click', function () {
                 $('#table-form2').hide();
                 $('#table-form').show();
                 event.preventDefault();

@@ -26,13 +26,13 @@
                                         {{__('ID')}}
                                     </th>
                                     <th>
-                                        {{__('Name')}}
+                                        {{__('Zone')}}
                                     </th>
                                     <th>
                                         {{__('User')}}
                                     </th>
                                     <th>
-                                        {{__('Priority')}}
+                                        {{__('Level')}}
                                     </th>
                                     <th>
                                         {{__('Action')}}
@@ -73,12 +73,12 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label>{{__('Priority')}}</label>
+                                            <label>{{__('Level')}}</label>
                                             <div class="form-group">
                                                 <select name="hpz_priority"
                                                         class="form-control" required="" type="number">
                                                     @foreach($status as $statuses)
-                                                        <option value="{{$statuses->hps_level}}">{{$statuses->hps_name}}</option>
+                                                        <option value="{{$statuses->id}}">{{$statuses->hps_name ." - ". $statuses->hps_level}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -122,13 +122,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label>{{__('Priority')}}</label>
+                                            <label>{{__('Level')}}</label>
                                             <div class="form-group">
                                                 <select name="hpz_priority"
                                                         class="form-control" required="" type="number">
                                                     <option id="hpz_priority"></option>
                                                     @foreach($status as $statuses)
-                                                        <option value="{{$statuses->hps_level}}">{{$statuses->hps_name}}</option>
+                                                        <option value="{{$statuses->id}}">{{$statuses->hps_name ." - ". $statuses->hps_level}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -360,7 +360,7 @@
                 $('#id').val(data[5]);
                 $('#hpz_name').val(data[1]);
                 $('#hpz_user_id_val').val(data[4]);
-                $('#hpz_priority').val(data[3]);
+                $('#hpz_priority').val(data[7]);
             })
             // end filling
 

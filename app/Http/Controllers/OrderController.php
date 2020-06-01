@@ -40,9 +40,7 @@ class OrderController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $order = Order::select('id')->where('hp_registrant', $current_user)->get();
-        $progress = OrderState::select('order_id')->get();
-        return view('order.index', compact('order', 'progress', 'type', 'help_desk', 'priority', 'user'));
+        return view('order.index', compact( 'type', 'help_desk', 'priority', 'user'));
     }
 
     public function create()
@@ -226,18 +224,7 @@ class OrderController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $repository_product = RepositoryProduct:: all();
-        $repository_product_count = DB::select("SELECT sum(hr_product_stock) as sum_hpo FROM hnt_repository_product");
-        $orders = OrderProduct::select('hpo_status', 'hpo_product_id', 'hpo_count', 'hpo_order_id')->where('hpo_status', '3')->get();
-        $product = Product::select('id', 'hp_product_name')->get();
-        $query_order_product = DB::select("SELECT sum(hpo_count) as sum_hpo , hpo_status , hpo_product_id FROM hnt_products,hnt_invoice_items WHERE hnt_products.id =hnt_invoice_items.hpo_product_id group by hnt_invoice_items.hpo_product_id , hpo_status ");
-        $query_order_product_all = DB::select("SELECT sum(hpo_count) as sum_hpo FROM hnt_invoice_items where hpo_status = '3'");
-        $repository = RepositoryPart::select('id', 'hrp_part_id', 'hrp_repository_id', 'hrp_part_count')->get();
-        $repository_name = RepositoryCreate::select('id', 'hr_name')->get();
-        $part = Part::select('id', 'hp_name')->get();
-        $repository_middle_part = RepositoryMiddlePart::select('id', 'hrm_count', 'hrm_comment', 'hrm_middle_part_id')->get();
-        $middle_part = MiddlePart::Select('id', 'hmp_name')->get();
-        return view('order.invoices_list_product.index', ['repository_product_count' => $repository_product_count, 'query' => $query_order_product, 'order_all' => $query_order_product_all], compact('repository_middle_part', 'part', 'repository_name', 'repository', 'user', 'repository_product', 'product', 'orders', 'help_desk', 'priority', 'type', 'middle_part'));
+        return view('order.invoices_list_product.index',compact( 'user','help_desk', 'priority', 'type'));
     }
 
 //  fill data table order
@@ -259,8 +246,9 @@ class OrderController extends Controller
         $data = '';
         $key = 0;
         foreach ($order as $orders) {
+            $progress = OrderState::select('ho_process_id')->where('order_id',$orders->id)->get()->last();
             $key++;
-            $data .= '["' . $key . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '",' . '"' . $orders->id . '"],';
+            $data .= '["' . $key . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '",' . '"' . $orders->id . '",' . '"' . $progress->ho_process_id . '"],';
         }
         $data = substr($data, 0, -1);
         $orders_count = Order::all()->count();
@@ -317,10 +305,10 @@ class OrderController extends Controller
                 $key++;
                 $data .= '["' . $key . '","' . $products->hp_Invoice_number . '",' . '"' . $products->hp_product_name . " " . $products->hp_product_model . " " . $products->hn_color_name . " " . $products->hpp_property_name . '",' . '"' . $products->hpo_count . '",' . '"' . $result . '",' . '"' . $products->hop_due_date . '",' . '"' . $products->hpo_product_id . '",' . '"' . $products->id . '",' . '"' . $products->hpo_order_id . '",' . '"' . $products->hpo_serial_number . '",' . '"' . 0 . '"],';
             } else {
-                $status = Task::select('hpt_status')->where('hpt_invoice_number', $products->hp_Invoice_number)->where('hpt_product_id', $products->hpo_product_id)->get()->last();
+                $status = DB::table('hnt_product_task')->join('hnt_product_status','hnt_product_task.hpt_status','hnt_product_status.id')->select('hnt_product_status.hps_level')->where('hpt_invoice_number', $products->hp_Invoice_number)->where('hpt_product_id', $products->hpo_product_id)->get()->last();
                 $result = $products->hr_product_stock - $products->hpo_count;
                 $key++;
-                $data .= '["' . $key . '","' . $products->hp_Invoice_number . '",' . '"' . $products->hp_product_name . " " . $products->hp_product_model . " " . $products->hn_color_name . " " . $products->hpp_property_name . '",' . '"' . $products->hpo_count . '",' . '"' . $result . '",' . '"' . $products->hop_due_date . '",' . '"' . $products->hpo_product_id . '",' . '"' . $products->id . '",' . '"' . $products->hpo_order_id . '",' . '"' . $products->hpo_serial_number . '",' . '"' . $status->hpt_status . '"],';
+                $data .= '["' . $key . '","' . $products->hp_Invoice_number . '",' . '"' . $products->hp_product_name . " " . $products->hp_product_model . " " . $products->hn_color_name . " " . $products->hpp_property_name . '",' . '"' . $products->hpo_count . '",' . '"' . $result . '",' . '"' . $products->hop_due_date . '",' . '"' . $products->hpo_product_id . '",' . '"' . $products->id . '",' . '"' . $products->hpo_order_id . '",' . '"' . $products->hpo_serial_number . '",' . '"' . $status->hps_level . '"],';
 
             }
 

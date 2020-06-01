@@ -24,10 +24,13 @@
                                         {{__('ID')}}
                                     </th>
                                     <th>
+                                        {{__('Priority')}}
+                                    </th>
+                                    <th>
                                         {{__('Level')}}
                                     </th>
                                     <th>
-                                        {{__('Name')}}
+                                        {{__('Zone')}}
                                     </th>
                                     <th>
                                         {{__('Action')}}
@@ -142,7 +145,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: '/product-status-destroy/' + data[3],
+                                url: '/product-status-destroy/' + data[4],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',
@@ -315,7 +318,7 @@
             $('#table').on('click', '.edit', function (event) {
                 $('#card-form2').show();
                 var data = table.row($(this).parents('tr')).data();
-                $('#id').val(data[3]);
+                $('#id').val(data[4]);
                 $('#hps_name').val(data[2]);
                 $('#hps_level').val(data[1]);
             })

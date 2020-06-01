@@ -40,14 +40,14 @@
                                             {{__('Zone')}}
                                         </th>
                                         <th>
-                                            {{__('Status')}}
+                                            {{__('Level')}}
                                         </th>
-                                        <th>
-                                            {{__('Report')}}
-                                        </th>
-                                        <th>
-                                            {{__('Comment')}}
-                                        </th>
+                                        {{--<th>--}}
+                                            {{--{{__('Report')}}--}}
+                                        {{--</th>--}}
+                                        {{--<th>--}}
+                                            {{--{{__('Comment')}}--}}
+                                        {{--</th>--}}
                                         <th>
                                             {{__('Action')}}
                                         </th>
@@ -99,7 +99,7 @@
                             <input id="hpt_product_id" name="hpt_product_id" hidden>
                             <input id="hpt_invoice_number" name="hpt_invoice_number" hidden>
                             <input id="hpt_count" name="hpt_count" hidden>
-                            <input id="hpt_product_zone_id" name="hpt_product_zone_id" hidden>
+                            <input id="hpt_product_zone_name" name="hpt_product_zone_name" hidden>
                             <input id="hpt_status" name="hpt_status" hidden>
                             <button type="submit" class="btn btn-primary">{{__('Send')}}</button>
                         </div>
@@ -202,8 +202,9 @@
 
                 var data_table = table1.row($(this).parents('tr')).data();
                 var data = {
-                    id: data_table[9],
-                    hpt_status: data_table[11],
+                    id: data_table[7],
+                    hpt_status: data_table[8],
+                    hpt_zone_name: data_table[5],
                 };
                 $.ajaxSetup({
                     headers: {
@@ -289,11 +290,11 @@
             $('#table1').on('click', '.comment', function (event) {
                 $("#modalRegisterForm").modal();
                 var data = table1.row($(this).parents('tr')).data();
-                $('#hpt_product_id').val(data[12]);
+                $('#hpt_product_id').val(data[9]);
                 $('#hpt_invoice_number').val(data[1]);
                 $('#hpt_count').val(data[3]);
-                $('#hpt_status').val(data[11]);
-                $('#hpt_product_zone_id').val(data[10]);
+                $('#hpt_status').val(data[8]);
+                $('#hpt_product_zone_name').val(data[5]);
             })
             // end filling
         });

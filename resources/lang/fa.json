@@ -585,9 +585,9 @@
   "Preview Detail": "نمایش جزئیات",
   "Ordered": "سفارش داده شده",
   "Product Task": "وظیفه",
-  "Product Status": "وضعیت محصول",
-  "Product Status List": "لیست وضعیت محصول",
-  "New Status": "وضعیت جدید",
+  "Product Status": "وضعیت بخش های تولید",
+  "Product Status List": "لیست وضعیت بخش های تولید",
+  "New Status": "سطح جدید",
   "Edit Status": "ویرایش وضعیت",
   "Report List": "لیست گزارشات ",
   "Factor Report List:": "لیست گزارشات فاکتور:",
@@ -599,5 +599,6 @@
   "Main Unit": "واحد",
   "Edit Receiver":"ویرایش نقش گیرنده",
   "Actor":"ارسال شده از",
-  "Product Report List":"لیست گزارشات"
+  "Product Report List":"لیست گزارشات",
+  "Submit New Invoice":"ثبت سفارش جدید"
 }

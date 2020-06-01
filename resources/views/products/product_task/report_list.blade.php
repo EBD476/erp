@@ -40,7 +40,7 @@
                                             {{__('Zone')}}
                                         </th>
                                         <th>
-                                            {{__('Status')}}
+                                            {{__('Level')}}
                                         </th>
                                         <th>
                                             {{__('Report')}}

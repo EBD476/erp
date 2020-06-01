@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Part;
 use App\Product;
 use App\ProductPart;
+use App\ProductZone;
 use App\User;
 use Illuminate\Http\Request;
 use App\HDpriority;
@@ -40,11 +41,12 @@ class ProductPartController extends Controller
             'hpp_product_id' => 'required',
             'hpp_part_count' => 'required',
         ]);
+        $zone_name = ProductZone::select('hpz_name')->where('id', $request->hpp_product_zone)->get()->last();
         $product_part = new ProductPart();
         $product_part->hpp_part_id = $request->hpp_part_id;
         $product_part->hpp_product_id = $request->hpp_product_id;
         $product_part->hpp_part_count = $request->hpp_part_count;
-        $product_part->hpp_product_zone = $request->hpp_product_zone;
+        $product_part->hpp_product_zone = $zone_name->hpz_name;
         $product_part->save();
 
         return json_encode(["response" => "OK"]);
@@ -58,11 +60,15 @@ class ProductPartController extends Controller
             'hpp_product_id' => 'required',
             'hpp_part_count' => 'required',
         ]);
+
         $product_part = ProductPart::find($id);
         $product_part->hpp_part_id = $request->hpp_part_id;
         $product_part->hpp_product_id = $request->hpp_product_id;
         $product_part->hpp_part_count = $request->hpp_part_count;
-        $product_part->hpp_product_zone = $request->hpp_product_zone;
+        if($request->hpp_product_zone != ""){
+            $zone_name = ProductZone::select('hpz_name')->where('id', $request->hpp_product_zone)->get()->last();
+            $product_part->hpp_product_zone = $zone_name->hpz_name;
+        }
         $product_part->save();
         return json_encode(["response" => "OK"]);
 
@@ -84,10 +90,9 @@ class ProductPartController extends Controller
         $search = $request->search['value'];
         if ($search == '') {
             $product_part = DB::table('hnt_product_part')
-                ->join('hnt_product_zone', 'hnt_product_part.hpp_product_zone', '=', 'hnt_product_zone.id')
                 ->join('hnt_parts', 'hnt_product_part.hpp_part_id', '=', 'hnt_parts.id')
                 ->join('hnt_products', 'hnt_product_part.hpp_product_id', '=', 'hnt_products.id')
-                ->select('hnt_product_part.id', 'hnt_product_part.hpp_product_id', 'hnt_product_part.hpp_part_id', 'hnt_products.hp_product_name', 'hnt_product_part.hpp_product_zone', 'hnt_product_part.hpp_part_count', 'hnt_parts.hp_name', 'hnt_product_zone.hpz_name')
+                ->select('hnt_product_part.id', 'hnt_product_part.hpp_product_id', 'hnt_product_part.hpp_part_id', 'hnt_products.hp_product_name', 'hnt_product_part.hpp_product_zone', 'hnt_product_part.hpp_part_count', 'hnt_parts.hp_name')
                 ->where('hnt_product_part.deleted_at', '=', Null)
                 ->skip($start)
                 ->take($length)
@@ -95,9 +100,8 @@ class ProductPartController extends Controller
         } else {
             $product_part = DB::table('hnt_product_part')
                 ->join('hnt_parts', 'hnt_product_part.hpp_part_id', '=', 'hnt_parts.id')
-                ->join('hnt_product_zone', 'hnt_product_part.hpp_product_zone', '=', 'hnt_product_zone.id')
                 ->join('hnt_products', 'hnt_product_part.hpp_product_id', '=', 'hnt_products.id')
-                ->select('hnt_product_part.id', 'hnt_product_part.hpp_product_id', 'hnt_product_part.hpp_part_id', 'hnt_product_part.hpp_part_count', 'hnt_product_part.hpp_product_zone', 'hnt_products.hp_product_name', 'hnt_parts.hp_name', 'hnt_product_zone.hpz_name')
+                ->select('hnt_product_part.id', 'hnt_product_part.hpp_product_id', 'hnt_product_part.hpp_part_id', 'hnt_product_part.hpp_part_count', 'hnt_product_part.hpp_product_zone', 'hnt_products.hp_product_name', 'hnt_parts.hp_name')
                 ->where('hnt_product_part.deleted_at', '=', Null)
                 ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
                 ->orwhere('hnt_parts.hp_name', 'LIKE', "%$search%")
@@ -108,7 +112,7 @@ class ProductPartController extends Controller
         $key = 0;
         foreach ($product_part as $product_parts) {
             $key++;
-            $data .= '["' . $key . '",' . '"' . $product_parts->hp_product_name . '",' . '"' . $product_parts->hp_name . '",' . '"' . $product_parts->hpz_name . '",' . '"' . $product_parts->hpp_part_count . '",' . '"' . $product_parts->hpp_product_id . '",' . '"' . $product_parts->hpp_part_id . '",' . '"' . $product_parts->hpp_product_zone . '",' . '"' . $product_parts->id . '"],';
+            $data .= '["' . $key . '",' . '"' . $product_parts->hp_product_name . '",' . '"' . $product_parts->hp_name . '",' . '"' . $product_parts->hpp_product_zone . '",' . '"' . $product_parts->hpp_part_count . '",' . '"' . $product_parts->hpp_product_id . '",' . '"' . $product_parts->hpp_part_id . '",' . '"' . $product_parts->id . '"],';
         }
         $data = substr($data, 0, -1);
         $product_parts_count = ProductPart::all()->count();
@@ -151,7 +155,7 @@ class ProductPartController extends Controller
         $computing = '';
         $key = 0;
         foreach ($product_part as $m) {
-            $number=($m->total);
+            $number = ($m->total);
             $round = number_format((floor($number)), 0, '.', '');
             $key++;
             $computing .= '["' . $key . '","' . $m->hp_product_name . '",' . '"' . $round . '",' . '"' . $m->hpp_product_id . '"],';
@@ -195,8 +199,9 @@ class ProductPartController extends Controller
         $computing = '';
         $key = 0;
         foreach ($product_part as $m) {
-            $number=($m->total);
-            $round = number_format((floor($number)), 0, '.', '');            $key++;
+            $number = ($m->total);
+            $round = number_format((floor($number)), 0, '.', '');
+            $key++;
             $computing .= '["' . $key . '","' . $m->hp_name . '",' . '"' . $round . '",' . '"' . $m->hrp_part_count . '",' . '"' . $m->hpp_product_id . '"],';
         }
         $computing = substr($computing, 0, -1);

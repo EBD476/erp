@@ -36,9 +36,9 @@
                                             <th>
                                                 {{__('Count')}}
                                             </th>
-                                            <th>
-                                                {{__('Client Name')}}
-                                            </th>
+                                            {{--<th>--}}
+                                                {{--{{__('Client Name')}}--}}
+                                            {{--</th>--}}
                                             <th>
                                                 {{__('Status')}}
                                             </th>
@@ -62,9 +62,6 @@
                                                     </td>
                                                     <td>
                                                         {{$invoice_statuses ->hpo_count}}
-                                                    </td>
-                                                    <td>
-                                                        {{$invoice_statuses ->hpo_client_id}}
                                                     </td>
                                                     <td>
                                                         {{$invoice_statuses ->hop_due_date}}
@@ -147,7 +144,7 @@
             if (event.target.checked) {
                 var data = {
                     id: $(this).data('id'),
-                    state: $(this)[0].checked == true ? 5 : 4,
+                    state: $(this)[0].checked == true ? 6 : 4,
 
                 };
                 $.blockUI({

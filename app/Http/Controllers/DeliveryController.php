@@ -16,6 +16,11 @@ use App\HelpDesk;
 
 class DeliveryController extends Controller
 {
+
+
+//////////////   Qc part data //////////////////////
+
+
     /**
      * Display a listing of the resource.
      *
@@ -23,13 +28,13 @@ class DeliveryController extends Controller
      */
     public function index()
     {
-        $current_user=auth()->user()->id;
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $invoice_status = DB::select("SELECT hpo_order_id,hp_Invoice_number,hp_project_name,hpo_product_id,hpo_count,hop_due_date FROM hnt_invoices , hnt_invoice_items WHERE hnt_invoices.hp_contract_type ='تحویل کالا' and   hnt_invoice_items.hpo_status = '4' group by hnt_invoice_items.hpo_order_id ");
-        return view('delivery.index', ['invoice_status' => $invoice_status],compact('help_desk','priority','type','user'));
+        $invoice_status = DB::select("SELECT hpo_order_id,hp_Invoice_number,hp_project_name,hpo_product_id,hpo_count,hop_due_date FROM hnt_invoices , hnt_invoice_items WHERE hnt_invoices.hp_contract_type ='تحویل کالا' and   hnt_invoice_items.hpo_status = 4  group by hnt_invoice_items.hpo_order_id ");
+        return view('delivery.index', ['invoice_status' => $invoice_status], compact('help_desk', 'priority', 'type', 'user'));
     }
 
 //    store data
@@ -47,19 +52,19 @@ class DeliveryController extends Controller
             if (OrderProduct::where('hpo_order_id', $id)->count() == $number) {
                 OrderState::where('order_id', $id)
                     ->update(['ho_process_id' => '5']);
-                $order=Order::where('id',$id)->get()->last();
+                $order = Order::where('id', $id)->get()->last();
                 $current_date = Carbon::now();
                 $current_date = $current_date->year . $current_date->month . $current_date->day;
                 $project = New Project();
-                $project->hp_order_id =$id;
-                $project->hp_project_name =$order->hp_project_name;
-                $project->hp_project_owner =$order->ho_client;
-                $project->hp_project_owner_phone =$order->hp_phone_number;
-                $project->hp_project_type =$order->hp_owner_user;
-                $project->hp_project_units =$order->hp_number_of_units;
-                $project->hp_project_address =$order->hp_address;
-                $project->hp_project_location =$order->hp_project_location;
-                $project->hp_project_complete_date =$current_date;
+                $project->hp_order_id = $id;
+                $project->hp_project_name = $order->hp_project_name;
+                $project->hp_project_owner = $order->ho_client;
+                $project->hp_project_owner_phone = $order->hp_phone_number;
+                $project->hp_project_type = $order->hp_owner_user;
+                $project->hp_project_units = $order->hp_number_of_units;
+                $project->hp_project_address = $order->hp_address;
+                $project->hp_project_location = $order->hp_project_location;
+                $project->hp_project_complete_date = $current_date;
                 $project->save();
 
             }
@@ -86,7 +91,7 @@ class DeliveryController extends Controller
 
         $data = '';
         foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '"],';
         }
         $data = substr($data, 0, -1);
         $orders_count = Order::all()->count();

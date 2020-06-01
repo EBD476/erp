@@ -60,14 +60,15 @@ class ProductStatusController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $status = ProductStatus::select('id', 'hps_name','hps_level')
+            $status = ProductStatus::select('id', 'hps_name','hps_level','hps_zone_name')
                 ->skip($start)
                 ->take($length)
                 ->get();
         } else {
-            $status = ProductStatus::select('id', 'hps_name','hps_level')
+            $status = ProductStatus::select('id', 'hps_name','hps_level','hps_zone_name')
                 ->where('id', 'LIKE', "%$search%")
                 ->orwhere('hps_name', 'LIKE', "%$search%")
+                ->orwhere('hps_zone_id', 'LIKE', "%$search%")
                 ->get();
         }
 
@@ -75,7 +76,7 @@ class ProductStatusController extends Controller
         $key = 0;
         foreach ($status as $st) {
             $key++;
-            $data .= '["' . $key . '",' . '"' . $st->hps_level . '",' . '"' . $st->hps_name . '",' . '"' . $st->id . '"],';
+            $data .= '["' . $key . '",' . '"' . $st->hps_level . '",' . '"' . $st->hps_name . '",' . '"' . $st->hps_zone_name . '",' . '"' . $st->id . '"],';
         }
         $data = substr($data, 0, -1);
         $st_count = HDtype::all()->count();

@@ -167,37 +167,56 @@
                         }, {
                             "targets": -1,
                             "data": null,
-                            "defaultContent": '  <div class="progress">\n' +
-                                '                                                            @foreach($order as $orders)\n' +
-                                '                                                            @foreach($progress as $progresses)\n' +
-                                // '                                                                <span class="progress-value">25%</span>\n' +
-                                '                                                                @if($progresses->ho_process_id == 1 and $orders->id == $progresses->order_id )\n' +
-                                '                                                                    <div class="progress-bar" role="progressbar"\n' +
-                                '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
-                                '                                                                         aria-valuemax="100"\n' +
-                                '                                                                         style="width: 25%;"></div>\n' +
-                                '                                                                @endif\n' +
-                                '                                                                @if($progresses->ho_process_id == 2 and $orders->id == $progresses->order_id)\n' +
-                                '                                                                    <div class="progress-bar" role="progressbar"\n' +
-                                '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
-                                '                                                                         aria-valuemax="100"\n' +
-                                '                                                                         style="width: 50%;"></div>\n' +
-                                '                                                                @endif\n' +
-                                '                                                                @if($progresses->ho_process_id == 3 and $orders->id == $progresses->order_id)\n' +
-                                '                                                                    <div class="progress-bar" role="progressbar"\n' +
-                                '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
-                                '                                                                         aria-valuemax="100"\n' +
-                                '                                                                         style="width: 75%;"></div>\n' +
-                                '                                                                @endif\n' +
-                                '                                                                @if($progresses->ho_process_id == 4 and $orders->id == $progresses->order_id )\n' +
-                                '                                                                    <div class="progress-bar" role="progressbar"\n' +
-                                '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
-                                '                                                                         aria-valuemax="100"\n' +
-                                '                                                                         style="width:100%; direction: ltr"></div>\n' +
-                                '                                                                @endif\n' +
-                                '                                                            @endforeach\n' +
-                                '                                                            @endforeach\n' +
-                                '                                                        </div>'
+                            "render": function (data, type, row) {
+                                if (data[6] == 0) {
+                                    return '<div class="progress">\n' +
+                                        // '                                                                <span class="progress-value">25%</span>\n' +
+                                        '                                                                    <div class="progress-bar" role="progressbar"\n' +
+                                        '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
+                                        '                                                                         aria-valuemax="100"\n' +
+                                        '                                                                         style="width: 0%;"></div>\n'
+                                }
+                                if (data[6] == 1) {
+                                    return '<div class="progress">\n' +
+                                        // '                                                                <span class="progress-value">25%</span>\n' +
+                                        '                                                                    <div class="progress-bar" role="progressbar"\n' +
+                                        '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
+                                        '                                                                         aria-valuemax="100"\n' +
+                                        '                                                                         style="width: 10%;"></div>\n'
+                                }
+                                if (data[6] == 2) {
+                                    return '<div class="progress">\n' +
+                                        // '                                                                <span class="progress-value">25%</span>\n' +
+                                        '                                                                    <div class="progress-bar" role="progressbar"\n' +
+                                        '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
+                                        '                                                                         aria-valuemax="100"\n' +
+                                        '                                                                         style="width: 30%;"></div>\n'
+                                }
+                                if (data[6] == 3) {
+                                    return '<div class="progress">\n' +
+                                        // '                                                                <span class="progress-value">25%</span>\n' +
+                                        '                                                                    <div class="progress-bar" role="progressbar"\n' +
+                                        '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
+                                        '                                                                         aria-valuemax="100"\n' +
+                                        '                                                                         style="width: 50%;"></div>\n'
+                                }
+                                if (data[6] == 4) {
+                                    return '<div class="progress">\n' +
+                                        // '                                                                <span class="progress-value">25%</span>\n' +
+                                        '                                                                    <div class="progress-bar" role="progressbar"\n' +
+                                        '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
+                                        '                                                                         aria-valuemax="100"\n' +
+                                        '                                                                         style="width: 70%;"></div>\n'
+                                }
+                                if (data[6] == 5) {
+                                    return '<div class="progress">\n' +
+                                        // '                                                                <span class="progress-value">25%</span>\n' +
+                                        '                                                                    <div class="progress-bar" role="progressbar"\n' +
+                                        '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
+                                        '                                                                         aria-valuemax="100"\n' +
+                                        '                                                                         style="width: 100%;"></div>\n'
+                                }
+                            }
                         }],
                     "language":
                         {

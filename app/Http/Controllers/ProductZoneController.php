@@ -15,7 +15,7 @@ class ProductZoneController extends Controller
 {
     public function index()
     {
-        $status = ProductStatus::select('hps_name','hps_level')->get();
+        $status = ProductStatus::select('hps_name','hps_level','id')->get();
         $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
         $type = HDtype::select('th_name', 'id')->get();
@@ -50,6 +50,11 @@ class ProductZoneController extends Controller
                 $index++;
             }
         }
+
+        //            set sataus zone
+        $product_status = ProductStatus::find($request->hpz_priority);
+        $product_status->hps_zone_name = $product_zone->hpz_name;
+        $product_status->save();
         return json_encode(["response" => "OK",]);
 
     }
@@ -89,15 +94,17 @@ class ProductZoneController extends Controller
         if ($search == '') {
             $product_zone = DB::Table('hnt_product_zone')
                 ->join('users', 'hnt_product_zone.hpz_user_id', 'users.id')
-                ->select('hnt_product_zone.id', 'hnt_product_zone.hpz_user_id', 'hnt_product_zone.hpz_name', 'hnt_product_zone.hpz_priority', 'users.name')
+                ->join('hnt_product_status', 'hnt_product_zone.hpz_priority', 'hnt_product_status.id')
+                ->select('hnt_product_zone.id', 'hnt_product_zone.hpz_user_id', 'hnt_product_zone.hpz_name', 'hnt_product_zone.hpz_priority', 'users.name','hnt_product_status.hps_name')
                 ->where('hnt_product_zone.deleted_at', '=', Null)
                 ->skip($start)
                 ->take($length)
                 ->get();
         } else {
-            $product_zone = DB::Table('hnt_product_zone')
+            $product_zone =DB::Table('hnt_product_zone')
                 ->join('users', 'hnt_product_zone.hpz_user_id', 'users.id')
-                ->select('hnt_product_zone.id', 'hnt_product_zone.hpz_user_id', 'hnt_product_zone.hpz_name', 'hnt_product_zone.hpz_priority', 'users.name')
+                ->join('hnt_product_status', 'hnt_product_zone.hpz_priority', 'hnt_product_status.id')
+                ->select('hnt_product_zone.id', 'hnt_product_zone.hpz_user_id', 'hnt_product_zone.hpz_name', 'hnt_product_zone.hpz_priority', 'users.name','hnt_product_status.hps_name')
                 ->where('hnt_product_zone.deleted_at', '=', Null)
                 ->where('hnt_product_zone.hpz_name', 'LIKE', "%$search%")
                 ->get();
@@ -107,7 +114,7 @@ class ProductZoneController extends Controller
         $key = 0;
         foreach ($product_zone as $product_zones) {
             $key++;
-            $data .= '["' . $key . '",' . '"' . $product_zones->hpz_name . '",' . '"' . $product_zones->name . '",' . '"' . $product_zones->hpz_priority . '",' . '"' . $product_zones->hpz_user_id . '",' . '"' . $product_zones->id . '"],';
+            $data .= '["' . $key . '",' . '"' . $product_zones->hpz_name . '",' . '"' . $product_zones->name . '",' . '"' . $product_zones->hps_name . '",' . '"' . $product_zones->hpz_user_id . '",' . '"' . $product_zones->id . '",' . '"' . $product_zones->hpz_priority . '"],';
         }
         $data = substr($data, 0, -1);
         $product_zones_count = ProductZone::all()->count();
@@ -132,7 +139,7 @@ class ProductZoneController extends Controller
         $search = $request->search;
         if ($search != "") {
 
-            $zone = ProductZone::select('hpz_name as text', 'id')->where('hpz_name', 'LIKE', "%$search%")->get();
+            $zone = ProductZone::select('hpz_name as text', 'id')->where('hpz_name', 'LIKE', "%$search%")->groupby('hpz_name')->get();
         }
         return json_encode(["results" => $zone]);
     }

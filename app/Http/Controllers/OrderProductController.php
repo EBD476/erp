@@ -78,7 +78,6 @@ class OrderProductController extends Controller
         $product_order->hp_tax = $tax->hpx_tax;
         $product_order->save();
 
-
         return json_encode(["response" => "OK"]);
     }
 

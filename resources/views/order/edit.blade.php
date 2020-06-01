@@ -220,6 +220,7 @@
                                     </div>
                                     <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
                                 </form>
+                                <button type="submit" id="btn-submit1" class="btn badge-primary">{{__('Submit New Invoice')}}</button>
                             </div>
 
                             <div role="tabpanel" class="tab-pane" id="tab2" data-lang="{{app()->getLocale()}}">
@@ -641,6 +642,8 @@
                                            class="btn btn-primary">{{__('Back')}}</a>
                                         <button id="btn_submit" type="submit"
                                                 class="btn btn-primary">{{__('Send Modify')}}</button>
+                                        <button type="submit" class="btn btn-primary"
+                                                id="btn-submit2">{{__('Submit New Invoice')}}</button>
                                         {{--<button type="submit" class="btn btn-primary"--}}
                                         {{--id="preview">{{__('Preview Factor')}}</button>--}}
                                     </div>
@@ -1515,6 +1518,83 @@
         $('#preview').on('click', function () {
             $('#form2').attr('action', '{{route('order.preview')}}');
         })
+
+
+
+        // store new invoice
+        $("#btn-submit1").on('click',function (event) {
+            var data = $("#form1").serialize();
+            event.preventDefault();
+            $.blockUI({
+                message: '{{__('please wait...')}}', css: {
+                    border: 'none',
+                    padding: '15px',
+                    backgroundColor: '#000',
+                    '-webkit-border-radius': '10px',
+                    '-moz-border-radius': '10px',
+                    opacity: .5,
+                    color: '#fff'
+                }
+            });
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: '/order',
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    setTimeout($.unblockUI, 2000);
+                    client_id = data.client_id;
+                    order_id = data.order_id;
+                    $("#order_id").val(order_id);
+                    $("#client_id").val(client_id);
+                    $("#order_id_show").text(order_id);
+                    $("#tab1").removeClass("active");
+                    $("#tab2").addClass("active");
+                },
+                cache: false,
+            });
+        });
+        $("#btn-submit2").on('click', function (event) {
+            var data = $("#form2").serialize();
+            event.preventDefault();
+            $.blockUI({
+                message: '{{__('please wait...')}}', css: {
+                    border: 'none',
+                    padding: '15px',
+                    backgroundColor: '#000',
+                    '-webkit-border-radius': '10px',
+                    '-moz-border-radius': '10px',
+                    opacity: .5,
+                    color: '#fff'
+                }
+            });
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                url: '/order_product',
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    setTimeout($.unblockUI, 2000);
+                    window.location.href = "/order";
+
+                },
+                cache: false,
+            });
+        });
 
     </script>
     {{--datapicker--}}
