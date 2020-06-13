@@ -178,7 +178,7 @@ class RepositoryProductController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $last_repository = DB::table('hnt_repository')->max('hr_priority_id');
+//            $last_repository = DB::table('hnt_repository')->max('hr_priority_id');
             $repository_product = DB::table('hnt_repository_product')
                 ->join('hnt_products', 'hnt_repository_product.hr_product_id', '=', 'hnt_products.id')
                 ->join('hnt_repository', 'hnt_repository_product.hr_repository_id', '=', 'hnt_repository.hr_priority_id')
@@ -186,7 +186,7 @@ class RepositoryProductController extends Controller
                 ->join('hnt_product_color', 'hnt_products.hp_product_color_id', '=', 'hnt_product_color.id')
                 ->select('hnt_repository_product.hr_product_stock', 'hnt_products.hp_product_name', 'hnt_repository.hr_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name')
                 ->where('hnt_repository_product.deleted_at', '=', Null)
-                ->where('hnt_repository_product.hr_repository_id', '=', $last_repository)
+//                ->where('hnt_repository_product.hr_repository_id', '=', $last_repository)
                 ->distinct()
                 ->skip($start)
                 ->take($length)

@@ -2,26 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Order;
-use App\OrderProduct;
 use App\OrderState;
-use App\Project;
+use App\OrderProduct;
 use App\User;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
 
-class DeliveryController extends Controller
+class QCController extends Controller
 {
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $current_user = auth()->user()->id;
@@ -29,7 +20,7 @@ class DeliveryController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        return view('delivery.index', compact('help_desk', 'priority', 'type', 'user'));
+        return view('qc.index', compact('help_desk', 'priority', 'type', 'user'));
     }
 
 //    store data
@@ -46,27 +37,10 @@ class DeliveryController extends Controller
             }
             if (OrderProduct::where('hpo_order_id', $id)->count() == $number) {
                 OrderState::where('order_id', $id)
-                    ->update(['ho_process_id' => '6']);
-                $order = Order::where('id', $id)->get()->last();
-                $current_date = Carbon::now();
-                $current_date = $current_date->year . $current_date->month . $current_date->day;
-                $project = New Project();
-                $project->hp_order_id = $id;
-                $project->hp_project_name = $order->hp_project_name;
-                $project->hp_project_owner = $order->ho_client;
-                $project->hp_project_owner_phone = $order->hp_phone_number;
-                $project->hp_project_type = $order->hp_owner_user;
-                $project->hp_project_units = $order->hp_number_of_units;
-                $project->hp_project_address = $order->hp_address;
-                $project->hp_project_location = $order->hp_project_location;
-                $project->hp_project_complete_date = $current_date;
-                $project->save();
-
+                    ->update(['ho_process_id' => '5']);
             }
         }
         return json_encode(["response" => "عملیات با موفقیت ثبت شد"]);
-
-
     }
 
     public function fill(Request $request)
@@ -86,8 +60,8 @@ class DeliveryController extends Controller
                 ->select('hnt_invoice_items.id','hnt_invoice_items.hpo_status','hnt_invoice_items.hpo_serial_number', 'hnt_invoice_items.hpo_order_id', 'hnt_invoice_items.hpo_count', 'hnt_invoice_items.hop_due_date', 'hnt_products.hp_product_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_invoices.hp_Invoice_number', 'hnt_invoices.hp_employer_name', 'hnt_invoices.hp_project_name', 'hnt_invoices.hp_employer_name', 'hnt_invoices.hp_address', 'hnt_project_address_city.hp_city', 'hnt_project_address_state.hp_project_state','hnt_clients.hc_name')
                 ->where('hnt_invoice_items.deleted_at', '=', Null)
                 ->where('hnt_invoices.hp_Invoice_number', '!=', Null)
-                ->where('hnt_invoice_items.hpo_status', '=', 5)
-                ->where('hnt_invoices.hp_contract_type', '=', 'تحویل کالا')
+                ->where('hnt_invoice_items.hpo_status', '=', 4)
+                ->where('hnt_invoices.hp_contract_type', '=', 'نصب در محل')
                 ->orderBy('hnt_invoices.hp_Invoice_number')
                 ->skip($start)
                 ->take($length)
@@ -104,8 +78,8 @@ class DeliveryController extends Controller
                 ->select('hnt_invoice_items.id','hnt_invoice_items.hpo_status','hnt_invoice_items.hpo_serial_number', 'hnt_invoice_items.hpo_order_id', 'hnt_invoice_items.hpo_count', 'hnt_invoice_items.hop_due_date', 'hnt_products.hp_product_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_invoices.hp_Invoice_number', 'hnt_invoices.hp_employer_name', 'hnt_invoices.hp_project_name', 'hnt_invoices.hp_employer_name', 'hnt_invoices.hp_address', 'hnt_project_address_city.hp_city', 'hnt_project_address_state.hp_project_state','hnt_clients.hc_name')
                 ->where('hnt_invoice_items.deleted_at', '=', Null)
                 ->where('hnt_invoices.hp_Invoice_number', '!=', Null)
-                ->where('hnt_invoice_items.hpo_status', '=', 5)
-                ->where('hnt_invoices.hp_contract_type', '=', 'تحویل کالا')
+                ->where('hnt_invoice_items.hpo_status', '=', 4)
+                ->where('hnt_invoices.hp_contract_type', '=', 'نصب در محل')
                 ->where('hnt_invoices.hp_project_name', 'LIKE', "%$search%")
                 ->orwhere('hnt_invoices.hp_employer_name', 'LIKE', "%$search%")
                 ->get();
@@ -138,7 +112,7 @@ class DeliveryController extends Controller
                 ->select('hnt_invoice_items.id','hnt_invoice_items.hpo_status','hnt_invoice_items.hpo_serial_number', 'hnt_invoice_items.hpo_order_id', 'hnt_invoice_items.hpo_count', 'hnt_invoice_items.hop_due_date', 'hnt_products.hp_product_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_invoices.hp_Invoice_number', 'hnt_invoices.hp_employer_name', 'hnt_invoices.hp_project_name', 'hnt_invoices.hp_employer_name', 'hnt_invoices.hp_address', 'hnt_project_address_city.hp_city', 'hnt_project_address_state.hp_project_state','hnt_clients.hc_name')
                 ->where('hnt_invoice_items.deleted_at', '=', Null)
                 ->where('hnt_invoices.hp_Invoice_number', '!=', Null)
-                ->where('hnt_invoice_items.hpo_status', '=', 6)
+                ->where('hnt_invoice_items.hpo_status', '>', 4)
                 ->orderBy('hnt_invoices.hp_Invoice_number')
                 ->skip($start)
                 ->take($length)
@@ -155,9 +129,9 @@ class DeliveryController extends Controller
                 ->select('hnt_invoice_items.id','hnt_invoice_items.hpo_status','hnt_invoice_items.hpo_serial_number', 'hnt_invoice_items.hpo_order_id', 'hnt_invoice_items.hpo_count', 'hnt_invoice_items.hop_due_date', 'hnt_products.hp_product_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_invoices.hp_Invoice_number', 'hnt_invoices.hp_employer_name', 'hnt_invoices.hp_project_name', 'hnt_invoices.hp_employer_name', 'hnt_invoices.hp_address', 'hnt_project_address_city.hp_city', 'hnt_project_address_state.hp_project_state','hnt_clients.hc_name')
                 ->where('hnt_invoice_items.deleted_at', '=', Null)
                 ->where('hnt_invoices.hp_Invoice_number', '!=', Null)
-                ->where('hnt_invoice_items.hpo_status', '=', 6)
+                ->where('hnt_invoice_items.hpo_status', '<', 5)
                 ->where('hnt_invoices.hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hnt_clients.hc_name', 'LIKE', "%$search%")
+                ->orwhere('hnt_invoices.hp_employer_name', 'LIKE', "%$search%")
                 ->get();
         }
 
@@ -171,5 +145,4 @@ class DeliveryController extends Controller
         $orders_count = OrderProduct::all()->count();
         return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
     }
-
 }

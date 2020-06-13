@@ -91,7 +91,7 @@
                                                                  aria-labelledby="dropdownMenuLink">
                                                                 <a class="dropdown-item"
                                                                    href="{{route('projects.send_request',$project->id)}}"
-                                                                >{{__('Send Request')}}</a>
+                                                                >{{__('Send Support Request')}}</a>
                                                                 <a class="dropdown-item"
                                                                    href="{{route('projects.edit',$project->id)}}"
                                                                 >{{__('Edit')}}</a>

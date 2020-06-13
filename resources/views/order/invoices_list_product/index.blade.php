@@ -453,48 +453,11 @@
                             "targets": -2,
                             "data": null,
                             "render": function (data, type, row) {
-                                if (data[10] == 0) {
-                                    return '<div class="progress">\n' +
-                                        '                                                                    <div class="progress-bar" role="progressbar"\n' +
-                                        '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
-                                        '                                                                         aria-valuemax="100"\n' +
-                                        '                                                                         style="width: 0%;"></div>\n'
-                                }
-                                if (data[10] == 1) {
-                                    return '<div class="progress">\n' +
-                                        '                                                                    <div class="progress-bar" role="progressbar"\n' +
-                                        '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
-                                        '                                                                         aria-valuemax="100"\n' +
-                                        '                                                                         style="width: 10%;">\'<span class="progress-value">10%</span>\\n\' +\n</div>\n'
-                                }
-                                if (data[10] == 2) {
-                                    return '<div class="progress">\n' +
-                                        '                                                                    <div class="progress-bar" role="progressbar"\n' +
-                                        '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
-                                        '                                                                         aria-valuemax="100"\n' +
-                                        '                                                                         style="width: 30%;">\'<span class="progress-value">30%</span>\\n\' +\n</div>\n'
-                                }
-                                if (data[10] == 3) {
-                                    return '<div class="progress">\n' +
-                                        '                                                                    <div class="progress-bar" role="progressbar"\n' +
-                                        '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
-                                        '                                                                         aria-valuemax="100"\n' +
-                                        '                                                                         style="width: 50%;">\'<span class="progress-value">50%</span>\\n\' +\n</div>\n'
-                                }
-                                if (data[10] == 4) {
-                                    return '<div class="progress">\n' +
-                                        '                                                                    <div class="progress-bar" role="progressbar"\n' +
-                                        '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
-                                        '                                                                         aria-valuemax="100"\n' +
-                                        '                                                                         style="width: 70%;">\'<span class="progress-value">70%</span>\\n\' +\n</div>\n'
-                                }
-                                if (data[10] == 5) {
-                                    return '<div class="progress">\n' +
-                                        '                                                                    <div class="progress-bar" role="progressbar"\n' +
-                                        '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
-                                        '                                                                         aria-valuemax="100"\n' +
-                                        '                                                                         style="width: 100%;">\'<span class="progress-value">100%</span>\\n\' +\n</div>\n'
-                                }
+                                return '<div class="progress">\n' +
+                                    '                                                                    <div class="progress-bar" role="progressbar"\n' +
+                                    '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
+                                    '                                                                         aria-valuemax="100"\n' +
+                                    '                                                                         style="width:' + data[11] + '%;"></div>\n'
                             }
                         },
                             {

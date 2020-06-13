@@ -15,110 +15,106 @@
                     <a href="{{route('support.show')}}" class="btn btn-primary float-left mb-lg-2"><i
                                 class="tim-icons icon-simple-add"></i>{{__('All Support Request List')}}</a>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title ">{{__('Support')}}</h4>
-                                    <p class="card-category"></p>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="card-header card-header-primary">
-                                            <h4 class="card-title ">{{__('Projects List')}}</h4>
-                                            <p class="card-category"></p>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table id="table1" class="table" cellspacing="0" width="100%">
-                                                    <thead class=" text-primary">
-                                                    <th>
-                                                        {{__('ID')}}
-                                                    </th>
-                                                    <th>
-                                                        {{__('Project Name')}}
-                                                    </th>
-                                                    </thead>
-                                                    <tbody>
+                <div class="card-body">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header card-header-primary">
+                                        <h4 class="card-title ">{{__('Projects List')}}</h4>
+                                        <p class="card-category"></p>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table id="table1" class="table" cellspacing="0" width="100%">
+                                                <thead class=" text-primary">
+                                                <th>
+                                                    {{__('ID')}}
+                                                </th>
+                                                <th>
+                                                    {{__('Project Name')}}
+                                                </th>
+                                                </thead>
+                                                <tbody>
 
-                                                    @foreach($project as $key => $projects)
-                                                        <tr>
-                                                            <td>
-                                                                {{$key + 1}}
-                                                            </td>
-                                                            <td>
-                                                                {{$projects -> hp_project_name}}
-                                                            </td>
-                                                            <td>
-                                                                {{$projects -> hp_project_type}}
-                                                            </td>
-                                                            <td>
-                                                                {{$projects -> created_at}}
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                                @foreach($project as $key => $projects)
+                                                    <tr>
+                                                        <td>
+                                                            {{$key + 1}}
+                                                        </td>
+                                                        <td>
+                                                            {{$projects -> hp_project_name}}
+                                                        </td>
+                                                        <td>
+                                                            {{$projects -> hp_project_type}}
+                                                        </td>
+                                                        <td>
+                                                            {{$projects -> created_at}}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="card-header card-header-primary">
-                                            <h4 class="card-title ">{{__('Support Request')}}</h4>
-                                            <p class="card-category"></p>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table id="table2" class="table" cellspacing="0" width="100%">
-                                                    <thead class=" text-primary">
-                                                    <th>
-                                                        {{__('ID')}}
-                                                    </th>
-                                                    <th>
-                                                        {{__('Project Name')}}
-                                                    </th>
-                                                    <th>
-                                                        {{__('action')}}
-                                                    </th>
-                                                    </thead>
-                                                    <tbody>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header card-header-primary">
+                                        <h4 class="card-title ">{{__('Support Request')}}</h4>
+                                        <p class="card-category"></p>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table id="table2" class="table" cellspacing="0" width="100%">
+                                                <thead class=" text-primary">
+                                                <th>
+                                                    {{__('ID')}}
+                                                </th>
+                                                <th>
+                                                    {{__('Project Name')}}
+                                                </th>
+                                                <th>
+                                                    {{__('action')}}
+                                                </th>
+                                                </thead>
+                                                <tbody>
 
-                                                    @foreach($request as $key => $requests)
-                                                        <tr>
-                                                            <td>
-                                                                {{$key + 1}}
-                                                            </td>
-                                                            @foreach($project as $projects_name)
-                                                                @if($projects_name->id == $requests -> hs_project_id)
-                                                                    <td>
-                                                                        {{$projects_name->hp_project_name}}
-                                                                    </td>
-                                                                @endif
-                                                            @endforeach
-                                                            {{--<td>--}}
-                                                            {{--{{$request -> hs_description}}--}}
-                                                            {{--</td>--}}
-                                                            <td>
-                                                                <div class="dropdown">
-                                                                    <button type="button"
-                                                                            class="btn btn-link dropdown-toggle btn-icon"
-                                                                            data-toggle="dropdown">
-                                                                        <i class="tim-icons icon-settings-gear-63"></i>
-                                                                    </button>
-                                                                    <div class="dropdown-menu dropdown-menu-right"
-                                                                         aria-labelledby="dropdownMenuLink">
-                                                                        <a class="dropdown-item"
-                                                                           href="{{route('support.edit',$requests->id)}}"
-                                                                        >{{__('Show')}}</a>
-                                                                    </div>
+                                                @foreach($request as $key => $requests)
+                                                    <tr>
+                                                        <td>
+                                                            {{$key + 1}}
+                                                        </td>
+                                                        @foreach($project as $projects_name)
+                                                            @if($projects_name->id == $requests -> hs_project_id)
+                                                                <td>
+                                                                    {{$projects_name->hp_project_name}}
+                                                                </td>
+                                                            @endif
+                                                        @endforeach
+                                                        {{--<td>--}}
+                                                        {{--{{$request -> hs_description}}--}}
+                                                        {{--</td>--}}
+                                                        <td>
+                                                            <div class="dropdown">
+                                                                <button type="button"
+                                                                        class="btn btn-link dropdown-toggle btn-icon"
+                                                                        data-toggle="dropdown">
+                                                                    <i class="tim-icons icon-settings-gear-63"></i>
+                                                                </button>
+                                                                <div class="dropdown-menu dropdown-menu-right"
+                                                                     aria-labelledby="dropdownMenuLink">
+                                                                    <a class="dropdown-item"
+                                                                       href="{{route('support.edit',$requests->id)}}"
+                                                                    >{{__('Show')}}</a>
                                                                 </div>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

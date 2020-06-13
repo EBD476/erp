@@ -29,7 +29,7 @@
                                             <label>{{__('Request Title')}}</label>
                                             <input rows="4" cols="80"
                                                    class="form-control" disabled
-                                                   value="{{$request->hs_title}}">
+                                                   value="{{$support_response->hs_title}}">
                                         </div>
                                     </div>
                                 </div>
@@ -37,25 +37,11 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>{{__('Request User Name')}}</label>
-                                            @foreach($user as $users)
-                                                @if($users->id == $request->hs_request_user_id)
                                                     <input rows="4" cols="80"
                                                            class="form-control" disabled
-                                                           value="{{$users->name}}">
-                                                @endif
-                                            @endforeach
+                                                           value="{{$user_requested->name}}">
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>{{__('Response User Name')}}</label>
-                                                    <input rows="4" cols="80"
-                                                           class="form-control" disabled
-                                                           value={{auth()->user()->name}}>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>{{__('Project Name')}}</label>
@@ -64,12 +50,22 @@
                                                     value="{{$project->hp_project_name}}">
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>{{__('Project Owner')}}</label>
                                             <input  rows="4" cols="80"
                                                     class="form-control"  disabled
-                                                    value="{{$project->hp_project_owner}}">
+                                                    value="{{$client_name->hc_name}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>{{__('Project Address')}}</label>
+                                            <input rows="4" cols="80"
+                                                   class="form-control" id="hp_project_id" disabled
+                                                   value="{{$project->hp_project_address}}">
                                         </div>
                                     </div>
                                 </div>
@@ -88,25 +84,17 @@
                                             <label>{{__('Project Type')}}</label>
                                             <input rows="4" cols="80"
                                                    class="form-control"  disabled
-                                                   value="{{$project_type->hp_name}}">
+                                                   value="{{$project->hp_project_type}}">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>{{__('Project Address')}}</label>
-                                            <input rows="4" cols="80"
-                                                   class="form-control" id="hp_project_id" disabled
-                                                   value="{{$project->hp_project_address}}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label>{{__('Project Description')}}</label>
                                             <textarea name="hs_description" rows="4" cols="80"
                                                       class="form-control" id="request_id"
-                                                      disabled data-id="{{$request->id}}">{{$request->hs_description}}</textarea>
+                                                      disabled data-id="{{$support_response->id}}">{{$support_response->hs_description}}</textarea>
                                         </div>
                                     </div>
                                 </div>

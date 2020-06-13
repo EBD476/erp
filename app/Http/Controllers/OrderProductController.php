@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use App\OrderProduct;
+use App\OrderState;
 use App\Tax;
 use Carbon\Carbon;
 use Hekmatinasser\Verta\Verta;
@@ -77,6 +78,9 @@ class OrderProductController extends Controller
         $product_order->hp_discount = $request->hpo_discount;
         $product_order->hp_tax = $tax->hpx_tax;
         $product_order->save();
+
+
+        OrderState::create(['order_id' => $request->hpo_order_id, 'ho_process_id' => 0]);
 
         return json_encode(["response" => "OK"]);
     }

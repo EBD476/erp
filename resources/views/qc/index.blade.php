@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title',__('Delivery List'))
+@section('title',__('QC'))
 
 @push('css')
     <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
@@ -8,14 +8,14 @@
 @endpush
 
 @section('content')
-    @role('Admin|delivery')
+    @role('Admin|qc')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header card-header-primary">
-                            <h4 class="card-title text-right font-weight-400">{{__('List of Product Waiting to be Delivered')}}</h4>
+                            <h4 class="card-title text-right font-weight-400">{{__('List of Product Waiting to be QC')}}</h4>
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
@@ -52,7 +52,7 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header card-header-primary">
-                            <h4 class="card-title text-right font-weight-400">{{__('List of Delivered Product')}}</h4>
+                            <h4 class="card-title text-right font-weight-400">{{__('List of QC Product')}}</h4>
                             <p class="card-category"></p>
                         </div>
                         <div class="card-body">
@@ -104,13 +104,15 @@
             var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
             var table5 = $('#table5').on('draw.dt', function (e, settings, json, xhr) {
                 $('.js-switch').each(function () {
+                    var data = table5.row($(this).parents('tr')).data();
                     var switchery = new Switchery($(this)[0], $(this).data());
 
+                    data[7] == 6 ? $(this)[0].click() : 0;
                     $(this)[0].onchange = function () {
                         var cdata = table5.row($(this).parents('tr')).data();
                         var data = {
                             id: cdata[5],
-                            state: $(this)[0].checked == true ? 6 : 5,
+                            state: $(this)[0].checked == true ? 5 : 4,
                         };
                         //token
                         $.ajaxSetup({
@@ -119,7 +121,7 @@
                             }
                         });
                         $.ajax({
-                            url: '/delivery/' + data.id,
+                            url: '/qc/' + data.id,
                             type: 'POST',
                             data: data,
                             dataType: 'json',
@@ -146,7 +148,7 @@
                 "serverSide":
                     true,
                 "ajax":
-                    '/json-data-delivery',
+                    '/json-data-qc',
                 "columnDefs":
                     [{
                         "targets": -1,
@@ -215,79 +217,79 @@
                                     ": فعال سازی نمایش به صورت نزولی"
                             }
                     }
-            });
-            $('#table6').DataTable({
-
-                "processing":
-                    true,
-                "serverSide":
-                    true,
-                "ajax":
-                    '/json-data-delivery-all',
-                "columnDefs":
-                    [{
-                        "targets": -1,
-                        "data": null,
-                        "render": function (data, type, row, meta) {
-                            return "  <div class=\"dropdown\">\n" +
-                                "                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +
-                                "                                                                    data-toggle=\"dropdown\">\n" +
-                                "                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +
-                                "                                                            </a>\n" +
-                                "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
-                                "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
-                                "                                                               <a target=\"_blank\"  href=\"verify_pre/" + data[5] + "/edit\" class=\"dropdown-item\"\n" +
-                                "                                                                >{{__('View Detail Factor')}}</a>\n" +
-                                "                                                            </div>\n" +
-                                "                                                        </div>"
-                        }
-                    }],
-
-                "language":
-                    {
-                        "sEmptyTable":
-                            "هیچ داده ای در جدول وجود ندارد",
-                        "sInfo":
-                            "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
-                        "sInfoEmpty":
-                            "نمایش 0 تا 0 از 0 رکورد",
-                        "sInfoFiltered":
-                            "(فیلتر شده از _MAX_ رکورد)",
-                        "sInfoPostFix":
-                            "",
-                        "sInfoThousands":
-                            ",",
-                        "sLengthMenu":
-                            "نمایش _MENU_ رکورد",
-                        "sLoadingRecords":
-                            "در حال بارگزاری...",
-                        "sProcessing":
-                            "در حال پردازش...",
-                        "sSearch":
-                            "جستجو:",
-                        "sZeroRecords":
-                            "رکوردی با این مشخصات پیدا نشد",
-                        "oPaginate":
-                            {
-                                "sFirst":
-                                    "ابتدا",
-                                "sLast":
-                                    "انتها",
-                                "sNext":
-                                    "بعدی",
-                                "sPrevious":
-                                    "قبلی"
-                            }
-                        ,
-                        "oAria":
-                            {
-                                "sSortAscending":
-                                    ": فعال سازی نمایش به صورت صعودی",
-                                "sSortDescending":
-                                    ": فعال سازی نمایش به صورت نزولی"
-                            }
-                    }
             })
+        });
+        $('#table6').DataTable({
+
+            "processing":
+                true,
+            "serverSide":
+                true,
+            "ajax":
+                '/json-data-qc-all',
+            "columnDefs":
+                [{
+                    "targets": -1,
+                    "data": null,
+                    "render": function (data, type, row, meta) {
+                        return "  <div class=\"dropdown\">\n" +
+                            "                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +
+                            "                                                                    data-toggle=\"dropdown\">\n" +
+                            "                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +
+                            "                                                            </a>\n" +
+                            "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
+                            "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
+                            "                                                               <a target=\"_blank\"  href=\"verify_pre/" + data[5] + "/edit\" class=\"dropdown-item\"\n" +
+                            "                                                                >{{__('View Detail Factor')}}</a>\n" +
+                            "                                                            </div>\n" +
+                            "                                                        </div>"
+                    }
+                }],
+
+            "language":
+                {
+                    "sEmptyTable":
+                        "هیچ داده ای در جدول وجود ندارد",
+                    "sInfo":
+                        "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                    "sInfoEmpty":
+                        "نمایش 0 تا 0 از 0 رکورد",
+                    "sInfoFiltered":
+                        "(فیلتر شده از _MAX_ رکورد)",
+                    "sInfoPostFix":
+                        "",
+                    "sInfoThousands":
+                        ",",
+                    "sLengthMenu":
+                        "نمایش _MENU_ رکورد",
+                    "sLoadingRecords":
+                        "در حال بارگزاری...",
+                    "sProcessing":
+                        "در حال پردازش...",
+                    "sSearch":
+                        "جستجو:",
+                    "sZeroRecords":
+                        "رکوردی با این مشخصات پیدا نشد",
+                    "oPaginate":
+                        {
+                            "sFirst":
+                                "ابتدا",
+                            "sLast":
+                                "انتها",
+                            "sNext":
+                                "بعدی",
+                            "sPrevious":
+                                "قبلی"
+                        }
+                    ,
+                    "oAria":
+                        {
+                            "sSortAscending":
+                                ": فعال سازی نمایش به صورت صعودی",
+                            "sSortDescending":
+                                ": فعال سازی نمایش به صورت نزولی"
+                        }
+                }
         });
     </script>
 @endpush

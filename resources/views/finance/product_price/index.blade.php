@@ -80,8 +80,15 @@
 
     <script>
         $(document).ready(function () {
-            $('#table').on('click', 'button', function (event) {
 
+            // index of row
+            var count;
+            $('#table').on('click', 'tr', function (event) {
+                count = parseInt(table.row(this).index());
+            });
+
+            // pass data to controller
+            $('#table').on('click', 'button', function (event) {
                 var data_table = table.row($(this).parents('tr')).data();
                 $.ajaxSetup({
                     headers: {
@@ -98,13 +105,13 @@
                 })
                     .then((willDelete) => {
                         if (willDelete) {
-                            var data ={
-                                hp_product_price:$('#product_price').val(),
+                            var data = {
+                                hp_product_price: table.cell(count, -2).nodes().to$().find('input').val()
                             };
                             $.ajax({
                                 url: '/product-price/' + data_table[9],
                                 type: 'post',
-                                method:'put',
+                                method: 'put',
                                 data: data,
                                 dataType: 'json',
                                 async: false,
@@ -153,7 +160,9 @@
                     }, {
                         "targets": -2,
                         "data": null,
-                        "defaultContent": '<input id="product_price" type="number" class="form-control" data-size="small"  >'
+                        "render": function (data, type, row, meta) {
+                            return '<input name="hp_product_price" type="number" class="form-control" data-size="small">'
+                        }
                     }],
                 "language":
                     {

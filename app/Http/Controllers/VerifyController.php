@@ -32,14 +32,14 @@ class VerifyController extends Controller
      */
     public function index()
     {
-        $current_user=auth()->user()->id;
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
         $order = Order::select('id', 'hp_project_name', 'created_at')
             ->where('hp_Invoice_number', Null)->get();
-        return view('verify_level.index', compact('order', 'help_desk', 'priority', 'type','user'));
+        return view('verify_level.index', compact('order', 'help_desk', 'priority', 'type', 'user'));
     }
 
     public function edit($id)
@@ -64,23 +64,23 @@ class VerifyController extends Controller
             }
 
         }
-        $current_user=auth()->user()->id;
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
         $order = Order::find($id);
-        $product = Product::select('id','hp_product_model','hp_product_color_id','hp_product_size','hp_product_property','hp_product_code_number','hp_product_name','hp_product_price')->get();
-        $items = ProductPropertyItems::select('id','hppi_items_name')->get();
-        $properties = ProductProperty::select('id','hpp_property_name','hpp_property_items')->get();
-        $data = OrderProduct::where('hpo_order_id',$id)->get();
-        $color = ProductColor::select('id','hn_color_name')->get();
-        $data_dis = OrderProduct::select('hop_due_date')->where('hpo_order_id',$id)->get()->last();
+        $product = Product::select('id', 'hp_product_model', 'hp_product_color_id', 'hp_product_size', 'hp_product_property', 'hp_product_code_number', 'hp_product_name', 'hp_product_price')->get();
+        $items = ProductPropertyItems::select('id', 'hppi_items_name')->get();
+        $properties = ProductProperty::select('id', 'hpp_property_name', 'hpp_property_items')->get();
+        $data = OrderProduct::where('hpo_order_id', $id)->get();
+        $color = ProductColor::select('id', 'hn_color_name')->get();
+        $data_dis = OrderProduct::select('hop_due_date')->where('hpo_order_id', $id)->get()->last();
         $city = address:: where('id', $order->hp_address_city_id)->get()->last();
         $state = Project_State:: where('id', $order->hp_address_state_id)->get()->last();
-        $client =Client::select('id','hc_name')->where('id',$order->ho_client)->get()->last();
-        $order_registrant = User::select('name')->where('id',$order->hp_registrant)->get()->last();
-        return view('verify_level.preview', compact('items','due_date','color','properties','client','order_registrant','order', 'first_verifier', 'verifyID', 'selected_priority', 'current_verified_order', 'help_desk', 'priority', 'type','user','product','data','state','city','data_dis'));
+        $client = Client::select('id', 'hc_name')->where('id', $order->ho_client)->get()->last();
+        $order_registrant = User::select('name')->where('id', $order->hp_registrant)->get()->last();
+        return view('verify_level.preview', compact('items', 'due_date', 'color', 'properties', 'client', 'order_registrant', 'order', 'first_verifier', 'verifyID', 'selected_priority', 'current_verified_order', 'help_desk', 'priority', 'type', 'user', 'product', 'data', 'state', 'city', 'data_dis'));
 
     }
 
@@ -93,16 +93,15 @@ class VerifyController extends Controller
         $order_state = OrderState::select('ho_process_id')
             ->where('order_id', $order->id)
             ->first();
-
-        if ($order_state === null) {
-
+        if ($order_state->ho_process_id === 0) {
             $current_priority = Process::select('process_id', 'hp_verifier_id', 'hp_priority')
                 ->where('hp_verifier_id', $userID)
                 ->where('hp_priority', 1)
                 ->first();
 
             if ($current_priority != null) {
-                $order_state = OrderState::create(['order_id' => $order->id, 'ho_process_id' => 1, 'ho_verifier_id' => $userID]);
+                OrderState::where('order_id', $order->id)
+                    ->update(['ho_process_id' => '1', 'ho_verifier_id' => $userID]);
             } else {
                 return redirect()->route('verify_pre.index');
             }
@@ -191,7 +190,7 @@ class VerifyController extends Controller
 
         $data = '';
         foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
+            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '"],';
         }
         $data = substr($data, 0, -1);
         $orders_count = Order::all()->count();

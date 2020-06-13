@@ -27,13 +27,9 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>{{__('Request User Name')}}</label>
-                                            @foreach($user as $users)
-                                                @if($users->id == $request->hs_request_user_id)
                                                     <input rows="4" cols="80"
                                                            class="form-control" disabled
-                                                           value="{{$users->name}}">
-                                                @endif
-                                            @endforeach
+                                                           value="{{$user_requested->name}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -41,7 +37,7 @@
                                             <label>{{__('Response User Name')}}</label>
                                             <input rows="4" cols="80"
                                                    class="form-control" disabled
-                                                   value={{auth()->user()->name}}>
+                                                   value="{{$user_response->name}}">
                                         </div>
                                     </div>
                                 </div>
@@ -59,7 +55,7 @@
                                             <label>{{__('Project Owner')}}</label>
                                             <input  rows="4" cols="80"
                                                     class="form-control"  disabled
-                                                    value="{{$project->hp_project_owner}}">
+                                                    value="{{$client_name->hc_name}}">
                                         </div>
                                     </div>
                                 </div>
@@ -78,7 +74,7 @@
                                             <label>{{__('Project Type')}}</label>
                                             <input rows="4" cols="80"
                                                    class="form-control"  disabled
-                                                   value="{{$project_type->hp_name}}">
+                                                   value="{{$project->hp_project_type}}">
                                         </div>
                                     </div>
                                 </div>
@@ -95,8 +91,7 @@
                                         <div class="form-group">
                                             <label>{{__('Project Description')}}</label>
                                             <textarea name="hs_description" rows="4" cols="80"
-                                                      class="form-control" id="request_id"
-                                                      disabled data-id="{{$request->id}}">{{$request->hs_description}}</textarea>
+                                                      class="form-control" id="request_id" disabled>{{$support_response->hs_description}}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -105,15 +100,15 @@
                                         <div class="form-group">
                                             <label>{{__('Support Response')}}</label>
                                             <textarea name="hs_description" rows="4" cols="80"
-                                                      class="form-control" id="hs_response"
-                                            ></textarea>
+                                                      class="form-control" id="hs_response" disabled
+                                            >{{$support_response->hs_response}}</textarea>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-fill btn-primary">{{__('Send')}}</button>
-                                </div>
+                                {{--<div class="card-footer">--}}
+                                    {{--<button type="submit" class="btn btn-fill btn-primary">{{__('Send')}}</button>--}}
+                                {{--</div>--}}
                             </form>
                         </div>
                     </div>

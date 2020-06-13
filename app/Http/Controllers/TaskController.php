@@ -44,7 +44,7 @@ class TaskController extends Controller
 
     public function checkbox(Request $request, $id)
     {
-        $status_count = ProductStatus::where('hps_zone_name', $request->hpt_zone_name)->count();
+        $status_count = ProductStatus::where('hps_zone_name', $request->hpt_zone_name)->groupby('hps_level')->count();
         $status = ProductStatus::select('hps_level')->where('id', $request->hpt_status)->where('hps_zone_name', $request->hpt_zone_name)->get()->last();
         $next_level = $status->hps_level + 1;
         $checkbox = Task::find($id);
@@ -60,22 +60,33 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
+        $index = 0;
         $current_user = auth()->user()->id;
-        $task = new Task();
-        $task->hpt_product_id = $request->hpt_product_id;
-        $task->hpt_invoice_number = $request->hpt_invoice_number;
-        $task->hpt_count = $request->hpt_count;
         if (empty($request->hpt_product_zone_id)) {
             $product_zone = ProductPart::select('hpp_product_zone')->where('hpp_product_id', $request->hpt_product_id)->get()->last();
-            $zone_name = ProductStatus::select('hps_zone_name', 'id')->where('hps_level', 1)->where('hps_zone_name', $product_zone->hpp_product_zone)->get()->last();
-            $task->hpt_product_zone_name = $zone_name->hps_zone_name;
-            $task->hpt_status = $zone_name->id;
+            $zone_name = ProductStatus::select('hps_zone_name', 'id')->where('hps_level', 1)->where('hps_zone_name', $product_zone->hpp_product_zone)->get();
+            foreach ($zone_name as $level_count) {
+                $task = new Task();
+                $task->hpt_product_id = $request->hpt_product_id;
+                $task->hpt_invoice_number = $request->hpt_invoice_number;
+                $task->hpt_count = $request->hpt_count;
+                $task->hpt_product_zone_name = $level_count->hps_zone_name;
+                $task->hpt_status = $level_count->id;
+                $task->hpt_user_id = $current_user;
+                $task->save();
+                $index++;
+            }
         } else {
+            $task = new Task();
+            $task->hpt_product_id = $request->hpt_product_id;
+            $task->hpt_invoice_number = $request->hpt_invoice_number;
+            $task->hpt_count = $request->hpt_count;
             $task->hpt_product_zone_name = $request->hpt_product_zone_name;
             $task->hpt_status = $request->hpt_status;
+            $task->hpt_user_id = $current_user;
+            $task->save();
         }
-        $task->hpt_user_id = $current_user;
-        $task->save();
+
 //reserve product serial number
         OrderProduct::where('hpo_order_id', $request->hpo_order_id)
             ->where('hpo_product_id', $request->hpt_product_id)
@@ -110,6 +121,21 @@ class TaskController extends Controller
 //     fill new order
     public function fill_new(Request $request)
     {
+
+////computing counter level
+//        $level_count = DB::table('hnt_product_task')
+//            ->select('hpt_invoice_number', DB::raw('COUNT(*) as `count`'))
+//            ->groupBy('hpt_invoice_number', 'hpt_product_id')
+//            ->having('count', '>', 1)
+//            ->get();
+//
+//        dd(DB::table('hnt_product_task')
+//            ->select('hpt_invoice_number', DB::raw('COUNT(*) as `count`'))
+//            ->groupBy('hpt_invoice_number', 'hpt_product_id')
+//            ->having('count', '>', 1)
+//            ->get());
+
+
         $current_user = auth()->user()->id;
         $select_zone = ProductZone::select('hpz_name', 'hpz_user_id', 'hpz_priority')->where('hpz_user_id', $current_user)->get()->last();
         $start = $request->start;

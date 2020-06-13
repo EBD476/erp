@@ -79,6 +79,7 @@ Route::group(['middleware' => ['auth']], function () {
     route::resource('product-zone', 'ProductZoneController');
     Route::resource('product-status', 'ProductStatusController');
     Route::resource('product-task', 'TaskController');
+    Route::resource('qc', 'QCController');
 
 
 //  Getting data
@@ -205,6 +206,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('json-data-product-report-list', 'TaskController@fill_report_list')->name('product-task.json-data-product-report-list');;
     route::get('json-data-product-part-compute', 'ProductPartController@computing_product_part')->name('product_part.computing-product-part');
     route::get('json-data-product-middle-part-compute', 'ProductMiddlePartController@computing_product_middle_part')->name('product_middle_part.json-data-product-middle-part-compute');
+    route::get('json-data-install', 'InstallController@fill')->name('install.json-data-install');
+    route::get('json-data-install-all', 'InstallController@fill_all')->name('install.json-data-install-all');
+    route::get('json-data-delivery', 'DeliveryController@fill')->name('delivery.json-data-delivery');
+    route::get('json-data-delivery-all', 'DeliveryController@fill_all')->name('delivery.json-data-delivery-all');
+    route::get('json-data-qc', 'QCController@fill')->name('qc.json-data-qc');
+    route::get('json-data-qc-all', 'QCController@fill_all')->name('qc.json-data-delivery-all');
 
 
 
