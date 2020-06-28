@@ -94,12 +94,13 @@
     <script src="{{asset('assets/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/switchery.min.js')}}"></script>
     <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
+    <script src="{{asset('assets/js/popper.min.js')}}"></script>
     <script>
         $(document).ready(function () {
 
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip()
-            })
+            });
 
             var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
             var table5 = $('#table5').on('draw.dt', function (e, settings, json, xhr) {
@@ -140,7 +141,9 @@
                     }
                 })
             }).DataTable({
-
+                "initComplete": function(settings, json) {
+                    $('[data-toggle="tooltip"]').tooltip({template: '<div class="tooltip tooltip-custom"><div class="title"></div><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'});
+                },
                 "processing":
                     true,
                 "serverSide":
@@ -169,6 +172,14 @@
                             "targets": -2,
                             "data": null,
                             "defaultContent": '<input type="checkbox" class="js-switch" data-size="small">'
+                        },
+                        {
+                            "targets": 1,
+                            "data": null,
+                            "render": function (data, type, row, meta) {
+                                {{--return ' <span  data-toggle="tooltip" data-html="true" title=" {{__('Project Name')}} ' + data[2] + ' <br><br> {{__('Client Name')}} : ' + data[3] + ' <br><br> {{__('Deu Date')}} : ' + data[4] + ' <br><br> {{__('Description')}} : ' + data[8] + ' <br><br> {{__('Client Name')}} : ' + data[3] + ' <br><br> {{__('Address')}} : ' + data[10] + ' <br><br> {{__('Phone Number')}} : ' + data[11] + ' <br><br> {{__('Type Project')}} : ' + data[12] + ' <br><br> {{__('Contract Type')}} : ' + data[13] + ' <br><br> {{__('Owner User')}} : ' + data[14] + ' <br><br> {{__('Connector')}} : ' + data[15] + ' <br><br> {{__('Product Name')}} : ' + data[16] + ' ">' + data[1] + '</span>'--}}
+                                    return " <span  data-toggle=\"tooltip\" data-html=\"true\" title=\"{{__('Project Name')}} "  + data[2] + "<br><br> {{__('Client Name')}} : "  + data[3] + "<br><br> {{__('Due Date')}} : "  + data[4] +"<br><br> {{__('Address')}} :"  + data[10] +  "<br><br> {{__('Phone Number')}} : "  + data[11] + "<br><br> {{__('Type Project')}} : "  + data[12] + "<br><br> {{__('Contract Type')}} : "  + data[13] + "<br><br> {{__('Owner User')}} : "  + data[14] + "\">\"" + data[1] + "</span>"
+                            },
                         }],
 
                 "language":
@@ -218,7 +229,9 @@
             })
         });
         $('#table6').DataTable({
-
+            "initComplete": function(settings, json) {
+                $('[data-toggle="tooltip"]').tooltip({template: '<div class="tooltip tooltip-custom"><div class="title"></div><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'});
+            },
             "processing":
                 true,
             "serverSide":
@@ -238,10 +251,18 @@
                             "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
                             "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
                             "                                                               <a target=\"_blank\"  href=\"verify_pre/" + data[5] + "/edit\" class=\"dropdown-item\"\n" +
-                            "                                                                >{{__('View Detail Factor')}}</a>\n" +
+                            "                                                                >{{__('Preview Detail')}}</a>\n" +
                             "                                                            </div>\n" +
                             "                                                        </div>"
                     }
+                    },
+                    {
+                        "targets": 1,
+                        "data": null,
+                        "render": function (data, type, row, meta) {
+                            {{--return ' <span  data-toggle="tooltip" data-html="true" title=" {{__('Project Name')}} ' + data[2] + ' <br><br> {{__('Client Name')}} : ' + data[3] + ' <br><br> {{__('Deu Date')}} : ' + data[4] + ' <br><br> {{__('Description')}} : ' + data[8] + ' <br><br> {{__('Client Name')}} : ' + data[3] + ' <br><br> {{__('Address')}} : ' + data[10] + ' <br><br> {{__('Phone Number')}} : ' + data[11] + ' <br><br> {{__('Type Project')}} : ' + data[12] + ' <br><br> {{__('Contract Type')}} : ' + data[13] + ' <br><br> {{__('Owner User')}} : ' + data[14] + ' <br><br> {{__('Connector')}} : ' + data[15] + ' <br><br> {{__('Product Name')}} : ' + data[16] + ' ">' + data[1] + '</span>'--}}
+                                return " <span  data-toggle=\"tooltip\" data-html=\"true\" title=\"{{__('Project Name')}} "  + data[2] + "<br><br> {{__('Client Name')}} : "  + data[3] + "<br><br> {{__('Due Date')}} : "  + data[4] +"<br><br> {{__('Address')}} :"  + data[10] +  "<br><br> {{__('Phone Number')}} : "  + data[11] + "<br><br> {{__('Type Project')}} : "  + data[12] + "<br><br> {{__('Contract Type')}} : "  + data[13] + "<br><br> {{__('Owner User')}} : "  + data[14] + "\">\"" + data[1] + "</span>"
+                        },
                 }],
 
             "language":

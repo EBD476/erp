@@ -7,51 +7,40 @@ use App\HDtype;
 use App\HelpDesk;
 use App\User;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\Types\Compound;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class PermissionController extends Controller
 {
-    public function __construct() {
-       // $this->middleware(['auth', 'isAdmin']); //isAdmin middleware lets only users with a //specific permission permission to access these resources
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index() {
-        $user=User::all();
+    public function index()
+    {
         $permissions = Permission::all(); //Get all permissions
-        $current_user=auth()->user()->id;
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
-//        $user = User::select('id', 'name')->get();
-        return view('permissions.index',compact('help_desk','priority','type','user'))->with('permissions', $permissions);
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        return view('permissions.index', compact('help_desk', 'priority', 'type', 'user'))->with('permissions', $permissions);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create() {
+
+    public function create()
+    {
+        $current_user = auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $roles = Role::get(); //Get all roles
 
-        return view('permissions.create')->with('roles', $roles);
+        return view('permissions.create', compact('help_desk', 'priority', 'type', 'user'))->with('roles', $roles);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $this->validate($request, [
-            'name'=>'required|max:40',
+            'name' => 'required|max:40',
         ]);
 
         $name = $request['name'];
@@ -73,67 +62,39 @@ class PermissionController extends Controller
 
         return redirect()->route('permissions.index')
             ->with('flash_message',
-                'Permission'. $permission->name.' added!');
+                'Permission' . $permission->name . ' added!');
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id) {
-        return redirect('permissions');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id) {
-        $user=User::all();
-        $current_user=auth()->user()->id;
+    public function edit($id)
+    {
+        $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
-//        $user = User::select('id', 'name')->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $permission = Permission::findOrFail($id);
 
-        return view('permissions.edit', compact('permission','user','type','help_desk','priority'));
+        return view('permissions.edit', compact('permission', 'user', 'type', 'help_desk', 'priority'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $permission = Permission::findOrFail($id);
         $this->validate($request, [
-            'name'=>'required|max:40',
+            'name' => 'required|max:40',
         ]);
         $input = $request->all();
         $permission->fill($input)->save();
 
         return redirect()->route('permissions.index')
             ->with('flash_message',
-                'Permission'. $permission->name.' updated!');
+                'Permission' . $permission->name . ' updated!');
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id) {
-        DD('e');
+    public function destroy($id)
+    {
         $permission = Permission::findOrFail($id);
 
         //Make it impossible to delete this specific permission
@@ -142,36 +103,10 @@ class PermissionController extends Controller
                 ->with('flash_message',
                     'Cannot delete this Permission!');
         }
-
         $permission->delete();
-
         return redirect()->route('permissions.index')
             ->with('flash_message',
                 'Permission deleted!');
 
-    }
-
-    public function fill(Request $request)
-    {
-        $start = $request->start;
-        $length = $request->length;
-        $search = $request->search['value'];
-        if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
-        } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-                ->orwhere('hp_connector', 'LIKE', "%$search%")
-                ->get();
-        }
-
-        $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project. '"],';
-        }
-        $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
     }
 }

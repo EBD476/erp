@@ -36,17 +36,20 @@ class ProductPartController extends Controller
 
     public function store(Request $request)
     {
+//        dd(count(collect($request)->get('hpp_product_zone')));
         $this->validate($request, [
             'hpp_part_id' => 'required',
             'hpp_product_id' => 'required',
             'hpp_part_count' => 'required',
         ]);
-        $zone_name = ProductZone::select('hpz_name')->where('id', $request->hpp_product_zone)->get()->last();
         $product_part = new ProductPart();
         $product_part->hpp_part_id = $request->hpp_part_id;
         $product_part->hpp_product_id = $request->hpp_product_id;
         $product_part->hpp_part_count = $request->hpp_part_count;
-        $product_part->hpp_product_zone = $zone_name->hpz_name;
+        if(count(collect($request)->get('hpp_product_zone')) == 1){
+            $zone_name = ProductZone::select('hpz_name')->where('id', $request->hpp_product_zone)->get()->last();
+            $product_part->hpp_product_zone = $zone_name->hpz_name;
+        }
         $product_part->save();
 
         return json_encode(["response" => "OK"]);

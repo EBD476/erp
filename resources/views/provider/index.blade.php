@@ -2,7 +2,7 @@
 
 @section('title',__('Provider'))
 
-@push('script')
+@push('css')
     <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
 @endpush
 @section('content')

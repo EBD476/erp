@@ -8,7 +8,7 @@
 @endpush
 
 @section('content')
-    @role('Admin')
+    @role('Admin|order')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -73,7 +73,7 @@
                                             <label>{{__('Project Owner')}}</label>
                                             <input rows="4" cols="80"
                                                    class="form-control" disabled
-                                                   value="{{$project->hp_project_owner}}">
+                                                   value="{{$client->hc_name}}">
                                         </div>
                                     </div>
                                 </div>
@@ -92,7 +92,7 @@
                                             <label>{{__('Project Type')}}</label>
                                             <input rows="4" cols="80"
                                                    class="form-control" disabled
-                                                   value="{{$project_type->hp_name}}">
+                                                   value="{{$project->hp_project_type}}">
                                         </div>
                                     </div>
                                 </div>
@@ -100,9 +100,9 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>{{__('Project Address')}}</label>
-                                            <input rows="4" cols="80"
-                                                   class="form-control" id="hp_project_id" disabled
-                                                   value="{{$project->hp_project_address}}">
+                                            <textarea rows="4" cols="80"
+                                                      class="form-control" id="hp_project_id" disabled
+                                            >{{$project->hp_project_address}}</textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -150,19 +150,6 @@
                             </p>
                             <div class="card-description">
 
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <div class="button-container">
-                                <button href="javascript:void(0)" class="btn btn-icon btn-round btn-facebook">
-                                    <i class="fab fa-facebook"></i>
-                                </button>
-                                <button href="javascript:void(0)" class="btn btn-icon btn-round btn-twitter">
-                                    <i class="fab fa-twitter"></i>
-                                </button>
-                                <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
-                                    <i class="fab fa-google-plus"></i>
-                                </button>
                             </div>
                         </div>
                     </div>

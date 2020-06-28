@@ -46,6 +46,7 @@
                                     <th>{{__('Invoices Number')}}</th>
                                     <th>{{__('Product Name')}}</th>
                                     <th>{{__('Count')}}</th>
+                                    <th>{{__('Inventory After Exit Final Repository')}}</th>
                                     <th>{{__('Inventory After Exit')}}</th>
                                     <th>{{__('Due Date')}}</th>
                                     <th>{{__('Start The Process')}}</th>
@@ -383,21 +384,20 @@
                     $('.js-switch').each(function () {
                         var data = table5.row($(this).parents('tr')).data();
                         var switchery = new Switchery($(this)[0], $(this).data());
-
-                        if (data[4] < 0) {
-                            switchery.disable();
-                        } else {
+                        if (data[4] > 0 || data[5] > 0) {
                             switchery.enable();
+                        }else {
+                            switchery.disable();
                         }
 
-                        data[9] != '' ? $(this)[0].click() : 0;
+                        data[10] != '' ? $(this)[0].click() : 0;
                         $(this)[0].onchange = function () {
                             var cdata = table5.row($(this).parents('tr')).data();
                             var data = {
                                 hpt_invoice_number: cdata[1],
                                 hpt_count: cdata[3],
-                                hpt_product_id: cdata[6],
-                                hpo_order_id: cdata[8]
+                                hpt_product_id: cdata[7],
+                                hpo_order_id: cdata[9]
                             };
                             //token
                             $.ajaxSetup({
@@ -457,7 +457,7 @@
                                     '                                                                    <div class="progress-bar" role="progressbar"\n' +
                                     '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
                                     '                                                                         aria-valuemax="100"\n' +
-                                    '                                                                         style="width:' + data[11] + '%;"></div>\n'
+                                    '                                                                         style="width:' + data[12] + '%;"></div>\n'
                             }
                         },
                             {
@@ -516,8 +516,8 @@
 
                 var data_table = table5.row($(this).parents('tr')).data();
                 var data = {
-                    id: data_table[7],
-                    product: data_table[6],
+                    id: data_table[8],
+                    product: data_table[7],
                     computing_repository_requirement: data_table[4],
                 }
                 $.ajaxSetup({

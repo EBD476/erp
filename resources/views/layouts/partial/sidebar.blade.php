@@ -290,14 +290,14 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#InstallExamples">
+                <a class="nav-link" data-toggle="collapse" href="#qcExamples">
                     <i class="tim-icons icon-components" style="float: right"></i>
                     <p>
                         {{__('QC')}}
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse " id="InstallExamples">
+                <div class="collapse " id="qcExamples">
                     <ul class="nav">
                         <li class="nav-item ">
                             <a class="nav-link" href="{{Route('qc.index')}}">
@@ -497,6 +497,14 @@
                             </a>
                         </li>
                     </ul>
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product.activation-create-serial-number-index') }}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal"> {{__('Create Serial Number Status')}}</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </li>
         </ul>
@@ -546,30 +554,23 @@
                                 <span class="sidebar-normal"> {{__('Help Desk')}}</span>
                             </a>
                         </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#ClientExamples">
+                    <i class="tim-icons icon-single-02" style="float: right"></i>
+                    <p>
+                        {{__('Client')}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse " id="ClientExamples">
+                    <ul class="nav">
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('hd-receiver-user.index') }}">
-                                <i class="tim-icons icon-headphones"></i>
-                                <span class="sidebar-normal">
-                                    {{__('Receiver User')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('priority.index') }}">
-                                <i class="tim-icons icon-headphones"></i>
-                                <span class="sidebar-normal">
-                                    {{__('Ticket Priority')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('type.index') }}">
-                                <i class="tim-icons icon-headphones"></i>
-                                <span class="sidebar-normal">{{__('Ticket Type')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item  ">
-                            <a class="nav-link" href="{{ route('ticket.index') }}">
-                                <i class="tim-icons icon-headphones"></i>
-                                <span class="sidebar-normal">{{__('Ticket Status')}}</span>
+                            <a class="nav-link" href="{{ route('client.index') }}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal"> {{__('Client')}}</span>
                             </a>
                         </li>
                     </ul>
@@ -596,19 +597,19 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#ClientExamples">
-                    <i class="tim-icons icon-single-02" style="float: right"></i>
+                <a class="nav-link" data-toggle="collapse" href="#ConversationExamples">
+                    <i class="tim-icons icon-chat-33" style="float: right"></i>
                     <p>
-                        {{__('Client')}}
+                        {{__('Conversation View')}}
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse " id="ClientExamples">
+                <div class="collapse " id="ConversationExamples">
                     <ul class="nav">
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('client.index') }}">
-                                <i class="tim-icons icon-single-02"></i>
-                                <span class="sidebar-normal"> {{__('Client')}}</span>
+                            <a class="nav-link" href="{{ route('conversation_view.index') }}">
+                                <i class="tim-icons icon-chat-33"></i>
+                                <span class="sidebar-normal"> {{__('Conversation View')}}</span>
                             </a>
                         </li>
                     </ul>
@@ -705,32 +706,6 @@
                             <a class="nav-link" href="{{ route('help_desk.index') }}">
                                 <i class="tim-icons icon-email-85"></i>
                                 <span class="sidebar-normal"> {{__('Help Desk')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('hd-receiver-user.index') }}">
-                                <i class="tim-icons icon-headphones"></i>
-                                <span class="sidebar-normal">
-                                    {{__('Receiver User')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('priority.index') }}">
-                                <i class="tim-icons icon-headphones"></i>
-                                <span class="sidebar-normal">
-                                    {{__('Ticket Priority')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('type.index') }}">
-                                <i class="tim-icons icon-headphones"></i>
-                                <span class="sidebar-normal">{{__('Ticket Type')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item  ">
-                            <a class="nav-link" href="{{ route('ticket.index') }}">
-                                <i class="tim-icons icon-headphones"></i>
-                                <span class="sidebar-normal">{{__('Ticket Status')}}</span>
                             </a>
                         </li>
                     </ul>
@@ -834,32 +809,6 @@
                                 <span class="sidebar-normal"> {{__('Help Desk')}}</span>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('hd-receiver-user.index') }}">
-                                <i class="tim-icons icon-headphones"></i>
-                                <span class="sidebar-normal">
-                                    {{__('Receiver User')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('priority.index') }}">
-                                <i class="tim-icons icon-headphones"></i>
-                                <span class="sidebar-normal">
-                                    {{__('Ticket Priority')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('type.index') }}">
-                                <i class="tim-icons icon-headphones"></i>
-                                <span class="sidebar-normal">{{__('Ticket Type')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item  ">
-                            <a class="nav-link" href="{{ route('ticket.index') }}">
-                                <i class="tim-icons icon-headphones"></i>
-                                <span class="sidebar-normal">{{__('Ticket Status')}}</span>
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </li>
@@ -877,6 +826,25 @@
                             <a class="nav-link" href="{{ route('users.index') }}">
                                 <i class="tim-icons icon-paper"></i>
                                 <span class="sidebar-normal">{{__('Manage Users')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#ConversationExamples">
+                    <i class="tim-icons icon-chat-33" style="float: right"></i>
+                    <p>
+                        {{__('Conversation View')}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse " id="ConversationExamples">
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('conversation_view.index') }}">
+                                <i class="tim-icons icon-chat-33"></i>
+                                <span class="sidebar-normal"> {{__('Conversation View')}}</span>
                             </a>
                         </li>
                     </ul>
@@ -904,12 +872,6 @@
                 </a>
                 <div class="collapse" id="componentsExamples" style="">
                     <ul class="nav">
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('order.index') }}">
-                                <i class="tim-icons icon-pencil"></i>
-                                <span class="sidebar-normal"> {{__('Order')}}</span>
-                            </a>
-                        </li>
                         <li class="nav-item ">
                             <a class="nav-link" href="{{Route('order.invoices_list_product')}}">
                                 <i class="tim-icons icon-bullet-list-67"></i> <span
@@ -1099,6 +1061,25 @@
                     </ul>
                 </div>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#ConversationExamples">
+                    <i class="tim-icons icon-chat-33" style="float: right"></i>
+                    <p>
+                        {{__('Conversation View')}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse " id="ConversationExamples">
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('conversation_view.index') }}">
+                                <i class="tim-icons icon-chat-33"></i>
+                                <span class="sidebar-normal"> {{__('Conversation View')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
         </ul>
         <!-- End of Sidebar -->
         @endrole
@@ -1268,8 +1249,253 @@
         </ul>
         <!-- End of Sidebar -->
         @endrole
+        @role('support')
+        <!-- Sidebar -->
+        <ul class="nav">
+            <li class="nav-item ">
+                <a class="nav-link" href="{{ route('home') }}">
+                    <i class="tim-icons icon-chart-pie-36" style="float: right"></i>
+                    <p>{{__('Dashboard')}}</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#projectExamples">
+                    <i class="tim-icons icon-molecule-40" style="float: right"></i>
+                    <p>
+                        {{__('Project')}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse " id="projectExamples">
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('projects.index') }}">
+                                <i class="tim-icons icon-paper"></i> <span
+                                        class="sidebar-normal">{{__('Projects Management')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('map')}}">
+                                <i class="tim-icons icon-square-pin"></i>
+                                <span class="sidebar-normal"
+                                >{{__('Projects Map')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#SupportExamples">
+                    <i class="tim-icons icon-support-17" style="float: right"></i>
+                    <p>
+                        {{__('Support')}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse " id="SupportExamples">
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{Route('support.index')}}">
+                                <i class="tim-icons icon-support-17"></i>
+                                <span class="sidebar-normal"> {{__('Support List')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{Route('support_status.index')}}">
+                                <i class="tim-icons icon-support-17"></i>
+                                <span class="sidebar-normal"> {{__('Support Status')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <a class="nav-link" data-toggle="collapse" href="#UsersExamples">
+                <i class="tim-icons icon-user-run" style="float: right"></i>
+                <p>
+                    {{__('Users')}}
+                    <b class="caret"></b>
+                </p>
+            </a>
+            <div class="collapse " id="UsersExamples">
+                <ul class="nav">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{{ route('users.index') }}">
+                            <i class="tim-icons icon-paper"></i>
+                            <span class="sidebar-normal">{{__('Manage Users')}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#HelpDeskExamples">
+                    <i class="tim-icons icon-headphones" style="float: right"></i>
+                    <p>
+                        {{__('Help Desk')}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse " id="HelpDeskExamples">
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('help_desk.index') }}">
+                                <i class="tim-icons icon-email-85"></i>
+                                <span class="sidebar-normal"> {{__('Help Desk')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('hd-receiver-user.index') }}">
+                                <i class="tim-icons icon-headphones"></i>
+                                <span class="sidebar-normal">
+                                    {{__('Receiver User')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('priority.index') }}">
+                                <i class="tim-icons icon-headphones"></i>
+                                <span class="sidebar-normal">
+                                    {{__('Ticket Priority')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('type.index') }}">
+                                <i class="tim-icons icon-headphones"></i>
+                                <span class="sidebar-normal">{{__('Ticket Type')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a class="nav-link" href="{{ route('ticket.index') }}">
+                                <i class="tim-icons icon-headphones"></i>
+                                <span class="sidebar-normal">{{__('Ticket Status')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#ConversationExamples">
+                    <i class="tim-icons icon-chat-33" style="float: right"></i>
+                    <p>
+                        {{__('Conversation View')}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse " id="ConversationExamples">
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('conversation_view.index') }}">
+                                <i class="tim-icons icon-chat-33"></i>
+                                <span class="sidebar-normal"> {{__('Conversation View')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+        </ul>
+        <!-- End of Sidebar -->
+        @endrole
 
-
+        {{--sub_product_part--}}
+        @role('task')
+        <!-- Sidebar -->
+        <ul class="nav">
+            <li class="nav-item ">
+                <a class="nav-link" href="{{ route('home') }}">
+                    <i class="tim-icons icon-chart-pie-36" style="float: right"></i>
+                    <p>{{__('Dashboard')}}</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#ProductExamples">
+                    <i class="tim-icons icon-app" style="float: right"></i>
+                    <p>
+                        {{__('Product')}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse" id="ProductExamples" style="">
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('product-task.index')}}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal">{{__('Product Task')}}</span>
+                            </a>
+                            <a class="nav-link" href="{{ route('product-task.report-list')}}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal">{{__('Product Report List')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#HelpDeskExamples">
+                    <i class="tim-icons icon-headphones" style="float: right"></i>
+                    <p>
+                        {{__('Help Desk')}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse " id="HelpDeskExamples">
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('help_desk.index') }}">
+                                <i class="tim-icons icon-email-85"></i>
+                                <span class="sidebar-normal"> {{__('Help Desk')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('hd-receiver-user.index') }}">
+                                <i class="tim-icons icon-headphones"></i>
+                                <span class="sidebar-normal">
+                                    {{__('Receiver User')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#UsersExamples">
+                    <i class="tim-icons icon-user-run" style="float: right"></i>
+                    <p>
+                        {{__('Users')}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse " id="UsersExamples">
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('users.index') }}">
+                                <i class="tim-icons icon-paper"></i>
+                                <span class="sidebar-normal">{{__('Manage Users')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#ConversationExamples">
+                    <i class="tim-icons icon-chat-33" style="float: right"></i>
+                    <p>
+                        {{__('Conversation View')}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse " id="ConversationExamples">
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('conversation_view.index') }}">
+                                <i class="tim-icons icon-chat-33"></i>
+                                <span class="sidebar-normal"> {{__('Conversation View')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+        <!-- End of Sidebar -->
+        @endrole
     </div>
 </div>
 

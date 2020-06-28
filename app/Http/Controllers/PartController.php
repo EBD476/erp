@@ -18,12 +18,13 @@ class PartController extends Controller
 {
     public function index()
     {
+        $status =DB::table('hnt_product_status_create_serial_number')->select('hpscsn_activation')->get()->last();
         $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        return view('part.index', compact('type', 'help_desk', 'priority', 'user'));
+        return view('part.index', compact('type', 'help_desk', 'priority', 'user','status'));
     }
 
 
@@ -46,8 +47,18 @@ class PartController extends Controller
         $code = "hnt_prt_" . $current_date;
         $part = new Part();
         $part->hp_name = $request->hp_name;
+        $part->hp_size = $request->hp_size;
         $part->hp_part_image = $request->part_image;
-        $part->hp_serial_number = $code;
+        if($request->hp_part_number != ""){
+            $part->hp_part_number = $request->hp_part_number;
+        }else{
+            $part->hp_part_number = $code;
+        }
+        if($request->hp_serial_number != ""){
+            $part->hp_serial_number = $request->hp_serial_number;
+        }else{
+            $part->hp_serial_number = $code;
+        }
         $part->hp_part_model = $request->hp_part_model;
         $part->hp_main_unit = $request->hp_main_unit;
         $part->hp_category_id = $request->hp_category_id;
@@ -66,6 +77,7 @@ class PartController extends Controller
         ]);
         $part = Part::find($id);
         $part->hp_name = $request->hp_name;
+        $part->hp_size = $request->hp_size;
         $part->hp_serial_number = $request->hp_code;
         $part->hp_part_model = $request->hp_part_model;
         $part->hp_part_image = $request->part_image1;

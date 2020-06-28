@@ -82,40 +82,46 @@ class UserController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $user = User::findOrFail($id); //Get user with specified id
+        $users = User::findOrFail($id); //Get user with specified id
         $roles = Role::get(); //Get all roles
 
-        return view('users.edit', compact('decrypt', 'user', 'roles', 'help_desk', 'priority', 'type')); //pass user and roles data to view
+        return view('users.edit', compact('decrypt', 'user', 'users', 'roles', 'help_desk', 'priority', 'type')); //pass user and roles data to view
 
     }
 
     public function update(Request $request, $id)
     {
-
-
         $user = User::findOrFail($id); //Get role specified by id
+        $user->name = $request->name;
+        $user->username = $request->username;
         //Validate name, email and password fields
-        $this->validate($request, [
-//            'name'=>'required|max:120',
-//            'password'=>'required|min:6|confirmed'
-        ]);
-        $result = Hash::check($request->password, $user->password);
-        if ($result == true) {
-            $input = $request->only(['name', 'newPassword']); //Retreive the name, email and password fields
+//        $this->validate($request, [
+//            'name' => 'required|max:120',
+////            'password'=>'required|min:6|confirmed'
+//        ]);
+        if ($request->newPassword != "") {
+            $result = Hash::check($request->password, $user->password);
+            if ($result == true) {
+                $input = $request->only(['name', 'newPassword']); //Retreive the name, email and password fields
+                $user->password = $request->newPassword;
+            }
+        }
+        if ($request['roles'] != "") {
             $roles = $request['roles']; //Retreive all roles
-            $user->name = $request->name;
-            $user->password = $request->newPassword;
-            $user->save();
+        }
+        $user->save();
 
+        if ($request['roles'] != "") {
             if (isset($roles)) {
                 $user->roles()->sync($roles);  //If one or more role is selected associate user to roles
             } else {
-                $user->roles()->detach(); //If no role is selected remove exisiting role associated to a user
+//                $user->roles()->detach(); //If no role is selected remove exisiting role associated to a user
             }
-            return redirect()->route('users.index')
-                ->with('flash_message',
-                    'User successfully edited.');
         }
+        return redirect()->route('users.index')
+            ->with('flash_message',
+                'User successfully edited.');
+
     }
 
     public function destroy($id)

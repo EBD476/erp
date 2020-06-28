@@ -2,16 +2,12 @@
 
 @section('title',__('Project'))
 
-@push('script')
-    <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
-@endpush
-
 @push('css')
     <link href="{{ asset('assets/css/leaflet.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
-    @role('Admin')
+    @role('Admin|order')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -38,14 +34,14 @@
                                     </div>
                                     <div class="col-md-3 px-md-1">
                                         <div class="form-group">
-                                            <label>{{__('Owner Name')}}</label>
+                                            <label>{{__('Client Name')}}</label>
                                             <input name="project_owner" type="text" class="form-control" required=""
-                                                   aria-invalid="false" value="{{$project->hp_project_owner}}">
+                                                   aria-invalid="false" value="{{$client->hc_name}}">
                                         </div>
                                     </div>
                                     <div class="col-md-4 pl-md-1">
                                         <div class="form-group">
-                                            <label>{{__('Owner Phone')}}</label>
+                                            <label>{{__('Client Phone')}}</label>
                                             <input name="owner_phone" type="text" class="form-control" required=""
                                                    aria-invalid="false" value="{{$project->hp_project_owner_phone}}">
                                         </div>
@@ -56,7 +52,7 @@
                                         <div class="form-group">
                                             <label>{{__('Project Type')}}</label>
                                             <select name="project_type" class="form-control ltr">
-                                                <option value="{{$project->id}}">{{$project->hp_name}}</option>
+                                                <option>{{$project->hp_project_type}}</option>
                                                 @foreach($projects_type as $project_type)
                                                     <option value="{{$project_type->id}}">{{$project_type->hp_name}}</option>
                                                 @endforeach
@@ -67,10 +63,11 @@
                                     <div class="col-md-4 pr-md-1">
                                         <div class="form-group">
                                             <label>{{__('Land Use')}}</label>
-                                            <select class="form-control">
-                                                <option value="1">{{__('Residential')}}</option>
-                                                <option value="2">{{__('Office')}}</option>
-                                                <option value="3">{{__('Commercial')}}</option>
+                                            <select class="form-control" name="hp_owner">
+                                                <option>{{$project->hp_owner}}</option>
+                                                <option>{{__('Residential')}}</option>
+                                                <option>{{__('Office')}}</option>
+                                                <option>{{__('Commercial')}}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -82,35 +79,34 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-4 pl-md-1">
-                                        <div class="form-group">
-                                            <label>{{__('Unit Area')}}</label>
-                                            <input name="unit_area" type="numbertext" class="form-control" required=""
-                                                   aria-invalid="false" value="{{$project->hp_project_area}}">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4 pl-md-1">
-                                        <div class="form-group">
-                                            <label>{{__('State')}}</label>
-                                            <select name="project_state" class="form-control">
-                                                @foreach($projects_state as $project_state)
-                                                    <option value="{{$project_state->id}}">
-                                                        {{$project_state->hp_project_state}}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>{{__('City')}}</label>
-                                            <input name="project_city" type="text" class="form-control" required=""
-                                                   aria-invalid="false" value="{{$project->hp_project_city}}">
-                                        </div>
-                                    </div>
-                                </div>
+                                {{--<div class="row">--}}
+                                    {{--<div class="col-md-4 pl-md-1">--}}
+                                        {{--<div class="form-group">--}}
+                                            {{--<label>{{__('Unit Area')}}</label>--}}
+                                            {{--<input name="unit_area" type="numbertext" class="form-control" required=""--}}
+                                                   {{--aria-invalid="false" value="{{$project->hp_project_area}}">--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                    {{--<div class="col-md-4 pl-md-1">--}}
+                                        {{--<div class="form-group">--}}
+                                            {{--<label>{{__('State')}}</label>--}}
+                                            {{--<select name="project_state" class="form-control">--}}
+                                                {{--@foreach($projects_state as $project_state)--}}
+                                                    {{--<option value="{{$project_state->id}}">--}}
+                                                        {{--{{$project_state->hp_project_state}}--}}
+                                                    {{--</option>--}}
+                                                {{--@endforeach--}}
+                                            {{--</select>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                    {{--<div class="col-md-4">--}}
+                                        {{--<div class="form-group">--}}
+                                            {{--<label>{{__('City')}}</label>--}}
+                                            {{--<input name="project_city" type="text" class="form-control" required=""--}}
+                                                   {{--aria-invalid="false" value="{{$project->hp_project_city}}">--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -126,32 +122,8 @@
                                             <label>{{__('Project Location')}}</label>
 
                                             <div id="map" style="width: 100%; height: 300px;direction: ltr"></div>
-                                            <input name="project_location" type="hidden" id="location">
+                                            <input name="project_location" type="hidden" id="location" value="{{$project->hp_project_location}}">
 
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    {{--<div class="col-md-4 pr-md-1">--}}
-                                    {{--<div class="form-group">--}}
-                                    {{--<label>{{__('Project Options')}}</label>--}}
-                                    {{--<input name="project_options" type="text" class="form-control" placeholder="{{__('Project Options')}}">--}}
-                                    {{--</div>--}}
-                                    {{--</div>--}}
-                                    <div class="col-md-4 px-md-1">
-                                        <div class="form-group">
-                                            <label>{{__('Project Completed Percent')}}</label>
-                                            <input name="project_completed" type="number" class="form-control"
-                                                   required=""
-                                                   aria-invalid="false" value="{{$project->hp_project_complete}}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 pl-md-1">
-                                        <div class="form-group">
-                                            <label>{{__('Project Final Date')}}</label>
-                                            <input name="project_complete_date" type="date" class="form-control"
-                                                   required=""
-                                                   aria-invalid="false" value="{{$project->hp_project_complete_date}}">
                                         </div>
                                     </div>
                                 </div>
@@ -176,84 +148,64 @@
                     <div class="card card-user">
                         <div class="card-body">
                             <p class="card-text">
-                                <div class="author">
-                                    <div class="block block-one"></div>
-                                    <div class="block block-two"></div>
-                                    <div class="block block-three"></div>
-                                    <div class="block block-four"></div>
-                                    <a href="javascript:void(0)">
-                                        {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
-                                        <h5 class="title">Hanta IBMS</h5>
-                                    </a>
-                            <p class="description">
-                                Project Implementors
-                            </p>
-                        </div>
-                        </p>
-                        <div class="card-description">
+                            <div class="author">
+                                <div class="block block-one"></div>
+                                <div class="block block-two"></div>
+                                <div class="block block-three"></div>
+                                <div class="block block-four"></div>
+                                <a href="javascript:void(0)">
+                                    <h5 class="title">Hanta IBMS</h5>
+                                </a>
+                            </div>
+                            <div class="card-description">
 
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="button-container">
-                            <button href="javascript:void(0)" class="btn btn-icon btn-round btn-facebook">
-                                <i class="fab fa-facebook"></i>
-                            </button>
-                            <button href="javascript:void(0)" class="btn btn-icon btn-round btn-twitter">
-                                <i class="fab fa-twitter"></i>
-                            </button>
-                            <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
-                                <i class="fab fa-google-plus"></i>
-                            </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    @endrole
-@endsection
+        @endrole
+        @endsection
 
-@push('scripts')
-    <script type="text/javascript">
+        @push('scripts')
+            <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
+            <script type="text/javascript">
+                var loc;
+                var greenIcon = L.icon({
+                    iconUrl: '../../assets/images/marker-icon-x48.png',
+                    shadowUrl: 'leaf-shadow.png',
 
-        var loc;
-        var greenIcon = L.icon({
-            iconUrl: '../../assets/images/marker-icon-x48.png',
-            shadowUrl: 'leaf-shadow.png',
+                    iconSize: [48, 48], // size of the icon
+                    shadowSize: [50, 64], // size of the shadow
+                    iconAnchor: [25, 44], // point of the icon which will correspond to marker's location
+                    shadowAnchor: [4, 62],  // the same for the shadow
+                    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+                });
 
-            iconSize: [48, 48], // size of the icon
-            shadowSize: [50, 64], // size of the shadow
-            iconAnchor: [25, 44], // point of the icon which will correspond to marker's location
-            shadowAnchor: [4, 62],  // the same for the shadow
-            popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-        });
+                var map = L.map('map').setView([35.7736, 51.4631], 13);
 
-        var map = L.map('map').setView([35.7736, 51.4631], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                L.marker([{{$project->hp_project_location}}], {icon: greenIcon}).addTo(map)
+                    .bindPopup('{{$project->hp_project_address}}')
+                    .openPopup();
 
-        // L.marker([35.7736, 51.4631], {icon: greenIcon}).addTo(map)
-        //     .bindPopup('test.')
-        //     .openPopup();
+                function onMapClick(e) {
+                    var jsonLoc = JSON.parse(JSON.stringify(e.latlng));
+                    $("#location").val(jsonLoc.lat + ',' + jsonLoc.lng);
 
-        function onMapClick(e) {
-            ;
+                    if (loc != undefined) {
+                        loc.remove();
+                    }
+                    loc = L.marker([jsonLoc.lat, jsonLoc.lng], {icon: greenIcon}).addTo(map);
+                }
 
-            var jsonLoc = JSON.parse(JSON.stringify(e.latlng));
-            $("#location").val(jsonLoc.lat + ',' + jsonLoc.lng);
+                $("#remove").click(function () {
+                    loc.remove();
+                });
 
-            if (loc != undefined) {
-                loc.remove();
-            }
-            loc = L.marker([jsonLoc.lat, jsonLoc.lng], {icon: greenIcon}).addTo(map);
-        }
+                map.on('click', onMapClick);
 
-        $("#remove").click(function () {
-            loc.remove();
-        });
-
-        map.on('click', onMapClick);
-
-    </script>
-@endpush
+            </script>
+    @endpush

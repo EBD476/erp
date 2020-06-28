@@ -18,17 +18,17 @@ class ConversationViewController extends Controller
      */
     public function index()
     {
+        $current_user = auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $last_message = ConversationView::where('hcv_receiver_user_id', $user)->whereNotNull('hcv_message_status')->get();
         $find_last_message = ConversationView::where('hcv_receiver_user_id', $user)->whereNotNull('hcv_message_status')->get()->last();
         $counter = ConversationView::where('hcv_receiver_user_id', $user)->where('hcv_message_status', null)->count();
         $user_name = User::all();
         $user_admin = User::where('name', 'admin')->get();
         $message_send = ConversationView::where('hcv_request_user_id', $user)->Where('hcv_request_user_id', $user_admin)->Where('hcv_receiver_user_id', $user_admin)->Where('hcv_receiver_user_id', $user)->get();
-        $current_user = auth()->user()->id;
-        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name', 'id')->get();
-        $priority = HDpriority::select('id', 'hdp_name')->get();
-        $user = User::select('id', 'name')->get();
         return view('conversation_view.index', compact('type', 'priority', 'help_desk', 'message_receive', 'message_send', 'user_name', 'user', 'counter', 'last_message', 'find_last_message'));
 
     }
@@ -54,16 +54,16 @@ class ConversationViewController extends Controller
     public function edit($id)
     {
         $user_name = User::all();
+        $current_user = auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
+        $user = User::select('id', 'name')->get();
         $last_message = ConversationView::where('hcv_receiver_user_id', $user)->whereNotNull('hcv_message_status')->get();
         $find_last_message = ConversationView::where('hcv_receiver_user_id', $user)->where('hcv_request_user_id', $id)->whereNotNull('hcv_message_status')->get()->last();
         $counter = ConversationView::where('hcv_receiver_user_id', $user)->where('hcv_message_status', null)->where('hcv_request_user_id', $id)->count();
         ConversationView::where('hcv_request_user_id', $id)->where('hcv_receiver_user_id', $user)
             ->update(['hcv_message_status' => '1']);
-        $current_user=auth()->user()->id;
-        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
-        $type = HDtype::select('th_name','id')->get();
-        $priority = HDpriority::select('id','hdp_name')->get();
-        $user = User::select('id', 'name')->get();
         $message_send = ConversationView::where('hcv_request_user_id', $id)->orWhere('hcv_receiver_user_id', $id)->get();
         return view('conversation_view.index', compact('type', 'priority', 'help_desk', 'message_send', 'user_name', 'user', 'counter', 'last_message', 'find_last_message'));
     }

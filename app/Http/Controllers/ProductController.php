@@ -20,12 +20,13 @@ class ProductController extends Controller
 
     public function index()
     {
+        $status =DB::table('hnt_product_status_create_serial_number')->select('hpscsn_activation')->get()->last();
         $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        return view('products.index', compact('type', 'priority', 'help_desk', 'user'));
+        return view('products.index', compact('type','status', 'priority', 'help_desk', 'user'));
     }
 
     public function product_price_index()
@@ -70,6 +71,16 @@ class ProductController extends Controller
         $product->hp_product_size = $request->hp_product_size;
         $product->hp_product_image = $request->product_image;
         $product->hp_voltage = $request->hp_voltage;
+        if($request->hp_part_number != ""){
+            $product->hp_part_number = $request->hp_part_number;
+        }else{
+
+        }
+        if($request->hp_serial_number != ""){
+            $product->hp_serial_number = $request->hp_serial_number;
+        }else{
+
+        }
         $product->hp_status = 1;
         $product->save();
 
@@ -251,5 +262,22 @@ class ProductController extends Controller
         }
         return json_encode(["results" => $product_property]);
     }
+
 //    end filling
+
+    public function activation_create_serial_number_index()
+    {
+        $current_user = auth()->user()->id;
+        $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
+        $type = HDtype::select('th_name', 'id')->get();
+        $priority = HDpriority::select('id', 'hdp_name')->get();
+        $user = User::select('id', 'name')->get();
+        $status =DB::table('hnt_product_status_create_serial_number')->select('id','hpscsn_status','hpscsn_activation')->get();
+        return view('activation_create_serial_number.index', compact('status','type', 'priority', 'help_desk', 'user'));
+    }
+    public function activation_create_serial_number_status(Request $request)
+    {
+        DB::table('hnt_product_status_create_serial_number')->where('hpscsn_status',$request->hp_status)->update(['hpscsn_activation'=>$request->hp_status_activation]);
+        return json_encode(["response" => "OK"]);
+    }
 }

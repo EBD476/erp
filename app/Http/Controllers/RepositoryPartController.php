@@ -79,7 +79,7 @@ class RepositoryPartController extends Controller
         $key = 0;
         foreach ($repository as $repositories) {
             $key++;
-            $data .= '["' . $key . '",' . '"' . $repositories->hp_name . '",' . '"' . $repositories->hrp_part_count . '",' . '"' . $repositories->name . '",' . '"' . $repositories->hr_name . '",' . '"' . $repositories->hrp_entry_date . '",' . '"' . $repositories->hrp_exit . '",' . '"' . $repositories->hrp_return_value . '",' . '"' . $repositories->hrp_contradiction . '",' . '"' . $repositories->hrp_status_return_part . '",' . '"' . $repositories->hrp_comment . '",' . '"' . $repositories->hrp_provider_code . '",' . '"' . $repositories->hrp_repository_id . '",' . '"' . $repositories->hrp_part_id . '",' . '"' . $repositories->id . '"],';
+            $data .= '["' . $key . '",' . '"' . $repositories->hp_name . '",' . '"' . $repositories->hrp_part_count . '",' . '"' . $repositories->name . '",' . '"' . $repositories->hr_name . '",' . '"' . $repositories->hrp_comment . '",' . '"' . $repositories->hrp_entry_date . '",' . '"' . $repositories->hrp_exit . '",' . '"' . $repositories->hrp_return_value . '",' . '"' . $repositories->hrp_contradiction . '",' . '"' . $repositories->hrp_status_return_part . '",' . '"' . $repositories->hrp_provider_code . '",' . '"' . $repositories->hrp_repository_id . '",' . '"' . $repositories->hrp_part_id . '",' . '"' . $repositories->id . '"],';
         }
         $data = substr($data, 0, -1);
         $repository_count = RepositoryPart::all()->count();

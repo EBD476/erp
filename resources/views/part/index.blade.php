@@ -68,6 +68,26 @@
                                         </div>
                                     </div>
                                 </div>
+                                @if($status->hpscsn_activation == 1)
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>{{__('Serial Number')}}</label>
+                                                <input name="hp_serial_number" type="text" class="form-control"
+                                                       aria-invalid="false">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>{{__('Part Number')}}</label>
+                                                <input name="hp_part_number" type="text" class="form-control"
+                                                       aria-invalid="false">
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -90,15 +110,6 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>{{__('Category Id')}}</label>
-                                            <input name="hp_category_id" type="number" class="form-control"
-                                                   aria-invalid="false">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
                                             <label>{{__('Main Unit')}}</label>
                                             <input name="hp_main_unit" type="text" class="form-control"
                                                    required=""
@@ -106,15 +117,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>{{__('Category Id')}}</label>
-                                            <input name="hp_category_id" type="number" class="form-control"
-                                                   aria-invalid="false">
-                                        </div>
-                                    </div>
-                                </div>
+                                {{--<div class="row">--}}
+                                {{--<div class="col-md-12">--}}
+                                {{--<div class="form-group">--}}
+                                {{--<label>{{__('Category Id')}}</label>--}}
+                                {{--<input name="hp_category_id" type="number" class="form-control"--}}
+                                {{--aria-invalid="false">--}}
+                                {{--</div>--}}
+                                {{--</div>--}}
+                                {{--</div>--}}
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -265,6 +276,9 @@
     <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
     <script>
         $(document).ready(function () {
+
+            $('.dz-message').text("برای انتخاب تصویر مورد نظر اینجا کلیک کنید");
+
 
             $('#card-form1').hide();
 
@@ -470,6 +484,7 @@
                 });
             });
             //end store
+
             // add new provider
             $("#modal_form").submit(function (event) {
                 var data = $("#modal_form").serialize();

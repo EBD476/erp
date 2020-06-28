@@ -23,503 +23,143 @@
                 </h3>
                 <hr>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="col-md-9">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive" style="font-size: 13px;color: #65767c">
-                                    <table id="table" class="table  table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>{{__('Name')}}</th>
-                                            <th>{{__('Username')}}</th>
-                                            <th>{{__('Code')}}</th>
-                                            {{--<th>{{__('Date/Time Created')}}</th>--}}
-                                            {{--<th>{{__('User Roles')}}</th>--}}
-                                            <th>{{__('Operations')}}</th>
-                                        </tr>
-                                        </thead>
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive" style="font-size: 13px;color: #65767c">
+                            <table id="table" class="table  table-striped">
+                                <thead>
+                                <tr>
+                                    <th>{{__('Name')}}</th>
+                                    <th>{{__('Username')}}</th>
+                                    <th>{{__('Code')}}</th>
+                                    {{--<th>{{__('Date/Time Created')}}</th>--}}
+                                    {{--<th>{{__('User Roles')}}</th>--}}
+                                    <th>{{__('Operations')}}</th>
+                                </tr>
+                                </thead>
 
-                                        <tbody>
-                                        @foreach ($users as $user_select)
-                                            <tr>
+                                <tbody>
+                                @foreach ($users as $user_select)
+                                    <tr>
 
-                                                <td>{{ $user_select->name }}</td>
-                                                <td>{{ $user_select->username }}</td>
-                                                <td>{{ $user_select->device_id }}</td>
-                                                {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
-                                                {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
-                                                <td>
-                                                    <a href="{{ route('users.edit', $user_select->id) }}"
-                                                       class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
-                                                        <i class="tim-icons icon-pencil"></i></a>
-                                                    <form id="-form-delete{{$user_select->id}}" style="display: none;"
-                                                          method="POST"
-                                                          action="{{route('users.destroy', $user_select->id)}}">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                    </form>
-                                                    <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove"
-                                                       onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
-                                                               event.preventDefault();
-                                                               document.getElementById('-form-delete{{$user_select->id}}').submit();
-                                                               }else {
-                                                               event.preventDefault();}"><i
-                                                                class="tim-icons icon-simple-remove"></i></a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
+                                        <td>{{ $user_select->name }}</td>
+                                        <td>{{ $user_select->username }}</td>
+                                        <td>{{ $user_select->device_id }}</td>
+                                        {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
+                                        {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
+                                        <td>
+                                            <a href="{{ route('users.edit', $user_select->id) }}"
+                                               class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
+                                                <i class="tim-icons icon-pencil"></i></a>
+                                            <form id="-form-delete{{$user_select->id}}" style="display: none;"
+                                                  method="POST"
+                                                  action="{{route('users.destroy', $user_select->id)}}">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                            <a class="btn btn-link btn-danger btn-icon btn-sm btn-neutral remove"
+                                               onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
+                                                       event.preventDefault();
+                                                       document.getElementById('-form-delete{{$user_select->id}}').submit();
+                                                       }else {
+                                                       event.preventDefault();}"><i
+                                                        class="tim-icons icon-simple-remove"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
 
-                                    </table>
-                                </div>
-                                </h3>
-                            </div>
+                            </table>
                         </div>
+                        </h3>
                     </div>
-                    <div class="col-md-3">
-                        <br><br>
-                        <div class="card card-user">
-                            <div class="card-body">
-                                <p class="card-text">
-                                    <div class="author">
-                                        <div class="block block-one"></div>
-                                        <div class="block block-two"></div>
-                                        <div class="block block-three"></div>
-                                        <div class="block block-four"></div>
-                                        <a href="javascript:void(0)">
-                                            {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
-                                            <h5 class="title">Hanta IBMS</h5>
-                                        </a>
-                                <p class="description">
-                                    {{--Available Products--}}
-                                </p>
-                            </div>
-                            <div class="card-description">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-user">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <div class="author">
+                                <div class="block block-one"></div>
+                                <div class="block block-two"></div>
+                                <div class="block block-three"></div>
+                                <div class="block block-four"></div>
+                                <a href="javascript:void(0)">
+                                    {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
+                                    <h5 class="title">Hanta IBMS</h5>
+                                </a>
+                        <p class="description">
+                            {{--Available Products--}}
+                        </p>
+                    </div>
+                    <div class="card-description">
 
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     @endrole
-    @role('finance')
+    @role('finance|dealership|repository|product|order|task')
     <div class="wrap main-content" data-scrollbar>
         <div class="content">
-            <div class="card">
-                <div class="card-body">
-                    <div class="col-md-9">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive" style="font-size: 13px;color: #65767c">
-                                    <table id="table" class="table  table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>{{__('ID')}}</th>
-                                            <th>{{__('Name')}}</th>
-                                            <th>{{__('Username')}}</th>
-                                            {{--<th>{{__('Date/Time Created')}}</th>--}}
-                                            {{--<th>{{__('User Roles')}}</th>--}}
-                                            <th>{{__('Operations')}}</th>
-                                        </tr>
-                                        </thead>
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive" style="font-size: 13px;color: #65767c">
+                            <table id="table" class="table  table-striped">
+                                <thead>
+                                <tr>
+                                    <th>{{__('ID')}}</th>
+                                    <th>{{__('Name')}}</th>
+                                    <th>{{__('Username')}}</th>
+                                    {{--<th>{{__('Date/Time Created')}}</th>--}}
+                                    {{--<th>{{__('User Roles')}}</th>--}}
+                                    <th>{{__('Operations')}}</th>
+                                </tr>
+                                </thead>
 
-                                        <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>{{$role_user->name}}</td>
-                                            <td>{{$role_user->username}}</td>
-                                            {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
-                                            {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
-                                            <td>
-                                                <a href="{{ route('users.edit', $role_user->id) }}"
-                                                   class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
-                                                    <i class="tim-icons icon-pencil"></i></a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>{{$role_user->name}}</td>
+                                    <td>{{$role_user->username}}</td>
+                                    {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
+                                    {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
+                                    <td>
+                                        <a href="{{ route('users.edit', $role_user->id) }}"
+                                           class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
+                                            <i class="tim-icons icon-pencil"></i></a>
+                                    </td>
+                                </tr>
+                                </tbody>
 
-                                    </table>
-                                </div>
-                                </h3>
-                            </div>
+                            </table>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <br><br>
-                        <div class="card card-user">
-                            <div class="card-body">
-                                <p class="card-text">
-                                    <div class="author">
-                                        <div class="block block-one"></div>
-                                        <div class="block block-two"></div>
-                                        <div class="block block-three"></div>
-                                        <div class="block block-four"></div>
-                                        <a href="javascript:void(0)">
-                                            {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
-                                            <h5 class="title">Hanta IBMS</h5>
-                                        </a>
-                                <p class="description">
-                                    {{--Available Products--}}
-                                </p>
-                            </div>
-                            <div class="card-description">
-
-                            </div>
-                        </div>
+                        </h3>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    @endrole
-    @role('dealership')
-    <div class="wrap main-content" data-scrollbar>
-        <div class="content">
-            <div class="card">
-                <div class="card-body">
-                    <div class="col-md-9">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive" style="font-size: 13px;color: #65767c">
-                                    <table id="table" class="table  table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>{{__('ID')}}</th>
-                                            <th>{{__('Name')}}</th>
-                                            <th>{{__('Username')}}</th>
-                                            {{--<th>{{__('Date/Time Created')}}</th>--}}
-                                            {{--<th>{{__('User Roles')}}</th>--}}
-                                            <th>{{__('Operations')}}</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>{{$role_user->name}}</td>
-                                            <td>{{$role_user->username}}</td>
-                                            {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
-                                            {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
-                                            <td>
-                                                <a href="{{ route('users.edit', $role_user->id) }}"
-                                                   class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
-                                                    <i class="tim-icons icon-pencil"></i></a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-
-                                    </table>
-                                </div>
-                                </h3>
-                            </div>
-                        </div>
+            <div class="col-md-3">
+                <div class="card card-user">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <div class="author">
+                                <div class="block block-one"></div>
+                                <div class="block block-two"></div>
+                                <div class="block block-three"></div>
+                                <div class="block block-four"></div>
+                                <a href="javascript:void(0)">
+                                    {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
+                                    <h5 class="title">Hanta IBMS</h5>
+                                </a>
+                        <p class="description">
+                            {{--Available Products--}}
+                        </p>
                     </div>
-                    <div class="col-md-3">
-                        <br><br>
-                        <div class="card card-user">
-                            <div class="card-body">
-                                <p class="card-text">
-                                    <div class="author">
-                                        <div class="block block-one"></div>
-                                        <div class="block block-two"></div>
-                                        <div class="block block-three"></div>
-                                        <div class="block block-four"></div>
-                                        <a href="javascript:void(0)">
-                                            {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
-                                            <h5 class="title">Hanta IBMS</h5>
-                                        </a>
-                                <p class="description">
-                                    {{--Available Products--}}
-                                </p>
-                            </div>
-                            <div class="card-description">
+                    <div class="card-description">
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endrole
-    @role('repository')
-    <div class="wrap main-content" data-scrollbar>
-        <div class="content">
-            <div class="card">
-                <div class="card-body">
-                    <div class="col-md-9">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive" style="font-size: 13px;color: #65767c">
-                                    <table id="table" class="table  table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>{{__('ID')}}</th>
-                                            <th>{{__('Name')}}</th>
-                                            <th>{{__('Username')}}</th>
-                                            {{--<th>{{__('Date/Time Created')}}</th>--}}
-                                            {{--<th>{{__('User Roles')}}</th>--}}
-                                            <th>{{__('Operations')}}</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>{{$role_user->name}}</td>
-                                            <td>{{$role_user->username}}</td>
-                                            {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
-                                            {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
-                                            <td>
-                                                <a href="{{ route('users.edit', $role_user->id) }}"
-                                                   class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
-                                                    <i class="tim-icons icon-pencil"></i></a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-
-                                    </table>
-                                </div>
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <br><br>
-                        <div class="card card-user">
-                            <div class="card-body">
-                                <p class="card-text">
-                                    <div class="author">
-                                        <div class="block block-one"></div>
-                                        <div class="block block-two"></div>
-                                        <div class="block block-three"></div>
-                                        <div class="block block-four"></div>
-                                        <a href="javascript:void(0)">
-                                            {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
-                                            <h5 class="title">Hanta IBMS</h5>
-                                        </a>
-                                <p class="description">
-                                    {{--Available Products--}}
-                                </p>
-                            </div>
-                            <div class="card-description">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endrole
-    @role('product')
-    <div class="wrap main-content" data-scrollbar>
-        <div class="content">
-            <div class="card">
-                <div class="card-body">
-                    <div class="col-md-9">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive" style="font-size: 13px;color: #65767c">
-                                    <table id="table" class="table  table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>{{__('ID')}}</th>
-                                            <th>{{__('Name')}}</th>
-                                            <th>{{__('Username')}}</th>
-                                            {{--<th>{{__('Date/Time Created')}}</th>--}}
-                                            {{--<th>{{__('User Roles')}}</th>--}}
-                                            <th>{{__('Operations')}}</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>{{$role_user->name}}</td>
-                                            <td>{{$role_user->username}}</td>
-                                            {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
-                                            {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
-                                            <td>
-                                                <a href="{{ route('users.edit', $role_user->id) }}"
-                                                   class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
-                                                    <i class="tim-icons icon-pencil"></i></a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-
-                                    </table>
-                                </div>
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <br><br>
-                        <div class="card card-user">
-                            <div class="card-body">
-                                <p class="card-text">
-                                    <div class="author">
-                                        <div class="block block-one"></div>
-                                        <div class="block block-two"></div>
-                                        <div class="block block-three"></div>
-                                        <div class="block block-four"></div>
-                                        <a href="javascript:void(0)">
-                                            {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
-                                            <h5 class="title">Hanta IBMS</h5>
-                                        </a>
-                                <p class="description">
-                                    {{--Available Products--}}
-                                </p>
-                            </div>
-                            <div class="card-description">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endrole
-    @role('order')
-    <div class="wrap main-content" data-scrollbar>
-        <div class="content">
-            <div class="card">
-                <div class="card-body">
-                    <div class="col-md-9">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive" style="font-size: 13px;color: #65767c">
-                                    <table id="table" class="table  table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>{{__('ID')}}</th>
-                                            <th>{{__('Name')}}</th>
-                                            <th>{{__('Username')}}</th>
-                                            {{--<th>{{__('Date/Time Created')}}</th>--}}
-                                            {{--<th>{{__('User Roles')}}</th>--}}
-                                            <th>{{__('Operations')}}</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>{{$role_user->name}}</td>
-                                            <td>{{$role_user->username}}</td>
-                                            {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
-                                            {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
-                                            <td>
-                                                <a href="{{ route('users.edit', $role_user->id) }}"
-                                                   class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
-                                                    <i class="tim-icons icon-pencil"></i></a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-
-                                    </table>
-                                </div>
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <br><br>
-                        <div class="card card-user">
-                            <div class="card-body">
-                                <p class="card-text">
-                                    <div class="author">
-                                        <div class="block block-one"></div>
-                                        <div class="block block-two"></div>
-                                        <div class="block block-three"></div>
-                                        <div class="block block-four"></div>
-                                        <a href="javascript:void(0)">
-                                            {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
-                                            <h5 class="title">Hanta IBMS</h5>
-                                        </a>
-                                <p class="description">
-                                    {{--Available Products--}}
-                                </p>
-                            </div>
-                            <div class="card-description">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endrole
-    @role('geust')
-    <div class="wrap main-content" data-scrollbar>
-        <div class="content">
-            <div class="card">
-                <div class="card-body">
-                    <div class="col-md-9">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive" style="font-size: 13px;color: #65767c">
-                                    <table id="table" class="table  table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>{{__('ID')}}</th>
-                                            <th>{{__('Name')}}</th>
-                                            <th>{{__('Username')}}</th>
-                                            {{--<th>{{__('Date/Time Created')}}</th>--}}
-                                            {{--<th>{{__('User Roles')}}</th>--}}
-                                            <th>{{__('Operations')}}</th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>{{$role_user->name}}</td>
-                                            <td>{{$role_user->username}}</td>
-                                            {{--                                                <td>{{ $user->created_at->format('F d, Y') }}</td>--}}
-                                            {{--                                                <td>{{ $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
-                                            <td>
-                                                <a href="{{ route('users.edit', $role_user->id) }}"
-                                                   class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
-                                                    <i class="tim-icons icon-pencil"></i></a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-
-                                    </table>
-                                </div>
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <br><br>
-                        <div class="card card-user">
-                            <div class="card-body">
-                                <p class="card-text">
-                                    <div class="author">
-                                        <div class="block block-one"></div>
-                                        <div class="block block-two"></div>
-                                        <div class="block block-three"></div>
-                                        <div class="block block-four"></div>
-                                        <a href="javascript:void(0)">
-                                            {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
-                                            <h5 class="title">Hanta IBMS</h5>
-                                        </a>
-                                <p class="description">
-                                    {{--Available Products--}}
-                                </p>
-                            </div>
-                            <div class="card-description">
-
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

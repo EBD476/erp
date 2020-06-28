@@ -2,14 +2,8 @@
 
 @section('title',__('Agreement'))
 
-@push('script')
-    <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
-@endpush
-
-
 @push('css')
     <link href="{{ asset('assets/css/datatables.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/leaflet.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')

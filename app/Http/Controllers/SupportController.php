@@ -14,6 +14,8 @@ use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\New_;
 
 class SupportController extends Controller
 {
@@ -43,10 +45,6 @@ class SupportController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $support_response = Support::where('hs_show', '0')->get();
-        $support_state = SupportStatus::ALL();
-        $request = Support::all();
-        $project = Project::all();
         return view('support.show_all_data', compact('project', 'request', 'support_state', 'user', 'support_response', 'help_desk', 'priority', 'type'));
 
     }
@@ -58,7 +56,7 @@ class SupportController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $support_response = Support::where('id', $id)->where('hs_show', '0')->first();
+        $support_response = Support::where('id', $id)->first();
         $project = Project::where('id', $support_response->hs_project_id)->first();
         $user_requested = User::select('name')->where('id', $support_response->hs_request_user_id)->get()->last();
         $client_name = Client::select('hc_name')->where('id', $project->hp_project_owner)->get()->last();
@@ -72,32 +70,52 @@ class SupportController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $support_response = Support::where('id', $id)->where('hs_show', '0')->first();
+        $support_response = Support::where('id', $id)->get()->first();
         $project = Project::where('id', $support_response->hs_project_id)->first();
         $project_type = Project_Type::where('id', $project->hp_project_type)->first();
         $user_requested = User::select('name')->where('id', $support_response->hs_request_user_id)->get()->last();
         $user_response = User::select('name')->where('id', $support_response->hs_response_user_id)->get()->last();
         $client_name = Client::select('hc_name')->where('id', $project->hp_project_owner)->get()->last();
-        return view('support.show_data', compact('project', 'project_type', 'user', 'help_desk', 'priority', 'type','client_name','user_requested','support_response','user_response'));
+        return view('support.show_data', compact('project', 'project_type', 'user', 'help_desk', 'priority', 'type', 'client_name', 'user_requested', 'support_response', 'user_response'));
+    }
+
+
+    public function store(Request $request)
+    {
+        $project = Project::select('id')->where('hp_project_name', $request->hp_project_name)->first();
+        $user = User::select('id')->where('name',$request->hs_request_user_id)->get()->first();
+        $current_user = auth()->user()->id;
+        $support_status = SupportStatus::all()->count();
+        $support = New Support();
+        $support->hs_request_user_id =$user->id ;
+        $support->hs_response_user_id = $current_user;
+        $support->hs_project_id = $project->id;
+        $support->hs_title = $request->hs_title;
+        $support->hs_response = $request->hs_response;
+        $support->hs_description = $request->hs_description;
+        $support->hs_show = 1;
+        $support->hs_status = $support_status;
+        $support->save();
+        return json_encode(["response" => "عملیات با موفقیت ثبت شد"]);
+
     }
 
     public function update(Request $request, $id)
     {
         $project = Project::select('hp_order_id')->where('id', $id)->first();
         $status = Support::where('id', $id)->first();
+        $count_status = SupportStatus::all()->count();
+        if($status->hs_status < $count_status){
         $counter = $status->hs_status + 1;
-        Support::where('id', $id)->update(['hs_response' => $request->response, 'hs_status' => $counter, 'hs_response_user_id' => auth()->user()->id]);
+        }else{
+            $counter = $status->hs_status;
+        }
+        Support::where('id', $id)->update(['hs_response' => $request->response,'hs_show' => 1, 'hs_status' => $counter, 'hs_response_user_id' => auth()->user()->id]);
         OrderState::where('order_id', $project)->update(['ho_process_id' => '8', 'ho_verifier_id' => auth()->user()->id]);
         OrderProduct::where('hpo_order_id', $project)->update(['hpo_status' => '8']);
         return json_encode(["response" => "عملیات با موفقیت ثبت شد"]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Support $support
-     * @return \Illuminate\Http\Response
-     */
 
     public function fill(Request $request)
     {
@@ -105,21 +123,115 @@ class SupportController extends Controller
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
+            $support_response = DB::Table('hnt_support')
+                ->join('hnt_projects', 'hnt_support.hs_project_id', '=', 'hnt_projects.id')
+                ->join('users', 'hnt_support.hs_request_user_id', '=', 'users.id')
+                ->select('hnt_projects.hp_project_name', 'hnt_support.hs_title','hnt_support.hs_project_id', 'hnt_support.created_at','hnt_support.id','hnt_support.hs_description','users.name')
+                ->where('hnt_support.deleted_at', '=', NULL)
+                ->where('hnt_support.hs_show', '=', 0)
+                ->skip($start)
+                ->take($length)
+                ->get();
         } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-                ->orwhere('hp_connector', 'LIKE', "%$search%")
+            $support_response = DB::Table('hnt_support')
+                ->join('hnt_projects', 'hnt_support.hs_project_id', '=', 'hnt_projects.id')
+                ->join('users', 'hnt_support.hs_request_user_id', '=', 'users.id')
+                ->select('hnt_projects.hp_project_name', 'hnt_support.hs_title','hnt_support.hs_project_id', 'hnt_support.created_at','hnt_support.id','hnt_support.hs_description','users.name')
+                ->where('hnt_support.deleted_at', '=', NULL)
+                ->where('hnt_support.hs_show', '=', 0)
+                ->where('hnt_projects.hp_project_name', 'LIKE', "%$search%")
                 ->get();
         }
 
         $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '"],';
+        $key = 0;
+        foreach ($support_response as $support_responses) {
+            $time = verta($support_responses->created_at);
+            $key++;
+            $data .= '["' . $key . '",' . '"' . $support_responses->hs_title . '",' . '"' . $support_responses->hp_project_name . '",' . '"' . $time . '",' . '"' . $support_responses->id . '",' . '"' . $support_responses->hs_description . '",' . '"' . $support_responses->name . '"],';
         }
         $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+        $support_responses_count = Support::all()->count();
+        return response('{ "recordsTotal":' . $support_responses_count . ',"recordsFiltered":' . $support_responses_count . ',"data": [' . $data . ']}');
     }
+
+    public function fill_all(Request $request)
+    {
+        $start = $request->start;
+        $length = $request->length;
+        $search = $request->search['value'];
+        if ($search == '') {
+            $support_response = DB::Table('hnt_support')
+                ->join('hnt_projects', 'hnt_support.hs_project_id', '=', 'hnt_projects.id')
+                ->join('hnt_support_status', 'hnt_support.hs_status', '=', 'hnt_support_status.id')
+                ->join('users', 'hnt_support.hs_request_user_id', '=', 'users.id')
+                ->select('hnt_projects.hp_project_name', 'hnt_support.hs_title','hnt_support.hs_project_id', 'hnt_support.created_at','hnt_support.id','hnt_support.hs_description','hnt_support.hs_response','hnt_support_status.hss_name','users.name')
+                ->where('hnt_support.deleted_at', '=', NULL)
+                ->skip($start)
+                ->take($length)
+                ->get();
+        } else {
+            $support_response = DB::Table('hnt_support')
+                ->join('hnt_projects', 'hnt_support.hs_project_id', '=', 'hnt_projects.id')
+                ->join('hnt_support_status', 'hnt_support.hs_status', '=', 'hnt_support_status.id')
+                ->join('users', 'hnt_support.hs_request_user_id', '=', 'users.id')
+                ->select('hnt_projects.hp_project_name','hnt_support.hs_title','hnt_support.hs_project_id','hnt_support.created_at','hnt_support.id','hnt_support.hs_description','hnt_support.hs_response','hnt_support_status.hss_name','users.name')
+                ->where('hnt_support.deleted_at', '=', NULL)
+                ->where('hnt_projects.hp_project_name', 'LIKE', "%$search%")
+                ->get();
+        }
+
+        $data = '';
+        $key = 0;
+        foreach ($support_response as $support_responses) {
+            $time = verta($support_responses->created_at);
+            $key++;
+            $data .= '["' . $key . '",' . '"' . $support_responses->hs_title . '",' . '"' . $support_responses->hp_project_name . '",' . '"' . $support_responses->hss_name . '",' . '"' . $time . '",' . '"' . $support_responses->id . '",' . '"' . $support_responses->hs_project_id . '",' . '"' . $support_responses->hs_description . '",' . '"' . $support_responses->hs_response . '",' . '"' . $support_responses->name . '"],';
+        }
+        $data = substr($data, 0, -1);
+        $support_responses_count = Support::all()->count();
+        return response('{ "recordsTotal":' . $support_responses_count . ',"recordsFiltered":' . $support_responses_count . ',"data": [' . $data . ']}');
+    }
+
+    public function recent_list(Request $request)
+    {
+        $project_id = $request->formName;
+        $start = $request->start;
+        $length = $request->length;
+        $search = $request->search['value'];
+        if ($search == '') {
+            $support_response = DB::Table('hnt_support')
+                ->join('hnt_projects', 'hnt_support.hs_project_id', '=', 'hnt_projects.id')
+                ->join('hnt_support_status', 'hnt_support.hs_status', '=', 'hnt_support_status.id')
+                ->join('users', 'hnt_support.hs_request_user_id', '=', 'users.id')
+                ->select('hnt_projects.hp_project_name', 'hnt_support.hs_title','hnt_support.hs_project_id', 'hnt_support.created_at','hnt_support.id','hnt_support.hs_description','hnt_support.hs_response','hnt_support_status.hss_name','users.name')
+                ->where('hnt_support.deleted_at', '=', NULL)
+                ->where('hnt_support.hs_project_id', '=', $project_id)
+                ->skip($start)
+                ->take($length)
+                ->get();
+        } else {
+            $support_response = DB::Table('hnt_support')
+                ->join('hnt_projects', 'hnt_support.hs_project_id', '=', 'hnt_projects.id')
+                ->join('hnt_support_status', 'hnt_support.hs_status', '=', 'hnt_support_status.id')
+                ->join('users', 'hnt_support.hs_request_user_id', '=', 'users.id')
+                ->select('hnt_projects.hp_project_name', 'hnt_support.hs_title','hnt_support.hs_project_id', 'hnt_support.created_at','hnt_support.id','hnt_support.hs_description','hnt_support.hs_response','hnt_support_status.hss_name','users.name')
+                ->where('hnt_support.deleted_at', '=', NULL)
+                ->where('hnt_support.hs_project_id', '=', $project_id)
+                ->where('hnt_support.hs_title', 'LIKE', "%$search%")
+                ->get();
+        }
+
+        $data = '';
+        $key = 0;
+        foreach ($support_response as $support_responses) {
+            $time = verta($support_responses->created_at);
+            $key++;
+            $data .= '["' . $key . '",' . '"' . $support_responses->hs_title . '",' . '"' . $support_responses->hp_project_name . '",' . '"' . $support_responses->hss_name . '",' . '"' . $time . '",' . '"' . $support_responses->id . '",' . '"' . $support_responses->hs_project_id . '",' . '"' . $support_responses->hs_description . '",' . '"' . $support_responses->hs_response . '",' . '"' . $support_responses->name . '"],';
+        }
+        $data = substr($data, 0, -1);
+        $support_responses_count = Support::all()->count();
+        return response('{ "recordsTotal":' . $support_responses_count . ',"recordsFiltered":' . $support_responses_count . ',"data": [' . $data . ']}');
+    }
+
 }

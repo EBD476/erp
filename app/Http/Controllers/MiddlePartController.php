@@ -17,12 +17,13 @@ class MiddlePartController extends Controller
 
     public function index()
     {
+        $status =DB::table('hnt_product_status_create_serial_number')->select('hpscsn_activation')->get()->last();
         $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        return view('middle_part.index', compact('type', 'help_desk', 'priority', 'user'));
+        return view('middle_part.index', compact('type', 'help_desk', 'priority', 'user','status'));
     }
 
     public function store(Request $request)
@@ -42,7 +43,16 @@ class MiddlePartController extends Controller
         $part->hmp_middle_part_property = $request->hmp_middle_part_property;
         $part->hmp_voltage = $request->hmp_voltage;
         $part->hmp_description = $request->hmp_description;
-        $part->hmp_serial_number = $code;
+        if($request->hmp_part_number != ""){
+            $part->hmp_part_number = $request->hmp_part_number;
+        }else{
+            $part->hmp_part_number = $code;
+        }
+        if($request->hmp_serial_number != ""){
+            $part->hmp_serial_number = $request->hmp_serial_number;
+        }else{
+            $part->hmp_serial_number = $code;
+        }
         $part->save();
 
         return json_encode(["response" => "OK"]);

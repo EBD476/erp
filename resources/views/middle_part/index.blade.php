@@ -73,6 +73,26 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @if($status->hpscsn_activation == 1)
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>{{__('Serial Number')}}</label>
+                                                    <input name="hmp_serial_number" type="text" class="form-control"
+                                                           aria-invalid="false">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>{{__('Part Number')}}</label>
+                                                    <input name="hmp_part_number" type="text" class="form-control"
+                                                           aria-invalid="false">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -372,6 +392,9 @@
 
     <script>
         $(document).ready(function () {
+
+            $('.dz-message').text("برای انتخاب تصویر مورد نظر اینجا کلیک کنید");
+
 
             $('#card-form2').hide();
 

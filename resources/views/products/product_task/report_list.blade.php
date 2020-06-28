@@ -6,7 +6,7 @@
     <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
 @endpush
 @section('content')
-    @role('Admin|product')
+    @role('Admin|product|task')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">

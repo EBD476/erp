@@ -9,6 +9,7 @@ use App\MiddlePart;
 use App\Order;
 use App\OrderProduct;
 use App\OrderState;
+use App\ProcessLevel;
 use App\Product;
 use App\ProductColor;
 use App\ProductProperty;
@@ -41,7 +42,7 @@ class OrderController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        return view('order.index', compact( 'type', 'help_desk', 'priority', 'user'));
+        return view('order.index', compact('type', 'help_desk', 'priority', 'user'));
     }
 
     public function create()
@@ -225,7 +226,7 @@ class OrderController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        return view('order.invoices_list_product.index',compact( 'user','help_desk', 'priority', 'type'));
+        return view('order.invoices_list_product.index', compact('user', 'help_desk', 'priority', 'type'));
     }
 
 //  fill data table order
@@ -247,9 +248,14 @@ class OrderController extends Controller
         $data = '';
         $key = 0;
         foreach ($order as $orders) {
-            $progress = OrderState::select('ho_process_id')->where('order_id',$orders->id)->get()->last();
+            $process_count = ProcessLevel::all()->count();
+            $status = OrderProduct::select('hpo_status')->where('hpo_order_id', $orders->id)->get()->last();
+            $process_name = ProcessLevel::select('hp_process_name')->where('hp_process_id', $status->hpo_status)->get()->last();
+            $computing_persent = $process_count / $status->hpo_status;
+            $computing_persent_number = 100 / $computing_persent;
+            $progress = OrderState::select('ho_process_id')->where('order_id', $orders->id)->get()->last();
             $key++;
-            $data .= '["' . $key . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '",' . '"' . $orders->id . '",' . '"' . $progress->ho_process_id . '"],';
+            $data .= '["' . $key . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '",' . '"' . $orders->id . '",' . '"' . $progress->ho_process_id . '",' . '"' . $computing_persent_number . '",' . '"' . $process_name->hp_process_name . '"],';
         }
         $data = substr($data, 0, -1);
         $orders_count = Order::all()->count();
@@ -295,28 +301,58 @@ class OrderController extends Controller
                 ->orwhere('hnt_invoices.hp_Invoice_number', 'LIKE', "%$search%")
                 ->get();
         }
-
-
         $data = '';
         $key = 0;
         foreach ($product as $products) {
-            $status_check = Task::select('id')->where('hpt_invoice_number',$products->hp_Invoice_number)->get()->last();
-            if ($status_check == "") {
-                $result = $products->hr_product_stock - $products->hpo_count;
-                $key++;
-                $data .= '["' . $key . '","' . $products->hp_Invoice_number . '",' . '"' . $products->hp_product_name . " " . $products->hp_product_model . " " . $products->hn_color_name . " " . $products->hpp_property_name . '",' . '"' . $products->hpo_count . '",' . '"' . $result . '",' . '"' . $products->hop_due_date . '",' . '"' . $products->hpo_product_id . '",' . '"' . $products->id . '",' . '"' . $products->hpo_order_id . '",' . '"' . $products->hpo_serial_number . '",' . '"' . 0 . '"],';
-            } else {
-                $status = DB::table('hnt_product_task')->join('hnt_product_status','hnt_product_task.hpt_status','hnt_product_status.id')->select('hnt_product_status.hps_level','hnt_product_status.hps_zone_name')->where('hpt_invoice_number', $products->hp_Invoice_number)->where('hpt_product_id', $products->hpo_product_id)->get()->last();
-                $status_count = ProductStatus::where('hps_zone_name', $status->hps_zone_name)->groupby('hps_level')->count();
-                $computing_persent = $status_count / $status->hps_level;
-                $computing_persent_number = 100 / $computing_persent;
-                $result = $products->hr_product_stock - $products->hpo_count;
-                $key++;
-                $data .= '["' . $key . '","' . $products->hp_Invoice_number . '",' . '"' . $products->hp_product_name . " " . $products->hp_product_model . " " . $products->hn_color_name . " " . $products->hpp_property_name . '",' . '"' . $products->hpo_count . '",' . '"' . $result . '",' . '"' . $products->hop_due_date . '",' . '"' . $products->hpo_product_id . '",' . '"' . $products->id . '",' . '"' . $products->hpo_order_id . '",' . '"' . $products->hpo_serial_number . '",' . '"' . $status->hps_level . '",' . '"' . $computing_persent_number . '"],';
+            $product_part = DB::Table('hnt_product_part')
+                ->Join('hnt_repository_part', 'hnt_product_part.hpp_part_id', 'hnt_repository_part.hrp_part_id')
+                ->selectRaw('*,MIN(hnt_repository_part.hrp_part_count/hnt_product_part.hpp_part_count)as total')
+                ->where('hnt_product_part.deleted_at', '=', Null)
+                ->where('hnt_repository_part.deleted_at', '=', Null)
+                ->where('hnt_product_part.hpp_product_id', '=', $products->hpo_product_id)
+                ->groupBy('hnt_product_part.hpp_product_id')
+                ->orderBY('total', 'DESC')
+                ->get();
+            $middle_part = DB::Table('hnt_product_middle_part')
+                ->Join('hnt_repository_middle_part', 'hnt_product_middle_part.hpp_middle_part_id', 'hnt_repository_middle_part.hrm_middle_part_id')
+                ->selectRaw('*,MIN(hnt_repository_middle_part.hrm_count/hnt_product_middle_part.hpp_part_count)as total')
+                ->where('hnt_product_middle_part.deleted_at', '=', Null)
+                ->where('hnt_repository_middle_part.deleted_at', '=', Null)
+                ->where('hnt_product_middle_part.hpp_product_id', '=', $products->hpo_product_id)
+                ->groupBy('hnt_product_middle_part.hpp_product_id')
+                ->orderBY('total', 'DESC')
+                ->skip($start)
+                ->take($length)
+                ->get();
+            foreach ($middle_part as $middle_part) {
+                foreach ($product_part as $product_part) {
+                    $number_mp = ($middle_part->total);
+                    $round_mp = number_format((floor($number_mp)), 0, '.', '');
 
+                    $number_p = ($product_part->total);
+                    $round_p = number_format((floor($number_p)), 0, '.', '');
+
+                    $min_product = min($round_mp, $round_p);
+                    $status_check = Task::select('id')->where('hpt_invoice_number', $products->hp_Invoice_number)->get()->last();
+                    if ($status_check == "") {
+                        $result = $products->hr_product_stock - $products->hpo_count;
+                        $min_product_compute = $min_product - $products->hpo_count;
+                        $key++;
+                        $data .= '["' . $key . '","' . $products->hp_Invoice_number . '",' . '"' . $products->hp_product_name . " " . $products->hp_product_model . " " . $products->hn_color_name . " " . $products->hpp_property_name . '",' . '"' . $products->hpo_count . '",' . '"' . $result . '",' . '"' . $min_product_compute . '",' . '"' . $products->hop_due_date . '",' . '"' . $products->hpo_product_id . '",' . '"' . $products->id . '",' . '"' . $products->hpo_order_id . '",' . '"' . $products->hpo_serial_number . '",' . '"' . 0 . '"],';
+                    } else {
+                        $status = DB::table('hnt_product_task')->join('hnt_product_status', 'hnt_product_task.hpt_status', 'hnt_product_status.id')->select('hnt_product_status.hps_level', 'hnt_product_status.hps_zone_name')->where('hpt_invoice_number', $products->hp_Invoice_number)->where('hpt_product_id', $products->hpo_product_id)->get()->last();
+                        $status_count = ProductStatus::where('hps_zone_name', $status->hps_zone_name)->groupby('hps_level')->count();
+                        $computing_persent = $status_count / $status->hps_level;
+                        $computing_persent_number = 100 / $computing_persent;
+                        $result = $products->hr_product_stock - $products->hpo_count;
+                        $key++;
+                        $data .= '["' . $key . '","' . $products->hp_Invoice_number . '",' . '"' . $products->hp_product_name . " " . $products->hp_product_model . " " . $products->hn_color_name . " " . $products->hpp_property_name . '",' . '"' . $products->hpo_count . '",' . '"' . $result . '",' . '"' . $min_product_compute . '",' . '"' . $products->hop_due_date . '",' . '"' . $products->hpo_product_id . '",' . '"' . $products->id . '",' . '"' . $products->hpo_order_id . '",' . '"' . $products->hpo_serial_number . '",' . '"' . $status->hps_level . '",' . '"' . $computing_persent_number . '"],';
+
+                    }
+
+                }
             }
-
-           }
+        }
         $data = substr($data, 0, -1);
         $products_count = OrderProduct::all()->count();
         return response('{ "recordsTotal":' . $products_count . ',"recordsFiltered":' . $products_count . ',"data": [' . $data . ']}');

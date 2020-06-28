@@ -3,12 +3,12 @@
 @section('title',__('Projects Management'))
 
 @push('css')
-    <link href="{{ asset('assets/css/datatables.min.css') }}" rel="stylesheet">
+    <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/leaflet.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
-    {{--@can('browse-menu-user')--}}
+    @role('Admin|product|order')
     <div class="content persian">
         <div class="container-fluid">
             <div class="row">
@@ -16,6 +16,10 @@
                     <a href="{{route('projects.create')}}" class="btn btn-primary float-left mb-lg-2">
                         <i class="tim-icons icon-simple-add"></i>
                         {{__('New Project')}}
+                    </a>
+                    <a href="{{route('projects.show_all_response')}}"
+                       class="btn btn-primary float-left mb-lg-2">
+                        {{__('Support Response List')}}
                     </a>
                 </div>
                 <div class="card">
@@ -36,83 +40,16 @@
                                             <th>
                                                 {{__('Name')}}
                                             </th>
-                                            {{--<th>--}}
-                                            {{--{{__('Address')}}--}}
-                                            {{--</th>--}}
                                             <th>
-                                                {{__('Type')}}
+                                                {{__('Client Name')}}
                                             </th>
                                             <th>
-                                                {{__('Units')}}
-                                            </th>
-                                            {{--<th>--}}
-                                            {{--{{__('Complete Date')}}--}}
-                                            {{--</th>--}}
-                                            <th>
-                                                {{__('Completed')}}
+                                                {{__('Due Date')}}
                                             </th>
                                             <th>
                                                 {{__('Operation')}}
                                             </th>
                                             </thead>
-                                            <tbody>
-
-                                            @foreach($projects as $key => $project)
-                                                <tr>
-                                                    <td>
-                                                        {{$key + 1}}
-                                                    </td>
-                                                    <td>
-                                                        {{$project ->hp_project_name}}
-                                                    </td>
-                                                    {{--<td>--}}
-                                                    {{--{{$project ->hp_project_address}}--}}
-                                                    {{--</td>--}}
-                                                    <td>
-                                                        {{$project -> hp_project_type}}
-                                                    </td>
-                                                    <td>
-                                                        {{$project -> hp_project_units}}
-                                                    </td>
-                                                    {{--<td>--}}
-                                                    {{--{{$project -> hp_project_complete_date}}--}}
-                                                    {{--</td>--}}
-                                                    <td>
-                                                        {{$project -> hp_project_completed}}
-                                                    </td>
-                                                    <td>
-                                                        <div class="dropdown">
-                                                            <button type="button"
-                                                                    class="btn btn-link dropdown-toggle btn-icon"
-                                                                    data-toggle="dropdown">
-                                                                <i class="tim-icons icon-settings-gear-63"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu dropdown-menu-right"
-                                                                 aria-labelledby="dropdownMenuLink">
-                                                                <a class="dropdown-item"
-                                                                   href="{{route('projects.send_request',$project->id)}}"
-                                                                >{{__('Send Support Request')}}</a>
-                                                                <a class="dropdown-item"
-                                                                   href="{{route('projects.edit',$project->id)}}"
-                                                                >{{__('Edit')}}</a>
-                                                                <form id="-form-delete{{$project->id}}"
-                                                                      style="display: none;" method="POST"
-                                                                      action="{{route('projects.destroy',$project->id)}}">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                </form>
-                                                                <a class="dropdown-item"
-                                                                   onclick="if(confirm('آیا از حذف این پروژه اطمینان دارید؟')){
-                                                                           event.preventDefault();
-                                                                           document.getElementById('-form-delete{{$project->id}}').submit();
-                                                                           }else {
-                                                                           event.preventDefault();}">{{__('Delete')}}</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -135,15 +72,154 @@
             </div>
         </div>
     </div>
-    {{--@endcan--}}
+    @endrole
 @endsection
 
 @push('scripts')
     <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
+    <script src="{{asset('assets/js/popper.min.js')}}"></script>
     <script>
         $(document).ready(function () {
+
+            $('#table').on('click', 'button', function (event) {
+
+                var data = table.row($(this).parents('tr')).data();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                swal({
+                    // title: "",
+                    text: "{{__('Are you sure?')}}",
+                    buttons: ["{{__('cancel')}}", "{{__('Done')}}"],
+                    icon: "warning",
+                    // buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: '/projects-destroy/' + data[5],
+                                type: 'delete',
+                                data: data,
+                                dataType: 'json',
+                                async: false,
+                                success: function (data) {
+                                    swal("{{__("Poof! Your imaginary file has been deleted!")}}", {
+                                        icon: "success",
+                                        button: "{{__('Done')}}",
+                                    });
+                                },
+                                cache: false,
+                            });
+                            $('#table').DataTable().ajax.reload();
+                        } else {
+                            swal(
+                                "{{__("Your imaginary file is safe!")}}",
+                                {button: "{{__('Done')}}"}
+                            );
+
+                        }
+                    });
+            });
+            var table = $('#table').on('draw.dt', function (e, settings, json, xhr) {
+
+            }).DataTable({
+                "initComplete": function(settings, json) {
+                    $('[data-toggle="tooltip"]').tooltip({template: '<div class="tooltip tooltip-custom"><div class="title"></div><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'});
+                },
+                "processing":
+                    true,
+                "serverSide":
+                    true,
+                "ajax":
+                    '/json-data-projects',
+                "columnDefs":
+                    [{
+                        "targets": -1,
+                        "data": null,
+
+                        "render": function (data, type, row, meta) {
+                            return "  <div class=\"dropdown\">\n" +
+                                "                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +
+                                "                                                                    data-toggle=\"dropdown\">\n" +
+                                "                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +
+                                "                                                            </a>\n" +
+                                "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
+                                "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
+                                "                                                                <a href=\"projects/" + data[5] + "/edit\" class=\"dropdown-item\"\n" +
+                                "                                                                >{{__('Edit')}}</a>\n" +
+                                "                                                                <a href=\"send_request/" + data[5] + "\" class=\"dropdown-item\"\n" +
+                                "                                                                >{{__('Send Support Request')}}</a>\n" +
+                                "                                                                <a href=\"verify_pre/" + data[4] + "/edit\" class=\"dropdown-item\"\n" +
+                                "                                                                >{{__('Preview Factor')}}</a>\n" +
+                                "                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +
+                                "                                                            </div>\n" +
+                                "                                                        </div>"
+                        }
+                },
+                {
+                    "targets": 1,
+                    "data": null,
+                    "render": function (data, type, row, meta) {
+                            return " <span  data-toggle=\"tooltip\" data-html=\"true\" title=\"{{__('Project Name')}} "  + data[1] + "<br><br> {{__('Client Name')}} : "  + data[2] + "<br><br> {{__('Due Date')}} : "  + data[3] +"<br><br> {{__('Address')}} :"  + data[10] +  "<br><br> {{__('Phone Number')}} : "  + data[6] + "<br><br> {{__('Type Project')}} : "  + data[7] + "<br><br> {{__('Contract Type')}} : "  + data[8] + "<br><br> {{__('Owner')}} : "  + data[9] + "\">\"" + data[1] + "</span>"
+                    },
+                    }],
+                "language":
+                    {
+                        "sEmptyTable":
+                            "هیچ داده ای در جدول وجود ندارد",
+                        "sInfo":
+                            "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                        "sInfoEmpty":
+                            "نمایش 0 تا 0 از 0 رکورد",
+                        "sInfoFiltered":
+                            "(فیلتر شده از _MAX_ رکورد)",
+                        "sInfoPostFix":
+                            "",
+                        "sInfoThousands":
+                            ",",
+                        "sLengthMenu":
+                            "نمایش _MENU_ رکورد",
+                        "sLoadingRecords":
+                            "در حال بارگزاری...",
+                        "sProcessing":
+                            "در حال پردازش...",
+                        "sSearch":
+                            "جستجو:",
+                        "sZeroRecords":
+                            "رکوردی با این مشخصات پیدا نشد",
+                        "oPaginate":
+                            {
+                                "sFirst":
+                                    "ابتدا",
+                                "sLast":
+                                    "انتها",
+                                "sNext":
+                                    "بعدی",
+                                "sPrevious":
+                                    "قبلی"
+                            }
+                        ,
+                        "oAria":
+                            {
+                                "sSortAscending":
+                                    ": فعال سازی نمایش به صورت صعودی",
+                                "sSortDescending":
+                                    ": فعال سازی نمایش به صورت نزولی"
+                            }
+                    }
+            });
+
+
+
+            // project map
+
             var loc;
             var greenIcon = L.icon({
                 iconUrl: '../../assets/images/marker-icon.png',
@@ -203,7 +279,6 @@
 
 
             map.on('click', onMapClick);
-
         });
     </script>
 @endpush

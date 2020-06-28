@@ -46,11 +46,29 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-fill btn-primary">{{__('Send')}}</button>
-                                </div>
+                                <input type="hidden" name="file" id="file">
                             </form>
+                            <br>
+                            <div class="col-md-8">
+                                <label style="margin-top: -20px;">{{__('File')}}</label>
+                                <div class="card-body col-md-12 row"
+                                     style="display: flex ; border: 1px dashed;     margin-right: -35px;}">
+                                    <form action="{{url('/request-file-save')}}" class="dropzone" id="dropzone"
+                                          enctype="multipart/form-data">
+                                        @csrf
+                                        @method('POST')
+                                        <div class="form-group">
+                                            <input type="file" class="form-control"
+                                                   name="file" multiple>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-fill btn-primary"
+                                        id="submit-form">{{__('Send')}}</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -58,83 +76,93 @@
                     <div class="card card-user">
                         <div class="card-body">
                             <p class="card-text">
-                                <div class="author">
-                                    <div class="block block-one"></div>
-                                    <div class="block block-two"></div>
-                                    <div class="block block-three"></div>
-                                    <div class="block block-four"></div>
-                                    <a href="javascript:void(0)">
-                                        <h5 class="title">Hanta IBMS</h5>
-                                    </a>
-                        </div>
-                        </p>
-                        <div class="card-description">
-
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="button-container">
-                            <button href="javascript:void(0)" class="btn btn-icon btn-round btn-facebook">
-                                <i class="fab fa-facebook"></i>
-                            </button>
-                            <button href="javascript:void(0)" class="btn btn-icon btn-round btn-twitter">
-                                <i class="fab fa-twitter"></i>
-                            </button>
-                            <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
-                                <i class="fab fa-google-plus"></i>
-                            </button>
+                            <div class="author">
+                                <div class="block block-one"></div>
+                                <div class="block block-two"></div>
+                                <div class="block block-three"></div>
+                                <div class="block block-four"></div>
+                                <a href="javascript:void(0)">
+                                    <h5 class="title">Hanta IBMS</h5>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    @endrole
-@endsection
+        @endrole
+        @endsection
 
-@push('scripts')
-    <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
-    <script>
-        $(document).ready(function () {
-            $("#form1").submit(function (event) {
-                var data =
+        @push('scripts')
+            <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+            <script src="{{asset('assets/js/plugins/dropzone.js')}}"></script>
+            <script>
+                $(document).ready(function () {
+
+                    $('.dz-message').text("برای انتخاب فایل مورد نظر اینجا کلیک کنید");
+
+                    $("#submit-form").on('click', function (event) {
+                        var data =
+                            {
+                                id: $("#hp_project_id").data('id'),
+                                description: $("#hs_description").val(),
+                                title: $("#title").val(),
+                                file: $("#file").val()
+                            }
+                        event.preventDefault();
+                        $.blockUI({
+                            message: '{{__('please wait...')}}', css: {
+                                border: 'none',
+                                padding: '15px',
+                                backgroundColor: '#000',
+                                '-webkit-border-radius': '10px',
+                                '-moz-border-radius': '10px',
+                                opacity: .5,
+                                color: '#fff'
+                            }
+                        });
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            url: '/support_request',
+                            type: 'POST',
+                            data: data,
+                            dataType: 'json',
+                            async: false,
+                            success: function (data) {
+                                setTimeout($.unblockUI, 2000);
+                                window.location.href = "/projects";
+                            },
+                            cache: false,
+                        });
+                    });
+                });
+
+                // save image
+                Dropzone.options.dropzone =
                     {
-                        id: $("#hp_project_id").data('id'),
-                        description: $("#hs_description").val(),
-                        title: $("#title").val(),
-                    }
-                event.preventDefault();
-                $.blockUI({
-                    message: '{{__('please wait...')}}', css: {
-                        border: 'none',
-                        padding: '15px',
-                        backgroundColor: '#000',
-                        '-webkit-border-radius': '10px',
-                        '-moz-border-radius': '10px',
-                        opacity: .5,
-                        color: '#fff'
-                    }
-                });
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                $.ajax({
-                    url: '/support_request',
-                    type: 'POST',
-                    data: data,
-                    dataType: 'json',
-                    async: false,
-                    success: function (data) {
-                        setTimeout($.unblockUI, 2000);
-                        window.location.href = "/projects";
-                    },
-                    cache: false,
-                });
-            });
-        })
-        ;
-    </script>
-@endpush
+                        maxFilesize: 12,
+                        // فایل نوع آبجکت است
+                        renameFile: function (file) {
+                            var dt = new Date();
+                            var time = dt.getTime();
+                            return time + '-' + file.name;
+                        },
+                        acceptedFiles: ".jpeg,.jpg,.pdf,",
+                        addRemoveLinks: true,
+                        timeout: 5000,
+                        success: function (file, response) {
+                            // اسم اینپوت و مقداری که باید به آن ارسال شود
+                            $('#file').val(file.upload.filename);
+                        },
+                        error: function (file, response) {
+                            return false;
+                        }
+                    };
+                // end saving
+            </script>
+    @endpush

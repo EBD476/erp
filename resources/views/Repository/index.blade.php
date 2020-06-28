@@ -40,6 +40,9 @@
                                         {{__('Repository')}}
                                     </th>
                                     <th>
+                                        {{__('Comment')}}
+                                    </th>
+                                    <th>
                                         {{__('Entry Date')}}
                                     </th>
                                     <th>
@@ -50,9 +53,6 @@
                                     </th>
                                     <th>
                                         {{__('Contradiction')}}
-                                    </th>
-                                    <th>
-                                        {{__('Comment')}}
                                     </th>
                                     <th>
                                         {{__('Action')}}
@@ -92,6 +92,9 @@
                                         {{__('Repository')}}
                                     </th>
                                     <th>
+                                        {{__('Comment')}}
+                                    </th>
+                                    <th>
                                         {{__('Entry Date')}}
                                     </th>
                                     <th>
@@ -102,9 +105,6 @@
                                     </th>
                                     <th>
                                         {{__('Contradiction')}}
-                                    </th>
-                                    <th>
-                                        {{__('Comment')}}
                                     </th>
                                     <th>
                                         {{__('Action')}}
@@ -144,6 +144,9 @@
                                         {{__('Repository')}}
                                     </th>
                                     <th>
+                                        {{__('Comment')}}
+                                    </th>
+                                    <th>
                                         {{__('Entry Date')}}
                                     </th>
                                     <th>
@@ -154,9 +157,6 @@
                                     </th>
                                     <th>
                                         {{__('Contradiction')}}
-                                    </th>
-                                    <th>
-                                        {{__('Comment')}}
                                     </th>
                                     <th>
                                         {{__('Action')}}
@@ -486,10 +486,10 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
-                                               style="float: right">{{__('Status Return Part')}}</label>
+                                               style="float: right">{{__('Exit')}}</label>
                                         <input class="form-control"
-                                               aria-invalid="false" name="hrp_status_return_part"
-                                               id="hrp_status_return_part">
+                                               aria-invalid="false" name="hrp_exit" id="test-date-id-5"
+                                        >
                                     </div>
                                 </div>
                             </div>
@@ -497,9 +497,9 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
-                                               style="float: right">{{__('Exit')}}</label>
+                                               style="float: right">{{__('Return Value')}}</label>
                                         <input class="form-control"
-                                               aria-invalid="false" name="hrp_exit" id="test-date-id-5"
+                                               aria-invalid="false" name="hrp_return_value" id="hrp_return_value"
                                         >
                                     </div>
                                 </div>
@@ -515,10 +515,10 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
-                                               style="float: right">{{__('Return Value')}}</label>
+                                               style="float: right">{{__('Status Return Part')}}</label>
                                         <input class="form-control"
-                                               aria-invalid="false" name="hrp_return_value" id="hrp_return_value"
-                                        >
+                                               aria-invalid="false" name="hrp_status_return_part"
+                                               id="hrp_status_return_part">
                                     </div>
                                 </div>
                             </div>
@@ -549,6 +549,7 @@
     <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
+    <script src="{{asset('assets/js/popper.min.js')}}"></script>
     <script>
         $(document).ready(function () {
 
@@ -598,6 +599,9 @@
             var table = $('#table').on('draw.dt', function (e, settings, json, xhr) {
 
             }).DataTable({
+                "initComplete": function(settings, json) {
+                    $('[data-toggle="tooltip"]').tooltip({template: '<div class="tooltip tooltip-custom"><div class="title"></div><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'});
+                },
                 "processing":
                     true,
                 "serverSide":
@@ -623,6 +627,13 @@
                                 "                                                            </div>\n" +
                                 "                                                        </div>"
                         }
+                    },
+                        {
+                            "targets":5,
+                            "data": null,
+                            "render": function (data, type, row, meta) {
+                                return ' <span  data-toggle="tooltip" data-html="true" title="' + data[5] + '" >' + data[5] + '</span>'
+                            }
                     }],
                 "language":
                     {
@@ -717,6 +728,9 @@
             var table2 = $('#table2').on('draw.dt', function (e, settings, json, xhr) {
 
             }).DataTable({
+                "initComplete": function(settings, json) {
+                    $('[data-toggle="tooltip"]').tooltip({template: '<div class="tooltip tooltip-custom"><div class="title"></div><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'});
+                },
                 "processing":
                     true,
                 "serverSide":
@@ -742,6 +756,13 @@
                                 "                                                            </div>\n" +
                                 "                                                        </div>"
                         }
+                    },
+                        {
+                            "targets": 5,
+                            "data": null,
+                            "render": function (data, type, row, meta) {
+                                return ' <span  data-toggle="tooltip" data-html="true" title="' + data[5] + '" >' + data[5] + '</span>'
+                            }
                     }],
                 "language":
                     {
@@ -836,6 +857,9 @@
             var table3 = $('#table3').on('draw.dt', function (e, settings, json, xhr) {
 
             }).DataTable({
+                "initComplete": function(settings, json) {
+                    $('[data-toggle="tooltip"]').tooltip({template: '<div class="tooltip tooltip-custom"><div class="title"></div><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'});
+                },
                 "processing":
                     true,
                 "serverSide":
@@ -861,6 +885,13 @@
                                 "                                                            </div>\n" +
                                 "                                                        </div>"
                         }
+                    },
+                        {
+                            "targets": 5,
+                            "data": null,
+                            "render": function (data, type, row, meta) {
+                                return ' <span  data-toggle="tooltip" data-html="true" title="' + data[5] + '" >' + data[5] + '</span>'
+                            }
                     }],
                 "language":
                     {
@@ -1473,12 +1504,12 @@
                 $('#hr_product_stock').val(data[2]);
                 $("#hr_provider_code").append('<option selected value="' + data[11] + '">' + data[3] + '</option>');
                 $("#hr_repository_id").text(data[4]);
-                $('#test-date-id').val(data[5]);
-                $('#test-date-id-3').val(data[6]);
-                $('#hr_return_value').val(data[7]);
-                $('#hr_contradiction').val(data[8]);
-                $('#hr_status_return_part').val(data[9]);
-                $('#hr_comment').val(data[10]);
+                $('#test-date-id').val(data[6]);
+                $('#test-date-id-3').val(data[7]);
+                $('#hr_return_value').val(data[8]);
+                $('#hr_contradiction').val(data[9]);
+                $('#hr_status_return_part').val(data[10]);
+                $('#hr_comment').val(data[5]);
                 $("#hr_repository_id").val(data[12]);
 
             })
@@ -1492,12 +1523,12 @@
                 $("#hrm_provider_code").append('<option selected value="' + data[11] + '">' + data[3] + '</option>');
                 $("#hrm_repository_id").text(data[4]);
                 $('#hrm_count').val(data[2]);
-                $('#test-date-id-1').val(data[5]);
-                $('#hrm_exit').val(data[6]);
-                $('#hrm_return_value').val(data[7]);
-                $('#hrm_contradiction').val(data[8]);
-                $('#hrm_status_return_part').val(data[9]);
-                $('#hrm_comment').val(data[10]);
+                $('#test-date-id-1').val(data[6]);
+                $('#test-date-id-4').val(data[7]);
+                $('#hrm_return_value').val(data[8]);
+                $('#hrm_contradiction').val(data[9]);
+                $('#hrm_status_return_part').val(data[10]);
+                $('#hrm_comment').val(data[5]);
                 $("#hrm_repository_id").val(data[12]);
             })
             // end
@@ -1510,12 +1541,12 @@
                 $("#hrp_provider_code").append('<option selected value="' + data[11] + '">' + data[3] + '</option>');
                 $("#hrp_repository_id").text(data[4]);
                 $('#hrp_part_count').val(data[2]);
-                $('#test-date-id-2').val(data[5]);
-                $('#hrp_exit').val(data[6]);
-                $('#hrp_return_value').val(data[7]);
-                $('#hrp_contradiction').val(data[8]);
-                $('#hrp_status_return_part').val(data[9]);
-                $('#hrp_comment').val(data[10]);
+                $('#test-date-id-2').val(data[6]);
+                $('#test-date-id-5').val(data[7]);
+                $('#hrp_return_value').val(data[8]);
+                $('#hrp_contradiction').val(data[9]);
+                $('#hrp_status_return_part').val(data[10]);
+                $('#hrp_comment').val(data[5]);
                 $("#hrp_repository_id").val(data[12]);
 
             })

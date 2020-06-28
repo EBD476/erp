@@ -26,57 +26,57 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('projects', 'ProjectController');
     Route::resource('order', 'OrderController');
     Route::resource('products', 'ProductController');
-    route::resource('product', 'ProductController');
-    route::resource('order_product', 'OrderProductController');
-    route::resource('repository', 'RepositoryProductController');
-    route::resource('product_requirement', 'ProductRequirementController');
-    route::resource('request', 'RequestController');
-    route::resource('verifier', 'VerifierController');
-    route::resource('permission', 'PermissionController');
-    route::resource('verify_pre', 'VerifyController');
-    route::resource('help_desk', 'HelpDeskController');
-    route::resource('client', 'ClientController');
-    route::resource('part', 'PartController');
-    route::resource('product-part', 'ProductPartController');
-    route::resource('repository_create', 'RepositoryCreateController');
-    route::resource('provider', 'ProviderController');
-    route::resource('repository-part', 'RepositoryPartController');
-    route::resource('agreement', 'AgreementController');
-    route::resource('install', 'InstallController');
-    route::resource('finance', 'FinanceController');
-    route::resource('delivery', 'DeliveryController');
-    route::resource('priority', 'HDpriorityController');
-    route::resource('type', 'HDtypeController');
-    route::resource('ticket', 'TicketStatusController');
-    route::resource('level', 'HNTLevelController');
-    route::resource('finance', 'FinanceController');
-    route::resource('support_status', 'SupportStatusController');
-    route::resource('support', 'SupportController');
-    route::resource('conversation_view', 'ConversationViewController');
-    route::resource('bank_account', 'BankAccountsController');
-    route::resource('bank_account_type', 'BankAccountTypeController');
-    route::resource('finance_bank', 'FinanceBankController');
-    route::resource('procrastinations_type', 'FundProcrastinationTypeController');
-    route::resource('procrastinations', 'FundProcrastinationController');
-    route::resource('criticism', 'FundCriticismController');
-    route::resource('current_assets', 'FundCurrentAssetsController');
-    route::resource('fund_non_current', 'FundNonCurrentController');
-    route::resource('funds_intangible_assets', 'FundIntangibleAssetsController');
-    route::resource('fund_tangible_fixed_assets', 'FundTangibleFixedAssetsController');
-    route::resource('fund', 'FinanceFundController');
-    route::resource('fund_accounts_document_payable', 'FundAccountsAndDocumentsPayableController');
-    route::resource('product-color', 'ProductColorController');
-    route::resource('product-property', 'ProductPropertyController');
-    route::resource('product-property-items', 'ProductPropertyItemsController');
-    route::resource('product-tax', 'TaxController');
-    route::resource('middle-part', 'MiddlePartController');
-    route::resource('product-middle-part', 'ProductMiddlePartController');
-    route::resource('middle-section-part', 'MiddleSectionPartController');
-    route::resource('repository-middle-part', 'RepositoryMiddlePartController');
-    route::resource('middle-part-requirement', 'MiddlePartRequirementController');
-    route::resource('part-requirement', 'PartRequirementController');
-    route::resource('hd-receiver-user', 'HDReceiverUserController');
-    route::resource('product-zone', 'ProductZoneController');
+    Route::resource('product', 'ProductController');
+    Route::resource('order_product', 'OrderProductController');
+    Route::resource('repository', 'RepositoryProductController');
+    Route::resource('product_requirement', 'ProductRequirementController');
+    Route::resource('request', 'RequestController');
+    Route::resource('verifier', 'VerifierController');
+    Route::resource('permission', 'PermissionController');
+    Route::resource('verify_pre', 'VerifyController');
+    Route::resource('help_desk', 'HelpDeskController');
+    Route::resource('client', 'ClientController');
+    Route::resource('part', 'PartController');
+    Route::resource('product-part', 'ProductPartController');
+    Route::resource('repository_create', 'RepositoryCreateController');
+    Route::resource('provider', 'ProviderController');
+    Route::resource('repository-part', 'RepositoryPartController');
+    Route::resource('agreement', 'AgreementController');
+    Route::resource('install', 'InstallController');
+    Route::resource('finance', 'FinanceController');
+    Route::resource('delivery', 'DeliveryController');
+    Route::resource('priority', 'HDpriorityController');
+    Route::resource('type', 'HDtypeController');
+    Route::resource('ticket', 'TicketStatusController');
+    Route::resource('level', 'HNTLevelController');
+    Route::resource('finance', 'FinanceController');
+    Route::resource('support_status', 'SupportStatusController');
+    Route::resource('support', 'SupportController');
+    Route::resource('conversation_view', 'ConversationViewController');
+    Route::resource('bank_account', 'BankAccountsController');
+    Route::resource('bank_account_type', 'BankAccountTypeController');
+    Route::resource('finance_bank', 'FinanceBankController');
+    Route::resource('procrastinations_type', 'FundProcrastinationTypeController');
+    Route::resource('procrastinations', 'FundProcrastinationController');
+    Route::resource('criticism', 'FundCriticismController');
+    Route::resource('current_assets', 'FundCurrentAssetsController');
+    Route::resource('fund_non_current', 'FundNonCurrentController');
+    Route::resource('funds_intangible_assets', 'FundIntangibleAssetsController');
+    Route::resource('fund_tangible_fixed_assets', 'FundTangibleFixedAssetsController');
+    Route::resource('fund', 'FinanceFundController');
+    Route::resource('fund_accounts_document_payable', 'FundAccountsAndDocumentsPayableController');
+    Route::resource('product-color', 'ProductColorController');
+    Route::resource('product-property', 'ProductPropertyController');
+    Route::resource('product-property-items', 'ProductPropertyItemsController');
+    Route::resource('product-tax', 'TaxController');
+    Route::resource('middle-part', 'MiddlePartController');
+    Route::resource('product-middle-part', 'ProductMiddlePartController');
+    Route::resource('middle-section-part', 'MiddleSectionPartController');
+    Route::resource('repository-middle-part', 'RepositoryMiddlePartController');
+    Route::resource('middle-part-requirement', 'MiddlePartRequirementController');
+    Route::resource('part-requirement', 'PartRequirementController');
+    Route::resource('hd-receiver-user', 'HDReceiverUserController');
+    Route::resource('product-zone', 'ProductZoneController');
     Route::resource('product-status', 'ProductStatusController');
     Route::resource('product-task', 'TaskController');
     Route::resource('qc', 'QCController');
@@ -88,29 +88,28 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('show', 'SupportController@show')->name('support.show');
     Route::get('show_response/{id}', 'ProjectController@show_response')->name('projects.show_response');
     Route::get('show_all_response', 'ProjectController@show_all_response')->name('projects.show_all_response');
-    route::get('locale/{lan}', 'LanguageController@locale');
+    Route::get('locale/{lan}', 'LanguageController@locale');
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('home', 'HomeController@index')->name('home');
-    route::get('preview', 'OrderController@preview')->name('order.preview');
-    route::get('product-report-user/{id}', 'TaskController@preview')->name('product-task.preview');
-    route::get('invoices_list_product', 'OrderController@invoices_list_product')->name('order.invoices_list_product');
-    route::get('computing-middle-part-detail', 'MiddleSectionPartController@computing_middle_part_detail')->name('middle_section_part.computing-middle-part-detail');
-    route::get('computing-product-part-detail', 'ProductPartController@computing_product_part_detail')->name('product_part.computing-product-part-detail');
-    route::get('computing-product-middle-part-detail', 'ProductMiddlePartController@computing_product_middle_part_detail')->name('product_middle_part.computing-product-middle-part-detail');
-    route::get('product-price-index', 'ProductController@product_price_index')->name('product.product-price-index');
-    route::get('report-list', 'TaskController@product_task_report_list')->name('product-task.report-list');
+    Route::get('preview', 'OrderController@preview')->name('order.preview');
+    Route::get('product-report-user/{id}', 'TaskController@preview')->name('product-task.preview');
+    Route::get('invoices_list_product', 'OrderController@invoices_list_product')->name('order.invoices_list_product');
+    Route::get('computing-middle-part-detail', 'MiddleSectionPartController@computing_middle_part_detail')->name('middle_section_part.computing-middle-part-detail');
+    Route::get('computing-product-part-detail', 'ProductPartController@computing_product_part_detail')->name('product_part.computing-product-part-detail');
+    Route::get('computing-product-middle-part-detail', 'ProductMiddlePartController@computing_product_middle_part_detail')->name('product_middle_part.computing-product-middle-part-detail');
+    Route::get('product-price-index', 'ProductController@product_price_index')->name('product.product-price-index');
+    Route::get('report-list', 'TaskController@product_task_report_list')->name('product-task.report-list');
 
 
 //put data
-    route::put('edit_pre/{id}', 'OrderController@edit_pre')->name('order.edit_pre');
-    route::put('checkbox/{id}', 'ProductController@checkbox')->name('product.checkbox');
-    route::put('product-price/{id}', 'ProductController@product_price')->name('product.product-price');
+    Route::put('edit_pre/{id}', 'OrderController@edit_pre')->name('order.edit_pre');
+    Route::put('checkbox/{id}', 'ProductController@checkbox')->name('product.checkbox');
+    Route::put('product-price/{id}', 'ProductController@product_price')->name('product.product-price');
     Route::put('receive_show/{id}', 'HelpDeskController@receive_show')->name('help_desk.receive_show');
     Route::put('order-state/{id}', 'RepositoryProductController@order_state')->name('repository.order_state');
     Route::put('checkbox-product-status/{id}', 'TaskController@checkbox')->name('product-task.checkbox-product-status');
 
 
-//  Posting data
 
 
 
@@ -120,7 +119,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('receive_verify/{id}', 'HelpDeskController@receive_verify')->name('help_desk.receive_verify');
     Route::post('support_request', 'ProjectController@support_request')->name('projects.support_request');
     Route::post('store-report', 'TaskController@store_report')->name('product-task.store_report');
-    route::post('createpdf', 'OrderProductController@createpdf')->name('order_product.createpdf');
+    Route::post('createpdf', 'OrderProductController@createpdf')->name('order_product.createpdf');
+    Route::post('activation-create-serial-number-status/{id}', 'ProductController@activation_create_serial_number_status')->name('product.activation-create-serial-number-status');
 
 
 //    uploaded image route
@@ -128,6 +128,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/part-image-save', 'PartController@upload')->name('part.upload');
     Route::post('/middle-part-image-save', 'MiddlePartController@upload')->name('middle-part.upload');
     Route::post('/user-image-save', 'UserController@upload')->name('users.upload');
+    Route::post('/request-file-save', 'ProjectController@upload')->name('project.upload');
 
 
 //  Mapping route
@@ -162,6 +163,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/json-data-finance', 'FinanceDestroyController@fill')->name('finance.json-data-finance');
     Route::get('/json-data-support_status', 'SupportStatusController@fill')->name('support_status.json-data-support_status');
     Route::get('/json-data-support', 'SupportController@fill')->name('support.json-data-support');
+    Route::get('/json-data-support-all', 'SupportController@fill_all')->name('support.json-data-support-all');
+    Route::get('/json-data-support-recent-list', 'SupportController@recent_list')->name('support.json-data-support-recent-list');
     Route::get('/json-data-bank_account', 'BankAccountController@fill')->name('bank_account.json-data-bank_account');
     Route::get('/json-data-bank_account_type', 'BankAccountTypeController@fill')->name('bank_account_type.json-data-bank_account_type');
     Route::get('/json-data-finance_bank', 'FinanceBankController@fill')->name('finance_bank.json-data-finance_bank');
@@ -204,14 +207,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('json-data-product-task', 'TaskController@fill')->name('product-task.json-data-product-task');;
     Route::get('json-data-product-new-task', 'TaskController@fill_new')->name('product-task.json-data-product-new-task');;
     Route::get('json-data-product-report-list', 'TaskController@fill_report_list')->name('product-task.json-data-product-report-list');;
-    route::get('json-data-product-part-compute', 'ProductPartController@computing_product_part')->name('product_part.computing-product-part');
-    route::get('json-data-product-middle-part-compute', 'ProductMiddlePartController@computing_product_middle_part')->name('product_middle_part.json-data-product-middle-part-compute');
-    route::get('json-data-install', 'InstallController@fill')->name('install.json-data-install');
-    route::get('json-data-install-all', 'InstallController@fill_all')->name('install.json-data-install-all');
-    route::get('json-data-delivery', 'DeliveryController@fill')->name('delivery.json-data-delivery');
-    route::get('json-data-delivery-all', 'DeliveryController@fill_all')->name('delivery.json-data-delivery-all');
-    route::get('json-data-qc', 'QCController@fill')->name('qc.json-data-qc');
-    route::get('json-data-qc-all', 'QCController@fill_all')->name('qc.json-data-delivery-all');
+    Route::get('json-data-product-part-compute', 'ProductPartController@computing_product_part')->name('product_part.computing-product-part');
+    Route::get('json-data-product-middle-part-compute', 'ProductMiddlePartController@computing_product_middle_part')->name('product_middle_part.json-data-product-middle-part-compute');
+    Route::get('json-data-install', 'InstallController@fill')->name('install.json-data-install');
+    Route::get('json-data-install-all', 'InstallController@fill_all')->name('install.json-data-install-all');
+    Route::get('json-data-delivery', 'DeliveryController@fill')->name('delivery.json-data-delivery');
+    Route::get('json-data-delivery-all', 'DeliveryController@fill_all')->name('delivery.json-data-delivery-all');
+    Route::get('json-data-qc', 'QCController@fill')->name('qc.json-data-qc');
+    Route::get('json-data-qc-all', 'QCController@fill_all')->name('qc.json-data-delivery-all');
+    Route::get('json-data-fill-response', 'ProjectController@fill_response')->name('projects.json-data-fill-response');
+    Route::get('activation-create-serial-number-index', 'ProductController@activation_create_serial_number_index')->name('product.activation-create-serial-number-index');
 
 
 

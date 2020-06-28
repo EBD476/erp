@@ -18,7 +18,7 @@
 </head>
 <body @if (app()->getLocale() == 'fa') class="white-content rtl menu-on-right" @else  class="white-content" @endif>
 
-    @role('Admin|order')
+    @role('Admin|order|support|qc|delivery|install')
     <div class="wrapper">
             <div class="content persian">
                 <div class="container-fluid">
@@ -34,17 +34,21 @@
                                                         <thead>
                                                         <tr>
                                                             <td class="text-left">
-
-                                                                <div class="row">&nbsp;
-                                                                    &nbsp;
+                                                                <div class="row">
                                                                     <h4 style="margin-top:30px;">{{__('Date:')}}
                                                                     <h4 style="margin-top:30px;">{{$data_dis->hop_due_date}}</h4></h4>
                                                                 </div>
                                                             </td>
+                                                            @role('Admin|order')
                                                             <td class="text-center">
-                                                                <h1
-                                                                        style="margin-top:70px; margin-right: 150px ; margin-left: 150px">{{__('Invoice Sales Of Product')}}</h1>
+                                                                <h1 style="margin-top:70px; margin-right: 150px ; margin-left: 150px">{{__('Invoice Sales Of Product')}}</h1>
                                                             </td>
+                                                            @endrole
+                                                            @role('support|qc|delivery|install')
+                                                            <td class="text-center">
+                                                                <h1 style="margin-top:70px; margin-right: 150px ; margin-left: 150px">{{__('Preview Detail Project')}}</h1>
+                                                            </td>
+                                                            @endrole
                                                             <td class="text-right">
                                                                 <img align="right" width="170" height="170"
                                                                      src="{{asset('assets/images/g.png')}}">
