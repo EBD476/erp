@@ -28,7 +28,17 @@
 <body @if (app()->getLocale() == 'fa') class="white-content rtl menu-on-right" @else  class="white-content" @endif>
 
 <div class="wrapper">
-
+    {{--Message unread data--}}
+    {{$current_user = auth()->user()->id,
+    $unread_message_count = \App\ConversationView::where('hcv_message_status', 0)->where('hcv_receiver_user_id',auth()->user()->id)->count(),
+     $unread_message = \Illuminate\Support\Facades\DB::table('hnt_conversation_view')
+     ->join('users', 'hnt_conversation_view.hcv_request_user_id', '=', 'users.id')
+     ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name','users.image', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_request_user_id')
+     ->where('hnt_conversation_view.hcv_message_status', '=', 0)
+     ->where('hnt_conversation_view.hcv_receiver_user_id', '=', $current_user)
+     ->where('hnt_conversation_view.deleted_at', '=', Null)
+     ->get()}}
+    {{--end--}}
     @include('layouts.partial.sidebar')
     <div class="main-panel">
 
@@ -61,7 +71,7 @@
 
 
         $('body').persianNum({
-            forbiddenTag: ['input','div']
+            forbiddenTag: ['input', 'div']
 
         })
 

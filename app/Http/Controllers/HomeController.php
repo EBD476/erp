@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Agreement;
 use App\Client;
+use App\ConversationView;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
@@ -16,6 +17,7 @@ use App\User;
 use Hekmatinasser\Verta\Verta;
 //use Verta;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\Null_;
 
 class HomeController extends Controller
 {
@@ -61,6 +63,7 @@ class HomeController extends Controller
         $product_requirement = DB::select("SELECT sum(Product_Count) as sum_hpo FROM hnt_product_requirements");
         $process_level = ProcessLevel::select('hp_process_id', 'hp_process_name')->get();
         $progress = OrderState::select('order_id')->get();
-        return view('home', ['product_requirement' => $product_requirement], compact('progress', 'un_seen_message', 'process_level', 'order_agent', 'order_order', 'agreement_order', 'client_order', 'user', 'order', 'projects', 'order_req', 'agreement', 'client', 'orders', 'support_response', 'help_desk', 'priority', 'type'));
+        return view('home', ['product_requirement' => $product_requirement], compact( 'progress', 'un_seen_message', 'process_level', 'order_agent', 'order_order', 'agreement_order', 'client_order', 'user', 'order', 'projects', 'order_req', 'agreement', 'client', 'orders', 'support_response', 'help_desk', 'priority', 'type'));
     }
+
 }

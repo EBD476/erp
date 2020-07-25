@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\HDpriority;
 use App\HDtype;
 use App\HelpDesk;
+use App\Position;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
@@ -34,14 +36,14 @@ class UserController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
+        $position =Position::select('id','hpu_name')->get();
         //Get all roles and pass it to the view
         $roles = Role::get();
-        return view('users.create', ['roles' => $roles], compact('help_desk', 'priority', 'type', 'user'));
+        return view('users.create', ['roles' => $roles], compact('help_desk','position', 'priority', 'type', 'user'));
     }
 
     public function store(Request $request)
     {
-
         //Validate name, email and password fields
         $this->validate($request, [
             'name' => 'required|max:120',
@@ -49,7 +51,14 @@ class UserController extends Controller
             'password' => 'required|min:6|confirmed'
         ]);
 
-        $user = User::create($request->only('name', 'password', 'username', 'device_id')); //Retrieving only the email and password data
+        $user = new User();
+        $user->name = $request->name;
+        $user->password = $request->password;
+        $user->username = $request->username;
+        $user->position = $request->position;
+        $user->image = $request->image;
+        $user->save();
+
         $roles = $request['roles']; //Retrieving the roles field
         //Checking if a role was selected
         if (isset($roles)) {
@@ -76,7 +85,8 @@ class UserController extends Controller
 
     public function edit($id)
     {
-
+        $position =Position::select('id','hpu_name')->get();
+        $selected_position =Position::select('id','hpu_name')->where('id',auth()->user()->position)->get()->last();
         $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
         $type = HDtype::select('th_name', 'id')->get();
@@ -85,7 +95,7 @@ class UserController extends Controller
         $users = User::findOrFail($id); //Get user with specified id
         $roles = Role::get(); //Get all roles
 
-        return view('users.edit', compact('decrypt', 'user', 'users', 'roles', 'help_desk', 'priority', 'type')); //pass user and roles data to view
+        return view('users.edit', compact('selected_position','position','decrypt', 'user', 'users', 'roles', 'help_desk', 'priority', 'type')); //pass user and roles data to view
 
     }
 
@@ -94,11 +104,10 @@ class UserController extends Controller
         $user = User::findOrFail($id); //Get role specified by id
         $user->name = $request->name;
         $user->username = $request->username;
-        //Validate name, email and password fields
-//        $this->validate($request, [
-//            'name' => 'required|max:120',
-////            'password'=>'required|min:6|confirmed'
-//        ]);
+        $user->position = $request->position;
+        if ($request->image != '') {
+            $user->image = $request->image;
+        }
         if ($request->newPassword != "") {
             $result = Hash::check($request->password, $user->password);
             if ($result == true) {
@@ -134,27 +143,37 @@ class UserController extends Controller
                 'User successfully deleted.');
     }
 
-    public function fill(Request $request)
+    public function upload(Request $request)
     {
-        $start = $request->start;
-        $length = $request->length;
-        $search = $request->search['value'];
-        if ($search == '') {
-            $order = Order::skip($start)->take($length)->get();
+        $image = $request->file('file');
+        $filename = $_FILES['file']['name'];
+
+        if (isset($image)) {
+
+            $current_date = Carbon::now();
+            $image_name = $current_date . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+            if (!file_exists('img/avatar')) {
+                mkdir('img/avatar', 0777, true);
+            }
+            $image->move('img/avatar', $filename);
         } else {
-            $order = Order::where('id', 'LIKE', "%$search%")
-                ->orwhere('hp_project_name', 'LIKE', "%$search%")
-                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
-                ->orwhere('hp_connector', 'LIKE', "%$search%")
-                ->get();
+            $image_name = 'default.png';
         }
 
-        $data = '';
-        foreach ($order as $orders) {
-            $data .= '["' . $orders->id . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '"],';
+        return response()->json(['link' => '/img/avatar/' . $filename]);
+    }
+
+
+    public function destroy_image(Request $request,$id)
+    {
+        $user = User::find($id);
+        $filename = "img/avatar/" . $user->image;
+        if (file_exists($filename)) {
+            unlink($filename);
+            $user->image =$request->image;
+            $user->save();
+            return json_encode(["response" => "OK"]);
         }
-        $data = substr($data, 0, -1);
-        $orders_count = Order::all()->count();
-        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+
     }
 }

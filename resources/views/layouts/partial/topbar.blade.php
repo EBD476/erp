@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg fixed-top bg-gradient-light p-md-0 text-danger">
-    <div class="container-fluid">
+    <div class="container-fluid persian">
         <div class="navbar-wrapper">
             <div class="navbar-minimize d-inline">
                 <button class="minimize-sidebar btn btn-link btn-just-icon" rel="tooltip"
@@ -31,10 +31,52 @@
                         <span class="d-lg-none d-md-block">Search</span>
                     </button>
                 </li>
+
                 <li class="dropdown nav-item">
-                    <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
+
+                    <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown" style=" padding-top: 15px !important;">
+                        @if($unread_message_count != 0)
+                            <div class="notification d-none d-lg-block d-xl-block" style="display: flex">
+                                <i class="tim-icons icon-chat-33">{{$unread_message_count}}</i>
+                            </div>
+                        @else
+                            <i class="tim-icons icon-chat-33"></i>
+                        @endif
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
+
+                        <li class="nav-link"><a href="{{route('conversation_view.inbox')}}"
+                                                class="nav-item dropdown-item">{{__('Message List')}}</a>
+                        </li>
+                        @foreach($unread_message as $unread_messages)
+                            <li class="nav-link">
+                                <a href="{{route('conversation_view.show',$unread_messages->id)}}"
+                                   class="nav-item dropdown-item">
+                                    @if($unread_messages->image == '')
+                                        <div class="photo">
+                                            <img src="{{asset('assets/images/user.jpg')}}" alt="Profile Photo">
+                                        </div>
+                                    @else
+                                        <div class="photo">
+                                            <img src="{{asset('img/avatar/'.$unread_messages->image)}}" alt="Profile Photo">
+                                        </div>
+                                    @endif
+                                    {{__('You Have One Message')}}
+                                    {{__('From')}}
+                                    {{$unread_messages->name}}
+                                    {{__('H')}}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </li>
+
+
+                <li class="dropdown nav-item">
+                    <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown"
+                       style="padding-top: 15px!important;">
                         @foreach($help_desk as $check_status)
-                                <div class="notification d-none d-lg-block d-xl-block"></div>
+                            <div class="notification d-none d-lg-block d-xl-block"></div>
                         @endforeach
                         <i class="tim-icons icon-sound-wave"></i>
                         <p class="d-lg-none">
@@ -46,62 +88,44 @@
                         <li class="nav-link"><a href="{{route('projects.show_all_response')}}"
                                                 class="nav-item dropdown-item">{{__('Support Response List')}}</a>
                         </li>
-                        {{--@foreach($support_response as $responses)--}}
-                        {{--@if($responses->hs_request_user_id == auth()->user()->id)--}}
-                        {{--<li class="nav-link">--}}
-                        {{--<a href="{{route('projects.show_response',$responses->id)}}"--}}
-                        {{--class="nav-item dropdown-item">--}}
-
-                        {{--{{auth()->user()->name}}--}}
-
-                        {{--{{__('Responded To Your Request')}}--}}
-
-                        {{--{{$responses->hs_title}}--}}
-
-                        {{--{{__('Responded')}}--}}
-                        {{--</a>--}}
-                        {{--</li>--}}
-                        {{--@endif--}}
-                        {{--@endforeach--}}
-
                         @foreach($help_desk as $help_desks_top_bar)
-                                <li class="nav-link">
-                                    <a href="{{route('help_desk.receive_show',$help_desks_top_bar->id)}}"
-                                       class="nav-item dropdown-item">
-                                        {{__('You Have One Ticket')}}
-                                        @foreach($type as $types_top_bar)
-                                            @if($types_top_bar->id == $help_desks_top_bar->hhd_type)
-                                                {{$types_top_bar->th_name}}
-                                            @endif
-                                        @endforeach
-                                        @foreach($priority as $priorities)
-                                            @if($priorities->id == $help_desks_top_bar->hhd_priority)
-                                                {{$priorities->hdp_name}}
-                                            @endif
-                                        @endforeach
-                                        @foreach($user as $user_all)
-                                            @if($user_all->id == $help_desks_top_bar->hhd_request_user_id)
-                                                {{__('From')}}
-                                                {{$user_all->name}}
-                                            @endif
-                                        @endforeach
-                                        {{__('H')}}
-                                    </a>
-                                </li>
+                            <li class="nav-link">
+                                <a href="{{route('help_desk.receive_show',$help_desks_top_bar->id)}}"
+                                   class="nav-item dropdown-item" style=" padding-top: 15px !important;">
+                                    {{__('You Have One Ticket')}}
+                                    @foreach($type as $types_top_bar)
+                                        @if($types_top_bar->id == $help_desks_top_bar->hhd_type)
+                                            {{$types_top_bar->th_name}}
+                                        @endif
+                                    @endforeach
+                                    @foreach($priority as $priorities)
+                                        @if($priorities->id == $help_desks_top_bar->hhd_priority)
+                                            {{$priorities->hdp_name}}
+                                        @endif
+                                    @endforeach
+                                    @foreach($user as $user_all)
+                                        @if($user_all->id == $help_desks_top_bar->hhd_request_user_id)
+                                            {{__('From')}}
+                                            {{$user_all->name}}
+                                        @endif
+                                    @endforeach
+                                    {{__('H')}}
+                                </a>
+                            </li>
                         @endforeach
-                        {{--<li class="nav-link"><a href="javascript:void(0)" class="nav-item --}}
-                        {{--dropdown-item">Another notification</a></li>--}}
-                        {{--<li class="nav-link"><a href="javascript:void(0)" class="nav-item --}}
-                        {{--dropdown-item">Mike John responded to your email</a></li>--}}
-                        {{--<li class="nav-link"><a href="javascript:void(0)" class="nav-item --}}
-                        {{--dropdown-item">Another one</a></li>--}}
                     </ul>
                 </li>
                 <li class="dropdown nav-item">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                        <div class="photo">
-                            <img src="{{asset('assets/images/user.jpg')}}" alt="Profile Photo">
-                        </div>
+                        @if(auth()->user()->image == '')
+                            <div class="photo">
+                                <img src="{{asset('assets/images/user.jpg')}}" alt="Profile Photo">
+                            </div>
+                        @else
+                            <div class="photo">
+                                <img src="{{asset('img/avatar/'.auth()->user()->image)}}" alt="Profile Photo">
+                            </div>
+                        @endif
                         <b class="caret d-none d-lg-block d-xl-block"></b>
                         <p class="d-lg-none">
                             Log out

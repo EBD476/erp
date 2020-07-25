@@ -37,7 +37,7 @@
 }
 
 .sidebar p {
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-family: 'IRANSans', sans-serif
 }
 
@@ -159,24 +159,57 @@ div.dataTables_wrapper div.dataTables_filter {
     height: 112vmin !important;
 }
 
-.modal-content-landscape{
-    width: 1000px!important;
+.modal-content-landscape {
+    width: 1000px !important;
 }
-.modal-content-landscape-in{
-    width: 800px!important;
-}
-.table-responsive {
-    overflow: hidden!important;}
 
-.tooltip-custom{
-    background-color: #FFEB6C!important;
+.modal-content-landscape-in {
+    width: 800px !important;
+}
+
+.table-responsive {
+    overflow: hidden !important;
+}
+
+.tooltip-custom {
+    background-color: #FFEB6C !important;
     width: 500px;
 }
 
-.tooltip-custom >.tooltip-inner{
- background-color: #FFEB6C!important;
- font-size: 1.2em;
- padding: 30px;
- max-width: 480px;
+.tooltip-custom > .tooltip-inner {
+    background-color: #FFEB6C !important;
+    font-size: 1.2em;
+    padding: 30px;
+    max-width: 480px;
     text-align: right;
+}
+
+.off-canvas-sidebar .nav li > a, .sidebar .nav li > a {
+    margin: 12px !important;
+    padding: 0 !important;
+}
+
+.rtl .sidebar .logo .simple-text {
+    text-align: right !important;
+    margin-right: 0;;
+}
+
+.table > tbody > tr {
+    cursor: pointer !important;
+}
+
+.dropzone {
+    border: 2px dashed rgba(0, 0, 0, 0.3) !important;
+    width: 100% !important;
+}
+
+.navbar .photo img {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.navbar .photo {
+    display: inline-block;
+    height: 40px !important;
+    width: 40px !important;
 }

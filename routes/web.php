@@ -80,6 +80,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('product-status', 'ProductStatusController');
     Route::resource('product-task', 'TaskController');
     Route::resource('qc', 'QCController');
+    Route::resource('position', 'PositionUserController');
 
 
 //  Getting data
@@ -99,6 +100,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('computing-product-middle-part-detail', 'ProductMiddlePartController@computing_product_middle_part_detail')->name('product_middle_part.computing-product-middle-part-detail');
     Route::get('product-price-index', 'ProductController@product_price_index')->name('product.product-price-index');
     Route::get('report-list', 'TaskController@product_task_report_list')->name('product-task.report-list');
+    Route::get('inbox', 'ConversationViewController@inbox')->name('conversation_view.inbox');
 
 
 //put data
@@ -108,6 +110,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('receive_show/{id}', 'HelpDeskController@receive_show')->name('help_desk.receive_show');
     Route::put('order-state/{id}', 'RepositoryProductController@order_state')->name('repository.order_state');
     Route::put('checkbox-product-status/{id}', 'TaskController@checkbox')->name('product-task.checkbox-product-status');
+    Route::put('update-status/{id}', 'ConversationViewController@update_status')->name('conversation_view.update-status');
 
 
 
@@ -121,6 +124,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('store-report', 'TaskController@store_report')->name('product-task.store_report');
     Route::post('createpdf', 'OrderProductController@createpdf')->name('order_product.createpdf');
     Route::post('activation-create-serial-number-status/{id}', 'ProductController@activation_create_serial_number_status')->name('product.activation-create-serial-number-status');
+    Route::post('conversation_view_store', 'ConversationViewController@conversation_view_store')->name('conversation_view.conversation_view_store');
 
 
 //    uploaded image route
@@ -217,6 +221,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('json-data-qc-all', 'QCController@fill_all')->name('qc.json-data-delivery-all');
     Route::get('json-data-fill-response', 'ProjectController@fill_response')->name('projects.json-data-fill-response');
     Route::get('activation-create-serial-number-index', 'ProductController@activation_create_serial_number_index')->name('product.activation-create-serial-number-index');
+    Route::get('json-data-message-receive', 'ConversationViewController@fill_receive')->name('conversationview.json-data-message-receive');
+    Route::get('json-data-message-send', 'ConversationViewController@fill_send')->name('conversationview.json-data-message-send');
+    Route::get('fill-unread-message', 'ConversationViewController@fill_unread_message')->name('conversationview.fill-unread-message');
+    Route::get('json-data-position', 'PositionUserController@fill')->name('position.json-data-position');
 
 
 
@@ -236,6 +244,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/json-data-fill-hd-receiver-user', 'HDReceiverUserController@fill_data_receiver')->name('hd-receiver-user.json-data-fill-hd-receiver-user');
     Route::get('/json-data-fill-type-ticket', 'HDReceiverUserController@fill_type_ticket')->name('hd-receiver-user.json-data-fill-type-ticket');
     Route::get('/json-data-fill-data-zone', 'ProductZoneController@fill_data_zone')->name('product-zone.json-data-fill-data-zone');
+    Route::get('/json-data-fill-position-user', 'PositionUserController@fill_data_position')->name('position.json-data-fill-position-user');
 
 
 //  deleted route
@@ -294,6 +303,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/product-zone-destroy/{id}', 'ProductZoneController@destroy')->name('product-zone.product-zone-destroy');
     Route::delete('/product-status-destroy/{id}', 'ProductStatusController@destroy')->name('product-status.product-status-destroy');
     Route::delete('/product-task-destroy/{id}', 'TaskController@destroy')->name('product-task.product-task-destroy');;
+    Route::delete('/position-destroy/{id}', 'PositionUserController@destroy')->name('position.position-destroy');;
 
 
 
@@ -301,6 +311,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/product-destroy-image/{id}', 'ProductController@destroy_image')->name('product.product-destroy-image');
     Route::delete('/middle-part-destroy-image/{id}', 'MiddlePartController@destroy_image')->name('middle-part.middle-part-destroy-image');
     Route::delete('/part-destroy-image/{id}', 'PartController@destroy_image')->name('part.part-destroy-image');
+    Route::delete('/user-destroy-image/{id}', 'UserController@destroy_image')->name('user.user-destroy-image');
 
 
 });

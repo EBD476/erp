@@ -214,7 +214,7 @@
                     }
                 });
                 $.ajax({
-                    url: '/conversation_view',
+                    url: '/conversation_view_store',
                     type: 'POST',
                     data: data,
                     dataType: 'json',

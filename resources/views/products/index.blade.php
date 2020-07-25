@@ -8,6 +8,7 @@
     <link href="{{asset('assets/css/select2.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('assets/css/select2-bootstrap4.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('assets/css/switchery.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/dropzone.min.css')}}" rel="stylesheet"/>
 @endpush
 
 @section('content')
@@ -166,8 +167,7 @@
                             </form>
                             <br>
                             <label style="margin-top: -20px;">{{__('Image')}}</label>
-                            <div class="card-body col-md-12 row"
-                                 style="display: flex ; border: 1px dashed;     margin-right: -35px;}">
+                            <div class="card-body col-md-12 row">
                                 <form action="{{url('/product-image-save')}}" class="dropzone" id="dropzone"
                                       enctype="multipart/form-data">
                                     @csrf
@@ -289,7 +289,7 @@
                                         <input type="file" class="form-control"
                                                name="file" multiple>
                                     </div>
-                                    <div class="dz-image" style="margin-right: 20px">
+                                    <div class="dz-image">
                                         <img src="" id="hp_image">
                                     </div>
                                 </form>
@@ -387,7 +387,7 @@
     <script src="{{asset('assets/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
-    <script src="{{asset('assets/js/plugins/dropzone.js')}}"></script>
+    <script src="{{asset('assets/js/dropzone.min.js')}}"></script>
     <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
     <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/switchery.min.js')}}"></script>

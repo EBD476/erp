@@ -3,7 +3,10 @@
 @section('title', __('Hanta Enterprise Resource Planning'))
 
 @push('css')
+    <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/leaflet.css') }}" rel="stylesheet">
+    <link href="{{asset('assets/css/select2.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/select2-bootstrap4.min.css')}}" rel="stylesheet"/>
 @endpush
 
 @section('content')
@@ -35,7 +38,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Total Orders')}}</p>
+                                    <p class="card-category"><a class="nav-link" href="{{ route('order.index') }}">{{__('Total Orders')}}</a></p>
                                     <h3 class="card-title persian">{{$orders}}</h3>
                                 </div>
                             </div>
@@ -44,7 +47,7 @@
                     <div class="card-footer">
                         <hr>
                         <div class="stats">
-                            <i class="tim-icons icon-refresh-01"></i> Update Now
+                            {{--<i class="tim-icons icon-refresh-01"></i> Update Now--}}
                         </div>
                     </div>
                 </div>
@@ -61,7 +64,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Order queue')}}</p>
+                                    <p class="card-category"><a class="nav-link" href="{{Route('order.invoices_list_product')}}">{{__('Order queue')}}</a></p>
                                     <h3 class="card-title persian">{{$order_req}}</h3>
                                 </div>
                             </div>
@@ -70,7 +73,7 @@
                     <div class="card-footer">
                         <hr>
                         <div class="stats">
-                            <i class="tim-icons icon-sound-wave"></i> Last Research
+                            {{--<i class="tim-icons icon-sound-wave"></i> Last Research--}}
                         </div>
                     </div>
                 </div>
@@ -87,7 +90,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Agreement')}}</p>
+                                    <p class="card-category"> <a class="nav-link" href="{{ route('agreement.index') }}">{{__('Agreement')}}</a></p>
                                     <h3 class="card-title persian">{{$agreement}}</h3>
                                 </div>
                             </div>
@@ -96,7 +99,7 @@
                     <div class="card-footer">
                         <hr>
                         <div class="stats">
-                            <i class="tim-icons icon-trophy"></i> Customers feedback
+                            {{--<i class="tim-icons icon-trophy"></i> Customers feedback--}}
                         </div>
                     </div>
                 </div>
@@ -113,7 +116,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Total Customers')}}</p>
+                                    <p class="card-category"><a class="nav-link" href="{{ route('client.index') }}">{{__('Total Customers')}}</a></p>
                                     <h3 class="card-title persian">{{$client}}</h3>
                                 </div>
                             </div>
@@ -122,7 +125,7 @@
                     <div class="card-footer">
                         <hr>
                         <div class="stats">
-                            <i class="tim-icons icon-watch-time"></i> In the last hours
+                            {{--<i class="tim-icons icon-watch-time"></i> In the last hours--}}
                         </div>
                     </div>
                 </div>
@@ -216,6 +219,151 @@
             </div>
         </div>
 
+        {{--message cartable--}}
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card" id="card_1">
+                    <div class="card-header">
+                        <h3 class="card-title"> {{__('Un Read Message List')}}</h3>
+                        <div class="dropdown">
+                            <h6 class="title d-inline"><button class="btn btn-primary compose">{{__('Create Message')}}</button></h6>
+                            <button type="button" class="btn btn-link dropdown-toggle btn-icon"
+                                    data-toggle="dropdown">
+                                <i class="tim-icons icon-settings-gear-63"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu"
+                                 aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item compose" href="#" id="compose" data-toggle="modal"
+                                   data-target="#modalRegisterForm">{{__('Compose')}}</a>
+                                <a class="dropdown-item" href="{{ route('conversation_view.inbox') }}">{{__('Inbox')}}</a>
+                                {{--<a class="dropdown-item" href="#pablo">Something else</a>--}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table tablesorter " id="table1">
+                                <thead class=" text-primary">
+                                <tr>
+                                    <th>
+                                        {{__('ID')}}
+                                    </th>
+                                    <th>
+                                        {{__('Sender Name')}}
+                                    </th>
+                                    <th>
+                                        {{__('Message')}}
+                                    </th>
+                                    <th>
+                                        {{__('Created at')}}
+                                    </th>
+                                    <th>
+                                        {{__('Action')}}
+                                    </th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card" id="card-form1">
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('Compose Message')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <form id="form1">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <label>{{__('Send Message TO')}}</label>
+                                            <div class="form-group">
+                                                <select  name="user_receive_id[]"
+                                                        class="form-control select-receiver-user"
+                                                        multiple="multiple"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Message')}}</label>
+                                                <textarea name="message" class="form-control" required=""></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                        <button id="back_form1"
+                                                class="btn btn-fill btn-primary">{{__('Back')}}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card" id="card-form2">
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title" id="request_user"></h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <form id="form2">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Name')}}</label>
+                                                <input class="form-control"
+                                                       name="name" id="name" disabled>
+                                                <input id="user_receive_id" name="user_receive_id[]" hidden>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Message')}}</label>
+                                                <textarea class="form-control" id="message_give" disabled></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Reply')}}</label>
+                                                <textarea name="message" type="text" class="form-control"
+                                                          required=""
+                                                          aria-invalid="false"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                        <button id="back_form2"
+                                           class="btn btn-fill btn-primary">{{__('Back')}}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{--end message cartable--}}
+
         <div class="row">
             <div class="col-lg-12 col-md-12">
                 <div class="card ">
@@ -268,6 +416,7 @@
 
     </div>
     @endrole
+
     @role('finance')
     <div class="content persian">
         <div class="row">
@@ -296,7 +445,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Total Orders')}}</p>
+                                    <p class="card-category"><a class="nav-link" href="{{Route('order.index')}}">{{__('Total Orders')}}</a></p>
                                     <h3 class="card-title persian">{{$orders}}</h3>
                                 </div>
                             </div>
@@ -305,7 +454,7 @@
                     <div class="card-footer">
                         <hr>
                         <div class="stats">
-                            <i class="tim-icons icon-refresh-01"></i> Update Now
+                            {{--<i class="tim-icons icon-refresh-01"></i> Update Now--}}
                         </div>
                     </div>
                 </div>
@@ -322,7 +471,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Order queue')}}</p>
+                                    <p class="card-category"><a class="nav-link" href="{{Route('order.invoices_list_product')}}">{{__('Order queue')}}</a></p>
                                     <h3 class="card-title persian">{{$order_req}}</h3>
                                 </div>
                             </div>
@@ -331,7 +480,7 @@
                     <div class="card-footer">
                         <hr>
                         <div class="stats">
-                            <i class="tim-icons icon-sound-wave"></i> Last Research
+                            {{--<i class="tim-icons icon-sound-wave"></i> Last Research--}}
                         </div>
                     </div>
                 </div>
@@ -348,7 +497,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Agreement')}}</p>
+                                    <p class="card-category"><a class="nav-link" href="{{ route('agreement.index') }}">{{__('Agreement')}}</a></p>
                                     <h3 class="card-title persian">{{$agreement}}</h3>
                                 </div>
                             </div>
@@ -357,7 +506,7 @@
                     <div class="card-footer">
                         <hr>
                         <div class="stats">
-                            <i class="tim-icons icon-trophy"></i> Customers feedback
+                            {{--<i class="tim-icons icon-trophy"></i> Customers feedback--}}
                         </div>
                     </div>
                 </div>
@@ -374,7 +523,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Total Customers')}}</p>
+                                    <p class="card-category"><a class="nav-link" href="{{ route('client.index') }}">{{__('Total Customers')}}</a></p>
                                     <h3 class="card-title persian">{{$client}}</h3>
                                 </div>
                             </div>
@@ -389,6 +538,151 @@
                 </div>
             </div>
         </div>
+
+        {{--message cartable--}}
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card" id="card_1">
+                    <div class="card-header">
+                        <h3 class="card-title"> {{__('Un Read Message List')}}</h3>
+                        <div class="dropdown">
+                            <h6 class="title d-inline"><button class="btn btn-primary compose">{{__('Create Message')}}</button></h6>
+                            <button type="button" class="btn btn-link dropdown-toggle btn-icon"
+                                    data-toggle="dropdown">
+                                <i class="tim-icons icon-settings-gear-63"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu"
+                                 aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item compose" href="#" id="compose" data-toggle="modal"
+                                   data-target="#modalRegisterForm">{{__('Compose')}}</a>
+                                <a class="dropdown-item" href="{{ route('conversation_view.inbox') }}">{{__('Inbox')}}</a>
+                                {{--<a class="dropdown-item" href="#pablo">Something else</a>--}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table tablesorter " id="table1">
+                                <thead class=" text-primary">
+                                <tr>
+                                    <th>
+                                        {{__('ID')}}
+                                    </th>
+                                    <th>
+                                        {{__('Sender Name')}}
+                                    </th>
+                                    <th>
+                                        {{__('Message')}}
+                                    </th>
+                                    <th>
+                                        {{__('Created at')}}
+                                    </th>
+                                    <th>
+                                        {{__('Action')}}
+                                    </th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card" id="card-form1">
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('Compose Message')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <form id="form1">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <label>{{__('Send Message TO')}}</label>
+                                            <div class="form-group">
+                                                <select  name="user_receive_id[]" required=""
+                                                         class="form-control select-receiver-user"
+                                                         multiple="multiple"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Message')}}</label>
+                                                <textarea name="message" class="form-control" required=""></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                        <button id="back_form1"
+                                                class="btn btn-fill btn-primary">{{__('Back')}}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card" id="card-form2">
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title" id="request_user"></h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <form id="form2">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Name')}}</label>
+                                                <input class="form-control"
+                                                       name="name" id="name" disabled>
+                                                <input id="user_receive_id" name="user_receive_id[]" hidden>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Message')}}</label>
+                                                <textarea class="form-control" id="message_give" disabled></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Reply')}}</label>
+                                                <textarea name="message" type="text" class="form-control"
+                                                          required=""
+                                                          aria-invalid="false"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                        <button id="back_form2"
+                                                class="btn btn-fill btn-primary">{{__('Back')}}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{--end message cartable--}}
 
 
         <div class="row">
@@ -689,8 +983,10 @@
                 </div>
             </div>
         </div>
+
     </div>
     @endrole
+
     @role('dealership')
     <div class="content persian">
         <div class="row">
@@ -719,7 +1015,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Total Orders')}}</p>
+                                    <p class="card-category"> <a class="nav-link" href="{{ route('order.index') }}">{{__('Total Orders')}}</a></p>
                                     <h3 class="card-title persian">{{$orders}}</h3>
                                 </div>
                             </div>
@@ -728,7 +1024,7 @@
                     <div class="card-footer">
                         <hr>
                         <div class="stats">
-                            <i class="tim-icons icon-refresh-01"></i> Update Now
+                            {{--<i class="tim-icons icon-refresh-01"></i> Update Now--}}
                         </div>
                     </div>
                 </div>
@@ -745,7 +1041,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Order queue')}}</p>
+                                    <p class="card-category"><a class="nav-link" href="{{Route('order.invoices_list_product')}}">{{__('Order queue')}}</a></p>
                                     <h3 class="card-title persian">{{$order_req}}</h3>
                                 </div>
                             </div>
@@ -754,7 +1050,7 @@
                     <div class="card-footer">
                         <hr>
                         <div class="stats">
-                            <i class="tim-icons icon-sound-wave"></i> Last Research
+                            {{--<i class="tim-icons icon-sound-wave"></i> Last Research--}}
                         </div>
                     </div>
                 </div>
@@ -771,7 +1067,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Agreement')}}</p>
+                                    <p class="card-category"><a class="nav-link" href="{{ route('agreement.index') }}">{{__('Agreement')}}</a></p>
                                     <h3 class="card-title persian">{{$agreement}}</h3>
                                 </div>
                             </div>
@@ -780,7 +1076,7 @@
                     <div class="card-footer">
                         <hr>
                         <div class="stats">
-                            <i class="tim-icons icon-trophy"></i> Customers feedback
+                            {{--<i class="tim-icons icon-trophy"></i> Customers feedback--}}
                         </div>
                     </div>
                 </div>
@@ -797,7 +1093,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Total Customers')}}</p>
+                                    <p class="card-category"><a class="nav-link" href="{{ route('client.index') }}">{{__('Total Customers')}}</a></p>
                                     <h3 class="card-title persian">{{$client}}</h3>
                                 </div>
                             </div>
@@ -806,23 +1102,168 @@
                     <div class="card-footer">
                         <hr>
                         <div class="stats">
-                            <i class="tim-icons icon-watch-time"></i> In the last hours
+                            {{--<i class="tim-icons icon-watch-time"></i> In the last hours--}}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-
+        {{--message cartable--}}
         <div class="row">
-            <div class="col-12">
-                <div class="card card-chart">
-                    <div class="card-header ">
-                        <div class="row">
-                            <div class="col-sm-6 text-right">
-                                {{--<h5 class="card-category">Total Project</h5>--}}
-                                <h3 class="card-title">{{__('Smart Home Projects')}}</h3>
+            <div class="col-lg-12 col-md-12">
+                <div class="card" id="card_1">
+                    <div class="card-header">
+                        <h3 class="card-title"> {{__('Un Read Message List')}}</h3>
+                        <div class="dropdown">
+                            <h6 class="title d-inline"><button class="btn btn-primary compose">{{__('Create Message')}}</button></h6>
+                            <button type="button" class="btn btn-link dropdown-toggle btn-icon"
+                                    data-toggle="dropdown">
+                                <i class="tim-icons icon-settings-gear-63"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu"
+                                 aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item compose" href="#" id="compose" data-toggle="modal"
+                                   data-target="#modalRegisterForm">{{__('Compose')}}</a>
+                                <a class="dropdown-item" href="{{ route('conversation_view.inbox') }}">{{__('Inbox')}}</a>
+                                {{--<a class="dropdown-item" href="#pablo">Something else</a>--}}
                             </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table tablesorter " id="table1">
+                                <thead class=" text-primary">
+                                <tr>
+                                    <th>
+                                        {{__('ID')}}
+                                    </th>
+                                    <th>
+                                        {{__('Sender Name')}}
+                                    </th>
+                                    <th>
+                                        {{__('Message')}}
+                                    </th>
+                                    <th>
+                                        {{__('Created at')}}
+                                    </th>
+                                    <th>
+                                        {{__('Action')}}
+                                    </th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card" id="card-form1">
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('Compose Message')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <form id="form1">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <label>{{__('Send Message TO')}}</label>
+                                            <div class="form-group">
+                                                <select  name="user_receive_id[]"
+                                                         class="form-control select-receiver-user"
+                                                         multiple="multiple"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Message')}}</label>
+                                                <textarea name="message" class="form-control" required=""></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                        <button id="back_form1"
+                                                class="btn btn-fill btn-primary">{{__('Back')}}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card" id="card-form2">
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title" id="request_user"></h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <form id="form2">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Name')}}</label>
+                                                <input class="form-control"
+                                                       name="name" id="name" disabled>
+                                                <input id="user_receive_id" name="user_receive_id[]" hidden>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Message')}}</label>
+                                                <textarea class="form-control" id="message_give" disabled></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Reply')}}</label>
+                                                <textarea name="message" type="text" class="form-control"
+                                                          required=""
+                                                          aria-invalid="false"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                        <button id="back_form2"
+                                                class="btn btn-fill btn-primary">{{__('Back')}}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{--end message cartable--}}
+
+
+        {{--<div class="row">--}}
+            {{--<div class="col-12">--}}
+                {{--<div class="card card-chart">--}}
+                    {{--<div class="card-header ">--}}
+                        {{--<div class="row">--}}
+                            {{--<div class="col-sm-6 text-right">--}}
+                                {{--<h5 class="card-category">Total Project</h5>--}}
+                                {{--<h3 class="card-title">{{__('Smart Home Projects')}}</h3>--}}
+                            {{--</div>--}}
                             {{--<div class="col-sm-6">--}}
                             {{--<div class="btn-group btn-group-toggle float-right" data-toggle="buttons">--}}
                             {{--<label class="btn btn-sm btn-primary btn-simple active" id="0">--}}
@@ -848,16 +1289,16 @@
                             {{--</label>--}}
                             {{--</div>--}}
                             {{--</div>--}}
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-area">
-                            <canvas id="chartBig1"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                        {{--</div>--}}
+                    {{--</div>--}}
+                    {{--<div class="card-body">--}}
+                        {{--<div class="chart-area">--}}
+                            {{--<canvas id="chartBig1"></canvas>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
 
 
         <div class="row">
@@ -1067,6 +1508,7 @@
         </div>
     </div>
     @endrole
+
     @role('repository')
     <div class="content persian">
         <div class="row">
@@ -1188,15 +1630,15 @@
         {{--</div>--}}
         {{--</div>--}}
     </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="card card-chart">
-                <div class="card-header ">
-                    <div class="row">
-                        <div class="col-sm-6 text-right">
+    {{--<div class="row">--}}
+        {{--<div class="col-12">--}}
+            {{--<div class="card card-chart">--}}
+                {{--<div class="card-header ">--}}
+                    {{--<div class="row">--}}
+                        {{--<div class="col-sm-6 text-right">--}}
                             {{--<h5 class="card-category">Total Project</h5>--}}
-                            <h3 class="card-title">{{__('Smart Home Projects')}}</h3>
-                        </div>
+                            {{--<h3 class="card-title">{{__('Smart Home Projects')}}</h3>--}}
+                        {{--</div>--}}
                         {{--<div class="col-sm-6">--}}
                         {{--<div class="btn-group btn-group-toggle float-right" data-toggle="buttons">--}}
                         {{--<label class="btn btn-sm btn-primary btn-simple active" id="0">--}}
@@ -1222,16 +1664,164 @@
                         {{--</label>--}}
                         {{--</div>--}}
                         {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="card-body">--}}
+                    {{--<div class="chart-area">--}}
+                        {{--<canvas id="chartBig1"></canvas>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
+
+
+    {{--message cartable--}}
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card" id="card_1">
+                <div class="card-header">
+                    <h3 class="card-title"> {{__('Un Read Message List')}}</h3>
+                    <div class="dropdown">
+                        <h6 class="title d-inline"><button class="btn btn-primary compose">{{__('Create Message')}}</button></h6>
+                        <button type="button" class="btn btn-link dropdown-toggle btn-icon"
+                                data-toggle="dropdown">
+                            <i class="tim-icons icon-settings-gear-63"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu"
+                             aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item compose" href="#" id="compose" data-toggle="modal"
+                               data-target="#modalRegisterForm">{{__('Compose')}}</a>
+                            <a class="dropdown-item" href="{{ route('conversation_view.inbox') }}">{{__('Inbox')}}</a>
+                            {{--<a class="dropdown-item" href="#pablo">Something else</a>--}}
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="chart-area">
-                        <canvas id="chartBig1"></canvas>
+                    <div class="table-responsive">
+                        <table class="table tablesorter " id="table1">
+                            <thead class=" text-primary">
+                            <tr>
+                                <th>
+                                    {{__('ID')}}
+                                </th>
+                                <th>
+                                    {{__('Sender Name')}}
+                                </th>
+                                <th>
+                                    {{__('Message')}}
+                                </th>
+                                <th>
+                                    {{__('Created at')}}
+                                </th>
+                                <th>
+                                    {{__('Action')}}
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card" id="card-form1">
+                <div class="card-body">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title ">{{__('Compose Message')}}</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+                            <form id="form1">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <label>{{__('Send Message TO')}}</label>
+                                        <div class="form-group">
+                                            <select  name="user_receive_id[]"
+                                                     class="form-control select-receiver-user"
+                                                     multiple="multiple"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>{{__('Message')}}</label>
+                                            <textarea name="message" class="form-control" required=""></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit"
+                                            class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                    <button id="back_form1"
+                                            class="btn btn-fill btn-primary">{{__('Back')}}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card" id="card-form2">
+                <div class="card-body">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title" id="request_user"></h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+                            <form id="form2">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>{{__('Name')}}</label>
+                                            <input class="form-control"
+                                                   name="name" id="name" disabled>
+                                            <input id="user_receive_id" name="user_receive_id[]" hidden>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>{{__('Message')}}</label>
+                                            <textarea class="form-control" id="message_give" disabled></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>{{__('Reply')}}</label>
+                                            <textarea name="message" type="text" class="form-control"
+                                                      required=""
+                                                      aria-invalid="false"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit"
+                                            class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                    <button id="back_form2"
+                                            class="btn btn-fill btn-primary">{{__('Back')}}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{--end message cartable--}}
+
+
     <div class="row">
         <div class="col-lg-4">
             <div class="card card-chart">
@@ -1438,6 +2028,7 @@
         {{--</div>--}}
     </div>
     @endrole
+
     @role('product')
     <div class="content persian">
         <div class="row">
@@ -1480,7 +2071,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Order queue')}}</p>
+                                    <p class="card-category"><a class="nav-link" href="{{Route('order.invoices_list_product')}}">{{__('Order queue')}}</a></p>
                                     <h3 class="card-title">{{$order_req}}</h3>
                                 </div>
                             </div>
@@ -1547,6 +2138,151 @@
             </div>
         </div>
 
+
+        {{--message cartable--}}
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card" id="card_1">
+                    <div class="card-header">
+                        <h3 class="card-title"> {{__('Un Read Message List')}}</h3>
+                        <div class="dropdown">
+                            <h6 class="title d-inline"><button class="btn btn-primary compose">{{__('Create Message')}}</button></h6>
+                            <button type="button" class="btn btn-link dropdown-toggle btn-icon"
+                                    data-toggle="dropdown">
+                                <i class="tim-icons icon-settings-gear-63"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu"
+                                 aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item compose" href="#" id="compose" data-toggle="modal"
+                                   data-target="#modalRegisterForm">{{__('Compose')}}</a>
+                                <a class="dropdown-item" href="{{ route('conversation_view.inbox') }}">{{__('Inbox')}}</a>
+                                {{--<a class="dropdown-item" href="#pablo">Something else</a>--}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table tablesorter " id="table1">
+                                <thead class=" text-primary">
+                                <tr>
+                                    <th>
+                                        {{__('ID')}}
+                                    </th>
+                                    <th>
+                                        {{__('Sender Name')}}
+                                    </th>
+                                    <th>
+                                        {{__('Message')}}
+                                    </th>
+                                    <th>
+                                        {{__('Created at')}}
+                                    </th>
+                                    <th>
+                                        {{__('Action')}}
+                                    </th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card" id="card-form1">
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('Compose Message')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <form id="form1">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <label>{{__('Send Message TO')}}</label>
+                                            <div class="form-group">
+                                                <select  name="user_receive_id[]"
+                                                         class="form-control select-receiver-user"
+                                                         multiple="multiple"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Message')}}</label>
+                                                <textarea name="message" class="form-control" required=""></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                        <button id="back_form1"
+                                                class="btn btn-fill btn-primary">{{__('Back')}}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card" id="card-form2">
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title" id="request_user"></h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <form id="form2">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Name')}}</label>
+                                                <input class="form-control"
+                                                       name="name" id="name" disabled>
+                                                <input id="user_receive_id" name="user_receive_id[]" hidden>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Message')}}</label>
+                                                <textarea class="form-control" id="message_give" disabled></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Reply')}}</label>
+                                                <textarea name="message" type="text" class="form-control"
+                                                          required=""
+                                                          aria-invalid="false"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                        <button id="back_form2"
+                                                class="btn btn-fill btn-primary">{{__('Back')}}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{--end message cartable--}}
 
         {{--<div class="row">--}}
         {{--<div class="col-12">--}}
@@ -1624,6 +2360,7 @@
         {{--</div>--}}
     </div>
     @endrole
+
     @role('order')
     <div class="content persian">
         <div class="row">
@@ -1638,8 +2375,8 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Total Orders')}}</p>
-                                    <h3 class="card-title">{{$order_order}}</h3>
+                                    <p class="card-category"> <a class="nav-link" href="{{ route('order.index') }}">{{__('Total Orders')}}</a></p>
+                                    <h3 class="card-title">{{$order}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -1664,7 +2401,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Order queue')}}</p>
+                                    <p class="card-category"><a class="nav-link" href="{{Route('order.invoices_list_product')}}">{{__('Order queue')}}</a></p>
                                     <h3 class="card-title">{{$order_order}}</h3>
                                 </div>
                             </div>
@@ -1690,7 +2427,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Agreement')}}</p>
+                                    <p class="card-category"><a class="nav-link" href="{{ route('agreement.index') }}">{{__('Agreement')}}</a></p>
                                     <h3 class="card-title">{{$agreement}}</h3>
                                 </div>
                             </div>
@@ -1716,7 +2453,7 @@
                             </div>
                             <div class="col-7">
                                 <div class="numbers">
-                                    <p class="card-category">{{__('Total Customers')}}</p>
+                                    <p class="card-category"><a class="nav-link" href="{{ route('client.index') }}">{{__('Total Customers')}}</a></p>
                                     <h3 class="card-title">{{$client_order}}</h3>
                                 </div>
                             </div>
@@ -1757,6 +2494,152 @@
                 </div>
             </div>
         </div>
+
+        {{--message cartable--}}
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card" id="card_1">
+                    <div class="card-header">
+                        <h3 class="card-title"> {{__('Un Read Message List')}}</h3>
+                        <div class="dropdown">
+                            <h6 class="title d-inline"><button class="btn btn-primary compose">{{__('Create Message')}}</button></h6>
+                            <button type="button" class="btn btn-link dropdown-toggle btn-icon"
+                                    data-toggle="dropdown">
+                                <i class="tim-icons icon-settings-gear-63"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu"
+                                 aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item compose" href="#" id="compose" data-toggle="modal"
+                                   data-target="#modalRegisterForm">{{__('Compose')}}</a>
+                                <a class="dropdown-item" href="{{ route('conversation_view.inbox') }}">{{__('Inbox')}}</a>
+                                {{--<a class="dropdown-item" href="#pablo">Something else</a>--}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table tablesorter " id="table1">
+                                <thead class=" text-primary">
+                                <tr>
+                                    <th>
+                                        {{__('ID')}}
+                                    </th>
+                                    <th>
+                                        {{__('Sender Name')}}
+                                    </th>
+                                    <th>
+                                        {{__('Message')}}
+                                    </th>
+                                    <th>
+                                        {{__('Created at')}}
+                                    </th>
+                                    <th>
+                                        {{__('Action')}}
+                                    </th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card" id="card-form1">
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('Compose Message')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <form id="form1">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <label>{{__('Send Message TO')}}</label>
+                                            <div class="form-group">
+                                                <select  name="user_receive_id[]"
+                                                         class="form-control select-receiver-user"
+                                                         multiple="multiple"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Message')}}</label>
+                                                <textarea name="message" class="form-control" required=""></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                        <button id="back_form1"
+                                                class="btn btn-fill btn-primary">{{__('Back')}}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card" id="card-form2">
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title" id="request_user"></h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <form id="form2">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Name')}}</label>
+                                                <input class="form-control"
+                                                       name="name" id="name" disabled>
+                                                <input id="user_receive_id" name="user_receive_id[]" hidden>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Message')}}</label>
+                                                <textarea class="form-control" id="message_give" disabled></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>{{__('Reply')}}</label>
+                                                <textarea name="message" type="text" class="form-control"
+                                                          required=""
+                                                          aria-invalid="false"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit"
+                                                class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                        <button id="back_form2"
+                                                class="btn btn-fill btn-primary">{{__('Back')}}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{--end message cartable--}}
+
 
 
         <div class="row">
@@ -1934,6 +2817,7 @@
         {{--</div>--}}
     </div>
     @endrole
+
     @role('geust')
     <div class="content">
         <div class="row">
@@ -1951,61 +2835,183 @@
         </div>
     </div>
     @endrole
+
+    @role('task')
+    <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-plain">
+                    {{--message cartable--}}
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="card" id="card_1">
+                                <div class="card-header">
+                                    <h3 class="card-title"> {{__('Un Read Message List')}}</h3>
+                                    <div class="dropdown">
+                                        <h6 class="title d-inline"><button class="btn btn-primary compose">{{__('Create Message')}}</button></h6>
+                                        <button type="button" class="btn btn-link dropdown-toggle btn-icon"
+                                                data-toggle="dropdown">
+                                            <i class="tim-icons icon-settings-gear-63"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu"
+                                             aria-labelledby="dropdownMenuLink">
+                                            <a class="dropdown-item compose" href="#" id="compose" data-toggle="modal"
+                                               data-target="#modalRegisterForm">{{__('Compose')}}</a>
+                                            <a class="dropdown-item" href="{{ route('conversation_view.inbox') }}">{{__('Inbox')}}</a>
+                                            {{--<a class="dropdown-item" href="#pablo">Something else</a>--}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table tablesorter " id="table1">
+                                            <thead class=" text-primary">
+                                            <tr>
+                                                <th>
+                                                    {{__('ID')}}
+                                                </th>
+                                                <th>
+                                                    {{__('Sender Name')}}
+                                                </th>
+                                                <th>
+                                                    {{__('Message')}}
+                                                </th>
+                                                <th>
+                                                    {{__('Created at')}}
+                                                </th>
+                                                <th>
+                                                    {{__('Action')}}
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="card" id="card-form1">
+                                <div class="card-body">
+                                    <div class="card">
+                                        <div class="card-header card-header-primary">
+                                            <h4 class="card-title ">{{__('Compose Message')}}</h4>
+                                            <p class="card-category"></p>
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="form1">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <label>{{__('Send Message TO')}}</label>
+                                                        <div class="form-group">
+                                                            <select  name="user_receive_id[]"
+                                                                     class="form-control select-receiver-user"
+                                                                     multiple="multiple"></select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            <label>{{__('Message')}}</label>
+                                                            <textarea name="message" class="form-control" required=""></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <button type="submit"
+                                                            class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                                    <button id="back_form1"
+                                                            class="btn btn-fill btn-primary">{{__('Back')}}</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="card" id="card-form2">
+                                <div class="card-body">
+                                    <div class="card">
+                                        <div class="card-header card-header-primary">
+                                            <h4 class="card-title" id="request_user"></h4>
+                                            <p class="card-category"></p>
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="form2">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            <label>{{__('Name')}}</label>
+                                                            <input class="form-control"
+                                                                   name="name" id="name" disabled>
+                                                            <input id="user_receive_id" name="user_receive_id[]" hidden>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            <label>{{__('Message')}}</label>
+                                                            <textarea class="form-control" id="message_give" disabled></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class=" row">
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            <label>{{__('Reply')}}</label>
+                                                            <textarea name="message" type="text" class="form-control"
+                                                                      required=""
+                                                                      aria-invalid="false"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <button type="submit"
+                                                            class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                                    <button id="back_form2"
+                                                            class="btn btn-fill btn-primary">{{__('Back')}}</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{--end message cartable--}}
+                    <div class="card-body">
+                        <div id="map" class="map" style="width: 100%; height: 300px;direction: ltr"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    @endrole
 @endsection
 
 @push('scripts')
 
-    {{--    <script type="text/javascript" src="{{asset('assets/js/jquery.nicescroll.min.js')}}"></script>--}}
     <script src="{{asset('assets/js/plugins/perfect-scrollbar.jquery.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/leaflet.js')}}"></script>
     <script src="{{asset('assets/js/plugins/chartjs.min.js')}}"></script>
     <script src="{{asset('assets/js/demo.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.dataTables.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
 
+    @role('Admin')
     <script>
         $(document).ready(function () {
 
             demo.initDashboardPageCharts();
-
-            var isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
-
-            /**** Scroller ****/
-
-            // if ($.fn.niceScroll){
-            //     var mainScroller = $("html").niceScroll({
-            //         zindex:999999,
-            //         boxzoom:true,
-            //         cursoropacitymin :0.5,
-            //         cursoropacitymax :0.8,
-            //         cursorwidth :"10px",
-            //         cursorborder :"0px solid",
-            //         autohidemode:false
-            //     });
-            // };
-
-            /*** PerfectScrollbar ****/
-
-            if (isWindows) {
-
-                if ($('.main-panel').length != 0) {
-                    var ps = new PerfectScrollbar('.main-panel', {
-                        wheelSpeed: 0.01,
-                        wheelPropagation: false,
-                        minScrollbarLength: 10,
-                        suppressScrollX: true
-                    });
-                }
-
-                if ($('.sidebar .sidebar-wrapper').length != 0) {
-
-                    var ps1 = new PerfectScrollbar('.sidebar .sidebar-wrapper');
-                    $('.table-responsive').each(function () {
-                        var ps2 = new PerfectScrollbar($(this)[0]);
-                    });
-                }
-
-                $('html').addClass('perfect-scrollbar-on');
-            }
-
             var greenIcon = L.icon({
                 iconUrl: '../../assets/images/marker-icon.png',
                 iconSize: [24, 24], // size of the icon
@@ -2040,7 +3046,328 @@
 
             // map.on('click', onMapClick);
 
+            var isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
 
+            if (isWindows) {
+
+                if ($('.main-panel').length != 0) {
+                    var ps = new PerfectScrollbar('.main-panel', {
+                        wheelSpeed: 0.01,
+                        wheelPropagation: false,
+                        minScrollbarLength: 10,
+                        suppressScrollX: true
+                    });
+                }
+
+                if ($('.sidebar .sidebar-wrapper').length != 0) {
+
+                    var ps1 = new PerfectScrollbar('.sidebar .sidebar-wrapper');
+                    $('.table-responsive').each(function () {
+                        var ps2 = new PerfectScrollbar($(this)[0]);
+                    });
+                }
+
+                $('html').addClass('perfect-scrollbar-on');
+            }
+
+        });
+
+    </script>
+@endrole
+    <script>
+        $(document).ready(function () {
+
+            {{--message cartable--}}
+
+            $('#card-form1').hide();
+            $('#card-form2').hide();
+
+            var table = $('#table1').on('draw.dt', function (e, settings, json, xhr) {
+
+            }).DataTable({
+                "processing":
+                    true,
+                "serverSide":
+                    true,
+                "ajax":
+                    '/fill-unread-message',
+                "columnDefs":
+                    [{
+                        "targets": -1,
+                        "data": null,
+
+                        "render": function (data, type, row, meta) {
+                            return "  <div class=\"dropdown\">\n" +
+                                "                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +
+                                "                                                                    data-toggle=\"dropdown\">\n" +
+                                "                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +
+                                "                                                            </a>\n" +
+                                "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
+                                "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
+                                "                                                                <a class=\"dropdown-item reply\"\n" +
+                                "                                                                >{{__('Reply')}}</a>\n" +
+                                "                                                        </div>"
+                        }
+                    }],
+                "language":
+                    {
+                        "sEmptyTable":
+                            "هیچ داده ای در جدول وجود ندارد",
+                        "sInfo":
+                            "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                        "sInfoEmpty":
+                            "نمایش 0 تا 0 از 0 رکورد",
+                        "sInfoFiltered":
+                            "(فیلتر شده از _MAX_ رکورد)",
+                        "sInfoPostFix":
+                            "",
+                        "sInfoThousands":
+                            ",",
+                        "sLengthMenu":
+                            "نمایش _MENU_ رکورد",
+                        "sLoadingRecords":
+                            "در حال بارگزاری...",
+                        "sProcessing":
+                            "در حال پردازش...",
+                        "sSearch":
+                            "جستجو:",
+                        "sZeroRecords":
+                            "رکوردی با این مشخصات پیدا نشد",
+                        "oPaginate":
+                            {
+                                "sFirst":
+                                    "ابتدا",
+                                "sLast":
+                                    "انتها",
+                                "sNext":
+                                    "بعدی",
+                                "sPrevious":
+                                    "قبلی"
+                            }
+                        ,
+                        "oAria":
+                            {
+                                "sSortAscending":
+                                    ": فعال سازی نمایش به صورت صعودی",
+                                "sSortDescending":
+                                    ": فعال سازی نمایش به صورت نزولی"
+                            }
+                    }
+            });
+            // compose message
+            $("#form1").submit(function (event) {
+                var data = $("#form1").serialize();
+                event.preventDefault();
+                $("#form1").block({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url: '/conversation_view',
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        setTimeout($("#form1").unblock(), 2000);
+                        document.getElementById('form1').reset();
+                        $('#table1').DataTable().ajax.reload();
+                        $('#card-form1').hide();
+                        $('#card_1').show();
+                    },
+                    cache: false,
+                });
+            });
+
+            // reply message
+            $("#form2").submit(function (event) {
+                var data = $("#form2").serialize();
+                event.preventDefault();
+                $('#form2').block({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+                //token
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: '/conversation_view',
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        setTimeout($('#form2').unblock(), 2000);
+                        $('#table1').DataTable().ajax.reload();
+                        $('#card-form2').hide();
+                        $('#card_1').show();
+                    },
+                    cache: false,
+                });
+            });
+
+            // fill data in reply form
+            $('#table1').on('click', '.reply', function (event) {
+                $('#card_1').hide();
+                $('#card-form2').show();
+                var data = table.row($(this).parents('tr')).data();
+                // update status
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url: '/update-status/'+ data[4],
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    method:'put',
+                    async: false,
+                    success: function (data) {
+                    },
+                    cache: false,
+                });
+                $('#card_1').hide();
+                $('#card-form2').show();
+                $('#id').val(data[4]);
+                $('#user_receive_id').val(data[5]);
+                $('#message_give').val(data[2]);
+                $('#name').val(data[1]);
+                $('#request_user').text("{{__('Reply Message')}} "+ data[1] +" ");
+                // end
+            })
+            // end filling
+
+            // compose form show
+            $('.compose').on('click',function () {
+                $('#card_1').hide();
+                $('#card-form1').show();
+            });
+            {{--end message cartable--}}
+
+            // back to message list
+            $('#back_form1').on('click',function () {
+                $('#card-form1').hide();
+                $('#card_1').show();
+            });
+            $('#back_form2').on('click',function () {
+                $('#card-form2').hide();
+                $('#card_1').show();
+
+            });
+            // end back
+
+            // select receiver
+            $(".select-receiver-user").select2({
+                ajax: {
+                    dir: "rtl",
+                    language: "fa",
+                    url: '/json-data-fill-hd-receiver-user',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب کاربر'),
+                dir: "rtl",
+                templateResult: formatRepo,
+                templateSelection: formatRepoSelection2,
+                tags: true,
+                tokenSeparators: [',', ' ']
+            });
+            function formatRepo(repo) {
+
+                if (repo.loading) {
+                    return repo.text;
+                }
+
+                var $container = $(
+                    "<div class='select2-result-repository clearfix'>" +
+                    "<div class='select2-result-repository__meta'>" +
+                    "<div class='select2-result-repository__title'></div>" +
+                    "<div class='select2-result-repository__description'></div>" +
+                    "<div class='select2-result-repository__color'></div>" +
+                    "<div class='select2-result-repository__statistics'>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>"
+                );
+
+                $container.find(".select2-result-repository__statistics").text("{{__('Position')}}" + " : " + repo.position  + " " + "{{__('Name')}}" + " : " + repo.text);
+
+                return $container;
+            }
+
+            function formatRepoSelection2(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end
+
+            // onclick on table cell
+            $('#table1').on( 'click', 'td', function () {
+                var data = table.row($(this).parents('tr')).data();
+                // update status
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url: '/update-status/' + data[4],
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    method: 'put',
+                    async: false,
+                    success: function (data) {
+                    },
+                    cache: false,
+                });
+                $('#card_1').hide();
+                $('#card-form2').show();
+                $('#id').val(data[4]);
+                $('#user_receive_id').val(data[5]);
+                $('#message_give').val(data[2]);
+                $('#name').val(data[1]);
+                $('#request_user').text("{{__('Reply Message')}} " + data[1] + " ");
+                // end
+            } );
         });
     </script>
 @endpush

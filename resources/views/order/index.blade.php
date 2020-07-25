@@ -15,70 +15,65 @@
                     <a href="{{route('order.create')}}" class="btn btn-primary float-left mb-lg-2"><i
                                 class="tim-icons icon-simple-add"></i>{{__('Add New Order')}}</a>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="col-md-9">
-                            <div class="card">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title ">{{__('Order')}}</h4>
-                                    <p class="card-category"></p>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table id="table" class="table" cellspacing="0" width="100%">
-                                            <thead class=" text-primary">
-                                            <th>
-                                                {{__('ID')}}
-                                            </th>
-                                            <th>
-                                                {{__('Project Name')}}
-                                            </th>
-                                            <th>
-                                                {{__('Employer Name')}}
-                                            </th>
-                                            <th>
-                                                {{__('Connector')}}
-                                            </th>
-                                            <th>
-                                                {{__('Type Project')}}
-                                            </th>
-                                            <th>
-                                                {{__('action')}}
-                                            </th>
-                                            <th>
-                                                {{__('Accept State')}}
-                                            </th>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title ">{{__('Order')}}</h4>
+                            <p class="card-category"></p>
                         </div>
-                        <div class="col-md-3">
-                            <br><br>
-                            <div class="card card-user">
-                                <div class="card-body">
-                                    <p class="card-text">
-                                    <div class="author">
-                                        <div class="block block-one"></div>
-                                        <div class="block block-two"></div>
-                                        <div class="block block-three"></div>
-                                        <div class="block block-four"></div>
-                                        <a href="javascript:void(0)">
-                                            {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
-                                            <h5 class="title">Hanta IBMS</h5>
-                                        </a>
-                                    </div>
-                                    </p>
-                                    <div class="card-description">
-                                    </div>
-                                </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="table" class="table" cellspacing="0" width="100%">
+                                    <thead class=" text-primary">
+                                    <th>
+                                        {{__('ID')}}
+                                    </th>
+                                    <th>
+                                        {{__('Project Name')}}
+                                    </th>
+                                    <th>
+                                        {{__('Employer Name')}}
+                                    </th>
+                                    <th>
+                                        {{__('Connector')}}
+                                    </th>
+                                    <th>
+                                        {{__('Type Project')}}
+                                    </th>
+                                    <th>
+                                        {{__('action')}}
+                                    </th>
+                                    <th>
+                                        {{__('Accept State')}}
+                                    </th>
+                                    </thead>
+                                </table>
                             </div>
                         </div>
                     </div>
-
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-user">
+                        <div class="card-body">
+                            <p class="card-text">
+                            <div class="author">
+                                <div class="block block-one"></div>
+                                <div class="block block-two"></div>
+                                <div class="block block-three"></div>
+                                <div class="block block-four"></div>
+                                <a href="javascript:void(0)">
+                                    {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
+                                    <h5 class="title">Hanta IBMS</h5>
+                                </a>
+                            </div>
+                            </p>
+                            <div class="card-description">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
     @endrole
@@ -172,7 +167,7 @@
                                     '                                                                    <div class="progress-bar" role="progressbar"\n' +
                                     '                                                                         aria-valuenow="60" aria-valuemin="0"\n' +
                                     '                                                                         aria-valuemax="100"\n' +
-                                    '                                                                         style="width:' + data[7] + '%;"><span> '+ data[8] +' </span></div>\n'
+                                    '                                                                         style="width:' + data[7] + '%;"><span> ' + data[8] + ' </span></div>\n'
                             }
                         }],
                     "language":

@@ -7,7 +7,7 @@
             </a>
 
             <a href="javascript:void(0)" class="simple-text logo-normal">
-                <small>Hanta Smart Home</small>
+                <small>{{__('Hanta Smart Home')}}</small>
             </a>
         </div>
         @role('Admin')
@@ -431,6 +431,12 @@
                                 <span class="sidebar-normal">{{__('Verifier')}}</span>
                             </a>
                         </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{route('position.index')}}">
+                                <i class="tim-icons icon-check-2"></i>
+                                <span class="sidebar-normal">{{__('Positions User')}}</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>
@@ -467,6 +473,25 @@
                             <a class="nav-link" href="{{ route('client.index') }}">
                                 <i class="tim-icons icon-single-02"></i>
                                 <span class="sidebar-normal"> {{__('Client')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#MessageExamples">
+                    <i class="tim-icons icon-email-85" style="float: right"></i>
+                    <p>
+                        {{__('Message Managment')}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse " id="MessageExamples">
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('conversation_view.inbox') }}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal"> {{__('Inbox Message')}}</span>
                             </a>
                         </li>
                     </ul>
@@ -510,6 +535,7 @@
         </ul>
         <!-- End of Sidebar -->
         @endrole
+
         @role('order')
         <!-- Sidebar -->
         <ul class="nav">
@@ -597,27 +623,47 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#ConversationExamples">
-                    <i class="tim-icons icon-chat-33" style="float: right"></i>
+                <a class="nav-link" data-toggle="collapse" href="#MessageExamples">
+                    <i class="tim-icons icon-email-85" style="float: right"></i>
                     <p>
-                        {{__('Conversation View')}}
+                        {{__('Message Managment')}}
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse " id="ConversationExamples">
+                <div class="collapse " id="MessageExamples">
                     <ul class="nav">
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('conversation_view.index') }}">
-                                <i class="tim-icons icon-chat-33"></i>
-                                <span class="sidebar-normal"> {{__('Conversation View')}}</span>
+                            <a class="nav-link" href="{{ route('conversation_view.inbox') }}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal"> {{__('Inbox Message')}}</span>
                             </a>
                         </li>
                     </ul>
                 </div>
             </li>
+            {{--<li class="nav-item">--}}
+            {{--<a class="nav-link" data-toggle="collapse" href="#ConversationExamples">--}}
+            {{--<i class="tim-icons icon-chat-33" style="float: right"></i>--}}
+            {{--<p>--}}
+            {{--{{__('Conversation View')}}--}}
+            {{--<b class="caret"></b>--}}
+            {{--</p>--}}
+            {{--</a>--}}
+            {{--<div class="collapse " id="ConversationExamples">--}}
+            {{--<ul class="nav">--}}
+            {{--<li class="nav-item ">--}}
+            {{--<a class="nav-link" href="{{ route('conversation_view.index') }}">--}}
+            {{--<i class="tim-icons icon-chat-33"></i>--}}
+            {{--<span class="sidebar-normal"> {{__('Conversation View')}}</span>--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--</ul>--}}
+            {{--</div>--}}
+            {{--</li>--}}
         </ul>
         <!-- End of Sidebar -->
         @endrole
+
         @role('finance')
         <!-- Sidebar -->
         <ul class="nav">
@@ -731,27 +777,47 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#ConversationExamples">
-                    <i class="tim-icons icon-chat-33" style="float: right"></i>
+                <a class="nav-link" data-toggle="collapse" href="#MessageExamples">
+                    <i class="tim-icons icon-email-85" style="float: right"></i>
                     <p>
-                        {{__('Conversation View')}}
+                        {{__('Message Managment')}}
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse " id="ConversationExamples">
+                <div class="collapse " id="MessageExamples">
                     <ul class="nav">
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('conversation_view.index') }}">
-                                <i class="tim-icons icon-chat-33"></i>
-                                <span class="sidebar-normal"> {{__('Conversation View')}}</span>
+                            <a class="nav-link" href="{{ route('conversation_view.inbox') }}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal"> {{__('Inbox Message')}}</span>
                             </a>
                         </li>
                     </ul>
                 </div>
             </li>
+            {{--<li class="nav-item">--}}
+            {{--<a class="nav-link" data-toggle="collapse" href="#ConversationExamples">--}}
+            {{--<i class="tim-icons icon-chat-33" style="float: right"></i>--}}
+            {{--<p>--}}
+            {{--{{__('Conversation View')}}--}}
+            {{--<b class="caret"></b>--}}
+            {{--</p>--}}
+            {{--</a>--}}
+            {{--<div class="collapse " id="ConversationExamples">--}}
+            {{--<ul class="nav">--}}
+            {{--<li class="nav-item ">--}}
+            {{--<a class="nav-link" href="{{ route('conversation_view.index') }}">--}}
+            {{--<i class="tim-icons icon-chat-33"></i>--}}
+            {{--<span class="sidebar-normal"> {{__('Conversation View')}}</span>--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--</ul>--}}
+            {{--</div>--}}
+            {{--</li>--}}
         </ul>
         <!-- End of Sidebar -->
         @endrole
+
         @role('repository')
         <!-- Sidebar -->
         <ul class="nav">
@@ -832,27 +898,47 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#ConversationExamples">
-                    <i class="tim-icons icon-chat-33" style="float: right"></i>
+                <a class="nav-link" data-toggle="collapse" href="#MessageExamples">
+                    <i class="tim-icons icon-email-85" style="float: right"></i>
                     <p>
-                        {{__('Conversation View')}}
+                        {{__('Message Managment')}}
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse " id="ConversationExamples">
+                <div class="collapse " id="MessageExamples">
                     <ul class="nav">
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('conversation_view.index') }}">
-                                <i class="tim-icons icon-chat-33"></i>
-                                <span class="sidebar-normal"> {{__('Conversation View')}}</span>
+                            <a class="nav-link" href="{{ route('conversation_view.inbox') }}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal"> {{__('Inbox Message')}}</span>
                             </a>
                         </li>
                     </ul>
                 </div>
             </li>
+            {{--<li class="nav-item">--}}
+            {{--<a class="nav-link" data-toggle="collapse" href="#ConversationExamples">--}}
+            {{--<i class="tim-icons icon-chat-33" style="float: right"></i>--}}
+            {{--<p>--}}
+            {{--{{__('Conversation View')}}--}}
+            {{--<b class="caret"></b>--}}
+            {{--</p>--}}
+            {{--</a>--}}
+            {{--<div class="collapse " id="ConversationExamples">--}}
+            {{--<ul class="nav">--}}
+            {{--<li class="nav-item ">--}}
+            {{--<a class="nav-link" href="{{ route('conversation_view.index') }}">--}}
+            {{--<i class="tim-icons icon-chat-33"></i>--}}
+            {{--<span class="sidebar-normal"> {{__('Conversation View')}}</span>--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--</ul>--}}
+            {{--</div>--}}
+            {{--</li>--}}
         </ul>
         <!-- End of Sidebar -->
         @endrole
+
         @role('product')
         <!-- Sidebar -->
         <ul class="nav">
@@ -1062,24 +1148,43 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#ConversationExamples">
-                    <i class="tim-icons icon-chat-33" style="float: right"></i>
+                <a class="nav-link" data-toggle="collapse" href="#MessageExamples">
+                    <i class="tim-icons icon-email-85" style="float: right"></i>
                     <p>
-                        {{__('Conversation View')}}
+                        {{__('Message Managment')}}
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse " id="ConversationExamples">
+                <div class="collapse " id="MessageExamples">
                     <ul class="nav">
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('conversation_view.index') }}">
-                                <i class="tim-icons icon-chat-33"></i>
-                                <span class="sidebar-normal"> {{__('Conversation View')}}</span>
+                            <a class="nav-link" href="{{ route('conversation_view.inbox') }}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal"> {{__('Inbox Message')}}</span>
                             </a>
                         </li>
                     </ul>
                 </div>
             </li>
+            {{--<li class="nav-item">--}}
+            {{--<a class="nav-link" data-toggle="collapse" href="#ConversationExamples">--}}
+            {{--<i class="tim-icons icon-chat-33" style="float: right"></i>--}}
+            {{--<p>--}}
+            {{--{{__('Conversation View')}}--}}
+            {{--<b class="caret"></b>--}}
+            {{--</p>--}}
+            {{--</a>--}}
+            {{--<div class="collapse " id="ConversationExamples">--}}
+            {{--<ul class="nav">--}}
+            {{--<li class="nav-item ">--}}
+            {{--<a class="nav-link" href="{{ route('conversation_view.index') }}">--}}
+            {{--<i class="tim-icons icon-chat-33"></i>--}}
+            {{--<span class="sidebar-normal"> {{__('Conversation View')}}</span>--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--</ul>--}}
+            {{--</div>--}}
+            {{--</li>--}}
         </ul>
         <!-- End of Sidebar -->
         @endrole
@@ -1111,29 +1216,30 @@
                 </ul>
             </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#ConversationExamples">
-                    <i class="tim-icons icon-chat-33" style="float: right"></i>
-                    <p>
-                        {{__('Conversation View')}}
-                        <b class="caret"></b>
-                    </p>
-                </a>
-                <div class="collapse " id="ConversationExamples">
-                    <ul class="nav">
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('conversation_view.index') }}">
-                                <i class="tim-icons icon-chat-33"></i>
-                                <span class="sidebar-normal"> {{__('Conversation View')}}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+            {{--<li class="nav-item">--}}
+            {{--<a class="nav-link" data-toggle="collapse" href="#ConversationExamples">--}}
+            {{--<i class="tim-icons icon-chat-33" style="float: right"></i>--}}
+            {{--<p>--}}
+            {{--{{__('Conversation View')}}--}}
+            {{--<b class="caret"></b>--}}
+            {{--</p>--}}
+            {{--</a>--}}
+            {{--<div class="collapse " id="ConversationExamples">--}}
+            {{--<ul class="nav">--}}
+            {{--<li class="nav-item ">--}}
+            {{--<a class="nav-link" href="{{ route('conversation_view.index') }}">--}}
+            {{--<i class="tim-icons icon-chat-33"></i>--}}
+            {{--<span class="sidebar-normal"> {{__('Conversation View')}}</span>--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--</ul>--}}
+            {{--</div>--}}
+            {{--</li>--}}
             <li class="nav-item">
         </ul>
         <!-- End of Sidebar -->
         @endrole
+
         @role('qc')
         <!-- Sidebar -->
         <ul class="nav">
@@ -1162,23 +1268,24 @@
                     </ul>
                 </div>
             </li>
-            <a class="nav-link" data-toggle="collapse" href="#UsersExamples">
-                <i class="tim-icons icon-user-run" style="float: right"></i>
-                <p>
-                    {{__('Users')}}
-                    <b class="caret"></b>
-                </p>
-            </a>
-            <div class="collapse " id="UsersExamples">
-                <ul class="nav">
-                    <li class="nav-item ">
-                        <a class="nav-link" href="{{ route('users.index') }}">
-                            <i class="tim-icons icon-paper"></i>
-                            <span class="sidebar-normal">{{__('Manage Users')}}</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#UsersExamples">
+                    <i class="tim-icons icon-user-run" style="float: right"></i>
+                    <p>
+                        {{__('Users')}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse " id="UsersExamples">
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('users.index') }}">
+                                <i class="tim-icons icon-paper"></i>
+                                <span class="sidebar-normal">{{__('Manage Users')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#HelpDeskExamples">
@@ -1225,30 +1332,50 @@
                     </ul>
                 </div>
             </li>
-
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#ConversationExamples">
-                    <i class="tim-icons icon-chat-33" style="float: right"></i>
+                <a class="nav-link" data-toggle="collapse" href="#MessageExamples">
+                    <i class="tim-icons icon-email-85" style="float: right"></i>
                     <p>
-                        {{__('Conversation View')}}
+                        {{__('Message Managment')}}
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse " id="ConversationExamples">
+                <div class="collapse " id="MessageExamples">
                     <ul class="nav">
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('conversation_view.index') }}">
-                                <i class="tim-icons icon-chat-33"></i>
-                                <span class="sidebar-normal"> {{__('Conversation View')}}</span>
+                            <a class="nav-link" href="{{ route('conversation_view.inbox') }}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal"> {{__('Inbox Message')}}</span>
                             </a>
                         </li>
                     </ul>
                 </div>
             </li>
+            {{--<li class="nav-item">--}}
+            {{--<a class="nav-link" data-toggle="collapse" href="#ConversationExamples">--}}
+            {{--<i class="tim-icons icon-chat-33" style="float: right"></i>--}}
+            {{--<p>--}}
+            {{--{{__('Conversation View')}}--}}
+            {{--<b class="caret"></b>--}}
+            {{--</p>--}}
+            {{--</a>--}}
+            {{--<div class="collapse " id="ConversationExamples">--}}
+            {{--<ul class="nav">--}}
+            {{--<li class="nav-item ">--}}
+            {{--<a class="nav-link" href="{{ route('conversation_view.index') }}">--}}
+            {{--<i class="tim-icons icon-chat-33"></i>--}}
+            {{--<span class="sidebar-normal"> {{__('Conversation View')}}</span>--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--</ul>--}}
+            {{--</div>--}}
+            {{--</li>--}}
             <li class="nav-item">
         </ul>
         <!-- End of Sidebar -->
         @endrole
+
+
         @role('support')
         <!-- Sidebar -->
         <ul class="nav">
@@ -1309,23 +1436,24 @@
                     </ul>
                 </div>
             </li>
-            <a class="nav-link" data-toggle="collapse" href="#UsersExamples">
-                <i class="tim-icons icon-user-run" style="float: right"></i>
-                <p>
-                    {{__('Users')}}
-                    <b class="caret"></b>
-                </p>
-            </a>
-            <div class="collapse " id="UsersExamples">
-                <ul class="nav">
-                    <li class="nav-item ">
-                        <a class="nav-link" href="{{ route('users.index') }}">
-                            <i class="tim-icons icon-paper"></i>
-                            <span class="sidebar-normal">{{__('Manage Users')}}</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#UsersExamples">
+                    <i class="tim-icons icon-user-run" style="float: right"></i>
+                    <p>
+                        {{__('Users')}}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse " id="UsersExamples">
+                    <ul class="nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('users.index') }}">
+                                <i class="tim-icons icon-paper"></i>
+                                <span class="sidebar-normal">{{__('Manage Users')}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#HelpDeskExamples">
@@ -1373,25 +1501,43 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#ConversationExamples">
-                    <i class="tim-icons icon-chat-33" style="float: right"></i>
+                <a class="nav-link" data-toggle="collapse" href="#MessageExamples">
+                    <i class="tim-icons icon-email-85" style="float: right"></i>
                     <p>
-                        {{__('Conversation View')}}
+                        {{__('Message Managment')}}
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse " id="ConversationExamples">
+                <div class="collapse " id="MessageExamples">
                     <ul class="nav">
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('conversation_view.index') }}">
-                                <i class="tim-icons icon-chat-33"></i>
-                                <span class="sidebar-normal"> {{__('Conversation View')}}</span>
+                            <a class="nav-link" href="{{ route('conversation_view.inbox') }}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal"> {{__('Inbox Message')}}</span>
                             </a>
                         </li>
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
+            {{--<li class="nav-item">--}}
+            {{--<a class="nav-link" data-toggle="collapse" href="#ConversationExamples">--}}
+            {{--<i class="tim-icons icon-chat-33" style="float: right"></i>--}}
+            {{--<p>--}}
+            {{--{{__('Conversation View')}}--}}
+            {{--<b class="caret"></b>--}}
+            {{--</p>--}}
+            {{--</a>--}}
+            {{--<div class="collapse " id="ConversationExamples">--}}
+            {{--<ul class="nav">--}}
+            {{--<li class="nav-item ">--}}
+            {{--<a class="nav-link" href="{{ route('conversation_view.index') }}">--}}
+            {{--<i class="tim-icons icon-chat-33"></i>--}}
+            {{--<span class="sidebar-normal"> {{__('Conversation View')}}</span>--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--</ul>--}}
+            {{--</div>--}}
+            {{--</li>--}}
         </ul>
         <!-- End of Sidebar -->
         @endrole
@@ -1475,27 +1621,47 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#ConversationExamples">
-                    <i class="tim-icons icon-chat-33" style="float: right"></i>
+                <a class="nav-link" data-toggle="collapse" href="#MessageExamples">
+                    <i class="tim-icons icon-email-85" style="float: right"></i>
                     <p>
-                        {{__('Conversation View')}}
+                        {{__('Message Managment')}}
                         <b class="caret"></b>
                     </p>
                 </a>
-                <div class="collapse " id="ConversationExamples">
+                <div class="collapse " id="MessageExamples">
                     <ul class="nav">
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('conversation_view.index') }}">
-                                <i class="tim-icons icon-chat-33"></i>
-                                <span class="sidebar-normal"> {{__('Conversation View')}}</span>
+                            <a class="nav-link" href="{{ route('conversation_view.inbox') }}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <span class="sidebar-normal"> {{__('Inbox Message')}}</span>
                             </a>
                         </li>
                     </ul>
                 </div>
             </li>
+            {{--<li class="nav-item">--}}
+            {{--<a class="nav-link" data-toggle="collapse" href="#ConversationExamples">--}}
+            {{--<i class="tim-icons icon-chat-33" style="float: right"></i>--}}
+            {{--<p>--}}
+            {{--{{__('Conversation View')}}--}}
+            {{--<b class="caret"></b>--}}
+            {{--</p>--}}
+            {{--</a>--}}
+            {{--<div class="collapse " id="ConversationExamples">--}}
+            {{--<ul class="nav">--}}
+            {{--<li class="nav-item ">--}}
+            {{--<a class="nav-link" href="{{ route('conversation_view.index') }}">--}}
+            {{--<i class="tim-icons icon-chat-33"></i>--}}
+            {{--<span class="sidebar-normal"> {{__('Conversation View')}}</span>--}}
+            {{--</a>--}}
+            {{--</li>--}}
+            {{--</ul>--}}
+            {{--</div>--}}
+            {{--</li>--}}
         </ul>
         <!-- End of Sidebar -->
         @endrole
+
     </div>
 </div>
 

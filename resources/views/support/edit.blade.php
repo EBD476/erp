@@ -96,7 +96,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                @if($support_response->hs_attach_file != "")
+                                    <a href="{{asset('img/support_request/' . $support_response->hs_attach_file)}}">{{__('Download Attached File')}}</a>
+                                @endif                                <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>{{__('Support Response')}}</label>

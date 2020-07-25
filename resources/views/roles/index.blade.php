@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '| Roles')
+@section('title', __('Roles'))
 
 @push('css')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
@@ -10,18 +10,21 @@
     @role('Admin')
     <div class="wrap main-content persian" data-scrollbar>
         <div class="content">
+            <div class="col-lg-12 ">
             <a href="{{ route('users.index') }}" class="btn btn-primary pull-left"><i
                         class="tim-icons icon-simple-add"></i>{{__('Users')}}</a>
             <a href="{{ route('permissions.index') }}" class="btn btn-primary pull-left"><i
                         class="tim-icons icon-simple-add"></i>{{__('Permissions')}}</a>
             <a href="{{ URL::to('roles/create') }}" class="btn btn-primary pull-left"><i
                         class="tim-icons icon-simple-add"></i>{{__('Add Role')}}</a>
-            <div class="card">
-                <div class="card-body">
+            </div>
                     <div class="col-lg-9">
-                        <h3><i class="fa fa-key pull-right">{{__('Roles')}}</i></h3>
-                        <hr>
                         <div class="card">
+                            <div class="col-lg-12 ">
+                                <div class="card-header card-header-primary">
+                                    <h4 class="card-title ">{{__('Roles')}}</h4>
+                                </div>
+                            </div>
                             <div class="card-body">
                                 <div class="table-responsive" style="font-size: 13px;color: #65767c">
                                     <table id="table" class="table table-striped">
@@ -69,7 +72,6 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <br><br>
                         <div class="card card-user">
                             <div class="card-body">
                                 <p class="card-text">
@@ -94,8 +96,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
     @endrole
 @endsection
 @push('scripts')

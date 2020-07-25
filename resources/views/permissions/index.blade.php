@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', '| Permissions')
+@section('title', __('Permissions'))
 
 @section('content')
     @role('Admin')
@@ -8,8 +8,6 @@
         <div class="content">
             <div class="col-md-12">
                 <h3>
-                    <i class="fa fa-key pull-right">{{__('Available Permissions')}}</i>
-
                     <a href="{{ route('users.index') }}" class="btn btn-primary pull-left"><i
                                 class="tim-icons icon-simple-add"></i>{{__('Users')}}</a>
                     <a href="{{ route('roles.index') }}" class="btn btn-primary pull-left"><i
@@ -18,10 +16,14 @@
                        class="btn btn-primary pull-left"><i
                                 class="tim-icons icon-simple-add"></i>{{__('Add Permission')}}</a>
                 </h3>
-                <hr>
             </div>
                     <div class="col-md-9">
                         <div class="card">
+                            <div class="col-lg-12 ">
+                                <div class="card-header card-header-primary">
+                                    <h4 class="card-title ">{{__('Available Permissions')}}</h4>
+                                </div>
+                            </div>
                             <div class="card-body">
                                 <div class="table-responsive" style="font-size: 13px;color: #65767c">
                                     <table class="table table-striped">

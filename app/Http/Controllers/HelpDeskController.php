@@ -171,7 +171,7 @@ class HelpDeskController extends Controller
         $key = 0;
         foreach ($help_desk as $help_desks) {
             $key++;
-            $data .= '["' . $key . '",' . '"' . $help_desks->hhd_title . '",' . '"' . $help_desks->hhd_ticket_id . '",' . '"' . $help_desks->hdp_name . '",' . '"' . $help_desks->ts_name . '",' . '"' . $help_desks->th_name . '",' . '"' . $help_desks->created_at . '",' . '"' . $help_desks->hhd_problem . '",' . '"' . $help_desks->hhd_type . '",' . '"' . $help_desks->hhd_ticket_status . '",' . '"' . $help_desks->hhd_priority . '",' . '"' . $help_desks->hhd_request_user_id . '",' . '"' . $help_desks->hhd_receiver_user_id . '",' . '"' . $help_desks->hhd_file_atach . '",' . '"' . $help_desks->hhd_response . '",' . '"' . $help_desks->id . '"],';
+            $data .= '["' . $key . '",' . '"' . $help_desks->hhd_title . '",' . '"' . $help_desks->hhd_ticket_id . '",' . '"' . $help_desks->hdp_name . '",' . '"' . $help_desks->ts_name . '",' . '"' . $help_desks->th_name . '",' . '"' . Verta($help_desks->created_at) . '",' . '"' . $help_desks->hhd_problem . '",' . '"' . $help_desks->hhd_type . '",' . '"' . $help_desks->hhd_ticket_status . '",' . '"' . $help_desks->hhd_priority . '",' . '"' . $help_desks->hhd_request_user_id . '",' . '"' . $help_desks->hhd_receiver_user_id . '",' . '"' . $help_desks->hhd_file_atach . '",' . '"' . $help_desks->hhd_response . '",' . '"' . $help_desks->id . '"],';
         }
         $data = substr($data, 0, -1);
         $help_desks_count = HelpDesk::all()->count();
@@ -214,7 +214,7 @@ class HelpDeskController extends Controller
         $key = 0;
         foreach ($help_desk as $help_desks) {
             $key++;
-            $data .= '["' . $key . '",' . '"' . $help_desks->hhd_title . '",' . '"' . $help_desks->username . '",' . '"' . $help_desks->hhd_ticket_id . '",' . '"' . $help_desks->hdp_name . '",' . '"' . $help_desks->ts_name . '",' . '"' . $help_desks->th_name . '",' . '"' . $help_desks->created_at . '",' . '"' . $help_desks->hhd_problem . '",' . '"' . $help_desks->hhd_type . '",' . '"' . $help_desks->hhd_ticket_status . '",' . '"' . $help_desks->hhd_priority . '",' . '"' . $help_desks->hhd_request_user_id . '",' . '"' . $help_desks->hhd_receiver_user_id . '",' . '"' . $help_desks->hhd_file_atach . '",' . '"' . $help_desks->hhd_response . '",' . '"' . $help_desks->id . '"],';
+            $data .= '["' . $key . '",' . '"' . $help_desks->hhd_title . '",' . '"' . $help_desks->username . '",' . '"' . $help_desks->hhd_ticket_id . '",' . '"' . $help_desks->hdp_name . '",' . '"' . $help_desks->ts_name . '",' . '"' . $help_desks->th_name . '",' . '"' . Verta($help_desks->created_at) . '",' . '"' . $help_desks->hhd_problem . '",' . '"' . $help_desks->hhd_type . '",' . '"' . $help_desks->hhd_ticket_status . '",' . '"' . $help_desks->hhd_priority . '",' . '"' . $help_desks->hhd_request_user_id . '",' . '"' . $help_desks->hhd_receiver_user_id . '",' . '"' . $help_desks->hhd_file_atach . '",' . '"' . $help_desks->hhd_response . '",' . '"' . $help_desks->id . '"],';
         }
         $data = substr($data, 0, -1);
         $help_desks_count = HelpDesk::all()->count();

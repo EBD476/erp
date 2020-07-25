@@ -7,6 +7,7 @@
     <link href="{{asset('assets/css/kamadatepicker.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('assets/css/select2.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('assets/css/select2-bootstrap4.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/dropzone.min.css')}}" rel="stylesheet"/>
 @endpush
 
 @section('content')
@@ -117,15 +118,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                {{--<div class="row">--}}
-                                {{--<div class="col-md-12">--}}
-                                {{--<div class="form-group">--}}
-                                {{--<label>{{__('Category Id')}}</label>--}}
-                                {{--<input name="hp_category_id" type="number" class="form-control"--}}
-                                {{--aria-invalid="false">--}}
-                                {{--</div>--}}
-                                {{--</div>--}}
-                                {{--</div>--}}
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -139,8 +131,7 @@
                             </form>
                             <br>
                             <label style="margin-top: -20px;">{{__('Image')}}</label>
-                            <div class="card-body col-md-12 row"
-                                 style="display: flex ; border: 1px dashed;     margin-right: -35px;}">
+                            <div class="card-body col-md-12 row">
                                 <form action="{{url('/part-image-save')}}" class="dropzone" id="dropzone"
                                       enctype="multipart/form-data">
                                     @csrf
@@ -229,8 +220,7 @@
                                     <input type="hidden" name="part_image1" id="part_image1">
                                 </form>
                                 <label style="margin-top: -20px;">{{__('Image')}}</label>
-                                <div class="card-body col-md-12 row"
-                                     style="display: flex ; border: 1px dashed;     margin-right: -35px;}">
+                                <div class="card-body col-md-12 row">
                                     <form action="{{url('/part-image-save')}}" class="dropzone"
                                           id="dropzone"
                                           enctype="multipart/form-data">
@@ -271,7 +261,7 @@
     <script src="{{asset('assets/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
-    <script src="{{asset('assets/js/plugins/dropzone.js')}}"></script>
+    <script src="{{asset('assets/js/dropzone.min.js')}}"></script>
     <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
     <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
     <script>

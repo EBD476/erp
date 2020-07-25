@@ -1,92 +1,77 @@
 @extends('layouts.app')
 
-@section('title', '| Edit Role')
+@section('title', __('Edit Role'))
 
 @section('content')
     @role('Admin')
-    <div class="wrap main-content persian" data-scrollbar>
-        <div class="content">
-            <div class="card">
-                <div class="card-body">
-                    <div class="col-md-8">
-                        <div class='col-lg-6'>
-                            <h3><i class='fa fa-key pull-right'>{{__('Edit Role:')}}{{$role->name}}</i></h3>
-                            <hr>
-                            {{-- @include ('errors.list')
-                         --}}
-                            {{--    {{ Form::model($role, array('route' => array('roles.update', $role->id), 'method' => 'PUT')) }}--}}
-
+    <div class="content persian">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="col-lg-12 ">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('Edit Role:')}}{{$role->name}}</h4>
+                            </div>
+                        </div>
+                        <div class="card-body">
                             <form action="{{ route('roles.update',[$role->id]) }}" method="post">
                                 @csrf
                                 @method('PUT')
-
-                                <div class="form-group label-floating">
-                                    <label class="control-label">{{__('Role Name')}}</label>
-                                    <input type="text" class="form-control" name="name"
-                                           value="{{$role->name}}">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">{{__('Role Name')}}</label>
+                                            <input type="text" class="form-control" name="name"
+                                                   value="{{$role->name}}">
+                                        </div>
+                                    </div>
                                 </div>
+                                <div class='form-group'>
+                                    @foreach ($permissions as $permission)
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="col-md-8">
+                                                    <label>{{ucfirst($permission->name)}}</label>
+                                                    <input type="checkbox" name="permissions[]"
+                                                           value="{{$permission->id}}"></div>
+                                            </div>
+                                        </div>
+                                    @endforeach
 
-                                {{--<div class="form-group">--}}
-                                {{--{{ Form::label('name', 'Role Name') }}--}}
-                                {{--{{ Form::text('name', null, array('class' => 'form-control')) }}--}}
-                                {{--</div>--}}
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <input type="submit" class="btn btn-block btn-primary"
+                                               value="{{__('Send')}}">
+                                    </div>
 
-                                {{--<h5><b>Assign Permissions</b></h5>--}}
-                                @foreach ($permissions as $permission)
-
-                                    <input type="checkbox" name="permissions[]" value="{{$permission->id}}">
-                                    <label class="control-label">{{ucfirst($permission->name)}}</label>
-
-                                    {{--{{Form::checkbox('permissions[]',  $permission->id, $role->permissions ) }}--}}
-                                    {{--{{Form::label($permission->name, ucfirst($permission->name)) }}<br>--}}
-
-                                @endforeach
-                                <br>
-                                <input type="submit" class="btn btn-block btn-primary" value="{{__('Send')}}">
-                                {{--    {{ Form::submit('Edit', array('class' => 'btn btn-primary')) }}--}}
-
-                                {{--    {{ Form::close() }}   --}}
+                                </div>
                             </form>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card card-user">
-                            <div class="card-body">
-                                <p class="card-text">
-                                    <div class="author">
-                                        <div class="block block-one"></div>
-                                        <div class="block block-two"></div>
-                                        <div class="block block-three"></div>
-                                        <div class="block block-four"></div>
-                                        <a href="javascript:void(0)">
-                                            {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
-                                            <h5 class="title">Hanta IBMS</h5>
-                                        </a>
-                                <p class="description">
-                                    Project Implementors
-                                </p>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-user">
+                        <div class="card-body">
+                            <p class="card-text">
+                            <div class="author">
+                                <div class="block block-one"></div>
+                                <div class="block block-two"></div>
+                                <div class="block block-three"></div>
+                                <div class="block block-four"></div>
+                                <a href="javascript:void(0)">
+                                    {{--<img class="avatar" src="../assets/img/emilyz.jpg" alt="...">--}}
+                                    <h5 class="title">Hanta IBMS</h5>
+                                </a>
                             </div>
-                            </p>
                             <div class="card-description">
 
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <div class="button-container">
-                                <button href="javascript:void(0)" class="btn btn-icon btn-round btn-facebook">
-                                    <i class="fab fa-facebook"></i>
-                                </button>
-                                <button href="javascript:void(0)" class="btn btn-icon btn-round btn-twitter">
-                                    <i class="fab fa-twitter"></i>
-                                </button>
-                                <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
-                                    <i class="fab fa-google-plus"></i>
-                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div></div>
-    @endrole
+        </div>
+        @endrole
 @endsection

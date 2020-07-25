@@ -111,7 +111,10 @@ class HDReceiverUserController extends Controller
         $search = $request->search;
         if ($search != "") {
 
-            $receiver = User::select('name as text', 'id')->where('name', 'LIKE', "%$search%")->get();
+            $receiver =DB::table('users')->join('hnt_position_user','users.position','hnt_position_user.id')
+                ->select('users.name as text', 'users.id','hnt_position_user.hpu_name as position')
+                ->where('users.name', 'LIKE', "%$search%")
+                ->get();
         }
         return json_encode(["results" => $receiver]);
     }

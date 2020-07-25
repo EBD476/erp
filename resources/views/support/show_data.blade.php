@@ -93,7 +93,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label>{{__('Project Address')}}</label>
                                             <input rows="4" cols="80"
@@ -101,7 +101,9 @@
                                                    value="{{$project->hp_project_address}}">
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label>{{__('Project Description')}}</label>
                                             <textarea name="hs_description" id="hs_description" rows="4" cols="80"
@@ -110,6 +112,10 @@
                                         </div>
                                     </div>
                                 </div>
+                                @if($support_response->hs_attach_file != "")
+                                <a href="{{asset('img/support_request/' . $support_response->hs_attach_file)}}">{{__('Download Attached File')}}</a>
+                                @endif
+                                @if($support_response->hs_response != "")
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -120,6 +126,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
