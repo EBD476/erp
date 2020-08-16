@@ -195,7 +195,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
+                                    <button type="submit" class="btn badge-primary">{{__('Submit')}}</button>
                                 </form>
                             </div>
 
@@ -344,7 +344,7 @@
                                     <a href="{{route('order.index')}}"
                                        class="btn badge-danger">{{__('Back')}}</a>
                                     <button type="submit" class="btn btn-primary"
-                                            id="btn-submit2">{{__('Send')}}</button>
+                                            id="btn-submit2">{{__('Submit')}}</button>
                                     <button id="preview" class="btn btn-primary">{{__('Preview Factor')}}</button>
                                 </form>
                             </div>
@@ -391,7 +391,7 @@
 
                                         </div>
                                         <div class="modal-footer d-flex justify-content-center">
-                                            <button type="submit" class="btn btn-deep-orange">{{__('Send')}}</button>
+                                            <button type="submit" class="btn btn-deep-orange">{{__('Submit')}}</button>
                                         </div>
                                     </form>
                                 </div>

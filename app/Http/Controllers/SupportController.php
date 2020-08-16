@@ -83,15 +83,16 @@ class SupportController extends Controller
     public function store(Request $request)
     {
         $project = Project::select('id')->where('hp_project_name', $request->hp_project_name)->first();
-        $user = User::select('id')->where('name',$request->hs_request_user_id)->get()->first();
+        $user = User::select('id')->where('name', $request->hs_request_user_id)->get()->first();
         $current_user = auth()->user()->id;
         $support_status = SupportStatus::all()->count();
         $support = New Support();
-        $support->hs_request_user_id =$user->id ;
+        $support->hs_request_user_id = $user->id;
         $support->hs_response_user_id = $current_user;
         $support->hs_project_id = $project->id;
         $support->hs_title = $request->hs_title;
         $support->hs_response = $request->hs_response;
+        $support->hs_attach_file_from_support = $request->file;
         $support->hs_description = $request->hs_description;
         $support->hs_show = 1;
         $support->hs_status = $support_status;
@@ -105,20 +106,22 @@ class SupportController extends Controller
         $project = Project::select('hp_order_id')->where('id', $id)->first();
         $status = Support::where('id', $id)->first();
         $count_status = SupportStatus::all()->count();
-        if($status->hs_status < $count_status){
-        $counter = $status->hs_status + 1;
-        }else{
+        if ($status->hs_status < $count_status) {
+            $counter = $status->hs_status + 1;
+        } else {
             $counter = $status->hs_status;
         }
-        Support::where('id', $id)->update(['hs_response' => $request->response,'hs_show' => 1, 'hs_status' => $counter, 'hs_response_user_id' => auth()->user()->id]);
+        Support::where('id', $id)->update(['hs_response' => $request->response, 'hs_attach_file_from_support' => $request->file, 'hs_show' => 1, 'hs_status' => $counter, 'hs_response_user_id' => auth()->user()->id]);
         OrderState::where('order_id', $project)->update(['ho_process_id' => '8', 'ho_verifier_id' => auth()->user()->id]);
         OrderProduct::where('hpo_order_id', $project)->update(['hpo_status' => '8']);
         return json_encode(["response" => "عملیات با موفقیت ثبت شد"]);
     }
 
-
+//  show in index
     public function fill(Request $request)
     {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];
@@ -126,9 +129,10 @@ class SupportController extends Controller
             $support_response = DB::Table('hnt_support')
                 ->join('hnt_projects', 'hnt_support.hs_project_id', '=', 'hnt_projects.id')
                 ->join('users', 'hnt_support.hs_request_user_id', '=', 'users.id')
-                ->select('hnt_projects.hp_project_name', 'hnt_support.hs_title','hnt_support.hs_project_id', 'hnt_support.created_at','hnt_support.id','hnt_support.hs_description','users.name')
+                ->select('hnt_projects.hp_project_name', 'hnt_support.hs_title', 'hnt_support.hs_project_id', 'hnt_support.created_at', 'hnt_support.id', 'hnt_support.hs_description', 'users.name')
                 ->where('hnt_support.deleted_at', '=', NULL)
                 ->where('hnt_support.hs_show', '=', 0)
+                ->orderBy('hnt_support.hs_project_id', 'desc')
                 ->skip($start)
                 ->take($length)
                 ->get();
@@ -136,10 +140,11 @@ class SupportController extends Controller
             $support_response = DB::Table('hnt_support')
                 ->join('hnt_projects', 'hnt_support.hs_project_id', '=', 'hnt_projects.id')
                 ->join('users', 'hnt_support.hs_request_user_id', '=', 'users.id')
-                ->select('hnt_projects.hp_project_name', 'hnt_support.hs_title','hnt_support.hs_project_id', 'hnt_support.created_at','hnt_support.id','hnt_support.hs_description','users.name')
+                ->select('hnt_projects.hp_project_name', 'hnt_support.hs_title', 'hnt_support.hs_project_id', 'hnt_support.created_at', 'hnt_support.id', 'hnt_support.hs_description', 'users.name')
                 ->where('hnt_support.deleted_at', '=', NULL)
                 ->where('hnt_support.hs_show', '=', 0)
                 ->where('hnt_projects.hp_project_name', 'LIKE', "%$search%")
+                ->orderBy('hnt_support.hs_project_id', 'desc')
                 ->get();
         }
 
@@ -155,8 +160,11 @@ class SupportController extends Controller
         return response('{ "recordsTotal":' . $support_responses_count . ',"recordsFiltered":' . $support_responses_count . ',"data": [' . $data . ']}');
     }
 
+//  show in all list request
     public function fill_all(Request $request)
     {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];
@@ -165,7 +173,7 @@ class SupportController extends Controller
                 ->join('hnt_projects', 'hnt_support.hs_project_id', '=', 'hnt_projects.id')
                 ->join('hnt_support_status', 'hnt_support.hs_status', '=', 'hnt_support_status.id')
                 ->join('users', 'hnt_support.hs_request_user_id', '=', 'users.id')
-                ->select('hnt_projects.hp_project_name', 'hnt_support.hs_title','hnt_support.hs_project_id', 'hnt_support.created_at','hnt_support.id','hnt_support.hs_description','hnt_support.hs_response','hnt_support_status.hss_name','users.name')
+                ->select('hnt_projects.hp_project_name', 'hnt_support.hs_title', 'hnt_support.hs_project_id', 'hnt_support.created_at', 'hnt_support.id', 'hnt_support.hs_description', 'hnt_support.hs_response', 'hnt_support_status.hss_name', 'users.name')
                 ->where('hnt_support.deleted_at', '=', NULL)
                 ->skip($start)
                 ->take($length)
@@ -175,7 +183,7 @@ class SupportController extends Controller
                 ->join('hnt_projects', 'hnt_support.hs_project_id', '=', 'hnt_projects.id')
                 ->join('hnt_support_status', 'hnt_support.hs_status', '=', 'hnt_support_status.id')
                 ->join('users', 'hnt_support.hs_request_user_id', '=', 'users.id')
-                ->select('hnt_projects.hp_project_name','hnt_support.hs_title','hnt_support.hs_project_id','hnt_support.created_at','hnt_support.id','hnt_support.hs_description','hnt_support.hs_response','hnt_support_status.hss_name','users.name')
+                ->select('hnt_projects.hp_project_name', 'hnt_support.hs_title', 'hnt_support.hs_project_id', 'hnt_support.created_at', 'hnt_support.id', 'hnt_support.hs_description', 'hnt_support.hs_response', 'hnt_support_status.hss_name', 'users.name')
                 ->where('hnt_support.deleted_at', '=', NULL)
                 ->where('hnt_projects.hp_project_name', 'LIKE', "%$search%")
                 ->get();
@@ -193,8 +201,11 @@ class SupportController extends Controller
         return response('{ "recordsTotal":' . $support_responses_count . ',"recordsFiltered":' . $support_responses_count . ',"data": [' . $data . ']}');
     }
 
+//    show recent list side request
     public function recent_list(Request $request)
     {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $project_id = $request->formName;
         $start = $request->start;
         $length = $request->length;
@@ -204,7 +215,7 @@ class SupportController extends Controller
                 ->join('hnt_projects', 'hnt_support.hs_project_id', '=', 'hnt_projects.id')
                 ->join('hnt_support_status', 'hnt_support.hs_status', '=', 'hnt_support_status.id')
                 ->join('users', 'hnt_support.hs_request_user_id', '=', 'users.id')
-                ->select('hnt_projects.hp_project_name', 'hnt_support.hs_title','hnt_support.hs_project_id', 'hnt_support.created_at','hnt_support.id','hnt_support.hs_description','hnt_support.hs_response','hnt_support_status.hss_name','users.name')
+                ->select('hnt_projects.hp_project_name', 'hnt_support.hs_title', 'hnt_support.hs_project_id', 'hnt_support.created_at', 'hnt_support.id', 'hnt_support.hs_description', 'hnt_support.hs_response', 'hnt_support_status.hss_name', 'users.name')
                 ->where('hnt_support.deleted_at', '=', NULL)
                 ->where('hnt_support.hs_project_id', '=', $project_id)
                 ->skip($start)
@@ -215,7 +226,7 @@ class SupportController extends Controller
                 ->join('hnt_projects', 'hnt_support.hs_project_id', '=', 'hnt_projects.id')
                 ->join('hnt_support_status', 'hnt_support.hs_status', '=', 'hnt_support_status.id')
                 ->join('users', 'hnt_support.hs_request_user_id', '=', 'users.id')
-                ->select('hnt_projects.hp_project_name', 'hnt_support.hs_title','hnt_support.hs_project_id', 'hnt_support.created_at','hnt_support.id','hnt_support.hs_description','hnt_support.hs_response','hnt_support_status.hss_name','users.name')
+                ->select('hnt_projects.hp_project_name', 'hnt_support.hs_title', 'hnt_support.hs_project_id', 'hnt_support.created_at', 'hnt_support.id', 'hnt_support.hs_description', 'hnt_support.hs_response', 'hnt_support_status.hss_name', 'users.name')
                 ->where('hnt_support.deleted_at', '=', NULL)
                 ->where('hnt_support.hs_project_id', '=', $project_id)
                 ->where('hnt_support.hs_title', 'LIKE', "%$search%")
@@ -232,6 +243,24 @@ class SupportController extends Controller
         $data = substr($data, 0, -1);
         $support_responses_count = Support::all()->count();
         return response('{ "recordsTotal":' . $support_responses_count . ',"recordsFiltered":' . $support_responses_count . ',"data": [' . $data . ']}');
+    }
+
+    public function upload(Request $request)
+    {
+        $file = $request->file('file');
+        $filename = $_FILES['file']['name'];
+
+        if (isset($file)) {
+
+            if (!file_exists('img/support_response')) {
+                mkdir('img/support_response', 0777, true);
+            }
+            $file->move('img/support_response', $filename);
+        } else {
+            $filename = 'default.png';
+        }
+
+        return response()->json(['link' => '/img/support_response/' . $filename]);
     }
 
 }

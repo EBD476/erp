@@ -101,7 +101,7 @@
                             <input id="hpt_count" name="hpt_count" hidden>
                             <input id="hpt_product_zone_name" name="hpt_product_zone_name" hidden>
                             <input id="hpt_status" name="hpt_status" hidden>
-                            <button type="submit" class="btn btn-primary">{{__('Send')}}</button>
+                            <button type="submit" class="btn btn-primary">{{__('Submit')}}</button>
                         </div>
                     </div>
                 </form>

@@ -6,6 +6,7 @@
     <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('assets/css/select2.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('assets/css/select2-bootstrap4.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/dropzone.min.css')}}" rel="stylesheet"/>
 @endpush
 @section('content')
     @role('Admin|product|finance|dealership|repository|order|task|support|qc|delivery|install')
@@ -17,10 +18,11 @@
                     <div class="card" id="card_1">
                         <div class="card-header">
                             <h3 class="card-title"> {{__('Receive Message List')}}</h3>
-                            <h6 class="title d-inline"><button class="btn btn-primary" href="#" id="compose"
-                                                          data-toggle="modal"
-                                                          data-target="#modalRegisterForm">{{__('Compose')}}</button></h6>
-
+                            <h6 class="title d-inline">
+                                <button class="btn btn-primary" href="#" id="compose"
+                                        data-toggle="modal"
+                                        data-target="#modalRegisterForm">{{__('Compose')}}</button>
+                            </h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -68,7 +70,8 @@
                                                 <div class="form-group">
                                                     <select name="user_receive_id[]"
                                                             class="form-control select-receiver-user"
-                                                            multiple="multiple"></select>
+                                                            multiple="multiple">
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -80,19 +83,38 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-footer">
-                                            <button type="submit"
-                                                    class="btn btn-fill btn-primary">{{__('Send')}}</button>
-                                            <button id="back_form1"
-                                               class="btn btn-fill btn-primary">{{__('Back')}}</button>
-                                        </div>
+                                        <input type="hidden" name="file" id="file">
                                     </form>
+                                    <br>
+                                    <div class="col-md-8">
+                                        <label style="margin-top: -20px;">{{__('File')}}</label>
+                                        <div class="card-body col-md-12 row">
+                                            <form action="{{url('/request-message-file-save')}}" class="dropzone"
+                                                  id="dropzone"
+                                                  enctype="multipart/form-data">
+                                                @csrf
+                                                @method('POST')
+                                                <div class="form-group">
+                                                    <input type="file" class="form-control"
+                                                           name="file" multiple>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" id="sub-btn-form1"
+                                            class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                    <button id="back_form1"
+                                            class="btn btn-fill btn-primary">{{__('Back')}}</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            {{--reply box--}}
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <div class="card" id="card-form2">
@@ -133,13 +155,34 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-footer">
-                                            <button type="submit"
-                                                    class="btn btn-fill btn-primary">{{__('Send')}}</button>
-                                            <button id="back_form2"
-                                               class="btn btn-fill btn-primary">{{__('Back')}}</button>
-                                        </div>
+                                        <input type="hidden" name="file" id="file2">
+                                        <input id="file_data" hidden>
                                     </form>
+                                    <br>
+                                    <div class="col-md-8">
+                                        <label style="margin-top: -20px;">{{__('File')}}</label>
+                                        <button id="file_show" style="margin-left:33px; "
+                                                class="btn-outline-light">{{__('Download Attached File')}}</button>
+                                        <div class="card-body col-md-12 row">
+                                            <form action="{{url('/request-message-file-save')}}" class="dropzone"
+                                                  id="dropzone"
+                                                  enctype="multipart/form-data">
+                                                @csrf
+                                                @method('POST')
+                                                <div class="form-group">
+                                                    <input type="file" class="form-control"
+                                                           name="file2" multiple>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" id="sub-btn-form2"
+                                            class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                    <button id="back_form2"
+                                            class="btn btn-fill btn-primary">{{__('Back')}}</button>
                                 </div>
                             </div>
                         </div>
@@ -147,6 +190,7 @@
                 </div>
             </div>
             {{--end message cartable--}}
+
             {{--Send message cartable--}}
             <div class="row">
                 <div class="col-lg-12 col-md-12">
@@ -183,6 +227,7 @@
                     </div>
                 </div>
             </div>
+            {{--inbox--}}
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <div class="card" id="card-form3">
@@ -196,6 +241,9 @@
                                     <div class="row">
                                         <div class="col-md-8">
                                             <div class="form-group">
+                                                <button id="file_show_inbox"
+                                                        class="btn-outline-light">{{__('Download Attached File')}}</button>
+                                              <br>
                                                 <label>{{__('Name')}}</label>
                                                 <input class="form-control"
                                                        name="name_show" id="name_show" disabled>
@@ -210,9 +258,10 @@
                                             </div>
                                         </div>
                                     </div>
+                                   <input id="file_data_inbox" hidden>
                                     <div class="card-footer">
-                                        <button id="back_form3"
-                                           class="btn btn-fill btn-primary">{{__('Back')}}</button>
+                                       <button id="back_form3"
+                                                class="btn btn-fill btn-primary">{{__('Back')}}</button>
                                     </div>
                                 </div>
                             </div>
@@ -232,6 +281,8 @@
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
     <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/dropzone.min.js')}}"></script>
+
     <script>
         $(document).ready(function () {
 
@@ -239,9 +290,11 @@
             $('#card-form2').hide();
             $('#card-form3').hide();
 
+            $('.dz-message').text("برای انتخاب فایل مورد نظر اینجا کلیک کنید");
+
+
             var table = $('#table1').on('draw.dt', function (e, settings, json, xhr) {
 
-                // alert(table.rows.add(result).draw());
             }).DataTable({
                 "processing":
                     true,
@@ -384,8 +437,9 @@
                             }
                     }
             });
+
             // compose message
-            $("#form1").submit(function (event) {
+            $("#sub-btn-form1").on('click', function (event) {
                 var data = $("#form1").serialize();
                 event.preventDefault();
                 $("#form1").block({
@@ -415,6 +469,7 @@
                         setTimeout($("#form1").unblock(), 2000);
                         document.getElementById('form1').reset();
                         $('#table1').DataTable().ajax.reload();
+                        $('#table2').DataTable().ajax.reload();
                         $('#card-form1').hide();
                         $('#card_1').show();
                     },
@@ -423,7 +478,7 @@
             });
 
             // reply message
-            $("#form2").submit(function (event) {
+            $("#sub-btn-form2").on('click', function (event) {
                 var data = $("#form2").serialize();
                 event.preventDefault();
                 $('#form2').block({
@@ -452,6 +507,7 @@
                     success: function (data) {
                         setTimeout($('#form2').unblock(), 2000);
                         $('#table1').DataTable().ajax.reload();
+                        $('#table2').DataTable().ajax.reload();
                         $('#card-form2').hide();
                         $('#card_1').show();
                     },
@@ -487,6 +543,10 @@
                 $('#message_give').val(data[2]);
                 $('#name').val(data[1]);
                 $('#request_user').text("{{__('Reply Message')}} " + data[1] + " ");
+                $('#file_data').val(data[6]);
+                if (data[6] != '') {
+                    $('#file_show').show();
+                }
                 // end
             });
             // end filling
@@ -500,6 +560,10 @@
                 $('#message_send').val(data[2]);
                 $('#name_show').val(data[1]);
                 $('#receive_user').text("{{__('Show Message')}} " + data[1] + " ");
+                $('#file_data_inbox').val(data[6]);
+                if (data[6] != '') {
+                    $('#file_show_inbox').show();
+                }
                 // end
             });
             // end filling
@@ -533,7 +597,7 @@
                 ajax: {
                     dir: "rtl",
                     language: "fa",
-                    url: '/json-data-fill-hd-receiver-user',
+                    url: '/fill-data-limited-user',
                     dataType: 'json',
                     data: function (params) {
                         return {
@@ -555,6 +619,7 @@
                 tags: true,
                 tokenSeparators: [',', ' ']
             });
+
             function formatRepo(repo) {
 
                 if (repo.loading) {
@@ -573,7 +638,7 @@
                     "</div>"
                 );
 
-                $container.find(".select2-result-repository__statistics").text("{{__('Position')}}" + " : " + repo.position  + " " + "{{__('Name')}}" + " : " + repo.text);
+                $container.find(".select2-result-repository__statistics").text("{{__('Position')}}" + " : " + repo.position + " " + "{{__('Name')}}" + " : " + repo.text);
 
                 return $container;
             }
@@ -584,47 +649,88 @@
 
             // end
 
-// onclick on table cell
-            $('#table1').on( 'click', 'td', function () {
-                var data = table.row($(this).parents('tr')).data();
-                // update status
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
+//          onclick on table cell
+            {{--$('#table1').on('click', 'td', function () {--}}
+                {{--var data = table.row($(this).parents('tr')).data();--}}
+                {{--// update status--}}
+                {{--$.ajaxSetup({--}}
+                    {{--headers: {--}}
+                        {{--'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
+                    {{--}--}}
+                {{--});--}}
 
-                $.ajax({
-                    url: '/update-status/' + data[4],
-                    type: 'POST',
-                    data: data,
-                    dataType: 'json',
-                    method: 'put',
-                    async: false,
-                    success: function (data) {
-                    },
-                    cache: false,
-                });
-                $('#card_1').hide();
-                $('#card-form2').show();
-                $('#id').val(data[4]);
-                $('#user_receive_id').val(data[5]);
-                $('#message_give').val(data[2]);
-                $('#name').val(data[1]);
-                $('#request_user').text("{{__('Reply Message')}} " + data[1] + " ");
-                // end
-            } );
-            $('#table2').on( 'click', 'td', function () {
-                var data = table2.row($(this).parents('tr')).data();
-                // update status
-                $('#card_2').hide();
-                $('#card-form3').show();
-                $('#message_send').val(data[2]);
-                $('#name_show').val(data[1]);
-                $('#receive_user').text("{{__('Show Message')}} " + data[1] + " ");
-                // end
-            } );
+                {{--$.ajax({--}}
+                    {{--url: '/update-status/' + data[4],--}}
+                    {{--type: 'POST',--}}
+                    {{--data: data,--}}
+                    {{--dataType: 'json',--}}
+                    {{--method: 'put',--}}
+                    {{--async: false,--}}
+                    {{--success: function (data) {--}}
+                    {{--},--}}
+                    {{--cache: false,--}}
+                {{--});--}}
+                {{--$('#card_1').hide();--}}
+                {{--$('#card-form2').show();--}}
+                {{--$('#id').val(data[4]);--}}
+                {{--$('#user_receive_id').val(data[5]);--}}
+                {{--$('#message_give').val(data[2]);--}}
+                {{--$('#name').val(data[1]);--}}
+                {{--$('#request_user').text("{{__('Reply Message')}} " + data[1] + " ");--}}
+                {{--$('#file_data').val(data[6]);--}}
+                {{--if (data[6] != '') {--}}
+                    {{--$('#file_show').show();--}}
+                {{--}--}}
+                {{--// end--}}
+            {{--});--}}
+            {{--$('#table2').on('click', 'td', function () {--}}
+                {{--var data = table2.row($(this).parents('tr')).data();--}}
+                {{--// update status--}}
+                {{--$('#card_2').hide();--}}
+                {{--$('#card-form3').show();--}}
+                {{--$('#message_send').val(data[2]);--}}
+                {{--$('#name_show').val(data[1]);--}}
+                {{--$('#receive_user').text("{{__('Show Message')}} " + data[1] + " ");--}}
+                {{--$('#file_data_inbox').val(data[6]);--}}
+                {{--if (data[6] != '') {--}}
+                    {{--$('#file_show_inbox').show();--}}
+                {{--}--}}
+                {{--// end--}}
+            {{--});--}}
 
+            // download data file
+            $('#file_show').on('click', function (event) {
+                window.open('img/request_message_file/' + $('#file_data').val(), '_blank');
+            });
+
+            $('#file_show_inbox').on('click', function (event) {
+                window.open('img/request_message_file/' + $('#file_data_inbox').val(), '_blank');
+            });
+            // end
         });
+
+        // save image
+        Dropzone.options.dropzone =
+            {
+                maxFilesize: 12,
+                // فایل نوع آبجکت است
+                renameFile: function (file) {
+                    var dt = new Date();
+                    var time = dt.getTime();
+                    return time + '-' + file.name;
+                },
+                acceptedFiles: ".jpeg,.jpg,.pdf,.mp4",
+                addRemoveLinks: true,
+                timeout: 5000,
+                success: function (file, response) {
+                    // اسم اینپوت و مقداری که باید به آن ارسال شود
+                    $('#file').val(file.upload.filename);
+                    $('#file2').val(file.upload.filename);
+                },
+                error: function (file, response) {
+                    return false;
+                }
+            };
+        // end saving
     </script>
 @endpush

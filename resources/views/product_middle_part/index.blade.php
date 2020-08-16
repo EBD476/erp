@@ -646,13 +646,13 @@
                 theme: "bootstrap",
                 dir: 'rtl',
                 placeholder: ('انتخاب محصول'),
-                templateResult: formatRepo,
-                templateSelection: formatRepoSelection
+                templateResult: formatRepo_product,
+                templateSelection: formatRepoSelection_product
                 // allowClear: true
 
             });
 
-            function formatRepo(repo) {
+            function formatRepo_product(repo) {
 
                 if (repo.loading) {
                     return repo.text;
@@ -684,7 +684,7 @@
 
             }
 
-            function formatRepoSelection(repo) {
+            function formatRepoSelection_product(repo) {
                 return repo.text
             }
 
@@ -768,13 +768,11 @@
                 },
                 theme: "bootstrap",
                 placeholder: ('انتخاب بخش'),
-                templateSelection: formatRepoSelection
+                templateSelection: formatRepoSelection_product_zone
             });
-
-            function formatRepoSelection(repo) {
+            function formatRepoSelection_product_zone(repo) {
                 return repo.text || repo.id;
             }
-
             // end fill data in select part
 
             $('#back').on('click', function () {

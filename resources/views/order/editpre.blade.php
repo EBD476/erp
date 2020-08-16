@@ -219,7 +219,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
+                                    <button type="submit" class="btn badge-primary">{{__('Submit')}}</button>
                                 </form>
                             </div>
 
@@ -474,7 +474,7 @@
 
                                         </div>
                                         <div class="modal-footer d-flex justify-content-center">
-                                            <button type="submit" class="btn btn-deep-orange">{{__('Send')}}</button>
+                                            <button type="submit" class="btn btn-deep-orange">{{__('Submit')}}</button>
                                         </div>
                                     </form>
                                 </div>

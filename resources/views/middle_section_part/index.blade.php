@@ -611,11 +611,11 @@
                 },
                 theme: "bootstrap",
                 placeholder: ('انتخاب قطعه میانی'),
-                templateResult: formatRepo1,
-                templateSelection: formatRepoSelection1
+                templateResult: formatRepo_middle_part,
+                templateSelection: formatRepoSelection_middle_part
             });
 
-            function formatRepo1(repo) {
+            function formatRepo_middle_part(repo) {
 
                 if (repo.loading) {
                     return repo.text;
@@ -641,7 +641,7 @@
                 return $container;
             }
 
-            function formatRepoSelection1(repo) {
+            function formatRepoSelection_middle_part(repo) {
                 return repo.text || repo.id;
             }
 
@@ -669,11 +669,11 @@
                 },
                 theme: "bootstrap",
                 placeholder: ('انتخاب قطعه'),
-                templateResult: formatRepo,
-                templateSelection: formatRepoSelection
+                templateResult: formatRepo_part,
+                templateSelection: formatRepoSelection_part
             });
 
-            function formatRepo(repo) {
+            function formatRepo_part(repo) {
 
                 if (repo.loading) {
                     return repo.text;
@@ -699,7 +699,7 @@
                 return $container;
             }
 
-            function formatRepoSelection(repo) {
+            function formatRepoSelection_part(repo) {
                 return repo.text || repo.id;
             }
 

@@ -232,12 +232,52 @@ class OrderController extends Controller
 //  fill data table order
     public function fill(Request $request)
     {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $current_user = auth()->user()->id;
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
             $order = Order::select('id', 'hp_project_name', 'hp_employer_name', 'hp_connector', 'hp_type_project')->where('hp_registrant', $current_user)->skip($start)->take($length)->get();
+        } else {
+            $order = Order::select('id', 'hp_project_name', 'hp_employer_name', 'hp_connector', 'hp_type_project')
+                ->where('id', 'LIKE', "%$search%")
+                ->orwhere('hp_project_name', 'LIKE', "%$search%")
+                ->orwhere('hp_employer_name', 'LIKE', "%$search%")
+                ->orwhere('hp_connector', 'LIKE', "%$search%")
+                ->where('hp_registrant', $current_user)
+                ->get();
+        }
+        $data = '';
+        $key = 0;
+        foreach ($order as $orders) {
+            $process_count = ProcessLevel::all()->count();
+            $status = OrderProduct::select('hpo_status')->where('hpo_order_id', $orders->id)->get()->last();
+            $process_name = ProcessLevel::select('hp_process_name')->where('hp_process_id', $status->hpo_status)->get()->last();
+            $computing_persent = $process_count / $status->hpo_status;
+            $computing_persent_number = 100 / $computing_persent;
+            $progress = OrderState::select('ho_process_id')->where('order_id', $orders->id)->get()->last();
+            $key++;
+            $data .= '["' . $key . '",' . '"' . $orders->hp_project_name . '",' . '"' . $orders->hp_employer_name . '",' . '"' . $orders->hp_connector . '",' . '"' . $orders->hp_type_project . '",' . '"' . $orders->id . '",' . '"' . $progress->ho_process_id . '",' . '"' . $computing_persent_number . '",' . '"' . $process_name->hp_process_name . '"],';
+        }
+        $data = substr($data, 0, -1);
+        $orders_count = Order::all()->count();
+        return response('{ "recordsTotal":' . $orders_count . ',"recordsFiltered":' . $orders_count . ',"data": [' . $data . ']}');
+    }
+
+
+    //  fill data table all order
+    public function fill_all(Request $request)
+    {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
+        $current_user = auth()->user()->id;
+        $start = $request->start;
+        $length = $request->length;
+        $search = $request->search['value'];
+        if ($search == '') {
+            $order = Order::select('id', 'hp_project_name', 'hp_employer_name', 'hp_connector', 'hp_type_project')->skip($start)->take($length)->get();
         } else {
             $order = Order::select('id', 'hp_project_name', 'hp_employer_name', 'hp_connector', 'hp_type_project')->where('id', 'LIKE', "%$search%")
                 ->orwhere('hp_project_name', 'LIKE', "%$search%")
@@ -265,17 +305,39 @@ class OrderController extends Controller
 //  fill data table invoice product list
     public function invoices_list_product_fill(Request $request)
     {
+
+
+        $current_user = auth()->user()->id;
+        $current_user_role_id = DB::table('users')
+            ->join('model_has_roles', 'users.id', 'model_has_roles.model_id')
+            ->select('model_has_roles.role_id')
+            ->where('users.id', '=', $current_user)
+            ->get()
+            ->last();
+
+        $repository_user_role_id = DB::table('hnt_organizational_departments')
+          ->join('hnt_repository','hnt_organizational_departments.id','hnt_repository.hr_department_id')
+            ->select('hnt_organizational_departments.hod_name','hnt_repository.hr_priority_id')
+            ->where('hnt_organizational_departments.hod_role_id', '=', $current_user_role_id->role_id)
+            ->where('hnt_organizational_departments.deleted_at', '=', Null);
+
+
+
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-
             $product = DB::table('hnt_invoice_items')
                 ->join('hnt_invoices', 'hnt_invoice_items.hpo_order_id', '=', 'hnt_invoices.id')
                 ->join('hnt_products', 'hnt_invoice_items.hpo_product_id', '=', 'hnt_products.id')
                 ->join('hnt_product_color', 'hnt_products.hp_product_color_id', '=', 'hnt_product_color.id')
                 ->join('hnt_product_property', 'hnt_products.hp_product_property', '=', 'hnt_product_property.id')
                 ->join('hnt_repository_product', 'hnt_products.id', '=', 'hnt_repository_product.hr_product_id')
+                ->joinSub($repository_user_role_id, 'latest_posts', function ($join) {
+                    $join->on('hnt_repository_product.hr_repository_id', '=', 'latest_posts.hr_priority_id');
+                })
                 ->select('hnt_invoice_items.id', 'hnt_invoice_items.hpo_serial_number', 'hnt_invoice_items.hpo_order_id', 'hnt_invoice_items.hpo_product_id', 'hnt_invoice_items.hpo_count', 'hnt_invoice_items.hop_due_date', 'hnt_products.hp_product_name', 'hnt_products.hp_product_model', 'hnt_products.hp_product_property', 'hnt_products.hp_product_color_id', 'hnt_products.hp_product_size', 'hnt_product_property.hpp_property_name', 'hnt_product_color.hn_color_name', 'hnt_invoices.hp_Invoice_number', 'hnt_invoices.hp_employer_name', 'hnt_repository_product.hr_product_stock')
                 ->where('hnt_invoice_items.deleted_at', '=', Null)
                 ->where('hnt_repository_product.deleted_at', '=', Null)
@@ -299,6 +361,7 @@ class OrderController extends Controller
                 ->where('hnt_invoice_items.deleted_at', '=', Null)
                 ->where('hnt_products.hp_product_name', 'LIKE', "%$search%")
                 ->orwhere('hnt_invoices.hp_Invoice_number', 'LIKE', "%$search%")
+                ->orderBy('hnt_invoices.hp_Invoice_number')
                 ->get();
         }
         $data = '';
@@ -338,7 +401,7 @@ class OrderController extends Controller
                         $result = $products->hr_product_stock - $products->hpo_count;
                         $min_product_compute = $min_product - $products->hpo_count;
                         $key++;
-                        $data .= '["' . $key . '","' . $products->hp_Invoice_number . '",' . '"' . $products->hp_product_name . " " . $products->hp_product_model . " " . $products->hn_color_name . " " . $products->hpp_property_name . '",' . '"' . $products->hpo_count . '",' . '"' . $result . '",' . '"' . $min_product_compute . '",' . '"' . $products->hop_due_date . '",' . '"' . $products->hpo_product_id . '",' . '"' . $products->id . '",' . '"' . $products->hpo_order_id . '",' . '"' . $products->hpo_serial_number . '",' . '"' . 0 . '"],';
+                        $data .= '["' . $key . '","' . $products->hp_Invoice_number . '",' . '"' . $products->hp_product_name . " " . $products->hp_product_model . " " . $products->hn_color_name . " " . $products->hpp_property_name . '",' . '"' . $products->hpo_count . '",' . '"' . $result . '",' . '"' . $min_product . '",' . '"' . $products->hop_due_date . '",' . '"' . $products->hpo_product_id . '",' . '"' . $products->id . '",' . '"' . $products->hpo_order_id . '",' . '"' . $products->hpo_serial_number . '",' . '"' . 0 . '"],';
                     } else {
                         $status = DB::table('hnt_product_task')->join('hnt_product_status', 'hnt_product_task.hpt_status', 'hnt_product_status.id')->select('hnt_product_status.hps_level', 'hnt_product_status.hps_zone_name')->where('hpt_invoice_number', $products->hp_Invoice_number)->where('hpt_product_id', $products->hpo_product_id)->get()->last();
                         $status_count = ProductStatus::where('hps_zone_name', $status->hps_zone_name)->groupby('hps_level')->count();
@@ -346,7 +409,7 @@ class OrderController extends Controller
                         $computing_persent_number = 100 / $computing_persent;
                         $result = $products->hr_product_stock - $products->hpo_count;
                         $key++;
-                        $data .= '["' . $key . '","' . $products->hp_Invoice_number . '",' . '"' . $products->hp_product_name . " " . $products->hp_product_model . " " . $products->hn_color_name . " " . $products->hpp_property_name . '",' . '"' . $products->hpo_count . '",' . '"' . $result . '",' . '"' . $min_product_compute . '",' . '"' . $products->hop_due_date . '",' . '"' . $products->hpo_product_id . '",' . '"' . $products->id . '",' . '"' . $products->hpo_order_id . '",' . '"' . $products->hpo_serial_number . '",' . '"' . $status->hps_level . '",' . '"' . $computing_persent_number . '"],';
+                        $data .= '["' . $key . '","' . $products->hp_Invoice_number . '",' . '"' . $products->hp_product_name . " " . $products->hp_product_model . " " . $products->hn_color_name . " " . $products->hpp_property_name . '",' . '"' . $products->hpo_count . '",' . '"' . $result . '",' . '"' . $computing_persent . '",' . '"' . $products->hop_due_date . '",' . '"' . $products->hpo_product_id . '",' . '"' . $products->id . '",' . '"' . $products->hpo_order_id . '",' . '"' . $products->hpo_serial_number . '",' . '"' . $status->hps_level . '",' . '"' . $computing_persent_number . '"],';
 
                     }
 
@@ -361,6 +424,8 @@ class OrderController extends Controller
 //  fill data table invoice product invoices_list_product_inventory list
     public function invoices_list_product_inventory(Request $request)
     {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];

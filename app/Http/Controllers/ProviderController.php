@@ -38,6 +38,7 @@ class ProviderController extends Controller
         ]);
         $provider = new Provider();
         $provider->hp_name = $request->hp_name;
+        $provider->hp_title = $request->hp_title;
         $provider->hp_phone = $request->hp_phone;
         $provider->hp_address = $request->hp_address;
         $provider->hp_account_number = $request->hp_account_number;
@@ -57,6 +58,7 @@ class ProviderController extends Controller
         $provider->hp_name = $request->hp_name;
         $provider->hp_phone = $request->hp_phone;
         $provider->hp_address = $request->hp_address;
+        $provider->hp_title = $request->hp_title;
 //        $provider->hp_account_number = $request->hp_account_number;
         $provider->save();
         return json_encode(["response" => "Done"]);
@@ -73,17 +75,20 @@ class ProviderController extends Controller
 
     public function fill(Request $request)
     {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $providers = Provider::select('id', 'hp_name', 'hp_phone', 'hp_address')
+            $providers = Provider::select('id', 'hp_name', 'hp_phone', 'hp_address','hp_title')
                 ->skip($start)
                 ->take($length)
                 ->get();
         } else {
-            $providers = Provider::select('id', 'hp_name', 'hp_phone', 'hp_address')
+            $providers = Provider::select('id', 'hp_name', 'hp_phone', 'hp_address','hp_title')
                 ->where('hp_name', 'LIKE', "%$search%")
+                ->orwhere('hp_title', 'LIKE', "%$search%")
                 ->get();
         }
 
@@ -91,7 +96,7 @@ class ProviderController extends Controller
         $key = 0;
         foreach ($providers as $provider) {
             $key++;
-            $data .= '["' . $key . '",' . '"' . $provider->hp_name . '",' . '"' . $provider->hp_phone . '",' . '"' . $provider->hp_address . '",' . '"' . $provider->hp_account_number . '",' . '"' . $provider->id . '"],';
+            $data .= '["' . $key . '",' . '"' . $provider->hp_name . '",' . '"' . $provider->hp_title . '",' . '"' . $provider->hp_phone . '",' . '"' . $provider->hp_address . '",' . '"' . $provider->hp_account_number . '",' . '"' . $provider->id . '"],';
         }
         $data = substr($data, 0, -1);
         $providers_count = Provider::all()->count();
@@ -104,7 +109,7 @@ class ProviderController extends Controller
         $search = $request->search;
         if ($search != "") {
 
-            $provider = Provider::select('hp_name as text', 'id')->where('hp_name', 'LIKE', "%$search%")->get();
+            $provider = Provider::select('hp_name as text', 'id' ,'hp_title')->where('hp_name', 'LIKE', "%$search%")->get();
         }
         return json_encode(["results" => $provider]);
     }

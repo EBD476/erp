@@ -5,6 +5,9 @@
 @push('css')
     <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('assets/css/switchery.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/kamadatepicker.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/select2.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/select2-bootstrap4.min.css')}}" rel="stylesheet"/>
 @endpush
 
 @section('content')
@@ -83,7 +86,28 @@
                                     {{__('Stock')}}
                                 </th>
                                 <th>
+                                    {{__('Provider')}}
+                                </th>
+                                <th>
                                     {{__('Repository')}}
+                                </th>
+                                <th>
+                                    {{__('Comment')}}
+                                </th>
+                                <th>
+                                    {{__('Entry Date')}}
+                                </th>
+                                <th>
+                                    {{__('Exit Date')}}
+                                </th>
+                                <th>
+                                    {{__('Return Value')}}
+                                </th>
+                                <th>
+                                    {{__('Contradiction')}}
+                                </th>
+                                <th>
+                                    {{__('Action')}}
                                 </th>
                                 </thead>
                             </table>
@@ -160,7 +184,6 @@
         </div>
         {{--End Repository List--}}
     </div>
-    </div>
 
     {{--//Product Details Modal//--}}
     <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog"
@@ -210,6 +233,144 @@
     </div>
     {{--//End Product Details Modal//--}}
 
+
+    {{--//Edit Product Repository Modal//--}}
+    <div class="modal fade" id="modalRegisterFormRepositoryProduct" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content modal-content-landscape">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">{{__('Edit inventory Product')}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="form-repository-product">
+                    <div class="modal-body">
+                        <div class="md-form mb-5">
+                            <input id="product_id" hidden>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="bmd-label-floating"
+                                           style="float: right ; margin-top: -10px">{{__('Product Name')}}</label>
+                                    <div class="form-group">
+                                        <select class="form-control select-product"
+                                                name="hr_product_id" id="hr_product_id">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="bmd-label-floating"
+                                           style="float: right ; margin-top: -10px">{{__('Provider')}}</label>
+                                    <div class="form-group">
+                                        <select class="form-control select-provider-1"
+                                                id="hr_provider_code" name="hr_provider_code">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="bmd-label-floating"
+                                           style="float: right ; margin-top: -15px">{{__('Repository Name')}}</label>
+                                    <div class="form-group">
+                                        <select class="form-control" name="hr_repository_id">
+                                            <option id="hr_repository_id"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="bmd-label-floating"
+                                           style="float: right ; margin-top: -15px">{{__('goal Repository Name')}}</label>
+                                    <div class="form-group">
+                                        <select class="form-control repository-goal-1" name="hr_repository_id_goal">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating"
+                                               style="float: right">{{__('Repository Inventory')}}</label>
+                                        <input type="number" class="form-control" required=""
+                                               aria-invalid="false" id="hr_product_stock1" disabled>
+                                        <input hidden id="hr_product_stock" name="hr_product_stock">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating" style="float: right">{{__('Count')}}</label>
+                                        <input type="number" class="form-control" required=""
+                                               aria-invalid="false" id="hr_count" name="hr_count">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating"
+                                               style="float: right">{{__('Entry Date')}}</label>
+                                        <input class="form-control"
+                                               aria-invalid="false" name="hr_entry_date" id="test-date-id"
+                                        >
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating"
+                                               style="float: right">{{__('Exit')}}</label>
+                                        <input class="form-control"
+                                               aria-invalid="false" name="hr_exit" id="test-date-id-3"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating"
+                                               style="float: right">{{__('Contradiction')}}</label>
+                                        <input class="form-control"
+                                               aria-invalid="false" name="hr_contradiction" id="hr_contradiction"
+                                        >
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating"
+                                               style="float: right">{{__('Return Value')}}</label>
+                                        <input class="form-control"
+                                               aria-invalid="false" name="hr_return_value" id="hr_return_value"
+                                        >
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating"
+                                               style="float: right">{{__('Status Return Part')}}</label>
+                                        <input class="form-control"
+                                               aria-invalid="false" name="hr_status_return_part"
+                                               id="hr_status_return_part"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating" style="float: right">{{__('Comment')}}</label>
+                                        <textarea class="form-control" required=""
+                                                  aria-invalid="false" id="hr_comment" name="hr_comment"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">{{__('Submit')}}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{--end modal--}}
+
     @endrole
 
 @endsection
@@ -219,18 +380,52 @@
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/switchery.min.js')}}"></script>
     <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
+    <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/kamadatepicker.min.js')}}"></script>
+    <script src="{{asset('assets/js/popper.min.js')}}"></script>
     <script>
         $(document).ready(function () {
 
             var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
 
-            $('#table2').DataTable({
+            var table2 = $('#table2').DataTable({
+                "initComplete": function (settings, json) {
+                    $('[data-toggle="tooltip"]').tooltip({template: '<div class="tooltip tooltip-custom"><div class="title"></div><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'});
+                },
                 "processing":
                     true,
                 "serverSide":
                     true,
                 "ajax":
                     '/json-data-repository-product-p',
+                "columnDefs":
+                    [{
+                        "targets": -1,
+                        "data": null,
+
+                        "render": function (data, type, row, meta) {
+                            return "  <div class=\"dropdown\">\n" +
+                                "                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +
+                                "                                                                    data-toggle=\"dropdown\">\n" +
+                                "                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +
+                                "                                                            </a>\n" +
+                                "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
+                                "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
+                                "                                                                <a class=\"dropdown-item edit-product\"\n" +
+                                "                                                                >{{__('Edit')}}</a>\n" +
+                                    {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
+                                        "                                                            </div>\n" +
+                                "                                                        </div>"
+                        }
+                    },
+                        {
+                            "targets": 5,
+                            "data": null,
+                            "render": function (data, type, row, meta) {
+                                return ' <span  data-toggle="tooltip" data-html="true" title="' + data[5] + '" >' + data[5] + '</span>'
+                            }
+                        }],
                 "language":
                     {
                         "sEmptyTable":
@@ -380,13 +575,15 @@
                             }
                     }
             });
+
+
             var table5 = $('#table5').on('draw.dt', function (e, settings, json, xhr) {
                     $('.js-switch').each(function () {
                         var data = table5.row($(this).parents('tr')).data();
                         var switchery = new Switchery($(this)[0], $(this).data());
                         if (data[4] > 0 || data[5] > 0) {
                             switchery.enable();
-                        }else {
+                        } else {
                             switchery.disable();
                         }
 
@@ -519,7 +716,8 @@
                     id: data_table[8],
                     product: data_table[7],
                     computing_repository_requirement: data_table[4],
-                }
+                    count: data_table[3]
+                };
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -673,6 +871,236 @@
                     },
                     cache: false,
                 });
+            });
+
+
+            // action on repository product
+            // pass product data
+            $("#form-repository-product").submit(function (event) {
+                var data = $("#form-repository-product").serialize();
+                event.preventDefault();
+                $("#form-repository-product").block({
+                    message: '{{__('please wait...')}}', css: {
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: '#000',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: .5,
+                        color: '#fff'
+                    }
+                });
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url: '/inventory-product',
+                    type: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                        setTimeout($("#form-repository-product").unblock(), 2000);
+                        document.getElementById("form-repository-product").reset();
+                        $('#table2').DataTable().ajax.reload();
+                        $("#modalRegisterFormRepositoryProduct").modal('hide');
+
+
+                    },
+                    cache: false,
+                });
+            });
+
+            // select-provider for modal form1
+            $(".select-provider-1").select2({
+                ajax: {
+                    dir: "rtl",
+                    language: "fa",
+                    url: '/json-data-fill-data-provider',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب تامین کننده'),
+                dir: "rtl",
+                dropdownParent: $('#modalRegisterFormRepositoryProduct'),
+                templateResult: formatRepo11,
+                templateSelection: formatRepoSelection11
+            });
+
+            function formatRepo11(repo) {
+
+                if (repo.loading) {
+                    return repo.text;
+                }
+
+                var $container = $(
+                    "<div class='select2-result-repository clearfix'>" +
+                    // "<div class='select2-result-repository__avatar'><img src='/img/parts/" + repo.hp_part_image + "' /></div>" +
+                    "<div class='select2-result-repository__meta'>" +
+                    "<div class='select2-result-repository__title'></div>" +
+                    "<div class='select2-result-repository__description'></div>" +
+                    "<div class='select2-result-repository__color'></div>" +
+                    "<div class='select2-result-repository__statistics'>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>"
+                );
+
+                $container.find(".select2-result-repository__title").text("{{__('Name')}}" + " : " + repo.text);
+                $container.find(".select2-result-repository__description").text("{{__('Title')}}" + " : " + repo.hp_title);
+
+                return $container;
+            }
+
+            function formatRepoSelection11(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end
+
+            // fill data in select product
+            $(".select-product").select2({
+                ajax: {
+                    url: '/json-data-fill_data_repository_product',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                dir: 'rtl',
+                placeholder: ('انتخاب محصول'),
+                templateResult: formatRepopr,
+                templateSelection: formatRepoSelectionpr,
+                dropdownParent: $('#modalRegisterFormRepositoryProduct'),
+                // allowClear: true
+
+            });
+
+            function formatRepopr(repo) {
+
+                if (repo.loading) {
+                    return repo.text;
+                }
+                var $container = $(
+                    "<div class='select2-result-repository clearfix'>" +
+                    "<div class='select2-result-repository__avatar'><img src='/img/products/" + repo.hp_product_image + "' /></div>" +
+                    "<div class='select2-result-repository__meta'>" +
+                    "<div class='select2-result-repository__title'></div>" +
+                    "<div class='select2-result-repository__description'></div>" +
+                    "<div class='select2-result-repository__color'></div>" +
+                    "<div class='select2-result-repository__statistics'>" +
+                    // "<div class='select2-result-repository__forks'><i class='fa fa-flash'></i> </div>" +
+                    // "<div class='select2-result-repository__stargazers'><i class='fa fa-star'></i> </div>" +
+                    // "<div class='select2-result-repository__watchers'><i class='fa fa-eye'></i> </div>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>"
+                );
+
+                $container.find(".select2-result-repository__title").text(repo.text);
+                $container.find(".select2-result-repository__description").text("{{__('Price')}}" + " : " + repo.hp_product_price);
+                $container.find(".select2-result-repository__color").text("{{__('Color')}}" + " : " + repo.hn_color_name);
+                $container.find(".select2-result-repository__statistics").text("{{__('Property')}}" + " : " + repo.hpp_property_name + repo.hppi_items_name);
+                // $container.find(".select2-result-repository__forks").append(repo.forks_count + " Forks");
+                // $container.find(".select2-result-repository__stargazers").append(repo.stargazers_count + " Stars");
+                // $container.find(".select2-result-repository__watchers").append(repo.watchers_count + " Watchers");
+                return $container;
+
+            }
+
+            function formatRepoSelectionpr(repo) {
+                return repo.text
+            }
+
+            // end filling
+
+            // select-repository-goal for modal form1
+            $(".repository-goal-1").select2({
+                ajax: {
+                    dir: "rtl",
+                    language: "fa",
+                    url: '/fill-repository-name',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب انبار مقصد'),
+                dir: "rtl",
+                dropdownParent: $('#modalRegisterFormRepositoryProduct'),
+                templateSelection: formatRepoSelection_repository_goal_1,
+            });
+
+            function formatRepoSelection_repository_goal_1(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end
+
+            // fill edit form
+            $('#table2').on('click', '.edit-product', function (event) {
+                $("#modalRegisterFormRepositoryProduct").modal();
+                var data = table2.row($(this).parents('tr')).data();
+                $('#product_id').val(data[14]);
+                $("#hr_product_id").append('<option selected value="' + data[13] + '">' + data[1] + '</option>');
+                $('#hr_product_stock').val(data[2]);
+                $('#hr_product_stock1').val(data[2]);
+                $("#hr_provider_code").append('<option selected value="' + data[11] + '">' + data[3] + '</option>');
+                $("#hr_repository_id").text(data[4]);
+                $('#test-date-id').val(data[6]);
+                $('#test-date-id-3').val(data[7]);
+                $('#hr_return_value').val(data[8]);
+                $('#hr_contradiction').val(data[9]);
+                $('#hr_status_return_part').val(data[10]);
+                $('#hr_comment').val(data[5]);
+                $("#hr_repository_id").val(data[12]);
+
+            })
+            // end
+
+            kamaDatepicker('test-date-id', {
+                buttonsColor: "blue",
+                forceFarsiDigits: true,
+                nextButtonIcon: "fa fa-arrow-circle-right",
+                previousButtonIcon: "fa fa-arrow-circle-left"
+            });
+            kamaDatepicker('test-date-id-3', {
+                buttonsColor: "blue",
+                forceFarsiDigits: true,
+                nextButtonIcon: "fa fa-arrow-circle-right",
+                previousButtonIcon: "fa fa-arrow-circle-left"
             });
         });
     </script>

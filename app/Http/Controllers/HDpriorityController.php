@@ -52,14 +52,26 @@ class HDpriorityController extends Controller
 
     public function fill(Request $request)
     {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $priority = HDpriority::select('id', 'hdp_name')
-                ->skip($start)
-                ->take($length)
-                ->get();
+            if ($sort && $orderable != '') {
+                if ($sort == 1) {
+                    $priority = HDpriority::select('id', 'hdp_name')
+                        ->orderBy('hdp_name', $orderable)
+                        ->skip($start)
+                        ->take($length)
+                        ->get();
+                }
+            } else {
+                $priority = HDpriority::select('id', 'hdp_name')
+                    ->skip($start)
+                    ->take($length)
+                    ->get();
+            }
         } else {
             $priority = HDpriority::select('id', 'hdp_name')
                 ->where('id', 'LIKE', "%$search%")

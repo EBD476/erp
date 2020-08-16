@@ -27,6 +27,9 @@
                                         {{__('Name')}}
                                     </th>
                                     <th>
+                                        {{__('Title')}}
+                                    </th>
+                                    <th>
                                         {{__('Phone')}}
                                     </th>
                                     <th>
@@ -55,6 +58,14 @@
                                             <div class="form-group">
                                                 <label>{{__('Name')}}</label>
                                                 <input class="form-control" name="hp_name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>{{__('Title')}}</label>
+                                                <input class="form-control" name="hp_title">
                                             </div>
                                         </div>
                                     </div>
@@ -101,6 +112,14 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>{{__('Title')}}</label>
+                                                <input class="form-control" name="hp_title" id="hp_title">
+                                            </div>
+                                        </div>
+                                    </div>
                                         <div class=" row">
                                             <div class="col-md-12">
                                                     <div class="form-group">
@@ -176,7 +195,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: '/provider-destroy/' + data[5],
+                                url: '/provider-destroy/' + data[6],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',
@@ -349,10 +368,11 @@
             $('#table').on('click', '.edit', function (event) {
                 $('#card-form2').show();
                 var data = table.row($(this).parents('tr')).data();
-                $('#provider-id').val(data[5]);
+                $('#provider-id').val(data[6]);
                 $('#hp_name').val(data[1]);
-                $('#hp_phone').val(data[2]);
-                $('#hp_address').val(data[3]);
+                $('#hp_title').val(data[2]);
+                $('#hp_phone').val(data[3]);
+                $('#hp_address').val(data[4]);
             })
             // endfilling
         });

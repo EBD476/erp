@@ -31,10 +31,11 @@
                         <span class="d-lg-none d-md-block">Search</span>
                     </button>
                 </li>
-
+                {{--inbox message notification--}}
                 <li class="dropdown nav-item">
 
-                    <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown" style=" padding-top: 15px !important;">
+                    <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown"
+                       style=" padding-top: 15px !important;">
                         @if($unread_message_count != 0)
                             <div class="notification d-none d-lg-block d-xl-block" style="display: flex">
                                 <i class="tim-icons icon-chat-33">{{$unread_message_count}}</i>
@@ -58,7 +59,8 @@
                                         </div>
                                     @else
                                         <div class="photo">
-                                            <img src="{{asset('img/avatar/'.$unread_messages->image)}}" alt="Profile Photo">
+                                            <img src="{{asset('img/avatar/'.$unread_messages->image)}}"
+                                                 alt="Profile Photo">
                                         </div>
                                     @endif
                                     {{__('You Have One Message')}}
@@ -71,7 +73,7 @@
                     </ul>
                 </li>
 
-
+                {{--help desk notification--}}
                 <li class="dropdown nav-item">
                     <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown"
                        style="padding-top: 15px!important;">
@@ -85,12 +87,15 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
 
-                        <li class="nav-link"><a href="{{route('projects.show_all_response')}}"
-                                                class="nav-item dropdown-item">{{__('Support Response List')}}</a>
+                        {{--<li class="nav-link"><a href="{{route('projects.show_all_response')}}"--}}
+                        {{--class="nav-item dropdown-item">{{__('Support Response List')}}</a>--}}
+                        {{--</li>--}}
+                        <li class="nav-link"><a href="{{route('help_desk.index')}}"
+                                                class="nav-item dropdown-item">{{__('Help Desk')}}</a>
                         </li>
                         @foreach($help_desk as $help_desks_top_bar)
                             <li class="nav-link">
-                                <a href="{{route('help_desk.receive_show',$help_desks_top_bar->id)}}"
+                                <a href="{{route('help_desk.show',$help_desks_top_bar->id)}}"
                                    class="nav-item dropdown-item" style=" padding-top: 15px !important;">
                                     {{__('You Have One Ticket')}}
                                     @foreach($type as $types_top_bar)
@@ -115,6 +120,8 @@
                         @endforeach
                     </ul>
                 </li>
+
+                {{--profile and log out--}}
                 <li class="dropdown nav-item">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         @if(auth()->user()->image == '')
@@ -166,6 +173,7 @@
                         </li>
                     </ul>
                 </li>
+
                 <li class="separator d-lg-none"></li>
             </ul>
         </div>

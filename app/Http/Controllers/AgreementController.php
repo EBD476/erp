@@ -22,20 +22,6 @@ class AgreementController extends Controller
         return view('agreement.index',compact('user','agreement','help_desk','priority','type'));
     }
 
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $current_user=auth()->user()->id;
@@ -49,18 +35,6 @@ class AgreementController extends Controller
 
     }
 
-
-    public function show(){
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request,$id)
     {
         $agreement =Agreement::find($id);
@@ -69,12 +43,7 @@ class AgreementController extends Controller
         return json_encode(["response" => "Done"]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         $agreement = Agreement::find($id);

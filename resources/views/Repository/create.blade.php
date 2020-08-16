@@ -53,7 +53,7 @@
                                         <div class="form-group">
                                             <label class="bmd-label-floating">{{__('Count')}}</label>
                                             <input type="number" class="form-control" required=""
-                                                   aria-invalid="false" name="hr_product_stock">
+                                                   aria-invalid="false" name="hr_product_stock_base">
                                         </div>
                                     </div>
                                 </div>
@@ -93,7 +93,7 @@
                                 </div>
                                 <div class="row form-group">
                                     <a href="{{route('repository.index')}}" class="btn badge-danger">{{__('Back')}}</a>
-                                    <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
+                                    <button type="submit" class="btn badge-primary">{{__('Submit')}}</button>
                                 </div>
                             </form>
                         </div>
@@ -136,7 +136,7 @@
                                         <div class="form-group">
                                             <label class="bmd-label-floating">{{__('Count')}}</label>
                                             <input type="number" class="form-control" required=""
-                                                   aria-invalid="false" name="hrm_count">
+                                                   aria-invalid="false" name="hrm_count_base">
                                         </div>
                                     </div>
                                 </div>
@@ -185,7 +185,7 @@
                                 {{--</div>--}}
                                 <div class="row form-group">
                                     <a href="{{route('repository.index')}}" class="btn badge-danger">{{__('Back')}}</a>
-                                    <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
+                                    <button type="submit" class="btn badge-primary">{{__('Submit')}}</button>
                                 </div>
                             </form>
                         </div>
@@ -227,7 +227,7 @@
                                         <div class="form-group">
                                             <label class="bmd-label-floating">{{__('Count')}}</label>
                                             <input class="form-control" required=""
-                                                   aria-invalid="false" name="hrp_part_count">
+                                                   aria-invalid="false" name="hrp_part_count_base">
                                         </div>
                                     </div>
                                 </div>
@@ -266,9 +266,9 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                <a href="{{route('repository.index')}}" class="btn badge-danger">{{__('Back')}}</a>
+                                    <a href="{{route('repository.index')}}" class="btn badge-danger">{{__('Back')}}</a>
 
-                                <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
+                                    <button type="submit" class="btn badge-primary">{{__('Submit')}}</button>
                                 </div>
                             </form>
                         </div>
@@ -311,7 +311,7 @@
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
                         <button type="submit" id="modal_form"
-                                class="btn btn-deep-orange">{{__('Send')}}</button>
+                                class="btn btn-deep-orange">{{__('Submit')}}</button>
                     </div>
                 </form>
             </div>
@@ -389,7 +389,7 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        setTimeout( $("#form2").unblock(), 2000);
+                        setTimeout($("#form2").unblock(), 2000);
                         document.getElementById("form2").reset();
 
                     },
@@ -425,7 +425,7 @@
                     dataType: 'json',
                     async: false,
                     success: function (data) {
-                        setTimeout( $("#form3").unblock(), 2000);
+                        setTimeout($("#form3").unblock(), 2000);
                         document.getElementById("form3").reset();
                     },
                     cache: false,
@@ -535,13 +535,13 @@
                 theme: "bootstrap",
                 dir: 'rtl',
                 placeholder: ('انتخاب محصول'),
-                templateResult: formatRepo,
-                templateSelection: formatRepoSelection
+                templateResult: formatRepo11,
+                templateSelection: formatRepoSelection11
                 // allowClear: true
 
             });
 
-            function formatRepo(repo) {
+            function formatRepo11(repo) {
 
                 if (repo.loading) {
                     return repo.text;
@@ -573,9 +573,10 @@
 
             }
 
-            function formatRepoSelection(repo) {
+            function formatRepoSelection11(repo) {
                 return repo.text
             }
+
             // end
 
             // fill data in select part
@@ -657,13 +658,36 @@
                 theme: "bootstrap",
                 placeholder: ('انتخاب تامین کننده'),
                 dir: "rtl",
+                templateResult: formatRepo2,
                 templateSelection: formatRepoSelection2
             });
+            function formatRepo2(repo) {
 
+                if (repo.loading) {
+                    return repo.text;
+                }
+
+                var $container = $(
+                    "<div class='select2-result-repository clearfix'>" +
+                    // "<div class='select2-result-repository__avatar'><img src='/img/parts/" + repo.hp_part_image + "' /></div>" +
+                    "<div class='select2-result-repository__meta'>" +
+                    "<div class='select2-result-repository__title'></div>" +
+                    "<div class='select2-result-repository__description'></div>" +
+                    "<div class='select2-result-repository__color'></div>" +
+                    "<div class='select2-result-repository__statistics'>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>"
+                );
+
+                $container.find(".select2-result-repository__title").text("{{__('Name')}}" + " : " + repo.text);
+                $container.find(".select2-result-repository__description").text("{{__('Title')}}" + " : " + repo.hp_title);
+
+                return $container;
+            }
             function formatRepoSelection2(repo) {
                 return repo.text || repo.id;
             }
-
             // end
         });
     </script>

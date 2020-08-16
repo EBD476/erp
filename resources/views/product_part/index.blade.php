@@ -642,13 +642,12 @@
                 theme: "bootstrap",
                 dir: 'rtl',
                 placeholder: ('انتخاب محصول'),
-                templateResult: formatRepo,
-                templateSelection: formatRepoSelection
+                templateResult: formatRepo_select_product,
+                templateSelection: formatRepoSelection_select_product
                 // allowClear: true
 
             });
-
-            function formatRepo(repo) {
+            function formatRepo_select_product(repo) {
 
                 if (repo.loading) {
                     return repo.text;
@@ -679,11 +678,9 @@
                 return $container;
 
             }
-
-            function formatRepoSelection(repo) {
+            function formatRepoSelection_select_product(repo) {
                 return repo.text
             }
-
             // end filling
 
             // fill data in select part
@@ -707,11 +704,10 @@
                 },
                 theme: "bootstrap",
                 placeholder: ('انتخاب قطعه'),
-                templateResult: formatRepo,
-                templateSelection: formatRepoSelection
+                templateResult: formatRepo_select_part,
+                templateSelection: formatRepoSelection_select_part
             });
-
-            function formatRepo(repo) {
+            function formatRepo_select_part(repo) {
 
                 if (repo.loading) {
                     return repo.text;
@@ -736,8 +732,7 @@
 
                 return $container;
             }
-
-            function formatRepoSelection(repo) {
+            function formatRepoSelection_select_part(repo) {
                 return repo.text || repo.id;
             }
 
@@ -764,10 +759,9 @@
                 },
                 theme: "bootstrap",
                 placeholder: ('انتخاب بخش'),
-                templateSelection: formatRepoSelection
+                templateSelection: formatRepoSelection_product_zone
             });
-
-            function formatRepoSelection(repo) {
+            function formatRepoSelection_product_zone(repo) {
                 return repo.text || repo.id;
             }
 

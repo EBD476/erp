@@ -6,6 +6,7 @@
     <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('assets/css/select2.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('assets/css/select2-bootstrap4.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/dropzone.min.css')}}" rel="stylesheet"/>
 @endpush
 @section('content')
     @role('Admin|product')
@@ -54,21 +55,40 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-footer">
-                                            <button type="submit"
-                                                    class="btn btn-fill btn-primary">{{__('Send')}}</button>
-                                            <button id="back_form2"
-                                                    class="btn btn-fill btn-primary">{{__('Back')}}</button>
-                                        </div>
+                                        <input type="hidden" name="file" id="file2">
+                                        <input id="file_data" hidden>
                                     </form>
+                                    <br>
+                                    <div class="col-md-8">
+                                        <label style="margin-top: -20px;">{{__('File')}}</label>
+                                        <div class="card-body col-md-12 row">
+                                            <form action="{{url('/request-message-file-save')}}" class="dropzone"
+                                                  id="dropzone"
+                                                  enctype="multipart/form-data">
+                                                @csrf
+                                                @method('POST')
+                                                <div class="form-group">
+                                                    <input type="file" class="form-control"
+                                                           name="file2" multiple>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="submit" id="sub-btn-form2"
+                                            class="btn btn-fill btn-primary">{{__('Send')}}</button>
+                                    <button id="back_form2"
+                                            class="btn btn-fill btn-primary">{{__('Back')}}</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {{--end message cartable--}}
         </div>
+        {{--end message cartable--}}
     </div>
     @endrole
 @endsection
@@ -76,10 +96,14 @@
 @push('scripts')
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset('assets/js/dropzone.min.js')}}"></script>
     <script>
         $(document).ready(function () {
+
+            $('.dz-message').text("برای انتخاب فایل مورد نظر اینجا کلیک کنید");
+
             // reply message
-            $("#form2").submit(function (event) {
+            $("#sub-btn-form2").on('click',function (event) {
                 var data = $("#form2").serialize();
                 event.preventDefault();
                 $('#form2').block({
@@ -107,11 +131,34 @@
                     async: false,
                     success: function (data) {
                         setTimeout($('#form2').unblock(), 2000);
-
+                        window.location.href = "/home";
                     },
                     cache: false,
                 });
             });
         });
+        // save image
+        Dropzone.options.dropzone =
+            {
+                maxFilesize: 12,
+                // فایل نوع آبجکت است
+                renameFile: function (file) {
+                    var dt = new Date();
+                    var time = dt.getTime();
+                    return time + '-' + file.name;
+                },
+                acceptedFiles: ".jpeg,.jpg,.pdf,.mp4",
+                addRemoveLinks: true,
+                timeout: 5000,
+                success: function (file, response) {
+                    // اسم اینپوت و مقداری که باید به آن ارسال شود
+                    $('#file').val(file.upload.filename);
+                    $('#file2').val(file.upload.filename);
+                },
+                error: function (file, response) {
+                    return false;
+                }
+            };
+        // end saving
     </script>
 @endpush

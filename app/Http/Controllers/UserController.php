@@ -36,10 +36,10 @@ class UserController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
-        $position =Position::select('id','hpu_name')->get();
+        $position = Position::select('id', 'hpu_name')->get();
         //Get all roles and pass it to the view
         $roles = Role::get();
-        return view('users.create', ['roles' => $roles], compact('help_desk','position', 'priority', 'type', 'user'));
+        return view('users.create', ['roles' => $roles], compact('help_desk', 'position', 'priority', 'type', 'user'));
     }
 
     public function store(Request $request)
@@ -85,8 +85,8 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $position =Position::select('id','hpu_name')->get();
-        $selected_position =Position::select('id','hpu_name')->where('id',auth()->user()->position)->get()->last();
+        $position = Position::select('id', 'hpu_name')->get();
+        $selected_position = Position::select('id', 'hpu_name')->where('id', auth()->user()->position)->get()->last();
         $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
         $type = HDtype::select('th_name', 'id')->get();
@@ -95,8 +95,23 @@ class UserController extends Controller
         $users = User::findOrFail($id); //Get user with specified id
         $roles = Role::get(); //Get all roles
 
-        return view('users.edit', compact('selected_position','position','decrypt', 'user', 'users', 'roles', 'help_desk', 'priority', 'type')); //pass user and roles data to view
+        return view('users.edit', compact('selected_position', 'position', 'decrypt', 'user', 'users', 'roles', 'help_desk', 'priority', 'type')); //pass user and roles data to view
 
+    }
+
+
+//    change password in first login
+    public function new(Request $request)
+    {
+        //Validate name, email and password fields
+        $this->validate($request, [
+            'password' => 'required|min:6'
+        ]);
+        $id = auth()->user()->id;
+        $user = User::findOrFail($id);
+        $user->password = $request->password;
+        $user->save();
+        return redirect()->route('home');
     }
 
     public function update(Request $request, $id)
@@ -164,13 +179,13 @@ class UserController extends Controller
     }
 
 
-    public function destroy_image(Request $request,$id)
+    public function destroy_image(Request $request, $id)
     {
         $user = User::find($id);
         $filename = "img/avatar/" . $user->image;
         if (file_exists($filename)) {
             unlink($filename);
-            $user->image =$request->image;
+            $user->image = $request->image;
             $user->save();
             return json_encode(["response" => "OK"]);
         }

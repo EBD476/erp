@@ -43,7 +43,7 @@ class ProjectController extends Controller
         $projects_type = Project_Type::ALL();
         $projects = Project_State::ALL();
         $projects_city = \App\address::all();
-        return view('projects.create', compact('projects_city','projects', 'projects_type', 'user', 'support_response', 'type', 'help_desk', 'priority'));
+        return view('projects.create', compact('projects_city', 'projects', 'projects_type', 'user', 'support_response', 'type', 'help_desk', 'priority'));
     }
 
     public function store(Request $request)
@@ -112,7 +112,7 @@ class ProjectController extends Controller
 //            'project_complete_date' => 'required',
 //            'project_description' => 'required',
 //        ]);
-        $owner = Client::select('id')->where('hc_name',$request->project_owner)->get()->last();
+        $owner = Client::select('id')->where('hc_name', $request->project_owner)->get()->last();
         $Project = Project::find($id);
         $Project->hp_project_name = $request->project_name;
         $Project->hp_project_owner = $owner->id;
@@ -162,6 +162,8 @@ class ProjectController extends Controller
         return response()->json(['link' => '/img/support_request/' . $filename]);
     }
 
+
+//  send request and store request from project page
     public function send_request($id)
     {
         $current_user = auth()->user()->id;
@@ -192,7 +194,9 @@ class ProjectController extends Controller
         return json_encode(["response" => "OK"]);
 
     }
+//  end
 
+//  show response
     public function show_response($id)
     {
         $current_user = auth()->user()->id;
@@ -200,6 +204,7 @@ class ProjectController extends Controller
         $type = HDtype::select('th_name', 'id')->get();
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
+
         $support_response = Support::where('hs_show', '0')->get();
         $request = Support::where('id', $id)->first();
         $project = Project::where('id', $request->hs_project_id)->first();
@@ -217,9 +222,13 @@ class ProjectController extends Controller
         return view('projects.show_all_response', compact('user', 'type', 'help_desk', 'priority'));
 
     }
+//  end
 
+//    fill data
     public function fill(Request $request)
     {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];
@@ -228,7 +237,7 @@ class ProjectController extends Controller
                 ->join('hnt_clients', 'hnt_projects.hp_project_owner', '=', 'hnt_clients.id')
                 ->join('hnt_project_address_state', 'hnt_projects.hp_address_state_id', '=', 'hnt_project_address_state.id')
                 ->join('hnt_project_address_city', 'hnt_projects.hp_address_city_id', '=', 'hnt_project_address_city.id')
-                ->select('hnt_projects.hp_project_name','hnt_project_address_city.hp_city','hnt_project_address_state.hp_project_state', 'hnt_clients.hc_name', 'hnt_projects.hp_project_complete_date', 'hnt_projects.hp_order_id', 'hnt_projects.id', 'hnt_projects.hp_project_owner_phone', 'hnt_projects.hp_project_type', 'hnt_projects.hp_contract_type', 'hnt_projects.hp_owner', 'hnt_projects.hp_project_address')
+                ->select('hnt_projects.hp_project_name', 'hnt_project_address_city.hp_city', 'hnt_project_address_state.hp_project_state', 'hnt_clients.hc_name', 'hnt_projects.hp_project_complete_date', 'hnt_projects.hp_order_id', 'hnt_projects.id', 'hnt_projects.hp_project_owner_phone', 'hnt_projects.hp_project_type', 'hnt_projects.hp_contract_type', 'hnt_projects.hp_owner', 'hnt_projects.hp_project_address')
                 ->where('hnt_projects.deleted_at', '=', NULL)
                 ->skip($start)
                 ->take($length)
@@ -236,7 +245,7 @@ class ProjectController extends Controller
         } else {
             $Project = DB::Table('hnt_projects')
                 ->join('hnt_clients', 'hnt_projects.hp_project_owner', '=', 'hnt_clients.id')
-                ->select('hnt_projects.hp_project_name','hnt_project_address_city.hp_city','hnt_project_address_state.hp_project_state', 'hnt_clients.hc_name', 'hnt_projects.hp_project_complete_date', 'hnt_projects.hp_order_id', 'hnt_projects.id')
+                ->select('hnt_projects.hp_project_name', 'hnt_project_address_city.hp_city', 'hnt_project_address_state.hp_project_state', 'hnt_clients.hc_name', 'hnt_projects.hp_project_complete_date', 'hnt_projects.hp_order_id', 'hnt_projects.id')
                 ->where('hnt_projects.deleted_at', '=', NULL)
                 ->where('hnt_projects.hp_project_name', 'LIKE', "%$search%")
                 ->orwhere('hnt_clients.hc_name', 'LIKE', "%$search%")
@@ -257,6 +266,8 @@ class ProjectController extends Controller
 
     public function fill_response(Request $request)
     {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $current_user = auth()->user()->id;
         $start = $request->start;
         $length = $request->length;
@@ -293,5 +304,6 @@ class ProjectController extends Controller
         $support_responses_count = Support::all()->count();
         return response('{ "recordsTotal":' . $support_responses_count . ',"recordsFiltered":' . $support_responses_count . ',"data": [' . $data . ']}');
     }
+//  end
 
 }

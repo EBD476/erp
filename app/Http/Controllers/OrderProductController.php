@@ -65,9 +65,9 @@ class OrderProductController extends Controller
 //      Tax Pr
         $tax = Tax::select('hpx_tax')->get()->last();
         $process = $tax->hpx_tax * $request->all_tot / 100;
-        $all_tot = $request->all_tot - $process;
+        $all_tot = $request->all_tot + $process;
         $process_dis = $tax->hpx_tax * $request->all_dis / 100;
-        $all_dis = $request->all_dis - $process_dis;
+        $all_dis = $request->all_dis + $process_dis;
         $product_order = Order::find($request->hpo_order_id);
         $product_order->hp_total_all = $request->all_tot;
         if ($request->all_dis == "") {
@@ -119,8 +119,8 @@ class OrderProductController extends Controller
         $tax = Tax::select('hpx_tax')->get()->last();
         $process = $tax->hpx_tax * $request->all_tot / 100;
         $process_dis = $tax->hpx_tax * $request->all_dis / 100;
-        $all_tot = $request->all_tot - $process;
-        $all_dis = $request->all_dis - $process_dis;
+        $all_tot = $request->all_tot + $process;
+        $all_dis = $request->all_dis + $process_dis;
         $product_order = Order::find($request->hpo_order_id);
         $product_order->hp_total_all = $request->all_tot;
         if ($request->all_dis == "") {

@@ -103,6 +103,56 @@
             });
 
             var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+            $('#table5').on('click', 'button', function (event) {
+
+                var cdata = table5.row($(this).parents('tr')).data();
+                var data = {
+                    id: cdata[5],
+                    state:7,
+                    all:1,
+                };
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                swal({
+                    // title: "",
+                    text: "{{__('Are you sure?')}}",
+                    buttons: ["{{__('cancel')}}", "{{__('Done')}}"],
+                    icon: "warning",
+                    // buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: '/install/' + data.id,
+                                type: 'POST',
+                                data: data,
+                                dataType: 'json',
+                                async: false,
+                                method: 'put',
+                                success: function (data) {
+                                    swal("{{__("success")}}", {
+                                        icon: "success",
+                                        button: "{{__('Done')}}",
+                                    });
+                                },
+                                cache: false,
+                            });
+                            $('#table5').DataTable().ajax.reload();
+                            $('#table6').DataTable().ajax.reload();
+                        } else {
+                            swal(
+                                "{{__("Your imaginary file is safe!")}}",
+                                {button: "{{__('Done')}}"}
+                            );
+
+                        }
+                    });
+            });
+
             var table5 = $('#table5').on('draw.dt', function (e, settings, json, xhr) {
                 $('.js-switch').each(function () {
                     var switchery = new Switchery($(this)[0], $(this).data());
@@ -110,8 +160,9 @@
                     $(this)[0].onchange = function () {
                         var cdata = table5.row($(this).parents('tr')).data();
                         var data = {
-                            id: cdata[5],
+                            id: cdata[6],
                             state: $(this)[0].checked == true ? 7 : 5,
+                            all:0,
                         };
                         //token
                         $.ajaxSetup({
@@ -164,6 +215,7 @@
                                 "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
                                 "                                                               <a target=\"_blank\"  href=\"verify_pre/" + data[5] + "/edit\" class=\"dropdown-item\"\n" +
                                 "                                                                >{{__('View Detail Factor')}}</a>\n" +
+                                "                                                                <button class=\"dropdown-item deleted\" type=\"submit\">{{__('Verify All Order')}}</button>\n" +
                                 "                                                            </div>\n" +
                                 "                                                        </div>"
                         }

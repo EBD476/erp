@@ -80,7 +80,7 @@ class VerifyController extends Controller
         $state = Project_State:: where('id', $order->hp_address_state_id)->get()->last();
         $client = Client::select('id', 'hc_name')->where('id', $order->ho_client)->get()->last();
         $order_registrant = User::select('name')->where('id', $order->hp_registrant)->get()->last();
-        return view('verify_level.preview', compact('items', 'due_date', 'color', 'properties', 'client', 'order_registrant', 'order', 'first_verifier', 'verifyID', 'selected_priority', 'current_verified_order', 'help_desk', 'priority', 'type', 'user', 'product', 'data', 'state', 'city', 'data_dis'));
+        return view('verify_level.preview', compact('items', 'due_date', 'color', 'properties', 'client', 'order_registrant', 'order', 'first_verifier', 'verifyID', 'selected_priority', 'current_verified_order', 'help_desk', 'priority', 'type', 'user', 'product', 'data', 'state', 'city', 'data_dis','current_verifier'));
 
     }
 
@@ -175,6 +175,8 @@ class VerifyController extends Controller
 
     public function fill(Request $request)
     {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];

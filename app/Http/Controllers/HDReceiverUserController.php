@@ -72,18 +72,56 @@ class HDReceiverUserController extends Controller
 
     public function fill(Request $request)
     {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $receiver = DB::Table('hnt_hd_receiver_user')
-                ->join('hnt_th_type', 'hnt_hd_receiver_user.hhru_name', 'hnt_th_type.id')
-                ->join('users', 'hnt_hd_receiver_user.hhru_receive_user', 'users.id')
-                ->select('hnt_hd_receiver_user.id', 'hnt_hd_receiver_user.hhru_name', 'hnt_hd_receiver_user.hhru_receive_user', 'hnt_th_type.th_name', 'users.name')
-                ->where('hnt_hd_receiver_user.deleted_at', '=', Null)
-                ->skip($start)
-                ->take($length)
-                ->get();
+            if ($sort && $orderable != '') {
+                if ($sort == 1) {
+                    $receiver = DB::Table('hnt_hd_receiver_user')
+                        ->join('hnt_th_type', 'hnt_hd_receiver_user.hhru_name', 'hnt_th_type.id')
+                        ->join('users', 'hnt_hd_receiver_user.hhru_receive_user', 'users.id')
+                        ->select('hnt_hd_receiver_user.id', 'hnt_hd_receiver_user.hhru_name', 'hnt_hd_receiver_user.hhru_receive_user', 'hnt_th_type.th_name', 'users.name')
+                        ->where('hnt_hd_receiver_user.deleted_at', '=', Null)
+                        ->orderBy('users.name', $orderable)
+                        ->skip($start)
+                        ->take($length)
+                        ->get();
+                }
+                if ($sort == 2) {
+                    $receiver = DB::Table('hnt_hd_receiver_user')
+                        ->join('hnt_th_type', 'hnt_hd_receiver_user.hhru_name', 'hnt_th_type.id')
+                        ->join('users', 'hnt_hd_receiver_user.hhru_receive_user', 'users.id')
+                        ->select('hnt_hd_receiver_user.id', 'hnt_hd_receiver_user.hhru_name', 'hnt_hd_receiver_user.hhru_receive_user', 'hnt_th_type.th_name', 'users.name')
+                        ->where('hnt_hd_receiver_user.deleted_at', '=', Null)
+                        ->orderBy('hnt_th_type.th_name', $orderable)
+                        ->skip($start)
+                        ->take($length)
+                        ->get();
+                }
+                if ($sort == 3) {
+                    $receiver = DB::Table('hnt_hd_receiver_user')
+                        ->join('hnt_th_type', 'hnt_hd_receiver_user.hhru_name', 'hnt_th_type.id')
+                        ->join('users', 'hnt_hd_receiver_user.hhru_receive_user', 'users.id')
+                        ->select('hnt_hd_receiver_user.id', 'hnt_hd_receiver_user.hhru_name', 'hnt_hd_receiver_user.hhru_receive_user', 'hnt_th_type.th_name', 'users.name')
+                        ->where('hnt_hd_receiver_user.deleted_at', '=', Null)
+                        ->orderBy('hnt_hd_receiver_user.hhru_name', $orderable)
+                        ->skip($start)
+                        ->take($length)
+                        ->get();
+                }
+            } else {
+                $receiver = DB::Table('hnt_hd_receiver_user')
+                    ->join('hnt_th_type', 'hnt_hd_receiver_user.hhru_name', 'hnt_th_type.id')
+                    ->join('users', 'hnt_hd_receiver_user.hhru_receive_user', 'users.id')
+                    ->select('hnt_hd_receiver_user.id', 'hnt_hd_receiver_user.hhru_name', 'hnt_hd_receiver_user.hhru_receive_user', 'hnt_th_type.th_name', 'users.name')
+                    ->where('hnt_hd_receiver_user.deleted_at', '=', Null)
+                    ->skip($start)
+                    ->take($length)
+                    ->get();
+            }
         } else {
             $receiver = DB::Table('hnt_hd_receiver_user')
                 ->join('hnt_th_type', 'hnt_hd_receiver_user.hhru_name', 'hnt_th_type.id')
@@ -110,9 +148,8 @@ class HDReceiverUserController extends Controller
     {
         $search = $request->search;
         if ($search != "") {
-
-            $receiver =DB::table('users')->join('hnt_position_user','users.position','hnt_position_user.id')
-                ->select('users.name as text', 'users.id','hnt_position_user.hpu_name as position')
+            $receiver = DB::table('users')->join('hnt_position_user', 'users.position', 'hnt_position_user.id')
+                ->select('users.name as text', 'users.id', 'hnt_position_user.hpu_name as position')
                 ->where('users.name', 'LIKE', "%$search%")
                 ->get();
         }
@@ -124,7 +161,6 @@ class HDReceiverUserController extends Controller
     {
         $search = $request->search;
         if ($search != "") {
-
             $receiver = HDtype::select('th_name as text', 'id')->where('th_name', 'LIKE', "%$search%")->get();
         }
         return json_encode(["results" => $receiver]);

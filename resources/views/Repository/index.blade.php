@@ -13,6 +13,13 @@
     <div class="content persian">
         <div class="container-fluid">
             <div class="col-md-12">
+                <button class="btn btn-primary float-left mb-lg-2" id="show-all-data">
+                    <i class="tim-icons icon-simple-add"></i>
+                    {{__('Show ALL Data')}}
+                </button>
+            </div>
+            <div class="col-md-12">
+                <div id="show-data">
                 {{--Repository Product Data List--}}
                 <div class="col-md-12">
                     <div class="card">
@@ -168,6 +175,165 @@
                     </div>
                 </div>
                 {{--end--}}
+                </div>
+                <div id="show-all">
+                    {{--Repository Product ALL Data List--}}
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('inventory Repository Product')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table" cellspacing="0" width="100%" id="table4">
+                                        <thead>
+                                        <th>
+                                            {{__('ID')}}
+                                        </th>
+                                        <th>
+                                            {{__('Product Name')}}
+                                        </th>
+                                        <th>
+                                            {{__('Stock')}}
+                                        </th>
+                                        <th>
+                                            {{__('Provider')}}
+                                        </th>
+                                        <th>
+                                            {{__('Repository')}}
+                                        </th>
+                                        <th>
+                                            {{__('Comment')}}
+                                        </th>
+                                        <th>
+                                            {{__('Entry Date')}}
+                                        </th>
+                                        <th>
+                                            {{__('Exit Date')}}
+                                        </th>
+                                        <th>
+                                            {{__('Return Value')}}
+                                        </th>
+                                        <th>
+                                            {{__('Contradiction')}}
+                                        </th>
+                                        <th>
+                                            {{__('Action')}}
+                                        </th>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{--End Repository Product ALL Data List--}}
+
+                    {{--Repository Middle Part ALL Data List--}}
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('Repository Middle Part List')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table" cellspacing="0" width="100%" id="table5">
+                                        <thead>
+                                        <th>
+                                            {{__('ID')}}
+                                        </th>
+                                        <th>
+                                            {{__('Name')}}
+                                        </th>
+                                        <th>
+                                            {{__('Count')}}
+                                        </th>
+                                        <th>
+                                            {{__('Provider')}}
+                                        </th>
+                                        <th>
+                                            {{__('Repository')}}
+                                        </th>
+                                        <th>
+                                            {{__('Comment')}}
+                                        </th>
+                                        <th>
+                                            {{__('Entry Date')}}
+                                        </th>
+                                        <th>
+                                            {{__('Exit Date')}}
+                                        </th>
+                                        <th>
+                                            {{__('Return Value')}}
+                                        </th>
+                                        <th>
+                                            {{__('Contradiction')}}
+                                        </th>
+                                        <th>
+                                            {{__('Action')}}
+                                        </th>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{--End Repository Middle Part ALL Data--}}
+
+                    {{--Repository Part ALL Data List--}}
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title ">{{__('Repository Part List')}}</h4>
+                                <p class="card-category"></p>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="table6" class="table" cellspacing="0" width="100%">
+                                        <thead>
+                                        <th>
+                                            {{__('ID')}}
+                                        </th>
+                                        <th>
+                                            {{__('Name')}}
+                                        </th>
+                                        <th>
+                                            {{__('Count')}}
+                                        </th>
+                                        <th>
+                                            {{__('Provider')}}
+                                        </th>
+                                        <th>
+                                            {{__('Repository')}}
+                                        </th>
+                                        <th>
+                                            {{__('Comment')}}
+                                        </th>
+                                        <th>
+                                            {{__('Entry Date')}}
+                                        </th>
+                                        <th>
+                                            {{__('Exit Date')}}
+                                        </th>
+                                        <th>
+                                            {{__('Return Value')}}
+                                        </th>
+                                        <th>
+                                            {{__('Contradiction')}}
+                                        </th>
+                                        <th>
+                                            {{__('Action')}}
+                                        </th>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{--end--}}
+                </div>
+
             </div>
         </div>
     </div>
@@ -190,7 +356,7 @@
                         <div class="md-form mb-5">
                             <input id="product_id" hidden>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="bmd-label-floating"
                                            style="float: right ; margin-top: -10px">{{__('Product Name')}}</label>
                                     <div class="form-group">
@@ -199,48 +365,60 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="bmd-label-floating"
                                            style="float: right ; margin-top: -10px">{{__('Provider')}}</label>
                                     <div class="form-group">
-                                        <select class="form-control select-provider"
-                                                aria-invalid="false" id="hr_provider_code" name="hr_provider_code">
+                                        <select class="form-control select-provider-1"
+                                                id="hr_provider_code" name="hr_provider_code">
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="bmd-label-floating"
                                            style="float: right ; margin-top: -15px">{{__('Repository Name')}}</label>
                                     <div class="form-group">
-                                        <select class="form-control" name="hr_repository_id">
-                                            <option id="hr_repository_id"></option>
-                                            @foreach($repository_name as $namess)
-                                                <option value="{{$namess->hr_priority_id}}">
-                                                    {{$namess->hr_name}}
-                                                </option>
-                                            @endforeach
+                                        <select class="form-controls select-repository-1" name="hr_repository_id"
+                                                id="hr_repository_id">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="bmd-label-floating"
+                                           style="float: right ; margin-top: -15px">{{__('goal Repository Name')}}</label>
+                                    <div class="form-group">
+                                        <select class="form-control repository-goal-1" name="hr_repository_id_goal">
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="bmd-label-floating" style="float: right">{{__('Count')}}</label>
-                                        <input type="number" class="form-control" required=""
-                                               aria-invalid="false" id="hr_product_stock" name="hr_product_stock">
+                                        <label class="bmd-label-floating"
+                                               style="float: right">{{__('Repository Inventory')}}</label>
+                                        <input type="number" class="form-control"
+                                               aria-invalid="false" id="hr_product_stock1" disabled>
+                                        <input hidden id="hr_product_stock" name="hr_product_stock">
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating" style="float: right">{{__('Count')}}</label>
+                                        <input type="number" class="form-control"
+                                               aria-invalid="false" id="hr_count" name="hr_count">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Entry Date')}}</label>
-                                        <input class="form-control" required=""
+                                        <input class="form-control"
                                                aria-invalid="false" name="hr_entry_date" id="test-date-id"
                                         >
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Exit')}}</label>
@@ -289,7 +467,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">{{__('Send')}}</button>
+                            <button type="submit" class="btn btn-primary">{{__('Submit')}}</button>
                         </div>
                     </div>
                 </form>
@@ -314,7 +492,7 @@
                         <div class="md-form mb-5">
                             <input hidden id="middle_part_id">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="bmd-label-floating"
                                            style="float: right; margin-top: -10px">{{__('Name')}}</label>
                                     <div class="form-group">
@@ -323,47 +501,59 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="bmd-label-floating"
                                            style="float: right; margin-top: -10px">{{__('Provider')}}</label>
                                     <div class="form-group">
-                                        <select class="form-control select-provider"
-                                                aria-invalid="false" name="hrm_provider_code" id="hrm_provider_code">
+                                        <select class="form-control select-provider-2" name="hrm_provider_code"
+                                                id="hrm_provider_code">
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <label class="bmd-label-floating"
+                                           style="float: right ; margin-top: -15px">{{__('Repository Name')}}</label>
                                     <div class="form-group">
-                                        <label class="bmd-label-floating"
-                                               style="float: right ; margin-top: -15px">{{__('Repository Name')}}</label>
-                                        <select class="form-control" name="hrm_repository_id">
-                                            <option id="hrm_repository_id"></option>
-                                            @foreach($repository_name as $names)
-                                                <option value="{{$names->id}}">
-                                                    {{$names->hr_name}}
-                                                </option>
-                                            @endforeach
+                                        <select class="form-control select-repository-2" name="hrm_repository_id"
+                                                id="hrm_repository_id">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="bmd-label-floating"
+                                           style="float: right ; margin-top: -15px">{{__('goal Repository Name')}}</label>
+                                    <div class="form-group">
+                                        <select class="form-control repository-goal-2" name="hrm_repository_id_goal">
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="bmd-label-floating" style="float: right">{{__('Count')}}</label>
+                                        <label class="bmd-label-floating"
+                                               style="float: right">{{__('Repository Inventory')}}</label>
                                         <input type="number" class="form-control" required=""
-                                               aria-invalid="false" name="hrm_count" id="hrm_count">
+                                               aria-invalid="false" id="hrm_count1" disabled>
+                                        <input hidden id="hrm_count" name="hrm_count">
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating" style="float: right">{{__('Count')}}</label>
+                                        <input type="number" class="form-control"
+                                               aria-invalid="false" id="hrm_product_stock" name="hrm_product_stock">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Entry Date')}}</label>
-                                        <input class="form-control" required=""
+                                        <input class="form-control"
                                                aria-invalid="false" name="hrm_entry_date" id="test-date-id-1">
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Exit')}}</label>
@@ -409,7 +599,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">{{__('Send')}}</button>
+                            <button type="submit" class="btn btn-primary">{{__('Submit')}}</button>
                         </div>
                     </div>
                 </form>
@@ -435,7 +625,7 @@
                         <div class="md-form mb-5">
                             <input id="part_id" hidden>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="bmd-label-floating"
                                            style="float: right; margin-top: -10px">{{__('Part Name')}}</label>
                                     <div class="form-group">
@@ -443,47 +633,60 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="bmd-label-floating"
                                            style="float: right; margin-top: -10px">{{__('Provider')}}</label>
                                     <div class="form-group">
-                                        <select class="form-control select-provider"
-                                                aria-invalid="false" name="hrp_provider_code" id="hrp_provider_code">
+                                        <select class="form-control select-provider-3"
+                                                name="hrp_provider_code" id="hrp_provider_code">
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <label class="bmd-label-floating"
+                                           style="float: right; margin-top: -15px">{{__('Repository Name')}}</label>
                                     <div class="form-group">
-                                        <label class="bmd-label-floating"
-                                               style="float: right; margin-top: -15px">{{__('Repository Name')}}</label>
-                                        <select class="form-control" name="hrp_repository_id">
-                                            <option id="hrp_repository_id"></option>
-                                            @foreach($repository_name as $name)
-                                                <option value="{{$name->id}}">
-                                                    {{$name->hr_name}}
-                                                </option>
-                                            @endforeach
+                                        <select class="form-control select-repository-3" name="hrp_repository_id"
+                                                id="hrp_repository_id">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="bmd-label-floating"
+                                           style="float: right ; margin-top: -15px">{{__('goal Repository Name')}}</label>
+                                    <div class="form-group">
+                                        <select class="form-control repository-goal-3" name="hrp_repository_id_goal">
+                                            <option id="hr_repository_id_goal"></option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="bmd-label-floating" style="float: right">{{__('Count')}}</label>
+                                        <label class="bmd-label-floating"
+                                               style="float: right">{{__('Repository Inventory')}}</label>
                                         <input class="form-control" required=""
-                                               aria-invalid="false" name="hrp_part_count" id="hrp_part_count">
+                                               aria-invalid="false" id="hrp_part_count1" disabled>
+                                        <input hidden id="hrp_part_count" name="hrp_part_count">
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating" style="float: right">{{__('Count')}}</label>
+                                        <input type="number" class="form-control"
+                                               aria-invalid="false" id="hrp_product_stock" name="hrp_product_stock">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Entry Date')}}</label>
-                                        <input class="form-control" required=""
+                                        <input class="form-control"
                                                aria-invalid="false" name="hrp_entry_date" id="test-date-id-2">
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group">
                                         <label class="bmd-label-floating"
                                                style="float: right">{{__('Exit')}}</label>
@@ -531,7 +734,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">{{__('Send')}}</button>
+                            <button type="submit" class="btn btn-primary">{{__('Submit')}}</button>
                         </div>
                     </div>
                 </form>
@@ -552,6 +755,8 @@
     <script src="{{asset('assets/js/popper.min.js')}}"></script>
     <script>
         $(document).ready(function () {
+
+            $('#show-all').hide();
 
             // fill and show repository product data
             $('#table').on('click', 'button', function (event) {
@@ -599,7 +804,7 @@
             var table = $('#table').on('draw.dt', function (e, settings, json, xhr) {
 
             }).DataTable({
-                "initComplete": function(settings, json) {
+                "initComplete": function (settings, json) {
                     $('[data-toggle="tooltip"]').tooltip({template: '<div class="tooltip tooltip-custom"><div class="title"></div><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'});
                 },
                 "processing":
@@ -623,18 +828,18 @@
                                 "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
                                 "                                                                <a class=\"dropdown-item edit-product\"\n" +
                                 "                                                                >{{__('Edit')}}</a>\n" +
-                                {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
-                                "                                                            </div>\n" +
+                                    {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
+                                        "                                                            </div>\n" +
                                 "                                                        </div>"
                         }
                     },
                         {
-                            "targets":5,
+                            "targets": 5,
                             "data": null,
                             "render": function (data, type, row, meta) {
                                 return ' <span  data-toggle="tooltip" data-html="true" title="' + data[5] + '" >' + data[5] + '</span>'
                             }
-                    }],
+                        }],
                 "language":
                     {
                         "sEmptyTable":
@@ -728,7 +933,7 @@
             var table2 = $('#table2').on('draw.dt', function (e, settings, json, xhr) {
 
             }).DataTable({
-                "initComplete": function(settings, json) {
+                "initComplete": function (settings, json) {
                     $('[data-toggle="tooltip"]').tooltip({template: '<div class="tooltip tooltip-custom"><div class="title"></div><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'});
                 },
                 "processing":
@@ -752,8 +957,8 @@
                                 "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
                                 "                                                                <a class=\"dropdown-item edit-middle-part\"\n" +
                                 "                                                                >{{__('Edit')}}</a>\n" +
-                                {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
-                                "                                                            </div>\n" +
+                                    {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
+                                        "                                                            </div>\n" +
                                 "                                                        </div>"
                         }
                     },
@@ -763,7 +968,7 @@
                             "render": function (data, type, row, meta) {
                                 return ' <span  data-toggle="tooltip" data-html="true" title="' + data[5] + '" >' + data[5] + '</span>'
                             }
-                    }],
+                        }],
                 "language":
                     {
                         "sEmptyTable":
@@ -857,7 +1062,7 @@
             var table3 = $('#table3').on('draw.dt', function (e, settings, json, xhr) {
 
             }).DataTable({
-                "initComplete": function(settings, json) {
+                "initComplete": function (settings, json) {
                     $('[data-toggle="tooltip"]').tooltip({template: '<div class="tooltip tooltip-custom"><div class="title"></div><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'});
                 },
                 "processing":
@@ -881,8 +1086,8 @@
                                 "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
                                 "                                                                <a class=\"dropdown-item edit-part\"\n" +
                                 "                                                                >{{__('Edit')}}</a>\n" +
-                                {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
-                                "                                                            </div>\n" +
+                                    {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
+                                        "                                                            </div>\n" +
                                 "                                                        </div>"
                         }
                     },
@@ -892,7 +1097,7 @@
                             "render": function (data, type, row, meta) {
                                 return ' <span  data-toggle="tooltip" data-html="true" title="' + data[5] + '" >' + data[5] + '</span>'
                             }
-                    }],
+                        }],
                 "language":
                     {
                         "sEmptyTable":
@@ -982,7 +1187,7 @@
             // fill data in edit form
             $('#table').on('click', '.edit', function (event) {
                 $('#card-form2').show();
-                var data = table.row($(this).parents('tr')).data();
+                var data = table2.row($(this).parents('tr')).data();
                 $('#pid').val(data[0]);
                 $('#hpp_part_id').val(data[6]);
                 $('#hp_part_model').val(data[3]);
@@ -1363,12 +1568,12 @@
                 dir: 'rtl',
                 placeholder: ('انتخاب محصول'),
                 dropdownParent: $('#modalRegisterForm1'),
-                templateResult: formatRepo,
-                templateSelection: formatRepoSelection
+                templateResult: formatRepo_product,
+                templateSelection: formatRepoSelection_product
                 // allowClear: true
             });
 
-            function formatRepo(repo) {
+            function formatRepo_product(repo) {
 
                 if (repo.loading) {
                     return repo.text;
@@ -1400,7 +1605,7 @@
 
             }
 
-            function formatRepoSelection(repo) {
+            function formatRepoSelection_product(repo) {
                 return repo.text
             }
 
@@ -1464,8 +1669,10 @@
 
             // end fill data in select middle part
 
-            // select-provider
-            $(".select-provider").select2({
+            // select provider
+
+            // select-provider for modal form1
+            $(".select-provider-1").select2({
                 ajax: {
                     dir: "rtl",
                     language: "fa",
@@ -1486,10 +1693,346 @@
                 theme: "bootstrap",
                 placeholder: ('انتخاب تامین کننده'),
                 dir: "rtl",
-                templateSelection: formatRepoSelection2
+                dropdownParent: $('#modalRegisterForm1'),
+                templateResult: formatRepo11,
+                templateSelection: formatRepoSelection11
             });
 
-            function formatRepoSelection2(repo) {
+            function formatRepo11(repo) {
+
+                if (repo.loading) {
+                    return repo.text;
+                }
+
+                var $container = $(
+                    "<div class='select2-result-repository clearfix'>" +
+                    // "<div class='select2-result-repository__avatar'><img src='/img/parts/" + repo.hp_part_image + "' /></div>" +
+                    "<div class='select2-result-repository__meta'>" +
+                    "<div class='select2-result-repository__title'></div>" +
+                    "<div class='select2-result-repository__description'></div>" +
+                    "<div class='select2-result-repository__color'></div>" +
+                    "<div class='select2-result-repository__statistics'>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>"
+                );
+
+                $container.find(".select2-result-repository__title").text("{{__('Name')}}" + " : " + repo.text);
+                $container.find(".select2-result-repository__description").text("{{__('Title')}}" + " : " + repo.hp_title);
+
+                return $container;
+            }
+
+            function formatRepoSelection11(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end
+
+
+            // select-provider for modal form2
+            $(".select-provider-2").select2({
+                ajax: {
+                    dir: "rtl",
+                    language: "fa",
+                    url: '/json-data-fill-data-provider',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب تامین کننده'),
+                dir: "rtl",
+                dropdownParent: $('#modalRegisterForm2'),
+                templateResult: formatRepo12,
+                templateSelection: formatRepoSelection12,
+            });
+
+            function formatRepo12(repo) {
+
+                if (repo.loading) {
+                    return repo.text;
+                }
+
+                var $container = $(
+                    "<div class='select2-result-repository clearfix'>" +
+                    // "<div class='select2-result-repository__avatar'><img src='/img/parts/" + repo.hp_part_image + "' /></div>" +
+                    "<div class='select2-result-repository__meta'>" +
+                    "<div class='select2-result-repository__title'></div>" +
+                    "<div class='select2-result-repository__description'></div>" +
+                    "<div class='select2-result-repository__color'></div>" +
+                    "<div class='select2-result-repository__statistics'>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>"
+                );
+
+                $container.find(".select2-result-repository__title").text("{{__('Name')}}" + " : " + repo.text);
+                $container.find(".select2-result-repository__description").text("{{__('Title')}}" + " : " + repo.hp_title);
+
+                return $container;
+            }
+
+            function formatRepoSelection12(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end
+
+            // select-provider for modal form3
+            $(".select-provider-3").select2({
+                ajax: {
+                    dir: "rtl",
+                    language: "fa",
+                    url: '/json-data-fill-data-provider',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب تامین کننده'),
+                dir: "rtl",
+                dropdownParent: $('#modalRegisterForm3'),
+                templateResult: formatRepo13,
+                templateSelection: formatRepoSelection13,
+            });
+
+            function formatRepo13(repo) {
+
+                if (repo.loading) {
+                    return repo.text;
+                }
+
+                var $container = $(
+                    "<div class='select2-result-repository clearfix'>" +
+                    // "<div class='select2-result-repository__avatar'><img src='/img/parts/" + repo.hp_part_image + "' /></div>" +
+                    "<div class='select2-result-repository__meta'>" +
+                    "<div class='select2-result-repository__title'></div>" +
+                    "<div class='select2-result-repository__description'></div>" +
+                    "<div class='select2-result-repository__color'></div>" +
+                    "<div class='select2-result-repository__statistics'>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>"
+                );
+
+                $container.find(".select2-result-repository__title").text("{{__('Name')}}" + " : " + repo.text);
+                $container.find(".select2-result-repository__description").text("{{__('Title')}}" + " : " + repo.hp_title);
+
+                return $container;
+            }
+
+            function formatRepoSelection13(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end
+
+            // select-repository for modal form1
+            $(".select-repository-1").select2({
+                ajax: {
+                    dir: "rtl",
+                    language: "fa",
+                    url: '/fill-repository-name',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب انبار'),
+                dir: "rtl",
+                dropdownParent: $('#modalRegisterForm1'),
+                templateSelection: formatRepoSelection_repository_1,
+            });
+
+            function formatRepoSelection_repository_1(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end
+
+            // select-repository-goal for modal form1
+            $(".repository-goal-1").select2({
+                ajax: {
+                    dir: "rtl",
+                    language: "fa",
+                    url: '/fill-repository-name',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب انبار مقصد'),
+                dir: "rtl",
+                dropdownParent: $('#modalRegisterForm1'),
+                templateSelection: formatRepoSelection_repository_goal_1,
+            });
+
+            function formatRepoSelection_repository_goal_1(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end
+
+            // select-repository-goal for modal form2
+            $(".repository-goal-2").select2({
+                ajax: {
+                    dir: "rtl",
+                    language: "fa",
+                    url: '/fill-repository-name',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب انبار مقصد'),
+                dir: "rtl",
+                dropdownParent: $('#modalRegisterForm2'),
+                templateSelection: formatRepoSelection_repository_goal_2,
+            });
+
+            function formatRepoSelection_repository_goal_2(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end
+
+            // select-repository-goal for modal form1
+            $(".repository-goal-3").select2({
+                ajax: {
+                    dir: "rtl",
+                    language: "fa",
+                    url: '/fill-repository-name',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب انبار مقصد'),
+                dir: "rtl",
+                dropdownParent: $('#modalRegisterForm3'),
+                templateSelection: formatRepoSelection_repository_goal_3,
+            });
+
+            function formatRepoSelection_repository_goal_3(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end
+
+            // select-repository for modal form2
+            $(".select-repository-2").select2({
+                ajax: {
+                    dir: "rtl",
+                    language: "fa",
+                    url: '/fill-repository-name',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب انبار'),
+                dir: "rtl",
+                dropdownParent: $('#modalRegisterForm2'),
+                templateSelection: formatRepoSelection12,
+            });
+
+            function formatRepoSelection12(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end
+
+            // select-repository for modal form3
+            $(".select-repository-3").select2({
+                ajax: {
+                    dir: "rtl",
+                    language: "fa",
+                    url: '/fill-repository-name',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب انبار'),
+                dir: "rtl",
+                dropdownParent: $('#modalRegisterForm3'),
+                templateSelection: formatRepoSelection13,
+            });
+
+            function formatRepoSelection13(repo) {
                 return repo.text || repo.id;
             }
 
@@ -1502,34 +2045,34 @@
                 $('#product_id').val(data[14]);
                 $("#hr_product_id").append('<option selected value="' + data[13] + '">' + data[1] + '</option>');
                 $('#hr_product_stock').val(data[2]);
+                $('#hr_product_stock1').val(data[2]);
                 $("#hr_provider_code").append('<option selected value="' + data[11] + '">' + data[3] + '</option>');
-                $("#hr_repository_id").text(data[4]);
+                $("#hr_repository_id").append('<option selected value="' + data[12] + '">' + data[4] + '</option>');
                 $('#test-date-id').val(data[6]);
                 $('#test-date-id-3').val(data[7]);
                 $('#hr_return_value').val(data[8]);
                 $('#hr_contradiction').val(data[9]);
                 $('#hr_status_return_part').val(data[10]);
                 $('#hr_comment').val(data[5]);
-                $("#hr_repository_id").val(data[12]);
 
             })
             // end
 
-            // fiil edit form
+            // fill edit form
             $('#table2').on('click', '.edit-middle-part', function (event) {
                 $("#modalRegisterForm2").modal();
                 var data = table2.row($(this).parents('tr')).data();
                 $("#hrm_middle_part_id").append('<option selected value="' + data[13] + '">' + data[1] + '</option>');
                 $("#hrm_provider_code").append('<option selected value="' + data[11] + '">' + data[3] + '</option>');
-                $("#hrm_repository_id").text(data[4]);
+                $("#hrm_repository_id").append('<option selected value="' + data[12] + '">' + data[4] + '</option>');
                 $('#hrm_count').val(data[2]);
+                $('#hrm_count1').val(data[2]);
                 $('#test-date-id-1').val(data[6]);
                 $('#test-date-id-4').val(data[7]);
                 $('#hrm_return_value').val(data[8]);
                 $('#hrm_contradiction').val(data[9]);
                 $('#hrm_status_return_part').val(data[10]);
                 $('#hrm_comment').val(data[5]);
-                $("#hrm_repository_id").val(data[12]);
             })
             // end
 
@@ -1539,18 +2082,283 @@
                 var data = table3.row($(this).parents('tr')).data();
                 $("#hrp_part_id").append('<option selected value="' + data[13] + '">' + data[1] + '</option>');
                 $("#hrp_provider_code").append('<option selected value="' + data[11] + '">' + data[3] + '</option>');
-                $("#hrp_repository_id").text(data[4]);
+                $("#hrp_repository_id").append('<option selected value="' + data[12] + '">' + data[4] + '</option>');
                 $('#hrp_part_count').val(data[2]);
+                $('#hrp_part_count1').val(data[2]);
                 $('#test-date-id-2').val(data[6]);
                 $('#test-date-id-5').val(data[7]);
                 $('#hrp_return_value').val(data[8]);
                 $('#hrp_contradiction').val(data[9]);
                 $('#hrp_status_return_part').val(data[10]);
                 $('#hrp_comment').val(data[5]);
-                $("#hrp_repository_id").val(data[12]);
 
             })
             // end
+
+
+            $('#show-all-data').on('click', function (event) {
+                $('#show-data').hide();
+                $('#show-all').show();
+
+                // fill all data to repositories
+
+                // fill and show repository product data
+                $('#table4').DataTable({
+                    "initComplete": function (settings, json) {
+                        $('[data-toggle="tooltip"]').tooltip({template: '<div class="tooltip tooltip-custom"><div class="title"></div><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'});
+                    },
+                    "processing":
+                        true,
+                    "serverSide":
+                        true,
+                    "ajax":
+                        '/json-data-repository-product-fill-all',
+                    "columnDefs":
+                        [{
+                            "targets": -1,
+                            "data": null,
+
+                            "render": function (data, type, row, meta) {
+                                return "  <div class=\"dropdown\">\n" +
+                                    "                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +
+                                    "                                                                    data-toggle=\"dropdown\">\n" +
+                                    "                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +
+                                    "                                                            </a>\n" +
+                                    "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
+                                    "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
+                                    // "                                                                <a class=\"dropdown-item edit-product\"\n" +
+                                        {{--                                "                                                                >{{__('Edit')}}</a>\n" +--}}
+                                                {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
+                                            "                                                            </div>\n" +
+                                    "                                                        </div>"
+                            }
+                        },
+                            {
+                                "targets": 5,
+                                "data": null,
+                                "render": function (data, type, row, meta) {
+                                    return ' <span  data-toggle="tooltip" data-html="true" title="' + data[5] + '" >' + data[5] + '</span>'
+                                }
+                            }],
+                    "language":
+                        {
+                            "sEmptyTable":
+                                "هیچ داده ای در جدول وجود ندارد",
+                            "sInfo":
+                                "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                            "sInfoEmpty":
+                                "نمایش 0 تا 0 از 0 رکورد",
+                            "sInfoFiltered":
+                                "(فیلتر شده از _MAX_ رکورد)",
+                            "sInfoPostFix":
+                                "",
+                            "sInfoThousands":
+                                ",",
+                            "sLengthMenu":
+                                "نمایش _MENU_ رکورد",
+                            "sLoadingRecords":
+                                "در حال بارگزاری...",
+                            "sProcessing":
+                                "در حال پردازش...",
+                            "sSearch":
+                                "جستجو:",
+                            "sZeroRecords":
+                                "رکوردی با این مشخصات پیدا نشد",
+                            "oPaginate":
+                                {
+                                    "sFirst":
+                                        "ابتدا",
+                                    "sLast":
+                                        "انتها",
+                                    "sNext":
+                                        "بعدی",
+                                    "sPrevious":
+                                        "قبلی"
+                                }
+                            ,
+                            "oAria":
+                                {
+                                    "sSortAscending":
+                                        ": فعال سازی نمایش به صورت صعودی",
+                                    "sSortDescending":
+                                        ": فعال سازی نمایش به صورت نزولی"
+                                }
+                        }
+                });
+                // end
+
+                {{--// fill and show repository middle part data--}}
+                $('#table5').DataTable({
+                    "initComplete": function (settings, json) {
+                        $('[data-toggle="tooltip"]').tooltip({template: '<div class="tooltip tooltip-custom"><div class="title"></div><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'});
+                    },
+                    "processing":
+                        true,
+                    "serverSide":
+                        true,
+                    "ajax":
+                        '/json-data-repository-middle-part-fill-all',
+                    "columnDefs":
+                        [{
+                            "targets": -1,
+                            "data": null,
+
+                            "render": function (data, type, row, meta) {
+                                return "  <div class=\"dropdown\">\n" +
+                                    "                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +
+                                    "                                                                    data-toggle=\"dropdown\">\n" +
+                                    "                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +
+                                    "                                                            </a>\n" +
+                                    "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
+                                    "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
+                                    // "                                                                <a class=\"dropdown-item edit-middle-part\"\n" +
+                                        {{--                                "                                                                >{{__('Edit')}}</a>\n" +--}}
+                                                {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
+                                            "                                                            </div>\n" +
+                                    "                                                        </div>"
+                            }
+                        },
+                            {
+                                "targets": 5,
+                                "data": null,
+                                "render": function (data, type, row, meta) {
+                                    return ' <span  data-toggle="tooltip" data-html="true" title="' + data[5] + '" >' + data[5] + '</span>'
+                                }
+                            }],
+                    "language":
+                        {
+                            "sEmptyTable":
+                                "هیچ داده ای در جدول وجود ندارد",
+                            "sInfo":
+                                "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                            "sInfoEmpty":
+                                "نمایش 0 تا 0 از 0 رکورد",
+                            "sInfoFiltered":
+                                "(فیلتر شده از _MAX_ رکورد)",
+                            "sInfoPostFix":
+                                "",
+                            "sInfoThousands":
+                                ",",
+                            "sLengthMenu":
+                                "نمایش _MENU_ رکورد",
+                            "sLoadingRecords":
+                                "در حال بارگزاری...",
+                            "sProcessing":
+                                "در حال پردازش...",
+                            "sSearch":
+                                "جستجو:",
+                            "sZeroRecords":
+                                "رکوردی با این مشخصات پیدا نشد",
+                            "oPaginate":
+                                {
+                                    "sFirst":
+                                        "ابتدا",
+                                    "sLast":
+                                        "انتها",
+                                    "sNext":
+                                        "بعدی",
+                                    "sPrevious":
+                                        "قبلی"
+                                }
+                            ,
+                            "oAria":
+                                {
+                                    "sSortAscending":
+                                        ": فعال سازی نمایش به صورت صعودی",
+                                    "sSortDescending":
+                                        ": فعال سازی نمایش به صورت نزولی"
+                                }
+                        }
+                });
+                // end
+
+                // fill and show repository part data
+                $('#table6').DataTable({
+                    "initComplete": function (settings, json) {
+                        $('[data-toggle="tooltip"]').tooltip({template: '<div class="tooltip tooltip-custom"><div class="title"></div><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'});
+                    },
+                    "processing":
+                        true,
+                    "serverSide":
+                        true,
+                    "ajax":
+                        '/json-data-repository-part-fill-all',
+                    "columnDefs":
+                        [{
+                            "targets": -1,
+                            "data": null,
+
+                            "render": function (data, type, row, meta) {
+                                return "  <div class=\"dropdown\">\n" +
+                                    "                                                            <a class=\"btn btn-link dropdown-toggle btn-icon\"\n" +
+                                    "                                                                    data-toggle=\"dropdown\">\n" +
+                                    "                                                                <i class=\"tim-icons icon-settings-gear-63\"></i>\n" +
+                                    "                                                            </a>\n" +
+                                    "                                                            <div class=\"dropdown-menu dropdown-menu-right\"\n" +
+                                    "                                                                 aria-labelledby=\"dropdownMenuLink\">\n" +
+                                    // "                                                                <a class=\"dropdown-item edit-part\"\n" +
+                                        {{--                                "                                                                >{{__('Edit')}}</a>\n" +--}}
+                                                {{--"                                                                <button class=\"dropdown-item deleted\" id=\"deleted\" type=\"submit\">{{__('Delete')}}</button>\n" +--}}
+                                            "                                                            </div>\n" +
+                                    "                                                        </div>"
+                            }
+                        },
+                            {
+                                "targets": 5,
+                                "data": null,
+                                "render": function (data, type, row, meta) {
+                                    return ' <span  data-toggle="tooltip" data-html="true" title="' + data[5] + '" >' + data[5] + '</span>'
+                                }
+                            }],
+                    "language":
+                        {
+                            "sEmptyTable":
+                                "هیچ داده ای در جدول وجود ندارد",
+                            "sInfo":
+                                "نمایش _START_ تا _END_ از _TOTAL_ رکورد",
+                            "sInfoEmpty":
+                                "نمایش 0 تا 0 از 0 رکورد",
+                            "sInfoFiltered":
+                                "(فیلتر شده از _MAX_ رکورد)",
+                            "sInfoPostFix":
+                                "",
+                            "sInfoThousands":
+                                ",",
+                            "sLengthMenu":
+                                "نمایش _MENU_ رکورد",
+                            "sLoadingRecords":
+                                "در حال بارگزاری...",
+                            "sProcessing":
+                                "در حال پردازش...",
+                            "sSearch":
+                                "جستجو:",
+                            "sZeroRecords":
+                                "رکوردی با این مشخصات پیدا نشد",
+                            "oPaginate":
+                                {
+                                    "sFirst":
+                                        "ابتدا",
+                                    "sLast":
+                                        "انتها",
+                                    "sNext":
+                                        "بعدی",
+                                    "sPrevious":
+                                        "قبلی"
+                                }
+                            ,
+                            "oAria":
+                                {
+                                    "sSortAscending":
+                                        ": فعال سازی نمایش به صورت صعودی",
+                                    "sSortDescending":
+                                        ": فعال سازی نمایش به صورت نزولی"
+                                }
+                        }
+                });
+                {{--// end--}}
+                {{--// end--}}
+
+            })
         });
 
     </script>

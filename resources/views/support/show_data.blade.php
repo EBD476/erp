@@ -4,6 +4,7 @@
 
 @push('css')
     <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/dropzone.min.css')}}" rel="stylesheet"/>
 @endpush
 
 @section('content')
@@ -113,7 +114,7 @@
                                     </div>
                                 </div>
                                 @if($support_response->hs_attach_file != "")
-                                <a href="{{asset('img/support_request/' . $support_response->hs_attach_file)}}">{{__('Download Attached File')}}</a>
+                                <a href="{{asset('img/support_request/' . $support_response->hs_attach_file)}}" target="_blank">{{__('Download Attached File')}}</a>
                                 @endif
                                 @if($support_response->hs_response != "")
                                 <div class="row">
@@ -137,10 +138,28 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-fill btn-primary">{{__('Send')}}</button>
-                                </div>
+                                <input type="hidden" name="file" id="file">
                             </form>
+                            <br>
+                            <div class="col-md-12">
+                                <label style="margin-top: -20px;">{{__('File')}}</label>
+                                <div class="card-body col-md-12 row">
+                                    <form action="{{url('/response-file-save')}}" class="dropzone" id="dropzone"
+                                          enctype="multipart/form-data">
+                                        @csrf
+                                        @method('POST')
+                                        <div class="form-group">
+                                            <input type="file" class="form-control"
+                                                   name="file" multiple>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-fill btn-primary"
+                                        id="submit-form">{{__('Submit')}}</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -191,8 +210,11 @@
     <script src="{{asset('assets/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/popper.min.js')}}"></script>
+    <script src="{{asset('assets/js/dropzone.min.js')}}"></script>
     <script>
         $(document).ready(function () {
+
+            $('.dz-message').text("برای انتخاب فایل مورد نظر اینجا کلیک کنید");
 
             $('#table2').DataTable({
                 "initComplete": function (settings, json) {
@@ -262,13 +284,14 @@
                     }
             });
 
-            $("#form1").submit(function (event) {
+            $("#submit-form").on('click',function (event) {
                 var data = {
                     hs_request_user_id: $('#hs_request_user_id').val(),
                     hp_project_name: $('#hp_project_name').val(),
                     hs_description: $('#hs_description').val(),
                     hs_response: $('#hs_response').val(),
                     hs_title: $('#hs_title').val(),
+                    file:$('#file').val(),
                 }
                 event.preventDefault();
                 $.blockUI({
@@ -296,10 +319,34 @@
                     async: false,
                     success: function (data) {
                         setTimeout($.unblockUI, 2000);
+                        window.location.href = '/support'
                     },
                     cache: false,
                 });
             });
         });
+
+        // save image
+        Dropzone.options.dropzone =
+            {
+                maxFilesize: 12,
+                // فایل نوع آبجکت است
+                renameFile: function (file) {
+                    var dt = new Date();
+                    var time = dt.getTime();
+                    return time + '-' + file.name;
+                },
+                acceptedFiles: ".jpeg,.jpg,.pdf,.mp4",
+                addRemoveLinks: true,
+                timeout: 5000,
+                success: function (file, response) {
+                    // اسم اینپوت و مقداری که باید به آن ارسال شود
+                    $('#file').val(file.upload.filename);
+                },
+                error: function (file, response) {
+                    return false;
+                }
+            };
+        // end saving
     </script>
 @endpush

@@ -78,7 +78,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
+                                <button type="submit" class="btn badge-primary">{{__('Submit')}}</button>
                             </form>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
+                                <button type="submit" class="btn badge-primary">{{__('Submit')}}</button>
                             </form>
                         </div>
                     </div>

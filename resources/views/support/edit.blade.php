@@ -4,6 +4,7 @@
 
 @push('css')
     <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/dropzone.min.css')}}" rel="stylesheet"/>
 @endpush
 
 @section('content')
@@ -97,8 +98,10 @@
                                     </div>
                                 </div>
                                 @if($support_response->hs_attach_file != "")
-                                    <a href="{{asset('img/support_request/' . $support_response->hs_attach_file)}}">{{__('Download Attached File')}}</a>
-                                @endif                                <div class="row">
+                                    <a href="{{asset('img/support_request/' . $support_response->hs_attach_file)}}"
+                                       target="_blank">{{__('Download Attached File')}}</a>
+                                @endif
+                                <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>{{__('Support Response')}}</label>
@@ -108,13 +111,28 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-fill btn-primary">{{__('Send')}}</button>
-                                </div>
+                                <input type="hidden" name="file" id="file">
                             </form>
-
-                            {{--<input type="file" value="{{$support_response->hs_attach_file}}">--}}
+                            <br>
+                            <div class="col-md-12">
+                                <label style="margin-top: -20px;">{{__('File')}}</label>
+                                <div class="card-body col-md-12 row">
+                                    <form action="{{url('/response-file-save')}}" class="dropzone" id="dropzone"
+                                          enctype="multipart/form-data">
+                                        @csrf
+                                        @method('POST')
+                                        <div class="form-group">
+                                            <input type="file" class="form-control"
+                                                   name="file" multiple>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-fill btn-primary"
+                                        id="submit-form">{{__('Submit')}}</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -142,14 +160,10 @@
                                         {{__('Created at')}}
                                     </th>
                                     {{--<th>--}}
-                                        {{--{{__('action')}}--}}
+                                    {{--{{__('action')}}--}}
                                     {{--</th>--}}
                                     </thead>
                                 </table>
-                            </div>
-                            </p>
-                            <div class="card-description">
-
                             </div>
                         </div>
                     </div>
@@ -165,10 +179,15 @@
     <script src="{{asset('assets/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/popper.min.js')}}"></script>
+    <script src="{{asset('assets/js/dropzone.min.js')}}"></script>
+
     <script>
         $(document).ready(function () {
+
+            $('.dz-message').text("برای انتخاب فایل مورد نظر اینجا کلیک کنید");
+
             $('#table2').DataTable({
-                "initComplete": function(settings, json) {
+                "initComplete": function (settings, json) {
                     $('[data-toggle="tooltip"]').tooltip({template: '<div class="tooltip tooltip-custom"><div class="title"></div><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'});
                 },
                 "processing":
@@ -236,11 +255,12 @@
             });
 
 
-            $("#form1").submit(function (event) {
+            $("#submit-form").on('click', function (event) {
                 var data =
                     {
                         id: $('#request_id').data('id'),
                         response: $('#hs_response').val(),
+                        file: $('#file').val(),
                     }
                 event.preventDefault();
                 $.blockUI({
@@ -276,5 +296,27 @@
             });
         })
         ;
+        // save image
+        Dropzone.options.dropzone =
+            {
+                maxFilesize: 12,
+                // فایل نوع آبجکت است
+                renameFile: function (file) {
+                    var dt = new Date();
+                    var time = dt.getTime();
+                    return time + '-' + file.name;
+                },
+                acceptedFiles: ".jpeg,.jpg,.pdf,.mp4",
+                addRemoveLinks: true,
+                timeout: 5000,
+                success: function (file, response) {
+                    // اسم اینپوت و مقداری که باید به آن ارسال شود
+                    $('#file').val(file.upload.filename);
+                },
+                error: function (file, response) {
+                    return false;
+                }
+            };
+        // end saving
     </script>
 @endpush

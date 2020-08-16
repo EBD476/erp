@@ -4,6 +4,8 @@
 
 @push('css')
     <link href="{{asset('assets/css/dataTables.bootstrap.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/select2.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/select2-bootstrap4.min.css')}}" rel="stylesheet"/>
 @endpush
 
 @section('content')
@@ -35,6 +37,9 @@
                                     </th>
                                     <th>
                                         {{__('Description')}}
+                                    </th>
+                                    <th>
+                                        {{__('Department')}}
                                     </th>
                                     <th>
                                         {{__('Action')}}
@@ -70,6 +75,16 @@
                                                 <label>{{__('Name')}}</label>
                                                 <input name="hr_name" type="text" class="form-control" required=""
                                                        aria-invalid="false">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>{{__('Department')}}</label>
+                                            <div class="form-group">
+                                                <select class="form-control select-department"
+                                                        name="hr_department_id">
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -122,7 +137,17 @@
                                         </div>
                                     </div>
                                     <div class="row">
-
+                                        <div class="col-md-12">
+                                            <label>{{__('Department')}}</label>
+                                            <div class="form-group">
+                                                <select class="form-control select-department"
+                                                        name="hr_department_id">
+                                                    <option  id="hr_department_id"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>{{__('Description')}}</label>
@@ -152,6 +177,8 @@
     <script src="{{asset('assets/js/dataTables.bootstrap.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>
+    <script src="{{asset('assets/js/select2.min.js')}}" type="text/javascript"></script>
+
     <script>
         $(document).ready(function () {
 
@@ -176,7 +203,7 @@
                     .then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: '/repository_create/' + data[3],
+                                url: '/repository_create/' + data[4],
                                 type: 'delete',
                                 data: data,
                                 dataType: 'json',
@@ -349,12 +376,47 @@
             $('#table').on('click', '.edit', function (event) {
                 $('#card-form2').show();
                 var data = table.row($(this).parents('tr')).data();
-                $('#rid').val(data[3]);
+                $('#rid').val(data[4]);
                 $('#hr_name').val(data[1]);
+                $('#hod_name').val(data[3]);
                 $('#hr_description').val(data[2]);
-                $('#hr_priority_id').val(data[4]);
+                $('#hr_priority_id').val(data[5]);
+                $('#hr_department_id').val(data[6]);
             })
             // end filling
+
+            // select sender
+            $(".select-department").select2({
+                ajax: {
+                    dir: "rtl",
+                    language: "fa",
+                    url: '/json-data-fill-department',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term, // search term
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.results
+                        }
+                    }
+                },
+                theme: "bootstrap",
+                placeholder: ('انتخاب دپارتمان'),
+                dir: "rtl",
+                templateSelection: formatRepoSelection,
+                tags: true,
+                tokenSeparators: [',', ' ']
+            });
+
+            function formatRepoSelection(repo) {
+                return repo.text || repo.id;
+            }
+
+            // end
         });
     </script>
 @endpush

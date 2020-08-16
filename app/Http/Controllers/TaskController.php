@@ -135,7 +135,8 @@ class TaskController extends Controller
 //            ->having('count', '>', 1)
 //            ->get());
 
-
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $current_user = auth()->user()->id;
         $select_zone = ProductZone::select('hpz_name', 'hpz_user_id', 'hpz_priority')->where('hpz_user_id', $current_user)->get()->last();
         $start = $request->start;
@@ -190,6 +191,8 @@ class TaskController extends Controller
 //    report list
     public function fill_report_list(Request $request)
     {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $current_user = auth()->user()->id;
         $select_zone = ProductZone::select('hpz_name', 'hpz_user_id', 'hpz_priority')->where('hpz_user_id', $current_user)->get()->last();
         $start = $request->start;

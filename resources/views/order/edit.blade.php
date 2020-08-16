@@ -218,7 +218,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
+                                    <button type="submit" class="btn badge-primary">{{__('Submit')}}</button>
                                 </form>
                                 <button type="submit" id="btn-submit1" class="btn badge-primary">{{__('Submit New Invoice')}}</button>
                             </div>
@@ -433,10 +433,10 @@
                                                                                    name="total_discount"
                                                                                    value="{{$project->hp_total_discount}}"
                                                                             >
-                                                                            <div class="small">
-                                                                                <h20>{{$tax->hpx_tax}}
-                                                                                    .{{__('% VAT rate is calculated')}}</h20>
-                                                                            </div>
+                                                                            {{--<div class="small">--}}
+                                                                                {{--<h20>{{$tax->hpx_tax}}--}}
+                                                                                    {{--.{{__('% VAT rate is calculated')}}</h20>--}}
+                                                                            {{--</div>--}}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -461,7 +461,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="row">
-                                                            <label class="bmd-label-floating">{{__('Total Including Discount:')}}</label>
+                                                            <label class="bmd-label-floating">{{__('Total Including Tax:')}}</label>
                                                             <div class="col-md-12 ">
                                                                 <div class="form-group">
                                                                     <div class="form-group">
@@ -469,7 +469,9 @@
                                                                             <input disabled class="form-control"
                                                                                    id="total_discount"
                                                                                    type="text"
-                                                                                   name="total_discount">
+                                                                                   name="total_discount"
+                                                                                   value="{{$project->hp_total_discount}}"
+                                                                            >
                                                                             &nbsp
                                                                         </div>
                                                                     </div>
@@ -689,7 +691,7 @@
 
                                         </div>
                                         <div class="modal-footer d-flex justify-content-center">
-                                            <button type="submit" class="btn btn-deep-orange">{{__('Send')}}</button>
+                                            <button type="submit" class="btn btn-deep-orange">{{__('Submit')}}</button>
                                         </div>
                                     </form>
                                 </div>

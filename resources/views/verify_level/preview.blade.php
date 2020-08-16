@@ -162,7 +162,7 @@
                                                             </table>
                                                         </table>
                                                     </div>
-                                                    @if ($current_verified_order === null)
+                                                    @if ($current_verifier != null)
                                                         <form method="POST"
                                                               action="{{route('verify_pre.update',$order->id)}}"
                                                               ENCTYPE="multipart/form-data">

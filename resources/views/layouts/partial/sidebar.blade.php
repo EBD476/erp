@@ -80,6 +80,12 @@
                                 <span class="sidebar-normal">{{__('Finance Product')}}</span>
                             </a>
                         </li>
+                        {{--<li class="nav-item ">--}}
+                            {{--<a class="nav-link" href="{{ route('finance.index') }}">--}}
+                                {{--<i class="tim-icons icon-coins"></i>--}}
+                                {{--<span class="sidebar-normal"> {{__('Debit')}}</span>--}}
+                            {{--</a>--}}
+                        {{--</li>--}}
                         <li class="nav-item ">
                             <a class="nav-link" href="{{ route('product.product-price-index') }}">
                                 <i class="tim-icons icon-coins"></i>
@@ -94,24 +100,18 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('finance.index') }}">
-                                <i class="tim-icons icon-coins"></i>
-                                <span class="sidebar-normal"> {{__('Debit')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('finance.index') }}">
-                                <i class="tim-icons icon-coins"></i>
-                                <span class="sidebar-normal"> {{__('Revenue')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('finance.index') }}">
-                                <i class="tim-icons icon-coins"></i>
-                                <span class="sidebar-normal"> {{__('Costs')}}</span>
-                            </a>
-                        </li>
+                        {{--<li class="nav-item ">--}}
+                            {{--<a class="nav-link" href="{{ route('finance.index') }}">--}}
+                                {{--<i class="tim-icons icon-coins"></i>--}}
+                                {{--<span class="sidebar-normal"> {{__('Revenue')}}</span>--}}
+                            {{--</a>--}}
+                        {{--</li>--}}
+                        {{--<li class="nav-item ">--}}
+                            {{--<a class="nav-link" href="{{ route('finance.index') }}">--}}
+                                {{--<i class="tim-icons icon-coins"></i>--}}
+                                {{--<span class="sidebar-normal"> {{__('Costs')}}</span>--}}
+                            {{--</a>--}}
+                        {{--</li>--}}
                     </ul>
                 </div>
             </li>
@@ -180,6 +180,13 @@
                                 <i class="tim-icons icon-paper"></i>
                                 <span class="sidebar-normal"
                                 >{{__('part Requirement')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{route('inventory-product.index')}}">
+                                <i class="tim-icons icon-paper"></i>
+                                <span class="sidebar-normal"
+                                >{{__('Inventory Product')}}</span>
                             </a>
                         </li>
                         <li class="nav-item ">
@@ -271,6 +278,12 @@
                             <a class="nav-link" href="{{ route('repository_create.index')}}">
                                 <i class="tim-icons icon-paper"></i>
                                 <span class="sidebar-normal">{{__('Create Repository')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('organizational-department.index')}}">
+                                <i class="tim-icons icon-paper"></i>
+                                <span class="sidebar-normal">{{__('Organizational Departments')}}</span>
                             </a>
                         </li>
                         <li class="nav-item ">
@@ -382,6 +395,13 @@
                             </a>
                         </li>
                         <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('hd-type-role.index') }}">
+                                <i class="tim-icons icon-headphones"></i>
+                                <span class="sidebar-normal">
+                                    {{__('Limitations User List')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
                             <a class="nav-link" href="{{ route('priority.index') }}">
                                 <i class="tim-icons icon-headphones"></i>
                                 <span class="sidebar-normal">
@@ -440,25 +460,26 @@
                     </ul>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="#ConversationExamples">
-                    <i class="tim-icons icon-chat-33" style="float: right"></i>
-                    <p>
-                        {{__('Conversation View')}}
-                        <b class="caret"></b>
-                    </p>
-                </a>
-                <div class="collapse " id="ConversationExamples">
-                    <ul class="nav">
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('conversation_view.index') }}">
-                                <i class="tim-icons icon-chat-33"></i>
-                                <span class="sidebar-normal"> {{__('Conversation View')}}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+            {{--<li class="nav-item">--}}
+            {{--<li class="nav-item">--}}
+                {{--<a class="nav-link" data-toggle="collapse" href="#ConversationExamples">--}}
+                    {{--<i class="tim-icons icon-chat-33" style="float: right"></i>--}}
+                    {{--<p>--}}
+                        {{--{{__('Conversation View')}}--}}
+                        {{--<b class="caret"></b>--}}
+                    {{--</p>--}}
+                {{--</a>--}}
+                {{--<div class="collapse " id="ConversationExamples">--}}
+                    {{--<ul class="nav">--}}
+                        {{--<li class="nav-item ">--}}
+                            {{--<a class="nav-link" href="{{ route('conversation_view.index') }}">--}}
+                                {{--<i class="tim-icons icon-chat-33"></i>--}}
+                                {{--<span class="sidebar-normal"> {{__('Conversation View')}}</span>--}}
+                            {{--</a>--}}
+                        {{--</li>--}}
+                    {{--</ul>--}}
+                {{--</div>--}}
+            {{--</li>--}}
             <li class="nav-item">
                 <a class="nav-link" data-toggle="collapse" href="#ClientExamples">
                     <i class="tim-icons icon-single-02" style="float: right"></i>
@@ -492,6 +513,12 @@
                             <a class="nav-link" href="{{ route('conversation_view.inbox') }}">
                                 <i class="tim-icons icon-single-02"></i>
                                 <span class="sidebar-normal"> {{__('Inbox Message')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ route('send-receiver-massage-role.index') }}">
+                                <i class="tim-icons icon-user-run"></i>
+                                <span class="sidebar-normal"> {{__('Limited Massage')}}</span>
                             </a>
                         </li>
                     </ul>
@@ -717,24 +744,24 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('finance.index') }}">
-                                <i class="tim-icons icon-coins"></i>
-                                <span class="sidebar-normal"> {{__('Debit')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('finance.index') }}">
-                                <i class="tim-icons icon-coins"></i>
-                                <span class="sidebar-normal"> {{__('Revenue')}}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ route('finance.index') }}">
-                                <i class="tim-icons icon-coins"></i>
-                                <span class="sidebar-normal"> {{__('Costs')}}</span>
-                            </a>
-                        </li>
+                        {{--<li class="nav-item ">--}}
+                            {{--<a class="nav-link" href="{{ route('finance.index') }}">--}}
+                                {{--<i class="tim-icons icon-coins"></i>--}}
+                                {{--<span class="sidebar-normal"> {{__('Debit')}}</span>--}}
+                            {{--</a>--}}
+                        {{--</li>--}}
+                        {{--<li class="nav-item ">--}}
+                            {{--<a class="nav-link" href="{{ route('finance.index') }}">--}}
+                                {{--<i class="tim-icons icon-coins"></i>--}}
+                                {{--<span class="sidebar-normal"> {{__('Revenue')}}</span>--}}
+                            {{--</a>--}}
+                        {{--</li>--}}
+                        {{--<li class="nav-item ">--}}
+                            {{--<a class="nav-link" href="{{ route('finance.index') }}">--}}
+                                {{--<i class="tim-icons icon-coins"></i>--}}
+                                {{--<span class="sidebar-normal"> {{__('Costs')}}</span>--}}
+                            {{--</a>--}}
+                        {{--</li>--}}
                     </ul>
                 </div>
             </li>
@@ -1035,6 +1062,13 @@
                             </a>
                         </li>
                         <li class="nav-item ">
+                            <a class="nav-link" href="{{route('inventory-product.index')}}">
+                                <i class="tim-icons icon-paper"></i>
+                                <span class="sidebar-normal"
+                                >{{__('Inventory Product')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
                             <a class="nav-link" href="{{ route('product-task.index')}}">
                                 <i class="tim-icons icon-single-02"></i>
                                 <span class="sidebar-normal">{{__('Product Task')}}</span>
@@ -1263,6 +1297,13 @@
                             <a class="nav-link" href="{{Route('qc.index')}}">
                                 <i class="tim-icons icon-components"></i> <span
                                         class="sidebar-normal"> {{__('QC Management')}}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{route('inventory-product.index')}}">
+                                <i class="tim-icons icon-paper"></i>
+                                <span class="sidebar-normal"
+                                >{{__('Inventory Product')}}</span>
                             </a>
                         </li>
                     </ul>

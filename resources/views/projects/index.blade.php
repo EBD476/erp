@@ -22,8 +22,6 @@
                         {{__('Support Response List')}}
                     </a>
                 </div>
-                <div class="card">
-                    <div class="card-body">
                         <div class="col-md-9">
                             <div class="card">
                                 <div class="card-header card-header-primary">
@@ -56,7 +54,6 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <br><br>
                             <div class="card">
                                 <div class="card-header card-header-primary">
                                     <h4 class="card-title text-right">{{__('Projects Locations')}}</h4>
@@ -70,8 +67,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
     @endrole
 @endsection
 

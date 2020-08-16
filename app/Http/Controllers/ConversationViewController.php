@@ -12,11 +12,6 @@ use Illuminate\Support\Facades\DB;
 
 class ConversationViewController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
 //    for conversation view index
     public function index()
@@ -37,7 +32,7 @@ class ConversationViewController extends Controller
     }
 
 
-    public function show(Request $request,$id)
+    public function show(Request $request, $id)
     {
         $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
@@ -45,8 +40,8 @@ class ConversationViewController extends Controller
         $priority = HDpriority::select('id', 'hdp_name')->get();
         $user = User::select('id', 'name')->get();
         $conversation = ConversationView::find($id);
-        $conversation_name = User::select('name')->where('id',$conversation->hcv_request_user_id)->get()->last();
-        return view('conversation_view.show',compact('conversation','conversation_name','help_desk','type','priority','user'));
+        $conversation_name = User::select('name')->where('id', $conversation->hcv_request_user_id)->get()->last();
+        return view('conversation_view.show', compact('conversation', 'conversation_name', 'help_desk', 'type', 'priority', 'user'));
     }
 
     public function inbox()
@@ -60,11 +55,6 @@ class ConversationViewController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -76,6 +66,7 @@ class ConversationViewController extends Controller
             $message_request->hcv_receiver_user_id = $request->user_receive_id[0];
             $message_request->hcv_request_user_id = auth()->user()->id;
             $message_request->hcv_message = $request->message;
+            $message_request->hcv_file_request = $request->file;
             $message_request->save();
         } else {
             $item = $request->user_receive_id;
@@ -85,6 +76,7 @@ class ConversationViewController extends Controller
                 $message_request->hcv_receiver_user_id = $request->user_receive_id[$index];
                 $message_request->hcv_request_user_id = auth()->user()->id;
                 $message_request->hcv_message = $request->message;
+                $message_request->hcv_file_request = $request->file;
                 $message_request->save();
                 $index++;
             }
@@ -152,7 +144,7 @@ class ConversationViewController extends Controller
         return redirect()->back()->with('successMSG', 'عملیات حذف اطلاعات با موفقیت انجام شد.');
     }
 
-
+//fill data
     public function fill_unread_message(Request $request)
     {
         $start = $request->start;
@@ -162,7 +154,7 @@ class ConversationViewController extends Controller
         if ($search == '') {
             $message_conv_view = DB::table('hnt_conversation_view')
                 ->join('users', 'hnt_conversation_view.hcv_request_user_id', '=', 'users.id')
-                ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_request_user_id')
+                ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_request_user_id', 'hnt_conversation_view.hcv_file_request')
                 ->where('hnt_conversation_view.hcv_message_status', '=', 0)
                 ->where('hnt_conversation_view.hcv_receiver_user_id', '=', $current_user)
                 ->where('hnt_conversation_view.deleted_at', '=', Null)
@@ -173,7 +165,7 @@ class ConversationViewController extends Controller
         } else {
             $message_conv_view = DB::table('hnt_conversation_view')
                 ->join('users', 'hnt_conversation_view.hcv_request_user_id', '=', 'users.id')
-                ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_request_user_id')
+                ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_request_user_id', 'hnt_conversation_view.hcv_file_request')
                 ->where('hnt_conversation_view.hcv_message_status', '=', 0)
                 ->where('hnt_conversation_view.hcv_receiver_user_id', '=', $current_user)
                 ->where('hnt_conversation_view.deleted_at', '=', Null)
@@ -186,7 +178,7 @@ class ConversationViewController extends Controller
         $key = 0;
         foreach ($message_conv_view as $message_conv_views) {
             $key++;
-            $data .= '["' . $key . '",' . '"' . $message_conv_views->name . '",' . '"' . $message_conv_views->hcv_message . '",' . '"' . Verta($message_conv_views->created_at) . '",' . '"' . $message_conv_views->id . '",' . '"' . $message_conv_views->hcv_request_user_id . '"],';
+            $data .= '["' . $key . '",' . '"' . $message_conv_views->name . '",' . '"' . $message_conv_views->hcv_message . '",' . '"' . Verta($message_conv_views->created_at) . '",' . '"' . $message_conv_views->id . '",' . '"' . $message_conv_views->hcv_request_user_id . '",' . '"' . $message_conv_views->hcv_file_request . '"],';
         }
         $data = substr($data, 0, -1);
         $message_conv_views_count = ConversationView::all()->count();
@@ -204,10 +196,10 @@ class ConversationViewController extends Controller
 
         if ($search == '') {
             if ($sort && $orderable != '') {
-                if($sort == 1){
+                if ($sort == 1) {
                     $message_conv_view = DB::table('hnt_conversation_view')
                         ->join('users', 'hnt_conversation_view.hcv_request_user_id', '=', 'users.id')
-                        ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_request_user_id')
+                        ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_request_user_id', 'hnt_conversation_view.hcv_file_request')
                         ->where('hnt_conversation_view.hcv_receiver_user_id', '=', $current_user)
                         ->where('hnt_conversation_view.deleted_at', '=', Null)
                         ->orderBy('users.name', $orderable)
@@ -215,10 +207,10 @@ class ConversationViewController extends Controller
                         ->take($length)
                         ->get();
                 }
-                if($sort == 2){
+                if ($sort == 2) {
                     $message_conv_view = DB::table('hnt_conversation_view')
                         ->join('users', 'hnt_conversation_view.hcv_request_user_id', '=', 'users.id')
-                        ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_request_user_id')
+                        ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_request_user_id', 'hnt_conversation_view.hcv_file_request')
                         ->where('hnt_conversation_view.hcv_receiver_user_id', '=', $current_user)
                         ->where('hnt_conversation_view.deleted_at', '=', Null)
                         ->orderBy('hnt_conversation_view.hcv_message', $orderable)
@@ -226,10 +218,10 @@ class ConversationViewController extends Controller
                         ->take($length)
                         ->get();
                 }
-                if($sort == 3){
+                if ($sort == 3) {
                     $message_conv_view = DB::table('hnt_conversation_view')
                         ->join('users', 'hnt_conversation_view.hcv_request_user_id', '=', 'users.id')
-                        ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_request_user_id')
+                        ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_request_user_id', 'hnt_conversation_view.hcv_file_request')
                         ->where('hnt_conversation_view.hcv_receiver_user_id', '=', $current_user)
                         ->where('hnt_conversation_view.deleted_at', '=', Null)
                         ->orderBy('hnt_conversation_view.created_at', $orderable)
@@ -237,10 +229,10 @@ class ConversationViewController extends Controller
                         ->take($length)
                         ->get();
                 }
-            }else{
+            } else {
                 $message_conv_view = DB::table('hnt_conversation_view')
                     ->join('users', 'hnt_conversation_view.hcv_request_user_id', '=', 'users.id')
-                    ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_request_user_id')
+                    ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_request_user_id', 'hnt_conversation_view.hcv_file_request')
                     ->where('hnt_conversation_view.hcv_receiver_user_id', '=', $current_user)
                     ->where('hnt_conversation_view.deleted_at', '=', Null)
                     ->orderBy('hnt_conversation_view.created_at', 'desc')
@@ -252,7 +244,7 @@ class ConversationViewController extends Controller
         } else {
             $message_conv_view = DB::table('hnt_conversation_view')
                 ->join('users', 'hnt_conversation_view.hcv_request_user_id', '=', 'users.id')
-                ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_request_user_id')
+                ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_request_user_id', 'hnt_conversation_view.hcv_file_request')
                 ->where('hnt_conversation_view.hcv_receiver_user_id', '=', $current_user)
                 ->where('hnt_conversation_view.deleted_at', '=', Null)
                 ->where('hnt_conversation_view.hcv_message', 'LIKE', "%$search%")
@@ -264,7 +256,7 @@ class ConversationViewController extends Controller
         $key = 0;
         foreach ($message_conv_view as $message_conv_views) {
             $key++;
-            $data .= '["' . $key . '",' . '"' . $message_conv_views->name . '",' . '"' . $message_conv_views->hcv_message . '",' . '"' . Verta($message_conv_views->created_at) . '",' . '"' . $message_conv_views->id . '",' . '"' . $message_conv_views->hcv_request_user_id . '"],';
+            $data .= '["' . $key . '",' . '"' . $message_conv_views->name . '",' . '"' . $message_conv_views->hcv_message . '",' . '"' . Verta($message_conv_views->created_at) . '",' . '"' . $message_conv_views->id . '",' . '"' . $message_conv_views->hcv_request_user_id . '",' . '"' . $message_conv_views->hcv_file_request . '"],';
         }
 
         $data = substr($data, 0, -1);
@@ -274,24 +266,63 @@ class ConversationViewController extends Controller
 
     public function fill_send(Request $request)
     {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];
         $current_user = auth()->user()->id;
         if ($search == '') {
-            $message_conv_view = DB::table('hnt_conversation_view')
-                ->join('users', 'hnt_conversation_view.hcv_receiver_user_id', '=', 'users.id')
-                ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_receiver_user_id')
-                ->where('hnt_conversation_view.hcv_request_user_id', '=', $current_user)
-                ->where('hnt_conversation_view.deleted_at', '=', Null)
-                ->orderBy('hnt_conversation_view.created_at', 'desc')
-                ->skip($start)
-                ->take($length)
-                ->get();
+            if ($sort && $orderable != '') {
+                if ($sort == 1) {
+                    $message_conv_view = DB::table('hnt_conversation_view')
+                        ->join('users', 'hnt_conversation_view.hcv_receiver_user_id', '=', 'users.id')
+                        ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_receiver_user_id', 'hnt_conversation_view.hcv_file_request')
+                        ->where('hnt_conversation_view.hcv_request_user_id', '=', $current_user)
+                        ->where('hnt_conversation_view.deleted_at', '=', Null)
+                        ->orderBy('users.name', $orderable)
+                        ->skip($start)
+                        ->take($length)
+                        ->get();
+                }
+                if ($sort == 2) {
+                    $message_conv_view = DB::table('hnt_conversation_view')
+                        ->join('users', 'hnt_conversation_view.hcv_receiver_user_id', '=', 'users.id')
+                        ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_receiver_user_id', 'hnt_conversation_view.hcv_file_request')
+                        ->where('hnt_conversation_view.hcv_request_user_id', '=', $current_user)
+                        ->where('hnt_conversation_view.deleted_at', '=', Null)
+                        ->orderBy('hnt_conversation_view.hcv_message', $orderable)
+                        ->skip($start)
+                        ->take($length)
+                        ->get();
+                }
+                if ($sort == 3) {
+                    $message_conv_view = DB::table('hnt_conversation_view')
+                        ->join('users', 'hnt_conversation_view.hcv_receiver_user_id', '=', 'users.id')
+                        ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_receiver_user_id', 'hnt_conversation_view.hcv_file_request')
+                        ->where('hnt_conversation_view.hcv_request_user_id', '=', $current_user)
+                        ->where('hnt_conversation_view.deleted_at', '=', Null)
+                        ->orderBy('hnt_conversation_view.created_at', $orderable)
+                        ->skip($start)
+                        ->take($length)
+                        ->get();
+                }
+
+            } else {
+                $message_conv_view = DB::table('hnt_conversation_view')
+                    ->join('users', 'hnt_conversation_view.hcv_receiver_user_id', '=', 'users.id')
+                    ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_receiver_user_id', 'hnt_conversation_view.hcv_file_request')
+                    ->where('hnt_conversation_view.hcv_request_user_id', '=', $current_user)
+                    ->where('hnt_conversation_view.deleted_at', '=', Null)
+                    ->orderBy('hnt_conversation_view.created_at', 'desc')
+                    ->skip($start)
+                    ->take($length)
+                    ->get();
+            }
         } else {
             $message_conv_view = DB::table('hnt_conversation_view')
                 ->join('users', 'hnt_conversation_view.hcv_receiver_user_id', '=', 'users.id')
-                ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_receiver_user_id')
+                ->select('hnt_conversation_view.hcv_message', 'hnt_conversation_view.id', 'users.name', 'hnt_conversation_view.created_at', 'hnt_conversation_view.hcv_receiver_user_id', 'hnt_conversation_view.hcv_file_request')
                 ->where('hnt_conversation_view.hcv_request_user_id', '=', $current_user)
                 ->where('hnt_conversation_view.deleted_at', '=', Null)
                 ->where('hnt_conversation_view.hcv_message', 'LIKE', "%$search%")
@@ -303,11 +334,54 @@ class ConversationViewController extends Controller
         $key = 0;
         foreach ($message_conv_view as $message_conv_views) {
             $key++;
-            $data .= '["' . $key . '",' . '"' . $message_conv_views->name . '",' . '"' . $message_conv_views->hcv_message . '",' . '"' . Verta($message_conv_views->created_at) . '",' . '"' . $message_conv_views->id . '",' . '"' . $message_conv_views->hcv_receiver_user_id . '"],';
+            $data .= '["' . $key . '",' . '"' . $message_conv_views->name . '",' . '"' . $message_conv_views->hcv_message . '",' . '"' . Verta($message_conv_views->created_at) . '",' . '"' . $message_conv_views->id . '",' . '"' . $message_conv_views->hcv_receiver_user_id . '",' . '"' . $message_conv_views->hcv_file_request . '"],';
         }
         $data = substr($data, 0, -1);
         $message_conv_views_count = ConversationView::all()->count();
         return response('{ "recordsTotal":' . $message_conv_views_count . ',"recordsFiltered":' . $message_conv_views_count . ',"data": [' . $data . ']}');
     }
+//end
+
+//upload file
+    public function response_message_file_save(Request $request)
+    {
+        $image = $request->file('file');
+        $filename = $_FILES['file']['name'];
+
+        if (isset($image)) {
+            if (!file_exists('img/response_message_file')) {
+                mkdir('img/response_message_file', 0777, true);
+            }
+            $image->move('img/response_message_file', $filename);
+        } else {
+            $filename = 'default.png';
+        }
+
+        return response()->json([
+            'link' => '/img/response_message_file/' . $filename
+        ]);
+    }
+
+    public function request_message_file_save(Request $request)
+    {
+        $image = $request->file('file');
+        $filename = $_FILES['file']['name'];
+
+        if (isset($image)) {
+//            $current_date = Carbon::now()->todatestring();
+//          $image_name = $current_date . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+            if (!file_exists('img/request_message_file')) {
+                mkdir('img/request_message_file', 0777, true);
+            }
+            $image->move('img/request_message_file', $filename);
+        } else {
+            $filename = 'default.png';
+        }
+
+        return response()->json([
+            'link' => '/img/request_message_file/' . $filename
+        ]);
+    }
+//end
 
 }

@@ -584,7 +584,7 @@
                                             </div>
                                         </div>
                                         <button type="submit" class="btn badge-primary"
-                                                style="vert-align: top">{{__('Send')}}</button>
+                                                style="vert-align: top">{{__('Submit')}}</button>
                                     </form>
                                 </div>
                             </div>

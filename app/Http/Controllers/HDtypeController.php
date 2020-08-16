@@ -51,14 +51,26 @@ class HDtypeController extends Controller
 
     public function fill(Request $request)
     {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];
         if ($search == '') {
-            $type = HDtype::select('id', 'th_name')
-                ->skip($start)
-                ->take($length)
-                ->get();
+            if ($sort && $orderable != '') {
+                if ($sort == 1) {
+                    $type = HDtype::select('id', 'th_name')
+                        ->orderBy('th_name', $orderable)
+                        ->skip($start)
+                        ->take($length)
+                        ->get();
+                }
+            } else {
+                $type = HDtype::select('id', 'th_name')
+                    ->skip($start)
+                    ->take($length)
+                    ->get();
+            }
         } else {
             $type = HDtype::select('id', 'th_name')
                 ->where('id', 'LIKE', "%$search%")

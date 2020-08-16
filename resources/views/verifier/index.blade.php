@@ -33,12 +33,6 @@
                                         {{__('Verifier Id')}}
                                     </th>
                                     <th>
-                                        {{__('Create At')}}
-                                    </th>
-                                    <th>
-                                        {{__('Update At')}}
-                                    </th>
-                                    <th>
                                         {{__('action')}}
                                     </th>
                                     </thead>
@@ -86,7 +80,7 @@
 
                                     </div>
                                 </div>
-                                <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
+                                <button type="submit" class="btn badge-primary">{{__('Submit')}}</button>
                             </form>
                         </div>
                     </div>
@@ -129,7 +123,7 @@
 
                                     </div>
                                 </div>
-                                <button type="submit" class="btn badge-primary">{{__('Send')}}</button>
+                                <button type="submit" class="btn badge-primary">{{__('Submit')}}</button>
                             </form>
                         </div>
                     </div>

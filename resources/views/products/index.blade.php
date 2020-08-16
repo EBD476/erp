@@ -279,8 +279,7 @@
                             </form>
                             <br>
                             <label style="margin-top: -20px;">{{__('Image')}}</label>
-                            <div class="card-body col-md-12 row"
-                                 style="display: flex ; border: 1px dashed;     margin-right: -35px;}">
+                            <div class="card-body col-md-12 row">
                                 <form action="{{url('/product-image-save')}}" class="dropzone" id="dropzone"
                                       enctype="multipart/form-data">
                                     @csrf
@@ -331,7 +330,7 @@
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
                         <button type="submit" id="submit_modal_color"
-                                class="btn btn-deep-orange">{{__('Send')}}</button>
+                                class="btn btn-deep-orange">{{__('Submit')}}</button>
                     </div>
                 </form>
             </div>
@@ -369,7 +368,7 @@
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
-                        <button type="submit" class="btn btn-deep-orange">{{__('Send')}}</button>
+                        <button type="submit" class="btn btn-deep-orange">{{__('Submit')}}</button>
                     </div>
                 </form>
             </div>

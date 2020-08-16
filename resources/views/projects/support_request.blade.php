@@ -2,6 +2,10 @@
 
 @section('title',__('Support Request'))
 
+@push('css')
+    <link href="{{asset('assets/css/dropzone.min.css')}}" rel="stylesheet"/>
+@endpush
+
 @section('content')
     @role('Admin')
     <div class="content persian">
@@ -51,8 +55,7 @@
                             <br>
                             <div class="col-md-8">
                                 <label style="margin-top: -20px;">{{__('File')}}</label>
-                                <div class="card-body col-md-12 row"
-                                     style="display: flex ; border: 1px dashed;     margin-right: -35px;}">
+                                <div class="card-body col-md-12 row">
                                     <form action="{{url('/request-file-save')}}" class="dropzone" id="dropzone"
                                           enctype="multipart/form-data">
                                         @csrf
@@ -65,10 +68,10 @@
                                 </div>
                             </div>
                             <br>
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-fill btn-primary"
-                                        id="submit-form">{{__('Send')}}</button>
-                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-fill btn-primary"
+                                    id="submit-form">{{__('Submit')}}</button>
                         </div>
                     </div>
                 </div>
@@ -95,7 +98,7 @@
 
         @push('scripts')
             <script src="{{asset('assets/js/plugins/jquery.blockUI.js')}}" type="text/javascript"></script>
-            <script src="{{asset('assets/js/plugins/dropzone.js')}}"></script>
+            <script src="{{asset('assets/js/dropzone.min.js')}}"></script>
             <script>
                 $(document).ready(function () {
 
@@ -152,7 +155,7 @@
                             var time = dt.getTime();
                             return time + '-' + file.name;
                         },
-                        acceptedFiles: ".jpeg,.jpg,.pdf,",
+                        acceptedFiles: ".jpeg,.jpg,.pdf,.mp4",
                         addRemoveLinks: true,
                         timeout: 5000,
                         success: function (file, response) {

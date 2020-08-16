@@ -30,9 +30,16 @@ class InstallController extends Controller
 //    store data
     public function update(Request $request, $id)
     {
+        $current_date = Verta::now();
         $product = $request->state;
-        OrderProduct::where('hpo_order_id', $id)
-            ->update(['hpo_status' => $product]);
+        if ($request->all == 1) {
+            OrderProduct::where('hpo_order_id', $id)
+                ->update(['hpo_status' => $product,'hpo_verify_delivery_install' => $current_date]);
+        }
+        if ($request->all == 0) {
+            OrderProduct::where('id', $id)
+                ->update(['hpo_status' => $product,'hpo_verify_delivery_install' => $current_date]);
+        }
         $count = OrderProduct::where('hpo_order_id', $id)->get();
         $number = 0;
         foreach ($count as $counts) {
@@ -69,6 +76,8 @@ class InstallController extends Controller
 
     public function fill(Request $request)
     {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];
@@ -122,6 +131,8 @@ class InstallController extends Controller
 
     public function fill_all(Request $request)
     {
+        $sort = $request->order[0]["column"];
+        $orderable = $request->order[0]["dir"];
         $start = $request->start;
         $length = $request->length;
         $search = $request->search['value'];

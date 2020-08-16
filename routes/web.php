@@ -81,6 +81,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('product-task', 'TaskController');
     Route::resource('qc', 'QCController');
     Route::resource('position', 'PositionUserController');
+    Route::resource('hd-type-role', 'HDTypeRoleController');
+    Route::resource('send-receiver-massage-role', 'LimitedMassageController');
+    Route::resource('organizational-department', 'OrganizationalDepartmentsController');
+    Route::resource('inventory-product', 'InventoryProductController');
 
 
 //  Getting data
@@ -125,6 +129,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('createpdf', 'OrderProductController@createpdf')->name('order_product.createpdf');
     Route::post('activation-create-serial-number-status/{id}', 'ProductController@activation_create_serial_number_status')->name('product.activation-create-serial-number-status');
     Route::post('conversation_view_store', 'ConversationViewController@conversation_view_store')->name('conversation_view.conversation_view_store');
+    Route::post('new-password', 'UserController@new')->name('users.new-password');
 
 
 //    uploaded image route
@@ -133,6 +138,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/middle-part-image-save', 'MiddlePartController@upload')->name('middle-part.upload');
     Route::post('/user-image-save', 'UserController@upload')->name('users.upload');
     Route::post('/request-file-save', 'ProjectController@upload')->name('project.upload');
+    Route::post('/response-file-save', 'SupportController@upload')->name('support.upload');
+    Route::post('/help_desk-file-save', 'HelpDeskController@upload')->name('help_desk.upload');
+    Route::post('/request-message-file-save', 'ConversationViewController@request_message_file_save')->name('conversation_view.request-message-file-save');
+    Route::post('/response-message-file-save', 'ConversationViewController@response_message_file_save')->name('conversation_view.response-message-file-save');
 
 
 //  Mapping route
@@ -144,6 +153,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 //  fill data table
     Route::get('/json-data-order', 'OrderController@fill')->name('order.json-data-order');
+    Route::get('/json-data-order-all', 'OrderController@fill_all')->name('order.json-data-order-all');
     Route::get('/json-data-users', 'UsersController@fill')->name('users.json-data-users');
     Route::get('/json-data-roles', 'RolesController@fill')->name('roles.json-data-roles');
     Route::get('/json-data-permissions', 'PermissionsController@fill')->name('permission.json-data-permissions');
@@ -193,7 +203,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/json-data-middle-section-part', 'MiddleSectionPartController@fill')->name('middle-section-part.json-data-middle-section-part');
     Route::get('/json-data-repository-part', 'RepositoryPartController@fill')->name('repository-part.json-data-repository-part');
     Route::get('/json-data-repository-middle-part', 'RepositoryMiddlePartController@fill')->name('repository-middle-part.json-data-repository-middle-part');
-    Route::get('/json-data-repository-middle_part', 'RepositoryMiddlePartController@fill')->name('repository-middle-part.json-data-repository-middle-part');
     Route::get('/json-data-repository-product', 'RepositoryProductController@fill')->name('repository-product.json-data-repository-product');
     Route::get('/json-data-priority', 'HDpriorityController@fill')->name('priority.json-data-priority');
     Route::get('/json-data-type', 'HDtypeController@fill')->name('type.json-data-type');
@@ -219,12 +228,23 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('json-data-delivery-all', 'DeliveryController@fill_all')->name('delivery.json-data-delivery-all');
     Route::get('json-data-qc', 'QCController@fill')->name('qc.json-data-qc');
     Route::get('json-data-qc-all', 'QCController@fill_all')->name('qc.json-data-delivery-all');
+    Route::get('json-data-fill-repository-qc', 'QCController@fill_repository_qc')->name('qc.json-data-fill-repository-qc');
     Route::get('json-data-fill-response', 'ProjectController@fill_response')->name('projects.json-data-fill-response');
     Route::get('activation-create-serial-number-index', 'ProductController@activation_create_serial_number_index')->name('product.activation-create-serial-number-index');
     Route::get('json-data-message-receive', 'ConversationViewController@fill_receive')->name('conversationview.json-data-message-receive');
     Route::get('json-data-message-send', 'ConversationViewController@fill_send')->name('conversationview.json-data-message-send');
     Route::get('fill-unread-message', 'ConversationViewController@fill_unread_message')->name('conversationview.fill-unread-message');
     Route::get('json-data-position', 'PositionUserController@fill')->name('position.json-data-position');
+    Route::get('json-data-hd-receiver-role', 'HDTypeRoleController@fill')->name('hd-type-role.json-data-hd-receiver-role');
+    Route::get('json-data-send-receiver-massage-role', 'LimitedMassageController@fill')->name('send-receiver-massage-role.json-data-send-receiver-massage-role');
+    Route::get('json-data-organizational-department', 'OrganizationalDepartmentsController@fill')->name('organizational-department.json-data-organizational-department');
+    Route::get('invoices-list-finance', 'FinanceController@fill')->name('finance.invoices-list-finance');
+    Route::get('invoices-list-finance-all', 'FinanceController@fill_all')->name('finance.invoices-list-finance-all');
+    Route::get('inventory-product-fill', 'InventoryProductController@fill')->name('inventory-product.inventory-product-fill');
+    Route::get('inventory-product-fill-all', 'InventoryProductController@fill_all')->name('inventory-product.inventory-product-fill-all');
+    Route::get('/json-data-repository-part-fill-all', 'RepositoryPartController@fill_all')->name('repository-part.json-data-repository-part-fill-all');
+    Route::get('/json-data-repository-middle-part-fill-all', 'RepositoryMiddlePartController@fill_all')->name('repository-middle-part.json-data-repository-middle-part-fill-all');
+    Route::get('/json-data-repository-product-fill-all', 'RepositoryProductController@fill_all')->name('repository-product.json-data-repository-product-fill-all');
 
 
 
@@ -245,6 +265,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/json-data-fill-type-ticket', 'HDReceiverUserController@fill_type_ticket')->name('hd-receiver-user.json-data-fill-type-ticket');
     Route::get('/json-data-fill-data-zone', 'ProductZoneController@fill_data_zone')->name('product-zone.json-data-fill-data-zone');
     Route::get('/json-data-fill-position-user', 'PositionUserController@fill_data_position')->name('position.json-data-fill-position-user');
+    Route::get('/json-data-fill-hd-receiver-role', 'HDTypeRoleController@select_receiver_role')->name('hd-type-role.select-receiver-role');
+    Route::get('/json-data-fill-department', 'OrganizationalDepartmentsController@json_data_fill_department')->name('organizational-department.json-data-fill-department');
+    Route::get('/fill-data-limited-user', 'LimitedMassageController@fill_data_limited_user')->name('send-receiver-massage-role.fill-data-limited-user');
+    Route::get('/fill-repository-name','RepositoryCreateController@fill_repository_name')->name('repository_create.fill_repository_name');
 
 
 //  deleted route
@@ -304,6 +328,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/product-status-destroy/{id}', 'ProductStatusController@destroy')->name('product-status.product-status-destroy');
     Route::delete('/product-task-destroy/{id}', 'TaskController@destroy')->name('product-task.product-task-destroy');;
     Route::delete('/position-destroy/{id}', 'PositionUserController@destroy')->name('position.position-destroy');;
+    Route::delete('/hd-receiver-role-destroy/{id}', 'HDTypeRoleController@destroy')->name('hd-type-role.hd-receiver-role-destroy');;
+    Route::delete('/send-receiver-massage-role-destroy/{id}', 'LimitedMassageController@destroy')->name('send-receiver-massage-role.send-receiver-massage-role-destroy');;
+    Route::delete('/organizational-department-destroy/{id}', 'OrganizationalDepartmentsController@destroy')->name('organizational-department.organizational-department-destroy');;
 
 
 
