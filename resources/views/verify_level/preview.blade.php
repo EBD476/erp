@@ -162,7 +162,8 @@
                                                             </table>
                                                         </table>
                                                     </div>
-                                                    @if ($current_verifier != null)
+                                                    @foreach($current_verified_order as $user)
+                                                    @if ($user->hp_verifier_id == auth()->user()->id)
                                                         <form method="POST"
                                                               action="{{route('verify_pre.update',$order->id)}}"
                                                               ENCTYPE="multipart/form-data">
@@ -171,6 +172,7 @@
                                                             <button class="btn btn-primary">{{__('Verify')}}</button>
                                                         </form>
                                                     @endif
+                                                    @endforeach
                                                     @endrole
                                                 </div>
                                             </div>

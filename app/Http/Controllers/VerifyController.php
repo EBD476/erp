@@ -45,25 +45,25 @@ class VerifyController extends Controller
     public function edit($id)
     {
         $userID = auth()->user()->id;
-        $current_verified_order = Verifier::where('hp_verifier_id', $userID and 'process_id', '1')->first();
-        $current_verifier = VerifyID::select('verify_id')->where('verify_id', $userID)->first();
-        if ($current_verifier != null) {
-            $first_verifier = Process::where('hp_verifier_id', $userID)
-                ->where('hp_priority', 1)
-                ->first();
-            if ($current_verifier->verify_id != $userID) {
-
-                if ($first_verifier != null) {
-                    $second_verifier = Process::where('hp_verifier_id', $userID)->first();
-                    $selected_priority = VerifyID::where('verify_id', '<>', $second_verifier)->first();
-
-
-                }
-            } else {
-//                 return back();
-            }
-
-        }
+        $current_verified_order = Verifier::where('hp_verifier_id', $userID)->where( 'process_id', '1')->get();
+        //        $current_verifier = VerifyID::select('verify_id')->where('verify_id', $userID)->first();
+//        if ($current_verifier != null) {
+//            $first_verifier = Process::where('hp_verifier_id', $userID)
+//                ->where('hp_priority', 1)
+//                ->first();
+//            if ($current_verifier->verify_id != $userID) {
+//
+//                if ($first_verifier != null) {
+//                    $second_verifier = Process::where('hp_verifier_id', $userID)->first();
+//                    $selected_priority = VerifyID::where('verify_id', '<>', $second_verifier)->first();
+//
+//
+//                }
+//            } else {
+////                 return back();
+//            }
+//
+//        }
         $current_user = auth()->user()->id;
         $help_desk = HelpDesk::select('hhd_request_user_id', 'id', 'hhd_type', 'hhd_priority')->where('hhd_ticket_status', '1')->where('hhd_receiver_user_id', $current_user)->get();
         $type = HDtype::select('th_name', 'id')->get();

@@ -441,19 +441,19 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($order as $order)
+                                @foreach($order as $orders)
                                     <tr>
                                         <td>
-                                            {{$order->id }}
+                                            {{$orders->id }}
                                         </td>
                                         <td>
-                                            {{$order->hp_project_name }}
+                                            {{$orders->hp_project_name }}
                                         </td>
                                         <td>
-                                            {{$order->created_at}}
+                                            {{$orders->created_at}}
                                         </td>
                                         <td>
-                                            <a href="{{route('verify_pre.edit',$order->id)}}"
+                                            <a href="{{route('verify_pre.edit',$orders->id)}}"
                                                class="btn btn-link btn-warning btn-icon btn-sm btn-neutral  edit">
                                                 <i class="tim-icons icon-pencil"></i></a>
                                         </td>
